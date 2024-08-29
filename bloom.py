@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import transformers
 
-from sparsegpt import * 
+from vector_quantizer import * 
 from modelutils import *
 
 try:

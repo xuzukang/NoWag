@@ -3,7 +3,7 @@ import time
 import torch
 import torch.nn as nn
 
-from sparsegpt import *
+from vector_quantizer import *
 from modelutils import *
 from quant import *
 
@@ -31,8 +31,44 @@ def get_llama(model):
 def llama_sequential(model, dataloader, dev):
     print("Starting...")
 
+
+
+
     use_cache = model.config.use_cache
     model.config.use_cache = False
+
+    model.to(dev)
+    model = replace_layers_with_quantizer(model, layer_classes=[nn.Linear], 
+                                          quantizer_kwargs={"n_quantize": args.n_quantize,
+                                                            "nsamples": args.nsamples})
+
+
+    print(model)
+
+    #gather n samples of the data
+    dtype = next(iter(model.parameters())).dtype
+    # inps = torch.zeros((args.nsamples, model.seqlen), dtype=dtype
+                       
+    #                    , device=dev)
+
+    for i, batch in enumerate(dataloader):
+        if i >= args.nsamples:
+            break
+        print("Batch:", i)
+        print(batch[0].shape)
+        model(batch[0].to(dev))
+    # #pass the data through the model
+    # model(inps)
+
+    #quantize the weights of the model
+    model,_ = quantize_layers(model)
+
+    model.config.use_cache = use_cache
+
+    return model
+
+
+
     layers = model.model.layers
 
     model.model.embed_tokens = model.model.embed_tokens.to(dev)
@@ -92,14 +128,15 @@ def llama_sequential(model, dataloader, dev):
         for names in sequential:
             subset = {n: full[n] for n in names}
 
-            gpts = {}
+            Quantizers:dict[VectorQuantizerLayer] = {}
             for name in subset:
                 if (
                     not (args.minlayer <= i < args.maxlayer and args.prune_only in name)
                 ) == (not args.invert):
                     continue
-                gpts[name] = SparseGPT(subset[name])
+                Quantizers[name] = VectorQuantizerLayer(subset[name],args.n_quantize_locs)
                 if args.wbits < 16:
+                    raise Exception("Quantization not supported.")
                     gpts[name].quantizer = Quantizer()
                     gpts[name].quantizer.configure(
                         args.wbits, perchannel=True, sym=False, mse=False
@@ -122,14 +159,8 @@ def llama_sequential(model, dataloader, dev):
             for name in subset:
                 print(i, name)
                 print("Pruning ...")
-                sparsity = args.sparsity
-                gpts[name].fasterprune(
-                    sparsity,
-                    prunen=args.prunen,
-                    prunem=args.prunem,
-                    percdamp=args.percdamp,
-                    blocksize=args.blocksize,
-                )
+                layer = gpts[name].quantize()
+
                 gpts[name].free()
 
         for j in range(args.nsamples):
@@ -199,6 +230,7 @@ def llama_eval(model, testenc, dev,  dataset: str, log_wandb: bool = False):
         layer = layers[i].to(dev)
 
         if args.gmp:
+            raise Exception("GMP not supported.")
             subset = find_layers(layer)
             for name in subset:
                 W = subset[name].weight.data
@@ -258,6 +290,9 @@ if __name__ == "__main__":
         "--seed", type=int, default=0, help="Seed for sampling the calibration data."
     )
     parser.add_argument(
+        "--device", type=str, default="cuda:0", help="Device to run on."
+    )
+    parser.add_argument(
         "--nsamples", type=int, default=128, help="Number of calibration data samples."
     )
     parser.add_argument(
@@ -303,6 +338,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--log_wandb", action="store_true", help="Whether to log to wandb."
     )
+    parser.add_argument(
+        "--n_quantize", type=int, default=256, help="Number of quantization locations."
+    )
+    parser.add_argument(
+        "--quantize", action="store_true", help="Whether to quantize the model."
+    )
 
     args = parser.parse_args()
 
@@ -318,13 +359,10 @@ if __name__ == "__main__":
         args.dataset, nsamples=args.nsamples, seed=args.seed, model=args.model, seqlen=model.seqlen
     )
 
-    if (args.sparsity or args.prunen) and not args.gmp:
+    if args.quantize:
         tick = time.time()
-        llama_sequential(model, dataloader, DEV)
-        for n, p in model.named_parameters():
-            print(n, torch.mean((p == 0).float()))
-            if 'down_proj' in n:
-                break
+        n_params = sum(p.numel() for p in model.parameters())
+        llama_sequential(model, dataloader, args.device)
         print(time.time() - tick)
 
     for dataset in ["wikitext2", "ptb", "c4"]:
@@ -332,7 +370,7 @@ if __name__ == "__main__":
             dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
         )
         print("Dataset:", dataset)
-        llama_eval(model, testloader, DEV, dataset, args.log_wandb)
+        llama_eval(model, testloader, args.device, dataset, args.log_wandb)
 
-    if args.save:
+    if len(args.save)>0:
         model.save_pretrained(args.save)
