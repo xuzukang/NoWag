@@ -16,9 +16,9 @@ def replace_layers_with_quantizer(module:nn.Module, layer_classes = [nn.Linear],
     for name, child in module.named_children():
         if isinstance(child, tuple(layer_classes)):
             #if the input and output dimensions are the same
-            if child.in_features == child.out_features:
+            # if child.in_features == child.out_features:
                 # print("replacing layer with quantizer")
-                setattr(module, name, vector_quantizer.VectorQuantizerLayer(child, **quantizer_kwargs))
+            setattr(module, name, vector_quantizer.VectorQuantizerLayer(child, **quantizer_kwargs))
         else:
             replace_layers_with_quantizer(child, layer_classes, quantizer_kwargs)
     return module

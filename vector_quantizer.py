@@ -143,8 +143,11 @@ class VectorQuantizerLayer(nn.Module):
         self.original_weights = original_layer.weight.data
         # print("original weights", self.original_weights.shape,"dtype", self.original_weights.dtype, "device", self.original_weights.device)
         self.b = original_layer.bias
-        self.H = torch.zeros((self.original_weights.shape[1], self.original_weights.shape[1]), 
-                             device=self.original_weights.device).float() #will cast to half later
+        # self.H = torch.zeros((self.original_weights.shape[1], self.original_weights.shape[1]), 
+        #                      device=self.original_weights.device).float() #will cast to half later
+        
+        self.Input = []
+        self.Output = []
         self.n_quantize = n_quantize
         self.nsamples = nsamples
 
@@ -159,7 +162,13 @@ class VectorQuantizerLayer(nn.Module):
         assert torch.all(torch.isfinite(self.H)), f"H is not finite, {self.H}, {self.H[~torch.isfinite(self.H)]}"
 
     def quantize(self):
-        assert torch.all(torch.isfinite(self.H)), f"H is not finite, {self.H}, {self.H[~torch.isfinite(self.H)]}"
+        # assert torch.all(torch.isfinite(self.H)), f"H is not finite, {self.H}, {self.H[~torch.isfinite(self.H)]}"
+
+        #save the original weights, and H
+        torch.save({'weights': self.original_weights, 'bias': self.b,
+                    'Input': self.Input, 'Output': self.Output,
+                    }, 'test/original_weights2.pt')
+        raise ValueError("stop")
         quantized_vectors,assignments = vector_quantize(self.original_weights
                                                                   , (self.H/self.H.shape[0]).to(self.original_weights.dtype), self.n_quantize)
         b = self.b
@@ -197,9 +206,12 @@ class VectorQuantizerLayer(nn.Module):
         #W is of shape (n,k)
         #if we have not quantized the weights
         if not hasattr(self, 'quantized_vectors'):
-            self.add_batch(x)
-            x = F.linear(x, self.original_weights, self.b)
-            return x
+            # self.add_batch(x)
+            y = F.linear(x, self.original_weights, self.b)
+            self.Input.append(x)    
+            self.Output.append(y)
+            raise ValueError("stop")
+            return y
         
         # print("original shape", x.shape)
         original_shape = x.shape

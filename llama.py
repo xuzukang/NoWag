@@ -56,7 +56,10 @@ def llama_sequential(model, dataloader, dev):
             break
         print("Batch:", i)
         print(batch[0].shape)
-        model(batch[0].to(dev))
+        try:
+            model(batch[0].to(dev))
+        except ValueError:
+            pass
     # #pass the data through the model
     # model(inps)
 
