@@ -72,3 +72,16 @@ Traceback (most recent call last):
     return self._sslobj.read(len, buffer)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 KeyboardInterrupt
+usage: llama.py [-h] [--seed SEED] [--device DEVICE] [--nsamples NSAMPLES]
+                [--percdamp PERCDAMP] [--sparsity SPARSITY] [--prunen PRUNEN]
+                [--prunem PRUNEM] [--blocksize BLOCKSIZE] [--gmp]
+                [--wbits WBITS] [--minlayer MINLAYER] [--maxlayer MAXLAYER]
+                [--prune_only PRUNE_ONLY] [--invert] [--save SAVE]
+                [--true-sequential] [--log_wandb]
+                [--subvector_dim SUBVECTOR_DIM]
+                [--k_magnitude_codebook K_MAGNITUDE_CODEBOOK]
+                [--k_cosine_codebook K_COSINE_CODEBOOK] [--keep_top KEEP_TOP]
+                [--lr LR] [--lr_multiple LR_MULTIPLE] [--n_iters N_ITERS]
+                [--clamp_gradients CLAMP_GRADIENTS] [--quantize]
+                model {wikitext2,ptb,c4}
+llama.py: error: unrecognized arguments: ----subvector_dim 8 --k_cosine_codebk 16

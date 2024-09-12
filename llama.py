@@ -1,6 +1,7 @@
 import time
 
 import torch
+import random
 import torch.nn as nn
 
 from vector_quantizer import *
@@ -27,51 +28,12 @@ def get_llama(model):
     return model
 
 
-@torch.no_grad()
+# @torch.no_grad()
 def llama_sequential(model, dataloader, dev):
     print("Starting...")
 
-
-
-
     use_cache = model.config.use_cache
     model.config.use_cache = False
-
-    model.to(dev)
-    model = replace_layers_with_quantizer(model, layer_classes=[nn.Linear], 
-                                          quantizer_kwargs={"n_quantize": args.n_quantize,
-                                                            "nsamples": args.nsamples})
-
-
-    print(model)
-
-    #gather n samples of the data
-    dtype = next(iter(model.parameters())).dtype
-    # inps = torch.zeros((args.nsamples, model.seqlen), dtype=dtype
-                       
-    #                    , device=dev)
-
-    for i, batch in enumerate(dataloader):
-        if i >= args.nsamples:
-            break
-        print("Batch:", i)
-        print(batch[0].shape)
-        try:
-            model(batch[0].to(dev))
-        except ValueError:
-            pass
-    # #pass the data through the model
-    # model(inps)
-
-    #quantize the weights of the model
-    model,_ = quantize_layers(model)
-
-    model.config.use_cache = use_cache
-
-    return model
-
-
-
     layers = model.model.layers
 
     model.model.embed_tokens = model.model.embed_tokens.to(dev)
@@ -96,11 +58,12 @@ def llama_sequential(model, dataloader, dev):
             raise ValueError
 
     layers[0] = Catcher(layers[0])
-    for batch in dataloader:
-        try:
-            model(batch[0].to(dev))
-        except ValueError:
-            pass
+    with torch.no_grad():
+        for batch in dataloader:
+            try:
+                model(batch[0].to(dev))
+            except ValueError:
+                pass
     layers[0] = layers[0].module
 
     layers[0] = layers[0].cpu()
@@ -131,13 +94,13 @@ def llama_sequential(model, dataloader, dev):
         for names in sequential:
             subset = {n: full[n] for n in names}
 
-            Quantizers:dict[VectorQuantizerLayer] = {}
+            gpts = {}
             for name in subset:
                 if (
                     not (args.minlayer <= i < args.maxlayer and args.prune_only in name)
                 ) == (not args.invert):
                     continue
-                Quantizers[name] = VectorQuantizerLayer(subset[name],args.n_quantize_locs)
+                gpts[name] = VectorQuantizerTemp(subset[name])
                 if args.wbits < 16:
                     raise Exception("Quantization not supported.")
                     gpts[name].quantizer = Quantizer()
@@ -151,23 +114,38 @@ def llama_sequential(model, dataloader, dev):
 
                 return tmp
 
-            handles = []
-            for name in subset:
-                handles.append(subset[name].register_forward_hook(add_batch(name)))
-            for j in range(args.nsamples):
-                outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
-            for h in handles:
-                h.remove()
+            with torch.no_grad():
+                handles = []
+                for name in subset:
+                    handles.append(subset[name].register_forward_hook(add_batch(name)))
+                for j in range(args.nsamples):
+                    outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+                for h in handles:
+                    h.remove()
 
             for name in subset:
                 print(i, name)
                 print("Pruning ...")
-                layer = gpts[name].quantize()
-
+                sparsity = args.sparsity
+                gpts[name].fastquant(
+                    subvector_dim = args.subvector_dim,
+                    k_magnitude_codebook = args.k_magnitude_codebook,
+                    k_cosine_codebook = args.k_cosine_codebook,
+                    keep_top = args.keep_top,
+                    lr = args.lr,
+                    lr_multiple = args.lr_multiple,
+                    n_iters = args.n_iters,
+                    clamp_gradients = args.clamp_gradients
+                )
                 gpts[name].free()
+                free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+                print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+                # return quantizers
+        # return quantizers
 
-        for j in range(args.nsamples):
-            outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+        with torch.no_grad():
+            for j in range(args.nsamples):
+                outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
 
         layers[i] = layer.cpu()
         del layer
@@ -342,8 +320,30 @@ if __name__ == "__main__":
         "--log_wandb", action="store_true", help="Whether to log to wandb."
     )
     parser.add_argument(
-        "--n_quantize", type=int, default=256, help="Number of quantization locations."
+        "--subvector_dim", type=int, default=16, help="Subvector dimension."
     )
+    parser.add_argument(
+        "--k_magnitude_codebook", type=int, default=256, help="Magnitude codebook size."
+    )
+    parser.add_argument(
+        "--k_cosine_codebook", type=int, default=256, help="Cosine codebook size."
+    )
+    parser.add_argument(
+        "--keep_top", type=int, default=0.01, help="Keep top k subvectors."
+    )
+    parser.add_argument(
+        "--lr", type=float, default=10, help="Learning rate for quantization."
+    )
+    parser.add_argument(
+        "--lr_multiple", type=float, default=0.9, help="Learning rate multiple."
+    )
+    parser.add_argument(
+        "--n_iters", type=int, default=100, help="Number of iterations."
+    )
+    parser.add_argument(
+        "--clamp_gradients", type=float, default=0.1, help="Clamp gradients."
+    )
+
     parser.add_argument(
         "--quantize", action="store_true", help="Whether to quantize the model."
     )
@@ -362,13 +362,15 @@ if __name__ == "__main__":
         args.dataset, nsamples=args.nsamples, seed=args.seed, model=args.model, seqlen=model.seqlen
     )
 
+    torch.manual_seed(args.seed)    
+    torch.cuda.manual_seed(args.seed)
     if args.quantize:
         tick = time.time()
         n_params = sum(p.numel() for p in model.parameters())
         llama_sequential(model, dataloader, args.device)
         print(time.time() - tick)
 
-    for dataset in ["wikitext2", "ptb", "c4"]:
+    for dataset in ["wikitext2"]: #, "ptb", "c4"]:
         dataloader, testloader = get_loaders(
             dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
         )
