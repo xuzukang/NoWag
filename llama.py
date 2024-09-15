@@ -132,6 +132,7 @@ def llama_sequential(model, dataloader, dev):
                     k_magnitude_codebook = args.k_magnitude_codebook,
                     k_cosine_codebook = args.k_cosine_codebook,
                     keep_top = args.keep_top,
+                    keep_top_criterion = args.keep_top_criterion,
                     lr = args.lr,
                     lr_multiple = args.lr_multiple,
                     n_iters = args.n_iters,
@@ -329,7 +330,11 @@ if __name__ == "__main__":
         "--k_cosine_codebook", type=int, default=256, help="Cosine codebook size."
     )
     parser.add_argument(
-        "--keep_top", type=int, default=0.01, help="Keep top k subvectors."
+        "--keep_top", type=float, default=0.01, help="Keep top k subvectors."
+    )
+    parser.add_argument(
+        "--keep_top_criterion", type=str, default=["magnitude"], help="Keep top criterion.", 
+        nargs="+"
     )
     parser.add_argument(
         "--lr", type=float, default=10, help="Learning rate for quantization."
