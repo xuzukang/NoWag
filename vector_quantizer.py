@@ -14,17 +14,18 @@ DEBUG = False
 
 torch.backends.cuda.matmul.allow_tf32 = False
 torch.backends.cudnn.allow_tf32 = False
-def cluster_e_step(X,centriods,
-                   weights,
-                   subblock_size = 1024):
+import torch.jit as jit
+
+@jit.script
+def cluster_e_step(X:torch.Tensor,centriods:torch.Tensor,
+                   weights:torch.Tensor,
+                     subblock_size:int = 1024):
     
     """
     X: torch tensor of the weights, rearanged into a shape of (n, d)
     centriods: torch.tensor of the centriods, shape of (k, d)
     weights: torch.tensor of shape (n,d)
     """
-
-    # k = centriods.shape[0]
 
     n = X.shape[0]
     assignments = torch.zeros(n, dtype = torch.int64, device = X.device)
@@ -62,8 +63,8 @@ def cluster_e_step(X,centriods,
     # #shape of (n)
     return assignments
 
-
-def cluster_m_step(X, assignments, k, weights):
+@jit.script
+def cluster_m_step(X:torch.Tensor, assignments:torch.Tensor, k:int, weights:torch.Tensor):
     """
     X: torch tensor of the weights, rearanged into a shape of (n, d)
     assignments: torch.tensor of the assignments, shape of (n)
@@ -82,6 +83,7 @@ def cluster_m_step(X, assignments, k, weights):
         centriods[i] = torch.sum(assignments_weights * assignment_X, dim = 0) / torch.sum(assignments_weights, dim = 0)
 
     return centriods
+
 
 
 def cluster(X, k, weights, n_iter = 100,
@@ -321,34 +323,35 @@ class VectorQuantizerTemp:
         weights_norms = torch.norm(weights_reshaped, dim = -1)
         # print(H[:,row_assignments].shape)
         H_norms = torch.norm(H[:,row_assignments], dim = (0,-1))
-
         masks = []
         if 'hessian' in keep_top_criterion:
-            print(f"using {keep_top} of the hessian")
+            print(f"using {keep_top/len(keep_top_criterion)} of the hessian")
             mask_H = H_norms < torch.quantile(H_norms, 1-keep_top/len(keep_top_criterion))
             mask_H = mask_H.unsqueeze(0).expand(W.shape[0], -1)
             masks.append(mask_H)
         if 'magnitude' in keep_top_criterion:
-            print(f"using {keep_top} of the magnitude")
+            print(f"using {keep_top/len(keep_top_criterion)} of the magnitude")
             mask_norm = weights_norms < torch.quantile(weights_norms, 1-keep_top/len(keep_top_criterion))
             masks.append(mask_norm)
 
-        if len(masks) == 0:
+        if len(masks) == 0 or keep_top == 0.0:
+            print("using all the weights")
             mask = torch.ones_like(weights_norms).bool()
         else:
             mask = masks[0]
-            for mask in masks[1:]:
-                mask = mask & mask
+            for m in masks[1:]:
+                mask = mask & m
+
         # print("mask", torch.sum(mask), "mask total", mask.numel())
     
         # raise ValueError
         #mask of the top 1% of the weights
-        print(mask.shape)
+        # print(mask.shape)
         weights_norms_masked = weights_norms[mask]
         # print(weights_norms_masked.shape)
 
         if k_magnitude_codebook == 0:
-
+            n_bits = W.numel() * np.ceil(np.log2(k_cosine_codebook))/subvector_dim + torch.sum(~mask).item()*(32 + 16*subvector_dim)
             weights_use = weights_reshaped[mask,:]
             H_diag_use = H_diag[mask,:]
             mappings, codebooks = cluster(weights_use, k_cosine_codebook, H_diag_use, n_iter = n_iters, disable_tqdm=True,
@@ -397,183 +400,136 @@ class VectorQuantizerTemp:
 
         else:
 
-            weights_use = weights_reshaped[mask,:]/weights_norms_masked.unsqueeze(-1)
-            H_diag_use = H_diag[mask,:] * weights_norms_masked.unsqueeze(-1)**2
-            #first we get the magnitude codebook
-            magnitude_assignments, magnitude_codebook = cluster(torch.log(weights_norms_masked).unsqueeze(-1), k_magnitude_codebook, 
-                                                                    torch.ones_like(weights_norms_masked).unsqueeze(-1),
-                                                                    n_iter = 1000,
-                                                                    disable_tqdm = False,
-                                                                    device = self.dev)
-
-            #try binning the magnitudes
-            # magnitude_codebook = np.linspace(np.log(weights_norms_masked.min()), np.log(weights_norms_masked.max()), k_magnitude_codebook).reshape(-1,1)
-            # magnitude_assignments = np.argmin(np.abs(np.log(weights_norms_masked.numpy()).reshape(-1,1) - magnitude_codebook.T), axis = 1)
-
-
-
-            codebooks = {}
-            assignments_dict = {}
-            for i in tqdm.tqdm(range(k_magnitude_codebook), miniters = k_magnitude_codebook//10):
-                mask_i = magnitude_assignments == i
-                if torch.sum(mask_i) <= k_cosine_codebook:
-                    codebooks[i] = weights_use[mask_i,:]
-                    assignments_dict[i] = torch.arange(torch.sum(mask_i).item())
-                    continue
-                
-                # print(weights_use[mask_i,:].shape, H_diag_use[mask_i,:].shape)
-                assignments, centriods = cluster(weights_use[mask_i,:], 
-                                                k_cosine_codebook, 
-                                                H_diag_use[mask_i,:], 
-                                                n_iter = 25,
-                                                disable_tqdm = True,
-                                                device = self.dev)
-                codebooks[i] = centriods
-                assignments_dict[i] = assignments
-
-            
-            #gradient descent to optimize the codebooks
-            codebooks_use = {}
-            prev_loss = float('inf')
-            for i in range(k_magnitude_codebook):
-                codebooks_use[i] = codebooks[i].clone().requires_grad_(True)
-
-            for iter in tqdm.tqdm(range(n_iters), miniters = n_iters//10):
-                weights_reconstructued_flat =  torch.zeros_like(weights_reshaped)
-
-                weights_reconstructued_flat[~mask,:] = weights_reshaped[~mask]
-                # print(codebooks_use[0])
-                for i in range(k_magnitude_codebook):
-                    mask_i = magnitude_assignments == i
-                    # assert torch.any(mask_i)
-                    mask_ = torch.zeros_like(mask)
-                    mask_[mask] = mask_i
-                    weights_reconstructued_flat[mask_,:] = torch.clip(codebooks_use[i][assignments_dict[i],:],-1,1) * torch.exp(magnitude_codebook[i])
-                    # if i == 0:
-                    #     print(codebooks_use[i])
-                    #     print(assignments_dict[i])
-                    #     print(codebooks_use[i][assignments_dict[i],:])
-                    #     print(torch.clip(codebooks_use[i][assignments_dict[i],:],-1,1))
-                    #     print(torch.clip(codebooks_use[i][assignments_dict[i],:],-1,1) * torch.exp(magnitude_codebook[i]))
-                    #     print(weights_reconstructued_flat[mask_,:])
-                # weights_reconstructued_flat[mask,:] = centriods[assignments,:] * torch.from_numpy(np.exp(magnitude_codebook[:,0][magnitude_assignments])).reshape(-1,1).float()
-                # print(weights_reconstructued_flat)
-
-                weights_reconstructued = torch.empty_like(W)
-
-                weights_reconstructued[:,row_assignments] = weights_reconstructued_flat.reshape(weights_reconstructued.shape[0], -1, subvector_dim)
-                # print(weights_reconstructued)
-
-                diff = W - weights_reconstructued
-                # print(diff)
-                average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
-                H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff)
-                # print(H_error)
-                # print(f"average error {average_error}, H error {H_error}")
-                H_error.backward()
-                # losses.append(H_error.item())
-                if H_error > prev_loss:
-                    lr = lr * lr_multiple
-                    # print("reducing lr to ", lr)
-                prev_loss = H_error.item()
-                # if iter == 0:
-                #     print("H_error", H_error, "average_error", average_error)
-                if iter < n_iters - 1:
-                    # print("lr", lr)
-                    with torch.no_grad():
-                        for j in range(k_magnitude_codebook):
-                            # print(codebooks_use[i].grad)
-                            # codebooks_use[i] -= lr * codebooks_use[i].grad
-                            codebooks_use[j] -= torch.clip(lr * codebooks_use[j].grad, -clamp_gradients, clamp_gradients)
-                            # codebooks_use[i] = codebooks_use[i].clamp(-1,1)
-                        # raise ValueError
-                        for j in range(k_magnitude_codebook):
-                            codebooks_use[j].grad = None
+            raise ValueError("not supported")
 
         tock = time.time()
         print(round(tock-tick),"H_error", H_error, "average_error", average_error)
         if isinstance(self.layer, transformers.Conv1D):
             weights_reconstructued = weights_reconstructued.t()
         self.layer.weight.data = weights_reconstructued.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+
+        return n_bits, weights_reconstructued.numel()
+        
+    def structured_sparse_quantize(self,
+            subvector_dim:int = 16,
+            k_codebook:int = 256,
+            keep_top_rowise = 0.7,
+            keep_top_colwise = 1,
+            lr:float = 10,
+            lr_multiple:float = 0.9,
+            n_iters:int = 100,
+            clamp_gradients:float = 1e-1):
+        W = self.layer.weight.data.clone()
+        if isinstance(self.layer, nn.Conv2d):
+            W = W.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        W = W.float()
+
+        if hasattr(self, 'quantizer'):
+            raise ValueError("not supported")   
+            if not self.quantizer.ready():
+                self.quantizer.find_params(W, weight=True)
+
+        tick = time.time()
+
+        H = self.H
+        H = H.float()
+        H = torch.clip(H, -1e6, 1e6)
+        del self.H
+        
+        torch.save({'weights': W, 'H': H}, 'test/original_weights_test.pt')
+        
+
+        row_mask = self.create_mask(torch.norm(W, dim = 1), keep_top_rowise)
+        column_mask = self.create_mask(torch.norm(W, dim = 0), keep_top_colwise/2) & self.create_mask(torch.norm(H, dim = 0), keep_top_colwise/2)
+
+        row_mask = self.mask_round(row_mask, subvector_dim)
+        column_mask = self.mask_round(column_mask, subvector_dim)
+
+        mask = row_mask.unsqueeze(1) & column_mask.unsqueeze(0)
+
+
+        encoding_bits = (np.ceil(np.log2(k_codebook)))/subvector_dim * torch.sum(mask).item()
+
+        sparse_bits = 16 * torch.sum(~mask).item()
+
+        total_bits = encoding_bits + sparse_bits
+
+        weights_masked = W[row_mask,:][:,column_mask]
+
+        subvector_assignments = torch.arange(weights_masked.shape[1]).reshape((-1, subvector_dim))
+
+        weights_reshaped = weights_masked[:,subvector_assignments] 
+        #shape of (n, m/d, d)
+
+        H_diag = H[column_mask,column_mask][subvector_assignments]
+        #shape of (n, m/d, d)
+
+
+        mappings, codebooks = cluster(weights_reshaped.reshape(-1,subvector_dim), k_codebook, H_diag.unsqueeze(0).expand(weights_reshaped.shape[0], -1, -1).reshape(-1, subvector_dim), n_iter = n_iters,
+                                      device = self.dev, disable_tqdm=True)
+
+        prev_loss = float('inf')
+        codebooks_use = codebooks.clone().requires_grad_(True)
+        for i in range(n_iters):
+            weights_reconstructed = torch.empty_like(weights_masked)
+            weights_reconstructed[:,subvector_assignments] = codebooks_use[mappings,:].reshape(weights_reconstructed.shape[0], -1, subvector_dim)
+
+
+
+
+            weights_quantized = torch.empty_like(W)
+
+            weights_quantized[mask] = weights_reconstructed.flatten()
+            weights_quantized[~mask] = W[~mask]
+
+            diff = W - weights_quantized
+            average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
+
+            H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff)
+            # print(f"average error {average_error}, H error {H_error}")
+            H_error.backward()
+
+
+            if H_error > prev_loss:
+                lr = lr * lr_multiple
+                print("reducing lr to ", lr)
+            prev_loss = H_error.item()
+
+            if i < n_iters - 1:
+                with torch.no_grad():
+
+                    codebooks_use.grad = torch.clamp(codebooks_use.grad, -clamp_gradients, clamp_gradients)
+                    codebooks_use -= lr * codebooks_use.grad
+                    codebooks_use.grad.zero_()
+
+        tock = time.time()
+        print(round(tock-tick,3),"s","H_error", H_error, "average_error", average_error)
+        if isinstance(self.layer, transformers.Conv1D):
+            weights_quantized = weights_quantized.t()
+        self.layer.weight.data = weights_quantized.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
         # raise ValueError("stop")
+        return total_bits, weights_quantized.numel()
+    
 
-        # raise ValueError
+    @staticmethod
+    def create_mask(data,percent_top):
+        """
+        data: torch.tensor of shape (n)
+        percent_top: float, the percentage of the top values to keep
+        """
 
-        # Losses = torch.zeros(self.rows, device=self.dev)
+        threshold = torch.quantile(data, 1-percent_top/100)
+        return data < threshold
+    
+    @staticmethod
+    def mask_round(mask, d):
 
-        # damp = percdamp * torch.mean(torch.diag(H))
-        # diag = torch.arange(self.columns, device=self.dev)
-        # H[diag, diag] += damp
-        # H = torch.linalg.cholesky(H)
-        # H = torch.cholesky_inverse(H)
-        # H = torch.linalg.cholesky(H, upper=True)
-        # Hinv = H
+        while mask.sum() % d != 0:
+            mask[torch.randint(0, mask.shape[0], (1,))] = True
 
-        # mask = None
-
-        # for i1 in range(0, self.columns, blocksize):
-        #     i2 = min(i1 + blocksize, self.columns)
-        #     count = i2 - i1
-
-        #     W1 = W[:, i1:i2].clone()
-        #     Q1 = torch.zeros_like(W1)
-        #     Err1 = torch.zeros_like(W1)
-        #     Losses1 = torch.zeros_like(W1)
-        #     Hinv1 = Hinv[i1:i2, i1:i2]
-
-        #     if prunen == 0: 
-        #         if mask is not None:
-        #             mask1 = mask[:, i1:i2]
-        #         else:
-        #             tmp = W1 ** 2 / (torch.diag(Hinv1).reshape((1, -1))) ** 2
-        #             thresh = torch.sort(tmp.flatten())[0][int(tmp.numel() * sparsity)]
-        #             mask1 = tmp <= thresh
-        #     else:
-        #         mask1 = torch.zeros_like(W1) == 1
-
-        #     for i in range(count):
-        #         w = W1[:, i]
-        #         d = Hinv1[i, i]
-
-        #         if prunen != 0 and i % prunem == 0:
-        #             tmp = W1[:, i:(i + prunem)] ** 2 / (torch.diag(Hinv1)[i:(i + prunem)].reshape((1, -1))) ** 2
-        #             mask1.scatter_(1, i + torch.topk(tmp, prunen, dim=1, largest=False)[1], True)
-
-        #         q = w.clone()
-        #         q[mask1[:, i]] = 0
-
-        #         if hasattr(self, 'quantizer'):
-        #             q = quantize(
-        #                 q.unsqueeze(1), self.quantizer.scale, self.quantizer.zero, self.quantizer.maxq
-        #             ).flatten()
-
-        #         Q1[:, i] = q
-        #         Losses1[:, i] = (w - q) ** 2 / d ** 2
-
-        #         err1 = (w - q) / d
-        #         W1[:, i:] -= err1.unsqueeze(1).matmul(Hinv1[i, i:].unsqueeze(0))
-        #         Err1[:, i] = err1
-
-        #     W[:, i1:i2] = Q1
-        #     Losses += torch.sum(Losses1, 1) / 2
-
-        #     W[:, i2:] -= Err1.matmul(Hinv[i1:i2, i2:])
-
-        #     if DEBUG:
-        #         self.layer.weight.data[:, :i2] = W[:, :i2]
-        #         self.layer.weight.data[:, i2:] = W[:, i2:]
-        #         print(torch.sum((self.layer(self.inp1) - self.out1) ** 2))
-        #         print(torch.sum(Losses))
-
-        # torch.cuda.synchronize()
-        # print('time %.2f' % (time.time() - tick))
-        # print('error', torch.sum(Losses).item())
-
-        # if isinstance(self.layer, transformers.Conv1D):
-        #     W = W.t()
-        # self.layer.weight.data = W.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
-        # if DEBUG:
-        #     print(torch.sum((self.layer(self.inp1) - self.out1) ** 2))
+        return mask
 
     def free(self):
         if DEBUG:

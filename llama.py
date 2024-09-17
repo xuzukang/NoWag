@@ -7,6 +7,9 @@ import torch.nn as nn
 from vector_quantizer import *
 from modelutils import *
 from quant import *
+import random 
+import numpy as np
+
 
 try:
     import wandb
@@ -77,6 +80,9 @@ def llama_sequential(model, dataloader, dev):
     print("Ready.")
 
     quantizers = {}
+
+    total_bits = 0
+    total_params = 0
     for i in range(len(layers)):
         layer = layers[i].to(dev)
         full = find_layers(layer)
@@ -127,20 +133,37 @@ def llama_sequential(model, dataloader, dev):
                 print(i, name)
                 print("Pruning ...")
                 sparsity = args.sparsity
-                gpts[name].fastquant(
-                    subvector_dim = args.subvector_dim,
-                    k_magnitude_codebook = args.k_magnitude_codebook,
-                    k_cosine_codebook = args.k_cosine_codebook,
-                    keep_top = args.keep_top,
-                    keep_top_criterion = args.keep_top_criterion,
-                    lr = args.lr,
-                    lr_multiple = args.lr_multiple,
-                    n_iters = args.n_iters,
-                    clamp_gradients = args.clamp_gradients
+                if args.structured_sparsity:
+                    print("Structured sparsity")
+                    n_bits, n_params = gpts[name].structured_sparse_quantize(
+                        subvector_dim = args.subvector_dim,
+                        k_codebook = args.k_cosine_codebook,
+                        keep_top_rowise = args.keep_top_rowise,
+                        keep_top_colwise = args.keep_top_colwise,
+                        lr = args.lr,   
+                        lr_multiple = args.lr_multiple,
+                        n_iters = args.n_iters,
+                        clamp_gradients = args.clamp_gradients
                 )
+                else:
+                    n_bits, n_params = gpts[name].fastquant(
+                        subvector_dim = args.subvector_dim,
+                        k_magnitude_codebook = args.k_magnitude_codebook,
+                        k_cosine_codebook = args.k_cosine_codebook,
+                        keep_top = args.keep_top,
+                        keep_top_criterion = args.keep_top_criterion,
+                        lr = args.lr,
+                        lr_multiple = args.lr_multiple,
+                        n_iters = args.n_iters,
+                        clamp_gradients = args.clamp_gradients
+                    )
                 gpts[name].free()
                 free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
                 print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+
+                total_bits += n_bits
+                total_params += n_params
+
                 # return quantizers
         # return quantizers
 
@@ -157,6 +180,8 @@ def llama_sequential(model, dataloader, dev):
 
     model.config.use_cache = use_cache
 
+    print("Total bits:", total_bits, "Total params:", total_params)
+    print("average bits per value:", total_bits / total_params)
     return quantizers
 
 
@@ -269,7 +294,7 @@ if __name__ == "__main__":
         help="Where to extract calibration data from.",
     )
     parser.add_argument(
-        "--seed", type=int, default=0, help="Seed for sampling the calibration data."
+        "--seed", type=int, default=42, help="Seed for sampling the calibration data."
     )
     parser.add_argument(
         "--device", type=str, default="cuda:0", help="Device to run on."
@@ -333,7 +358,7 @@ if __name__ == "__main__":
         "--keep_top", type=float, default=0.01, help="Keep top k subvectors."
     )
     parser.add_argument(
-        "--keep_top_criterion", type=str, default=["magnitude"], help="Keep top criterion.", 
+        "--keep_top_criterion", type=str, default=['magnitude', 'hessian'], help="Keep top criterion.", 
         nargs="+"
     )
     parser.add_argument(
@@ -352,6 +377,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--quantize", action="store_true", help="Whether to quantize the model."
     )
+    parser.add_argument(
+        "--structured_sparsity", action="store_true", help="Whether to use structured sparsity."
+    )
+    parser.add_argument(
+        "--keep_top_rowise", type=float, default=0.7, help="Keep top k rowise."
+    )
+    parser.add_argument(
+        "--keep_top_colwise", type=float, default=1, help="Keep top k colwise."
+    )
 
     args = parser.parse_args()
 
@@ -369,6 +403,10 @@ if __name__ == "__main__":
 
     torch.manual_seed(args.seed)    
     torch.cuda.manual_seed(args.seed)
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+
+    
     if args.quantize:
         tick = time.time()
         n_params = sum(p.numel() for p in model.parameters())

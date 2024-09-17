@@ -1,6 +1,6 @@
 /home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
   warnings.warn(
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.14s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.39it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.28it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.13s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.40it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.29it/s]
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama.LlamaTokenizer'>. If you see this, DO NOT PANIC! This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=True`. This should only be set if you understand what it means, and thouroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
 Token indices sequence length is longer than the specified maximum sequence length for this model (2824491 > 2048). Running this sequence through the model will result in indexing errors
 Starting...
@@ -8,60 +8,70 @@ Ready.
 0 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-85 H_error tensor(5.3247, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4319, device='cuda:6', grad_fn=<DivBackward0>)
-36826 MiB free out of 48676 MiB total
+48 H_error tensor(5.4532, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4318, device='cuda:6', grad_fn=<DivBackward0>)
+43351 MiB free out of 48676 MiB total
 0 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-81 H_error tensor(4.9612, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4226, device='cuda:6', grad_fn=<DivBackward0>)
-37600 MiB free out of 48676 MiB total
+46 H_error tensor(5.5481, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4233, device='cuda:6', grad_fn=<DivBackward0>)
+43351 MiB free out of 48676 MiB total
 0 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-81 H_error tensor(0.2415, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3623, device='cuda:6', grad_fn=<DivBackward0>)
-37666 MiB free out of 48676 MiB total
+45 H_error tensor(0.2403, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3622, device='cuda:6', grad_fn=<DivBackward0>)
+43351 MiB free out of 48676 MiB total
 0 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-82 H_error tensor(0.0405, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4155, device='cuda:6', grad_fn=<DivBackward0>)
-37760 MiB free out of 48676 MiB total
+48 H_error tensor(0.0325, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4163, device='cuda:6', grad_fn=<DivBackward0>)
+43415 MiB free out of 48676 MiB total
 0 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
-198 H_error tensor(3.3207, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3363, device='cuda:6', grad_fn=<DivBackward0>)
-35452 MiB free out of 48676 MiB total
+117 H_error tensor(3.3294, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3362, device='cuda:6', grad_fn=<DivBackward0>)
+43447 MiB free out of 48676 MiB total
 0 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
-199 H_error tensor(2.4462, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3281, device='cuda:6', grad_fn=<DivBackward0>)
-35516 MiB free out of 48676 MiB total
+117 H_error tensor(2.4515, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3278, device='cuda:6', grad_fn=<DivBackward0>)
+43479 MiB free out of 48676 MiB total
 0 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-209 H_error tensor(0.0579, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3358, device='cuda:6', grad_fn=<DivBackward0>)
-35422 MiB free out of 48676 MiB total
+123 H_error tensor(0.0534, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3361, device='cuda:6', grad_fn=<DivBackward0>)
+43625 MiB free out of 48676 MiB total
 1 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-87 H_error tensor(36.9844, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4024, device='cuda:6', grad_fn=<DivBackward0>)
-36572 MiB free out of 48676 MiB total
+47 H_error tensor(42.6353, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4024, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 1 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-81 H_error tensor(59.4105, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4049, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+46 H_error tensor(70.4818, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4059, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 1 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -81,48 +91,60 @@ reducing lr to  0.00020589113209464906
 reducing lr to  0.00018530201888518417
 reducing lr to  0.00016677181699666576
 reducing lr to  0.0001500946352969992
-80 H_error tensor(1.2112, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3582, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+45 H_error tensor(1.1858, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3582, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 1 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-83 H_error tensor(0.1502, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3958, device='cuda:6', grad_fn=<DivBackward0>)
-37490 MiB free out of 48676 MiB total
+49 H_error tensor(0.1554, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3952, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 1 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
-198 H_error tensor(12.9092, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3247, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+117 H_error tensor(12.5882, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3249, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 1 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
-200 H_error tensor(9.6040, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3181, device='cuda:6', grad_fn=<DivBackward0>)
-36300 MiB free out of 48676 MiB total
+117 H_error tensor(9.3916, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3183, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 1 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-209 H_error tensor(0.1368, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3246, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(0.1335, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3246, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 2 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-86 H_error tensor(65.6494, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3632, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(65.3925, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3632, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 2 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
-80 H_error tensor(61.3903, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3698, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+46 H_error tensor(63.0621, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3697, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 2 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -143,64 +165,55 @@ reducing lr to  0.00018530201888518417
 reducing lr to  0.00016677181699666576
 reducing lr to  0.0001500946352969992
 reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-79 H_error tensor(3.1913, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3254, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+45 H_error tensor(3.1114, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3250, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 2 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(0.4926, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3345, device='cuda:6', grad_fn=<DivBackward0>)
-37490 MiB free out of 48676 MiB total
+45 H_error tensor(0.4778, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3340, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 2 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
-196 H_error tensor(31.1908, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+117 H_error tensor(31.7101, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3220, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 2 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
-199 H_error tensor(20.2538, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+117 H_error tensor(19.8996, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3163, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 2 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
 reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-210 H_error tensor(-43.8004, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4162, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(-54.0772, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4451, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 3 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-85 H_error tensor(66.8421, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3504, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(66.9711, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3500, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 3 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(82.0419, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3585, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+46 H_error tensor(82.2599, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3583, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 3 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -228,17 +241,19 @@ reducing lr to  8.862938119652506e-05
 reducing lr to  7.976644307687256e-05
 reducing lr to  7.17897987691853e-05
 reducing lr to  6.461081889226677e-05
-80 H_error tensor(13.0172, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:6', grad_fn=<DivBackward0>)
-37426 MiB free out of 48676 MiB total
+45 H_error tensor(12.9949, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3204, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 3 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(0.7117, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3370, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(0.7359, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3429, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 3 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -248,11 +263,28 @@ reducing lr to  0.00059049
 reducing lr to  0.000531441
 reducing lr to  0.0004782969
 reducing lr to  0.00043046721
-198 H_error tensor(38.0800, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3181, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(39.0326, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3190, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 3 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -281,29 +313,33 @@ reducing lr to  7.976644307687256e-05
 reducing lr to  7.17897987691853e-05
 reducing lr to  6.461081889226677e-05
 reducing lr to  5.81497370030401e-05
-198 H_error tensor(29.8200, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+117 H_error tensor(30.6067, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3143, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 3 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-210 H_error tensor(0.5001, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3179, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(0.4849, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 4 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-84 H_error tensor(93.5802, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3540, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(91.9067, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3539, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 4 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(102.1079, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3587, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+46 H_error tensor(104.7072, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3581, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 4 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -321,17 +357,20 @@ reducing lr to  0.00025418658283290005
 reducing lr to  0.00022876792454961005
 reducing lr to  0.00020589113209464906
 reducing lr to  0.00018530201888518417
-80 H_error tensor(19.2882, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3252, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+reducing lr to  0.00016677181699666576
+45 H_error tensor(18.9904, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3249, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 4 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-78 H_error tensor(1.1043, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3410, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(1.2582, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3484, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 4 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -345,11 +384,15 @@ reducing lr to  0.000387420489
 reducing lr to  0.0003486784401
 reducing lr to  0.00031381059609000004
 reducing lr to  0.00028242953648100003
-196 H_error tensor(58.5114, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3218, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+117 H_error tensor(58.5457, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3226, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 4 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -371,78 +414,49 @@ reducing lr to  0.00016677181699666576
 reducing lr to  0.0001500946352969992
 reducing lr to  0.0001350851717672993
 reducing lr to  0.00012157665459056936
-199 H_error tensor(41.2310, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3150, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+117 H_error tensor(41.3878, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 4 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-210 H_error tensor(0.8709, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(0.8883, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3228, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 5 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-82 H_error tensor(126.4916, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3527, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(67.0557, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4492, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 5 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(142.2684, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3556, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
+46 H_error tensor(124.3741, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3867, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 5 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-reducing lr to  6.461081889226677e-05
-reducing lr to  5.81497370030401e-05
-reducing lr to  5.233476330273609e-05
-reducing lr to  4.7101286972462485e-05
-reducing lr to  4.239115827521624e-05
-reducing lr to  3.8152042447694614e-05
-reducing lr to  3.433683820292515e-05
-reducing lr to  3.090315438263264e-05
-reducing lr to  2.7812838944369376e-05
-reducing lr to  2.503155504993244e-05
-reducing lr to  2.2528399544939195e-05
-reducing lr to  2.0275559590445276e-05
-79 H_error tensor(30.5489, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+45 H_error tensor(-103.1071, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4438, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 5 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(1.2552, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3323, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(1.2270, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3430, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 5 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -454,17 +468,12 @@ reducing lr to  0.0004782969
 reducing lr to  0.00043046721
 reducing lr to  0.000387420489
 reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-197 H_error tensor(73.1017, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3220, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+118 H_error tensor(71.4992, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3228, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 5 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -489,29 +498,33 @@ reducing lr to  0.00012157665459056936
 reducing lr to  0.00010941898913151243
 reducing lr to  9.847709021836118e-05
 reducing lr to  8.862938119652506e-05
-199 H_error tensor(53.1309, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3140, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+117 H_error tensor(51.7908, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 5 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-211 H_error tensor(1.0183, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3185, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+124 H_error tensor(0.9736, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 6 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-82 H_error tensor(121.9841, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3472, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+47 H_error tensor(122.6635, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3479, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 6 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(143.6654, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3513, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
+46 H_error tensor(139.2787, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3508, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 6 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -542,17 +555,23 @@ reducing lr to  6.461081889226677e-05
 reducing lr to  5.81497370030401e-05
 reducing lr to  5.233476330273609e-05
 reducing lr to  4.7101286972462485e-05
-80 H_error tensor(32.8430, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3216, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+45 H_error tensor(32.8053, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3225, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 6 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-78 H_error tensor(2.6745, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3376, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(2.7107, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3450, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 6 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -569,11 +588,13 @@ reducing lr to  0.00028242953648100003
 reducing lr to  0.00025418658283290005
 reducing lr to  0.00022876792454961005
 reducing lr to  0.00020589113209464906
-199 H_error tensor(75.1162, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+reducing lr to  0.00018530201888518417
+117 H_error tensor(74.3069, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3222, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 6 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -597,29 +618,35 @@ reducing lr to  0.0001350851717672993
 reducing lr to  0.00012157665459056936
 reducing lr to  0.00010941898913151243
 reducing lr to  9.847709021836118e-05
-198 H_error tensor(57.2377, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(56.4218, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3150, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 6 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-209 H_error tensor(1.2866, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3196, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(1.3012, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3216, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 7 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-83 H_error tensor(142.4765, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3536, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(140.4431, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3533, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 7 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(149.2507, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3551, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
+46 H_error tensor(140.4526, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3546, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 7 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -658,17 +685,19 @@ reducing lr to  2.7812838944369376e-05
 reducing lr to  2.503155504993244e-05
 reducing lr to  2.2528399544939195e-05
 reducing lr to  2.0275559590445276e-05
-79 H_error tensor(37.5860, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3233, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+45 H_error tensor(36.7743, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3238, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 7 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(2.8486, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3266, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(3.0085, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3325, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 7 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -681,11 +710,13 @@ reducing lr to  0.00043046721
 reducing lr to  0.000387420489
 reducing lr to  0.0003486784401
 reducing lr to  0.00031381059609000004
-199 H_error tensor(84.3986, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3237, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+reducing lr to  0.00028242953648100003
+118 H_error tensor(80.9536, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3245, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 7 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -700,29 +731,39 @@ reducing lr to  0.0003486784401
 reducing lr to  0.00031381059609000004
 reducing lr to  0.00028242953648100003
 reducing lr to  0.00025418658283290005
-199 H_error tensor(65.1838, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3149, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+117 H_error tensor(62.9286, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 7 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-209 H_error tensor(1.6591, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3214, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(1.5645, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3227, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 8 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-82 H_error tensor(158.5695, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3557, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+47 H_error tensor(156.4102, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3562, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 8 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(156.8264, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3557, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
+46 H_error tensor(152.6608, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3555, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 8 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -757,26 +798,37 @@ reducing lr to  4.239115827521624e-05
 reducing lr to  3.8152042447694614e-05
 reducing lr to  3.433683820292515e-05
 reducing lr to  3.090315438263264e-05
-80 H_error tensor(42.3484, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3222, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+reducing lr to  2.7812838944369376e-05
+45 H_error tensor(41.6707, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3222, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 8 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-78 H_error tensor(4.5988, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3255, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(5.2184, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3325, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 8 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
-199 H_error tensor(90.8951, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3257, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+117 H_error tensor(88.0646, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3257, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 8 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -793,29 +845,35 @@ reducing lr to  0.00028242953648100003
 reducing lr to  0.00025418658283290005
 reducing lr to  0.00022876792454961005
 reducing lr to  0.00020589113209464906
-200 H_error tensor(68.8727, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3149, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+117 H_error tensor(66.8005, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3153, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 8 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-211 H_error tensor(2.1902, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3214, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(2.1590, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3245, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 9 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-82 H_error tensor(165.6837, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3558, device='cuda:6', grad_fn=<DivBackward0>)
-36572 MiB free out of 48676 MiB total
+46 H_error tensor(163.4107, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3564, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 9 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(165.3842, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3558, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+46 H_error tensor(161.7921, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3565, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 9 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -840,44 +898,27 @@ reducing lr to  0.00012157665459056936
 reducing lr to  0.00010941898913151243
 reducing lr to  9.847709021836118e-05
 reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-reducing lr to  6.461081889226677e-05
-reducing lr to  5.81497370030401e-05
-reducing lr to  5.233476330273609e-05
-reducing lr to  4.7101286972462485e-05
-reducing lr to  4.239115827521624e-05
-reducing lr to  3.8152042447694614e-05
-reducing lr to  3.433683820292515e-05
-reducing lr to  3.090315438263264e-05
-reducing lr to  2.7812838944369376e-05
-reducing lr to  2.503155504993244e-05
-reducing lr to  2.2528399544939195e-05
-79 H_error tensor(47.6881, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+45 H_error tensor(47.4838, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3226, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 9 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(6.9723, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3268, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(7.1865, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3332, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 9 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-198 H_error tensor(92.6878, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3257, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+117 H_error tensor(90.7357, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3254, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 9 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -892,30 +933,34 @@ reducing lr to  0.0003486784401
 reducing lr to  0.00031381059609000004
 reducing lr to  0.00028242953648100003
 reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-199 H_error tensor(74.0797, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+117 H_error tensor(72.9749, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 9 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-211 H_error tensor(2.5105, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3230, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+124 H_error tensor(2.3826, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3252, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 10 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-82 H_error tensor(167.2137, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3498, device='cuda:6', grad_fn=<DivBackward0>)
-36572 MiB free out of 48676 MiB total
+46 H_error tensor(165.3121, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3498, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 10 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(173.4624, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3524, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+reducing lr to  0.0009000000000000001
+46 H_error tensor(172.3487, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3520, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 10 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -952,29 +997,32 @@ reducing lr to  3.433683820292515e-05
 reducing lr to  3.090315438263264e-05
 reducing lr to  2.7812838944369376e-05
 reducing lr to  2.503155504993244e-05
-reducing lr to  2.2528399544939195e-05
-79 H_error tensor(54.1921, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:6', grad_fn=<DivBackward0>)
-37426 MiB free out of 48676 MiB total
+45 H_error tensor(54.2596, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3218, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 10 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(12.4011, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3285, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(14.3579, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3374, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 10 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
 reducing lr to  0.00059049
-199 H_error tensor(96.7218, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3251, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+reducing lr to  0.000531441
+118 H_error tensor(92.5342, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3248, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 10 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -993,29 +1041,40 @@ reducing lr to  0.00022876792454961005
 reducing lr to  0.00020589113209464906
 reducing lr to  0.00018530201888518417
 reducing lr to  0.00016677181699666576
-200 H_error tensor(81.0243, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(78.3176, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 10 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-210 H_error tensor(2.7564, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(2.6354, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3232, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 11 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(144.4397, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3446, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(145.7186, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3440, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 11 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(157.8574, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3505, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
+45 H_error tensor(158.1669, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3494, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 11 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -1053,24 +1112,27 @@ reducing lr to  3.090315438263264e-05
 reducing lr to  2.7812838944369376e-05
 reducing lr to  2.503155504993244e-05
 reducing lr to  2.2528399544939195e-05
-79 H_error tensor(50.3614, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3210, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
+45 H_error tensor(50.0902, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
 11 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-79 H_error tensor(13.3117, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3221, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
+45 H_error tensor(11.4975, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3231, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
 11 mlp.gate_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
-197 H_error tensor(107.9515, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3294, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+117 H_error tensor(107.6738, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3284, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 11 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -1083,426 +1145,35 @@ reducing lr to  0.00043046721
 reducing lr to  0.000387420489
 reducing lr to  0.0003486784401
 reducing lr to  0.00031381059609000004
-200 H_error tensor(88.3826, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3169, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+117 H_error tensor(89.4680, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
 11 mlp.down_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 2752])
-209 H_error tensor(4.4675, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3239, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
+123 H_error tensor(4.1741, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3246, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
 12 self_attn.q_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-81 H_error tensor(184.9418, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3499, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
+46 H_error tensor(186.1981, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3501, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 12 self_attn.k_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
-80 H_error tensor(197.9394, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3531, device='cuda:6', grad_fn=<DivBackward0>)
-37394 MiB free out of 48676 MiB total
+46 H_error tensor(196.5705, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3525, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
 12 self_attn.v_proj
 Pruning ...
 using 0.0 of the magnitude
-torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-reducing lr to  6.461081889226677e-05
-reducing lr to  5.81497370030401e-05
-reducing lr to  5.233476330273609e-05
-reducing lr to  4.7101286972462485e-05
-79 H_error tensor(64.0238, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3189, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
-12 self_attn.o_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-79 H_error tensor(13.9781, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3211, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
-12 mlp.gate_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-199 H_error tensor(125.7084, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3279, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
-12 mlp.up_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-199 H_error tensor(104.1562, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
-12 mlp.down_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 2752])
-210 H_error tensor(4.5998, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
-13 self_attn.q_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-82 H_error tensor(188.6515, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3483, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
-13 self_attn.k_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-80 H_error tensor(208.6197, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3526, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
-13 self_attn.v_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-reducing lr to  6.461081889226677e-05
-reducing lr to  5.81497370030401e-05
-reducing lr to  5.233476330273609e-05
-reducing lr to  4.7101286972462485e-05
-79 H_error tensor(77.7399, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3198, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
-13 self_attn.o_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-78 H_error tensor(15.1230, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3224, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
-13 mlp.gate_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-198 H_error tensor(133.1055, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3254, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
-13 mlp.up_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-199 H_error tensor(114.6342, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3150, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
-13 mlp.down_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 2752])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-211 H_error tensor(5.1077, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3210, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
-14 self_attn.q_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-82 H_error tensor(194.9163, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3477, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
-14 self_attn.k_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-79 H_error tensor(215.0613, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3517, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
-14 self_attn.v_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-reducing lr to  6.461081889226677e-05
-reducing lr to  5.81497370030401e-05
-reducing lr to  5.233476330273609e-05
-reducing lr to  4.7101286972462485e-05
-reducing lr to  4.239115827521624e-05
-reducing lr to  3.8152042447694614e-05
-79 H_error tensor(76.9868, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3186, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
-14 self_attn.o_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-79 H_error tensor(15.0835, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3188, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
-14 mlp.gate_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-198 H_error tensor(150.0011, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3264, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
-14 mlp.up_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-200 H_error tensor(128.3258, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
-14 mlp.down_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 2752])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-210 H_error tensor(5.9667, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3210, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
-15 self_attn.q_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-82 H_error tensor(199.5505, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3481, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
-15 self_attn.k_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-80 H_error tensor(223.4394, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3542, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
-15 self_attn.v_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-reducing lr to  0.00012157665459056936
-reducing lr to  0.00010941898913151243
-reducing lr to  9.847709021836118e-05
-reducing lr to  8.862938119652506e-05
-reducing lr to  7.976644307687256e-05
-reducing lr to  7.17897987691853e-05
-reducing lr to  6.461081889226677e-05
-reducing lr to  5.81497370030401e-05
-reducing lr to  5.233476330273609e-05
-reducing lr to  4.7101286972462485e-05
-reducing lr to  4.239115827521624e-05
-reducing lr to  3.8152042447694614e-05
-79 H_error tensor(77.3937, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3181, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
-15 self_attn.o_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-79 H_error tensor(18.2684, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3182, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
-15 mlp.gate_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-198 H_error tensor(160.0437, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3246, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
-15 mlp.up_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([11008, 1024])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-reducing lr to  0.000531441
-reducing lr to  0.0004782969
-reducing lr to  0.00043046721
-reducing lr to  0.000387420489
-reducing lr to  0.0003486784401
-reducing lr to  0.00031381059609000004
-reducing lr to  0.00028242953648100003
-reducing lr to  0.00025418658283290005
-reducing lr to  0.00022876792454961005
-reducing lr to  0.00020589113209464906
-reducing lr to  0.00018530201888518417
-reducing lr to  0.00016677181699666576
-reducing lr to  0.0001500946352969992
-reducing lr to  0.0001350851717672993
-199 H_error tensor(139.3804, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
-35440 MiB free out of 48676 MiB total
-15 mlp.down_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 2752])
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
-reducing lr to  0.00059049
-210 H_error tensor(7.3840, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3202, device='cuda:6', grad_fn=<DivBackward0>)
-34926 MiB free out of 48676 MiB total
-16 self_attn.q_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-80 H_error tensor(190.0986, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3428, device='cuda:6', grad_fn=<DivBackward0>)
-36574 MiB free out of 48676 MiB total
-16 self_attn.k_proj
-Pruning ...
-using 0.0 of the magnitude
-torch.Size([4096, 1024])
-79 H_error tensor(223.8788, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3499, device='cuda:6', grad_fn=<DivBackward0>)
-37396 MiB free out of 48676 MiB total
-16 self_attn.v_proj
-Pruning ...
-using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
@@ -1539,28 +1210,2194 @@ reducing lr to  3.433683820292515e-05
 reducing lr to  3.090315438263264e-05
 reducing lr to  2.7812838944369376e-05
 reducing lr to  2.503155504993244e-05
-79 H_error tensor(86.3666, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
-37428 MiB free out of 48676 MiB total
-16 self_attn.o_proj
+45 H_error tensor(64.0052, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+12 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(13.4040, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3235, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+12 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+117 H_error tensor(123.2027, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3277, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+12 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+117 H_error tensor(102.6566, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+12 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(4.3186, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3220, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+13 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(188.3485, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3479, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+13 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(204.6708, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3527, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+13 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
 torch.Size([4096, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
 reducing lr to  0.00059049
-79 H_error tensor(16.0750, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3175, device='cuda:6', grad_fn=<DivBackward0>)
-37492 MiB free out of 48676 MiB total
-16 mlp.gate_proj
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+45 H_error tensor(77.5232, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3200, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+13 self_attn.o_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(15.5495, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3254, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+13 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
-197 H_error tensor(189.4917, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3260, device='cuda:6', grad_fn=<DivBackward0>)
-35376 MiB free out of 48676 MiB total
+117 H_error tensor(132.0676, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3257, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+13 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+117 H_error tensor(114.4045, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3147, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+13 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+124 H_error tensor(4.7871, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+14 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(195.8408, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3485, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+14 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(211.0783, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3522, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+14 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+45 H_error tensor(77.2532, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3188, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+14 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+45 H_error tensor(16.3102, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3211, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+14 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+117 H_error tensor(148.5343, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3257, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+14 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+117 H_error tensor(127.9181, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+14 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(5.5240, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+15 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(193.0537, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3489, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+15 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(207.3172, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3536, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+15 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+45 H_error tensor(76.9880, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3178, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+15 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(20.2297, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3219, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+15 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+118 H_error tensor(157.4529, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3244, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+15 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+117 H_error tensor(138.7280, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+15 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+124 H_error tensor(6.8633, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+16 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(188.6205, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3432, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+16 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(217.2388, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3483, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+16 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+45 H_error tensor(86.5790, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3170, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+16 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+45 H_error tensor(16.7647, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3203, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+16 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+117 H_error tensor(187.6257, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3257, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
 16 mlp.up_proj
 Pruning ...
 using 0.0 of the magnitude
+using all the weights
 torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+117 H_error tensor(158.5836, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+16 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(9.3841, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3218, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+17 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(201.8698, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3446, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+17 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(218.9876, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3503, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+17 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+reducing lr to  2.7812838944369376e-05
+45 H_error tensor(98.4729, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3167, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+17 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(18.7198, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3202, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+17 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+117 H_error tensor(203.5741, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3229, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+17 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+117 H_error tensor(177.0673, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3143, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+17 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(11.2158, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3210, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+18 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(208.3086, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3484, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+18 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(228.2429, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3533, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+18 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+reducing lr to  2.7812838944369376e-05
+45 H_error tensor(102.7759, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+18 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(24.5576, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+18 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+117 H_error tensor(231.6570, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3224, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+18 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(197.0712, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3138, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+18 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(12.9965, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3203, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+19 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(194.9040, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3463, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+19 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(214.8881, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3503, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+19 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+reducing lr to  2.7812838944369376e-05
+45 H_error tensor(112.6410, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3175, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+19 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(33.3309, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3298, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+19 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+118 H_error tensor(250.8197, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+19 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(210.1028, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3136, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+19 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(14.7645, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3211, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+20 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(219.9832, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3430, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+20 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(240.3478, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3465, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+20 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+reducing lr to  2.7812838944369376e-05
+reducing lr to  2.503155504993244e-05
+reducing lr to  2.2528399544939195e-05
+reducing lr to  2.0275559590445276e-05
+reducing lr to  1.8248003631400748e-05
+reducing lr to  1.6423203268260675e-05
+45 H_error tensor(127.9858, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+20 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+45 H_error tensor(24.5799, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+20 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+117 H_error tensor(278.1389, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3214, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+20 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+117 H_error tensor(231.9598, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3137, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+20 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(18.4047, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+21 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(209.8107, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3459, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+21 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(229.5811, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3500, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+21 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+45 H_error tensor(134.4004, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+21 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(54.4417, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3287, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+21 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+117 H_error tensor(300.5013, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3197, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+21 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+117 H_error tensor(251.3430, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3134, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+21 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+123 H_error tensor(22.2860, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3206, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+22 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(229.2985, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3411, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+22 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(252.3678, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3452, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+22 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+45 H_error tensor(143.5401, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3153, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+22 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(72.1568, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3506, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+22 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+117 H_error tensor(306.4237, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3179, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+22 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(265.8144, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3129, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+22 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+123 H_error tensor(22.2847, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3205, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+23 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(228.4633, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3471, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+23 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(262.0973, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3516, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+23 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+reducing lr to  2.7812838944369376e-05
+reducing lr to  2.503155504993244e-05
+reducing lr to  2.2528399544939195e-05
+reducing lr to  2.0275559590445276e-05
+reducing lr to  1.8248003631400748e-05
+45 H_error tensor(161.3958, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3162, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+23 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(107.8912, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3407, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+23 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+117 H_error tensor(328.5527, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3171, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+23 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+117 H_error tensor(286.6620, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3127, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+23 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(24.8795, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3190, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+24 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(246.2847, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3430, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+24 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(275.7311, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3481, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+24 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+45 H_error tensor(182.5007, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+24 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(77.6622, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3382, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+24 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+117 H_error tensor(357.1894, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3177, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+24 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+117 H_error tensor(307.9254, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3123, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+24 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+124 H_error tensor(27.1466, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3191, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+25 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(269.7854, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3374, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+25 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(304.1012, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3421, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+25 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+45 H_error tensor(195.2328, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3162, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+25 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+45 H_error tensor(42.0732, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3314, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+25 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+117 H_error tensor(391.4562, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3186, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+25 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+117 H_error tensor(337.4004, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3125, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+25 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+123 H_error tensor(30.9025, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3189, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+26 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(293.6899, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3368, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+26 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(324.3357, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3409, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+26 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+reducing lr to  3.433683820292515e-05
+reducing lr to  3.090315438263264e-05
+reducing lr to  2.7812838944369376e-05
+reducing lr to  2.503155504993244e-05
+reducing lr to  2.2528399544939195e-05
+45 H_error tensor(227.3135, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+26 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+45 H_error tensor(50.3161, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3307, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+26 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+118 H_error tensor(413.0536, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3190, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+26 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+117 H_error tensor(360.4059, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3124, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+26 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+123 H_error tensor(33.1761, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+27 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(290.0312, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3375, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+27 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(320.4392, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3421, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+27 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+reducing lr to  3.8152042447694614e-05
+45 H_error tensor(237.2571, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+27 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(52.5591, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3439, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+27 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+118 H_error tensor(452.8483, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3214, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+27 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+118 H_error tensor(389.6945, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3133, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+27 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+123 H_error tensor(37.4010, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3208, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+28 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+47 H_error tensor(275.2396, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3446, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+28 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(311.9284, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3502, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+28 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+reducing lr to  4.7101286972462485e-05
+reducing lr to  4.239115827521624e-05
+45 H_error tensor(230.5132, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3171, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+28 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(80.1371, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3380, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+28 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+118 H_error tensor(480.7822, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3232, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+28 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+117 H_error tensor(421.4949, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3147, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+28 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+123 H_error tensor(43.4539, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3256, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+29 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(283.4655, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3417, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+29 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(313.7088, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3461, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+29 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+reducing lr to  5.233476330273609e-05
+45 H_error tensor(257.4430, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3158, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+29 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(116.1270, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3465, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+29 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+117 H_error tensor(495.5561, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3255, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+29 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+117 H_error tensor(431.5395, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3159, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+29 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+124 H_error tensor(49.5253, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3318, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+30 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+46 H_error tensor(266.5182, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3411, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+30 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(321.3969, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3484, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+30 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+reducing lr to  9.847709021836118e-05
+reducing lr to  8.862938119652506e-05
+reducing lr to  7.976644307687256e-05
+reducing lr to  7.17897987691853e-05
+reducing lr to  6.461081889226677e-05
+reducing lr to  5.81497370030401e-05
+45 H_error tensor(233.9880, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3174, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+30 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(133.1929, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3424, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+30 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+117 H_error tensor(498.9011, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3264, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+30 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+117 H_error tensor(472.6962, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3198, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+30 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+123 H_error tensor(265.3427, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3548, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+31 self_attn.q_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+46 H_error tensor(176.7681, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3427, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+31 self_attn.k_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(222.1724, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3531, device='cuda:6', grad_fn=<DivBackward0>)
+43127 MiB free out of 48676 MiB total
+31 self_attn.v_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
+reducing lr to  0.000531441
+reducing lr to  0.0004782969
+reducing lr to  0.00043046721
+reducing lr to  0.000387420489
+reducing lr to  0.0003486784401
+reducing lr to  0.00031381059609000004
+reducing lr to  0.00028242953648100003
+reducing lr to  0.00025418658283290005
+reducing lr to  0.00022876792454961005
+reducing lr to  0.00020589113209464906
+reducing lr to  0.00018530201888518417
+reducing lr to  0.00016677181699666576
+reducing lr to  0.0001500946352969992
+reducing lr to  0.0001350851717672993
+reducing lr to  0.00012157665459056936
+reducing lr to  0.00010941898913151243
+45 H_error tensor(126.2054, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3206, device='cuda:6', grad_fn=<DivBackward0>)
+43159 MiB free out of 48676 MiB total
+31 self_attn.o_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 1024])
+45 H_error tensor(181.9961, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3478, device='cuda:6', grad_fn=<DivBackward0>)
+43191 MiB free out of 48676 MiB total
+31 mlp.gate_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+118 H_error tensor(472.1219, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3368, device='cuda:6', grad_fn=<DivBackward0>)
+43309 MiB free out of 48676 MiB total
+31 mlp.up_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([11008, 1024])
+117 H_error tensor(626.9695, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3333, device='cuda:6', grad_fn=<DivBackward0>)
+43341 MiB free out of 48676 MiB total
+31 mlp.down_proj
+Pruning ...
+using 0.0 of the magnitude
+using all the weights
+torch.Size([4096, 2752])
+124 H_error tensor(-1928.8905, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.5307, device='cuda:6', grad_fn=<DivBackward0>)
+43195 MiB free out of 48676 MiB total
+17580.079472780228
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Token indices sequence length is longer than the specified maximum sequence length for this model (2824491 > 2048). Running this sequence through the model will result in indexing errors
+Dataset: wikitext2
+Evaluating ...
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+Perplexity: 12.339300
