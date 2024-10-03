@@ -11,7 +11,8 @@ def set_seed(seed):
     torch.random.manual_seed(seed)
 
 def get_tokenizer(model):
-    if "llama" in model.lower():
+    print(f"Loading tokenizer for {model}")
+    if "llama" in model.lower() and "llama-3" not in model.lower():
         tokenizer = LlamaTokenizer.from_pretrained(model, use_fast=False)
         # fix for transformer 4.28.0.dev0 compatibility
         if tokenizer.bos_token_id != 1 or tokenizer.eos_token_id != 2:

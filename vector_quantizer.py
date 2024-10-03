@@ -118,123 +118,6 @@ def cluster(X, k, weights, n_iter = 100,
         assignments_old = assignments.clone()
     return assignments, centriods
     
-
-    
-
-
-class VectorQuantizerLayer(nn.Module):
-    def __init__(self, 
-                 original_layer: nn.Linear,
-                 n_quantize : int = 128,
-                 nsamples : int = 128):
-        
-
-        super(VectorQuantizerLayer, self).__init__()
-
-        self.original_weights = original_layer.weight.data
-        # print("original weights", self.original_weights.shape,"dtype", self.original_weights.dtype, "device", self.original_weights.device)
-        self.b = original_layer.bias
-        # self.H = torch.zeros((self.original_weights.shape[1], self.original_weights.shape[1]), 
-        #                      device=self.original_weights.device).float() #will cast to half later
-        
-        self.Input = []
-        self.Output = []
-        self.n_quantize = n_quantize
-        self.nsamples = nsamples
-
-                 
-
-    def add_batch(self, inp):
-        inp = inp.reshape((-1, inp.shape[-1])).float()
-        inp = inp.t()
-        # print(inp.shape)
-        inp = math.sqrt(2 / self.nsamples) * inp.float()
-        self.H += inp.matmul(inp.t())
-        assert torch.all(torch.isfinite(self.H)), f"H is not finite, {self.H}, {self.H[~torch.isfinite(self.H)]}"
-
-    def quantize(self):
-        # assert torch.all(torch.isfinite(self.H)), f"H is not finite, {self.H}, {self.H[~torch.isfinite(self.H)]}"
-
-        #save the original weights, and H
-        torch.save({'weights': self.original_weights, 'bias': self.b,
-                    'Input': self.Input, 'Output': self.Output,
-                    }, 'test/original_weights2.pt')
-        raise ValueError("stop")
-        quantized_vectors,assignments = vector_quantize(self.original_weights
-                                                                  , (self.H/self.H.shape[0]).to(self.original_weights.dtype), self.n_quantize)
-        b = self.b
-        # print("self.bias", self.b)
-        # self.quantized_vectors,self.assignments = vector_quantize(self.original_weights.float()
-        #                                                           , self.H.float(), self.n_quantize)
-
-        # #some more debug code
-        # for i in range(self.original_weights.shape[1]):
-        #     print(self.original_weights[i], "\n", quantized_vectors[:,assignments[i]])
-        #     print()
-        #     break
-
-        # self.quantized_vectors = self.quantized_vectors.to(self.original_weights.dtype)
-
-        #add both as parameters to save but no gradients
-        self.register_buffer('quantized_vectors', quantized_vectors)
-        self.register_buffer('assignments', assignments)
-        self.register_buffer('bias', b)
-        # print("self.bias", self.bias)
-        # print("quantized, to self.quantized_vectors and self.assignments")
-
-
-        #delete the original weights and H
-        del self.original_weights
-        del self.H
-        # del self.b
-
-    def forward(self, x):
-        #calculate the quantized weights
-        #normally what we would do is 
-        #Y = XW^T + b
-        #X is of shape (batch_size, n)
-
-        #W is of shape (n,k)
-        #if we have not quantized the weights
-        if not hasattr(self, 'quantized_vectors'):
-            # self.add_batch(x)
-            y = F.linear(x, self.original_weights, self.b)
-            self.Input.append(x)    
-            self.Output.append(y)
-            raise ValueError("stop")
-            return y
-        
-        # print("original shape", x.shape)
-        original_shape = x.shape
-        quantized_multiplications = torch.einsum('ij,jk->ik', x.reshape(-1, self.quantized_vectors.shape[0]), 
-                                                 self.quantized_vectors[self.assignments]) #shape (batch_size, k)
-        if self.bias is not None:
-            quantized_output = quantized_multiplications[:,self.assignments] + self.bias.unsqueeze(0) #shape (batch_size, n)
-        else:
-            # print(quantized_multiplications.shape)
-            quantized_output = quantized_multiplications[:,self.assignments]
-
-            # print(quantized_output.shape)
-        
-
-        #debug code
-        # quantized_output = quantized_output.reshape(original_shape)
-        # expected_output = F.linear(x, self.original_weights, self.b)
-        
-        # for i in range(x.shape[1]):
-        #     print(quantized_output[0,i], "\n", expected_output[0,i])
-        #     print()
-
-        #     raise ValueError("stop")
-
-
-        return quantized_output.reshape(original_shape)
-
-    def extra_repr(self):
-        return f"quantized to {self.n_quantize} vectors"
-    
-    def __repr__(self):
-        return f"VectorQuantizerLayer(nn.Linear({self.original_weights.shape[1]}, {self.original_weights.shape[0]}, quantized to {self.n_quantize} vectors))"
     
 
 
@@ -280,6 +163,7 @@ class VectorQuantizerTemp:
         lr_multiple:float = 0.9,
         n_iters:int = 100,
         clamp_gradients:float = 1e-1,
+        n_iters_cluster:int = 1
 
     ):
         W = self.layer.weight.data.clone()
@@ -354,21 +238,47 @@ class VectorQuantizerTemp:
             n_bits = W.numel() * np.ceil(np.log2(k_cosine_codebook))/subvector_dim + torch.sum(~mask).item()*(32 + 16*subvector_dim)
             weights_use = weights_reshaped[mask,:]
             H_diag_use = H_diag[mask,:]
-            mappings, codebooks = cluster(weights_use, k_cosine_codebook, H_diag_use, n_iter = n_iters, disable_tqdm=True,
-                                            device = self.dev)
+
+            best_error = float('inf')
+
+            for i in range(n_iters_cluster):
+                mappings, codebooks = cluster(weights_use, k_cosine_codebook, H_diag_use, n_iter = n_iters, disable_tqdm=True,
+                                                device = self.dev)
+                
+                weights_reconstructued_flat =  torch.zeros_like(weights_reshaped)
+
+                weights_reconstructued_flat[~mask,:] = weights_reshaped[~mask]
+
+                weights_reconstructued_flat[mask,:] = codebooks[mappings,:]
+
+
+                weights_reconstructued = torch.empty_like(W)
+
+                weights_reconstructued[:,row_assignments] = weights_reconstructued_flat.reshape(weights_reconstructued.shape[0], -1, subvector_dim)
+                # print(weights_reconstructued)
+
+                diff = W - weights_reconstructued
+                average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
+
+                H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff).item()
+
+                if H_error < best_error:
+                    best_error = H_error
+                    best_codebooks = codebooks.clone()
+                    best_mappings = mappings.clone()
             
             # print("mappings", mappings)
             # print("codebooks", codebooks)
 
             
             prev_loss = float('inf')
-            codebooks_use = codebooks.clone().requires_grad_(True)
+            codebooks_use = best_codebooks.clone().requires_grad_(True)
             for i in range(n_iters):
                 weights_reconstructued_flat =  torch.zeros_like(weights_reshaped)
 
                 weights_reconstructued_flat[~mask,:] = weights_reshaped[~mask]
 
-                weights_reconstructued_flat[mask,:] = codebooks_use[mappings,:]
+                weights_reconstructued_flat[mask,:] = codebooks_use[best_mappings,:]
 
 
                 weights_reconstructued = torch.empty_like(W)
@@ -512,6 +422,140 @@ class VectorQuantizerTemp:
         # raise ValueError("stop")
         return total_bits, weights_quantized.numel()
     
+    def normalized_clustering(self,
+            subvector_dim:int = 16,
+            k_codebook:int = 256,
+            keep_top_rowise = 0.7,
+            keep_top_colwise = 1,
+            lr:float = 10,
+            lr_multiple:float = 0.9,
+            n_iters:int = 100,
+            clamp_gradients:float = 1e-1,
+            eps:float = 1e-4,
+            patience:int = 10):
+        
+        W = self.layer.weight.data.clone()
+        if isinstance(self.layer, nn.Conv2d):
+            W = W.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        W = W.float()
+
+        if hasattr(self, 'quantizer'):
+            raise ValueError("not supported")   
+            if not self.quantizer.ready():
+                self.quantizer.find_params(W, weight=True)
+
+        tick = time.time()
+
+        H = self.H
+        H = H.float()
+        H = torch.clip(H, -1e6, 1e6)
+        del self.H
+        
+        # torch.save({'weights': W, 'H': H}, 'test/original_weights_test.pt')
+        
+        if keep_top_rowise == 0.0:
+            print("using all the rows")
+            row_mask = torch.ones(W.shape[0], device = W.device).bool()
+        else:
+            row_mask = self.create_mask(torch.norm(W, dim = 1), keep_top_rowise)
+            row_mask = self.mask_round(row_mask, subvector_dim)
+
+
+        if keep_top_colwise == 0.0:
+            print("using all the columns")
+            column_mask = torch.ones(W.shape[1], device = W.device).bool()
+        else:
+            column_mask = self.create_mask(torch.norm(W, dim = 0), keep_top_colwise/2) & self.create_mask(torch.norm(H, dim = 0), keep_top_colwise/2)
+            column_mask = self.mask_round(column_mask, subvector_dim)
+
+        mask = row_mask.unsqueeze(1) & column_mask.unsqueeze(0)
+
+
+        weights_norms_rowwise = torch.norm(W, dim = 0)
+        weights_normalized = W / weights_norms_rowwise.unsqueeze(0)
+        weights_norms_columnwise = torch.norm(weights_normalized, dim = 1)
+        weights_normalized = weights_normalized / weights_norms_columnwise.unsqueeze(1)
+
+        denormalize_matrix = weights_norms_rowwise.unsqueeze(0) * weights_norms_columnwise.unsqueeze(1)
+
+
+
+        encoding_bits = (np.ceil(np.log2(k_codebook)))/subvector_dim * W.numel()
+
+        sparse_bits = 16 * torch.sum(~mask).item()
+        codebook_bits = 16*k_codebook*subvector_dim
+
+        normalize_bits = 16*(weights_norms_rowwise.numel() + weights_norms_columnwise.numel())
+
+        total_bits = encoding_bits + sparse_bits + codebook_bits + normalize_bits
+
+        
+        subvector_assignments = torch.arange(weights_normalized.shape[1]).reshape((-1, subvector_dim))
+
+        weights_reshaped = weights_normalized[:,subvector_assignments] 
+        #shape of (n, m/d, d)
+
+        H_diag = H[column_mask,column_mask][subvector_assignments]
+        #shape of (n, m/d, d)
+
+
+        mappings, codebooks = cluster(weights_reshaped.reshape(-1,subvector_dim), k_codebook, 
+                                      (H_diag.unsqueeze(0).expand(weights_reshaped.shape[0], -1, -1) * denormalize_matrix[:,subvector_assignments]).reshape(-1, subvector_dim), 
+                                      n_iter = n_iters,
+                                      device = self.dev, disable_tqdm=True)
+
+        prev_loss = float('inf')
+        codebooks_use = codebooks.clone().requires_grad_(True)
+
+        inital_patience = patience
+        for i in range(n_iters):
+
+            
+
+            weights_quantized = torch.empty_like(W)
+            weights_quantized[:,subvector_assignments] = codebooks_use[mappings,:].reshape(weights_quantized.shape[0], -1, subvector_dim)
+            weights_quantized *= denormalize_matrix
+            weights_quantized[~mask] = W[~mask]
+
+            diff = W - weights_quantized
+            average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
+
+            H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff)
+            # print(f"average error {average_error}, H error {H_error}")
+            H_error.backward()
+
+
+            if H_error > prev_loss:
+                lr = lr * lr_multiple
+                print("reducing lr to ", lr)
+            prev_loss = H_error.item()
+
+            if prev_loss - H_error < eps:
+                patience -= 1
+                if patience == 0:
+                    print("stopped after", i, "iterations")
+                    break
+            else:
+                patience = inital_patience
+    
+            if i < n_iters - 1:
+                with torch.no_grad():
+
+                    codebooks_use.grad = torch.clamp(codebooks_use.grad, -clamp_gradients, clamp_gradients)
+                    codebooks_use -= lr * codebooks_use.grad
+                    codebooks_use.grad.zero_()
+
+        tock = time.time()
+        print(round(tock-tick,3),"s","H_error", H_error, "average_error", average_error)
+        if isinstance(self.layer, transformers.Conv1D):
+            weights_quantized = weights_quantized.t()
+        self.layer.weight.data = weights_quantized.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        # raise ValueError("stop")
+        return total_bits, weights_quantized.numel()
+    
+    
 
     @staticmethod
     def create_mask(data,percent_top):
@@ -524,10 +568,20 @@ class VectorQuantizerTemp:
         return data < threshold
     
     @staticmethod
-    def mask_round(mask, d):
+    def mask_round(mask, d, round_up = True):
 
+        indexs = torch.arange(mask.shape[0], device = mask.device)
+        if round_up:
+            indexs = indexs[~mask]
+        else:
+            indexs = indexs[mask]
+
+        indexs = indexs[torch.randperm(indexs.shape[0])]
+        i = 0
         while mask.sum() % d != 0:
-            mask[torch.randint(0, mask.shape[0], (1,))] = True
+            
+            mask[indexs[i]] = ~mask[indexs[i]]
+            i += 1
 
         return mask
 

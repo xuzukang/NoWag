@@ -9,6 +9,7 @@ from modelutils import *
 from quant import *
 import random 
 import numpy as np
+import fine_tune
 
 
 try:
@@ -28,6 +29,7 @@ def get_llama(model):
     from transformers import LlamaForCausalLM
     model = LlamaForCausalLM.from_pretrained(model, torch_dtype='auto')
     model.seqlen = 2048
+    print("Model loaded.", model)
     return model
 
 
@@ -85,6 +87,34 @@ def llama_sequential(model, dataloader, dev):
     total_params = 0
     for i in range(len(layers)):
         layer = layers[i].to(dev)
+        
+        if args.fine_tune:
+            if i > 0:
+                with torch.no_grad():
+                    for j in range(args.nsamples):
+                        layers_target_output[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+                    # layers_target_output = layer(layers_target_output, attention_mask=attention_mask)
+                
+                layer = fine_tune.finetune_module(layer, inps, layers_target_output, lora=args.lora_fine_tune, lora_kwargs={
+                                            "rank": args.lora_rank, "alpha": args.lora_alpha}, n_iters=args.fine_tune_n_iters,
+                                            lambda_regul=0.1)
+                
+                # return 
+                    
+            
+            else:
+                with torch.no_grad():
+                    print("initial layer")
+                    print(inps.shape)
+                    print(inps.shape)
+                    layers_target_output = torch.zeros_like(inps)
+                    for j in range(args.nsamples):
+                        layers_target_output[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+                    print(layers_target_output.shape)   
+        # else:
+        #     if i > 0:
+        #         return
+            
         full = find_layers(layer)
 
         if args.true_sequential:
@@ -138,13 +168,26 @@ def llama_sequential(model, dataloader, dev):
                     n_bits, n_params = gpts[name].structured_sparse_quantize(
                         subvector_dim = args.subvector_dim,
                         k_codebook = args.k_cosine_codebook,
-                        keep_top_rowise = args.keep_top_rowise,
-                        keep_top_colwise = args.keep_top_colwise,
+                        keep_top_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
+                        keep_top_colwise = args.keep_top_colwise if args.keep_top != 0 else 0,
                         lr = args.lr,   
                         lr_multiple = args.lr_multiple,
                         n_iters = args.n_iters,
                         clamp_gradients = args.clamp_gradients
                 )
+                    
+                elif args.normalized_clustering:
+                    print("Normalized clustering")
+                    n_bits, n_params = gpts[name].normalized_clustering(
+                        subvector_dim = args.subvector_dim,
+                        k_codebook = args.k_cosine_codebook,
+                        keep_top_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
+                        keep_top_colwise = args.keep_top_colwise if args.keep_top != 0 else 0,
+                        lr = args.lr,
+                        lr_multiple = args.lr_multiple,
+                        n_iters = args.n_iters,
+                        clamp_gradients = args.clamp_gradients
+                    )
                 else:
                     n_bits, n_params = gpts[name].fastquant(
                         subvector_dim = args.subvector_dim,
@@ -294,7 +337,7 @@ if __name__ == "__main__":
         help="Where to extract calibration data from.",
     )
     parser.add_argument(
-        "--seed", type=int, default=42, help="Seed for sampling the calibration data."
+        "--seed", type=int, default=0, help="Seed for sampling the calibration data."
     )
     parser.add_argument(
         "--device", type=str, default="cuda:0", help="Device to run on."
@@ -381,10 +424,29 @@ if __name__ == "__main__":
         "--structured_sparsity", action="store_true", help="Whether to use structured sparsity."
     )
     parser.add_argument(
-        "--keep_top_rowise", type=float, default=0.7, help="Keep top k rowise."
+        "--keep_top_rowise", type=float, default=0.45, help="Keep top k rowise."
     )
     parser.add_argument(
-        "--keep_top_colwise", type=float, default=1, help="Keep top k colwise."
+        "--keep_top_colwise", type=float, default=0.9, help="Keep top k colwise."
+    )
+    parser.add_argument(
+        "--fine_tune", action="store_true", help="Whether to fine tune the model."
+    )
+    parser.add_argument(
+        "--lora_fine_tune", action="store_true", help="Whether to use LoRA for fine tuning."
+    )
+    parser.add_argument(
+        "--lora_rank", type=int, default=1, help="Rank for LoRA."
+    )
+    parser.add_argument(
+        "--lora_alpha", type=float, default=0.1, help="Alpha for LoRA."
+    )
+    parser.add_argument(
+        "--fine_tune_n_iters", type=int, default=10, help="Number of iterations for fine tuning."
+    )
+    
+    parser.add_argument(
+        "--normalized_clustering", action="store_true", help="Whether to use normalized clustering."
     )
 
     args = parser.parse_args()
