@@ -1,6 +1,6 @@
 /home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
   warnings.warn(
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.43it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.32it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.32it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.20it/s]
 Model loaded. LlamaForCausalLM(
   (model): LlamaModel(
     (embed_tokens): Embedding(32000, 4096, padding_idx=0)
@@ -32,40 +32,3 @@ You are using the default legacy behaviour of the <class 'transformers.models.ll
 Token indices sequence length is longer than the specified maximum sequence length for this model (2824491 > 2048). Running this sequence through the model will result in indexing errors
 Starting...
 Ready.
-0 self_attn.q_proj
-Pruning ...
-Normalized clustering
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [108,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [109,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [110,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [111,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [112,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [113,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [114,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [115,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [116,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [117,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [118,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [119,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [120,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [121,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [122,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [123,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [124,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [125,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [126,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-../aten/src/ATen/native/cuda/IndexKernel.cu:92: operator(): block: [7,0,0], thread: [127,0,0] Assertion `-sizes[i] <= index && index < sizes[i] && "index out of bounds"` failed.
-Traceback (most recent call last):
-  File "/home/lliu/huffman/llama.py", line 475, in <module>
-    llama_sequential(model, dataloader, args.device)
-  File "/home/lliu/huffman/llama.py", line 181, in llama_sequential
-    n_bits, n_params = gpts[name].normalized_clustering(
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/huffman/vector_quantizer.py", line 505, in normalized_clustering
-    (H_diag.unsqueeze(0).expand(weights_reshaped.shape[0], -1, -1) * denormalize_matrix[:,subvector_assignments]).reshape(-1, subvector_dim), 
-                                                                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: CUDA error: device-side assert triggered
-CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
-For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
-Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
-

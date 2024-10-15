@@ -1,0 +1,102 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.60s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.06s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.14s/it]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+Ready.
+0 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+146.03952026367188 0.3526763916015625
+140.9071502685547 0.35293859243392944
+138.32473754882812 0.3531215786933899
+139.9994659423828 0.35328415036201477
+reducing lr to  0.0009000000000000001
+134.08160400390625 0.35340845584869385
+134.87950134277344 0.35348406434059143
+reducing lr to  0.0008100000000000001
+129.2135467529297 0.35364776849746704
+129.549072265625 0.3537714183330536
+reducing lr to  0.000729
+124.14443969726562 0.3539436161518097
+121.71842956542969 0.35413578152656555
+117.82881164550781 0.35437580943107605
+114.0196533203125 0.3546290695667267
+108.9610595703125 0.35497042536735535
+102.67857360839844 0.35531073808670044
+94.90406799316406 0.35572174191474915
+84.10779571533203 0.35618430376052856
+70.69660949707031 0.35678625106811523
+55.226287841796875 0.3574434816837311
+37.875064849853516 0.3581927716732025
+17.780471801757812 0.3589775562286377
+-5.369655609130859 0.3598106801509857
+-32.23155212402344 0.3607032299041748
+-62.90107345581055 0.3616621792316437
+-97.43124389648438 0.3627100884914398
+-135.84909057617188 0.3638486862182617
+-178.1698455810547 0.3650670051574707
+-224.39796447753906 0.3663756549358368
+-274.5672607421875 0.3677714467048645
+-328.66815185546875 0.3692527115345001
+-386.6895751953125 0.3708154261112213
+-448.66094970703125 0.3724561333656311
+-514.5875854492188 0.3741731643676758
+-584.48193359375 0.37596526741981506
+-658.3681640625 0.3778226673603058
+-736.2630615234375 0.37974509596824646
+-818.154052734375 0.3817349672317505
+-904.063720703125 0.38379335403442383
+-993.9939575195312 0.38589778542518616
+-1087.962158203125 0.38806721568107605
+-1185.9625244140625 0.39029544591903687
+-1287.997314453125 0.39258524775505066
+-1394.048583984375 0.39492496848106384
+-1504.17578125 0.3973262906074524
+-1618.351806640625 0.3997853100299835
+-1736.576904296875 0.40229031443595886
+-1858.85400390625 0.40484222769737244
+-1985.187255859375 0.40744879841804504
+-2115.571044921875 0.4101085960865021
+-2250.02001953125 0.41282200813293457
+-2388.52294921875 0.41558659076690674
+stopped after 49 iterations
+41.387 s H_error tensor(-2388.5229, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4156, device='cuda:6', grad_fn=<DivBackward0>)
+Traceback (most recent call last):
+  File "/home/lliu/huffman/llama.py", line 567, in <module>
+    llama_sequential(model, dataloader, args.device)
+  File "/home/lliu/huffman/llama.py", line 187, in llama_sequential
+    n_bits, n_params = gpts[name].normalized_clustering(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/huffman/vector_quantizer.py", line 569, in normalized_clustering
+    raise ValueError("stop")
+ValueError: stop

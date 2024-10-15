@@ -1,0 +1,138 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.18s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.36it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.25it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+Ready.
+0 self_attn.q_proj
+Pruning ...
+Low rank
+using low rank =  256
+row mask =  4075 column mask =  4055
+row_mask.shape =  torch.Size([4096]) column_mask.shape =  torch.Size([4096])
+i 0 H_error =  142.28421020507812
+i 50 H_error =  3.675889730453491
+i 100 H_error =  2.2939281463623047
+i 150 H_error =  1.9269310235977173
+i 200 H_error =  1.7437901496887207
+i 250 H_error =  1.63274085521698
+i 300 H_error =  1.556721568107605
+i 350 H_error =  1.5259352922439575
+i 400 H_error =  1.5224016904830933
+i 450 H_error =  1.52238130569458
+LoRA finished
+Converged in 485 iterations final H_error = 1.52238130569458
+skipping quantization
+total time taken 16.07 s
+34950 MiB free out of 48676 MiB total
+0 self_attn.k_proj
+Pruning ...
+Low rank
+using low rank =  256
+row mask =  4075 column mask =  4055
+row_mask.shape =  torch.Size([4096]) column_mask.shape =  torch.Size([4096])
+i 0 H_error =  115.01919555664062
+i 50 H_error =  3.524268627166748
+i 100 H_error =  2.3801519870758057
+i 150 H_error =  2.011899471282959
+i 200 H_error =  1.8158559799194336
+i 250 H_error =  1.708732008934021
+i 300 H_error =  1.6345478296279907
+i 350 H_error =  1.6027237176895142
+i 400 H_error =  1.5992357730865479
+i 450 H_error =  1.599214792251587
+LoRA finished
+Converged in 471 iterations final H_error = 1.599214792251587
+skipping quantization
+total time taken 13.869 s
+34982 MiB free out of 48676 MiB total
+0 self_attn.v_proj
+Pruning ...
+Low rank
+using low rank =  256
+row mask =  4075 column mask =  4055
+row_mask.shape =  torch.Size([4096]) column_mask.shape =  torch.Size([4096])
+i 0 H_error =  72.18942260742188
+i 50 H_error =  12.710346221923828
+i 100 H_error =  10.911825180053711
+i 150 H_error =  10.625696182250977
+i 200 H_error =  10.518915176391602
+i 250 H_error =  10.462730407714844
+i 300 H_error =  10.451866149902344
+i 350 H_error =  10.451745986938477
+LoRA finished
+Converged in 381 iterations final H_error = 10.45174503326416
+skipping quantization
+total time taken 11.714 s
+35046 MiB free out of 48676 MiB total
+0 self_attn.o_proj
+Pruning ...
+Low rank
+using low rank =  256
+row mask =  4075 column mask =  4055
+row_mask.shape =  torch.Size([4096]) column_mask.shape =  torch.Size([4096])
+i 0 H_error =  4.005413055419922
+i 50 H_error =  0.35689637064933777
+i 100 H_error =  0.2040615826845169
+i 150 H_error =  0.14798790216445923
+i 200 H_error =  0.1438499540090561
+i 250 H_error =  0.14382189512252808
+LoRA finished
+Converged in 276 iterations final H_error = 0.1438218057155609
+skipping quantization
+total time taken 9.382 s
+35046 MiB free out of 48676 MiB total
+0 mlp.gate_proj
+Pruning ...
+Low rank
+using low rank =  472
+row mask =  10952 column mask =  4055
+row_mask.shape =  torch.Size([11008]) column_mask.shape =  torch.Size([4096])
+i 0 H_error =  1056.66845703125
+i 50 H_error =  619.0615844726562
+i 100 H_error =  603.9950561523438
+i 150 H_error =  601.1066284179688
+i 200 H_error =  599.9966430664062
+Traceback (most recent call last):
+  File "/home/lliu/huffman/llama.py", line 501, in <module>
+    llama_sequential(model, dataloader, args.device)
+  File "/home/lliu/huffman/llama.py", line 196, in llama_sequential
+    n_bits, n_params = gpts[name].low_rank(
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/huffman/vector_quantizer.py", line 629, in low_rank
+    weights_reconstructed, total_bits = lora_quantizer.low_rank_and_quantize(W, H, low_rank_frac = low_rank_frac,
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/huffman/low_rank_and_vector.py", line 149, in low_rank_and_quantize
+    H_error.backward()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/_tensor.py", line 492, in backward
+    torch.autograd.backward(
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/autograd/__init__.py", line 251, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

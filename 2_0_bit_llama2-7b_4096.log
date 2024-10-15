@@ -1,6 +1,6 @@
 /home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
   warnings.warn(
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.24it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.15it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.00s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.52it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.41it/s]
 Model loaded. LlamaForCausalLM(
   (model): LlamaModel(
     (embed_tokens): Embedding(32000, 4096)
@@ -27,6 +27,7 @@ Model loaded. LlamaForCausalLM(
   )
   (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
 )
+4096
 Loading tokenizer for meta-llama/Llama-2-7b-hf
 Starting...
 Ready.
@@ -38,14 +39,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 19.399986743927002 s
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
+finished clustering in 20.26126742362976 s
 stopped after 9 iterations
-19.739 s H_error tensor(0.7198, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3513, device='cuda:7', grad_fn=<DivBackward0>)
-43349 MiB free out of 48676 MiB total
+20.602 s H_error tensor(1.5280, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3511, device='cuda:6', grad_fn=<DivBackward0>)
+38217 MiB free out of 48676 MiB total
 0 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -54,14 +51,14 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.058751583099365 s
+finished clustering in 18.30710530281067 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
 stopped after 9 iterations
-18.355 s H_error tensor(0.5844, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3484, device='cuda:7', grad_fn=<DivBackward0>)
-43349 MiB free out of 48676 MiB total
+18.605 s H_error tensor(1.1719, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3480, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 0 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -70,10 +67,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.96683955192566 s
+finished clustering in 18.15276050567627 s
 stopped after 9 iterations
-18.253 s H_error tensor(0.0383, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3767, device='cuda:7', grad_fn=<DivBackward0>)
-43413 MiB free out of 48676 MiB total
+18.442 s H_error tensor(0.0746, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3774, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 0 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -82,10 +79,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.947258710861206 s
+finished clustering in 18.019345998764038 s
 stopped after 9 iterations
-18.226 s H_error tensor(0.0053, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3573, device='cuda:7', grad_fn=<DivBackward0>)
-43445 MiB free out of 48676 MiB total
+18.301 s H_error tensor(0.0107, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3606, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 0 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -94,10 +91,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.92110466957092 s
+finished clustering in 45.408902645111084 s
 stopped after 9 iterations
-45.815 s H_error tensor(1.8678, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3237, device='cuda:7', grad_fn=<DivBackward0>)
-43391 MiB free out of 48676 MiB total
+46.324 s H_error tensor(3.6926, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3240, device='cuda:6', grad_fn=<DivBackward0>)
+38355 MiB free out of 48676 MiB total
 0 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -106,10 +103,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.83451962471008 s
+finished clustering in 45.50480818748474 s
 stopped after 9 iterations
-45.759 s H_error tensor(1.6773, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3239, device='cuda:7', grad_fn=<DivBackward0>)
-43337 MiB free out of 48676 MiB total
+46.433 s H_error tensor(3.3534, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3243, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 0 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -118,10 +115,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.71183252334595 s
+finished clustering in 45.3560471534729 s
 stopped after 9 iterations
-46.113 s H_error tensor(0.0054, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3382, device='cuda:7', grad_fn=<DivBackward0>)
-43311 MiB free out of 48676 MiB total
+46.8 s H_error tensor(0.0106, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3383, device='cuda:6', grad_fn=<DivBackward0>)
+38619 MiB free out of 48676 MiB total
 1 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -130,14 +127,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.50467848777771 s
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
+finished clustering in 19.406500816345215 s
 stopped after 9 iterations
-18.797 s H_error tensor(19.0690, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3778, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.701 s H_error tensor(-12.5118, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3788, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 1 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -146,14 +139,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.812543869018555 s
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
-reducing lr to  0.0006561000000000001
+finished clustering in 18.09485936164856 s
 stopped after 9 iterations
-18.114 s H_error tensor(21.7485, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3721, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.398 s H_error tensor(-7.0660, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3736, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 1 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -162,10 +151,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.83520197868347 s
+finished clustering in 18.167881727218628 s
 stopped after 9 iterations
-18.124 s H_error tensor(0.3860, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3778, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.464 s H_error tensor(0.7474, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3803, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 1 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -174,10 +163,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.82764434814453 s
+finished clustering in 18.117066621780396 s
 stopped after 9 iterations
-18.123 s H_error tensor(0.0406, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3306, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.42 s H_error tensor(0.0783, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3323, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 1 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -186,10 +175,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.77982020378113 s
+finished clustering in 45.6567645072937 s
 stopped after 9 iterations
-45.67 s H_error tensor(7.5613, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3191, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.57 s H_error tensor(15.0657, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3192, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 1 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -198,10 +187,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.853803873062134 s
+finished clustering in 45.53811049461365 s
 stopped after 9 iterations
-45.758 s H_error tensor(6.4377, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.456 s H_error tensor(12.8300, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 1 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -210,10 +199,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.589311361312866 s
+finished clustering in 45.12855935096741 s
 stopped after 9 iterations
-45.989 s H_error tensor(-5.1745, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3373, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.571 s H_error tensor(-5.4364, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3361, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 2 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -222,10 +211,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.52659273147583 s
+finished clustering in 19.567306518554688 s
 stopped after 9 iterations
-18.827 s H_error tensor(29.8697, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3350, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.878 s H_error tensor(62.7048, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3377, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 2 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -234,10 +223,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.792893409729004 s
+finished clustering in 18.115264892578125 s
 stopped after 9 iterations
-18.092 s H_error tensor(35.3797, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3373, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.418 s H_error tensor(72.7565, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3398, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 2 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -246,10 +235,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.81141233444214 s
+finished clustering in 18.069515466690063 s
 stopped after 9 iterations
-18.106 s H_error tensor(6.4965, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3279, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.376 s H_error tensor(13.1123, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3295, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 2 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -258,10 +247,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.82095217704773 s
+finished clustering in 18.071635961532593 s
 stopped after 9 iterations
-18.112 s H_error tensor(0.0935, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3237, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.364 s H_error tensor(0.1908, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3248, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 2 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -270,10 +259,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.79629850387573 s
+finished clustering in 45.64060568809509 s
 stopped after 9 iterations
-45.687 s H_error tensor(16.8947, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3162, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.55 s H_error tensor(33.5539, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3163, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 2 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -282,12 +271,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.72706365585327 s
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
+finished clustering in 45.299805641174316 s
 stopped after 9 iterations
-45.61 s H_error tensor(14.0887, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3144, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.201 s H_error tensor(28.2479, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 2 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -296,10 +283,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.60219645500183 s
+finished clustering in 45.177741050720215 s
 stopped after 9 iterations
-45.992 s H_error tensor(0.0849, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3169, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.609 s H_error tensor(0.1707, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3170, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 3 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -308,10 +295,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.534844636917114 s
+finished clustering in 19.469011306762695 s
 stopped after 9 iterations
-18.823 s H_error tensor(69.6106, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3297, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.762 s H_error tensor(157.7913, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3340, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 3 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -320,10 +307,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.85533905029297 s
+finished clustering in 18.055147171020508 s
 stopped after 9 iterations
-18.165 s H_error tensor(80.2587, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3307, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.357 s H_error tensor(178.4360, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3363, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 3 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -332,10 +319,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.791712522506714 s
+finished clustering in 18.231969594955444 s
 stopped after 9 iterations
-18.083 s H_error tensor(17.5201, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3233, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.533 s H_error tensor(36.4291, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3269, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 3 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -344,10 +331,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.7835795879364 s
+finished clustering in 17.99411177635193 s
 stopped after 9 iterations
-18.074 s H_error tensor(0.1724, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3216, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.289 s H_error tensor(0.3130, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3239, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 3 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -356,10 +343,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.71936917304993 s
+finished clustering in 45.51659154891968 s
 stopped after 9 iterations
-45.611 s H_error tensor(26.5055, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3149, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.423 s H_error tensor(52.3619, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 3 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -368,14 +355,14 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.882802963256836 s
+finished clustering in 45.42090153694153 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
 stopped after 9 iterations
-45.778 s H_error tensor(22.0905, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3143, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.342 s H_error tensor(43.8045, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3143, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 3 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -384,10 +371,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.545523166656494 s
+finished clustering in 45.373384952545166 s
 stopped after 9 iterations
-45.945 s H_error tensor(0.1470, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.813 s H_error tensor(0.2859, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 4 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -396,10 +383,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.527148723602295 s
+finished clustering in 19.53839612007141 s
 stopped after 9 iterations
-18.818 s H_error tensor(66.4391, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3285, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.829 s H_error tensor(149.2331, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3316, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 4 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -408,10 +395,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.829548358917236 s
+finished clustering in 18.087160348892212 s
 stopped after 9 iterations
-18.127 s H_error tensor(73.9267, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3293, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.384 s H_error tensor(168.6625, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3329, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 4 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -420,10 +407,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.800783157348633 s
+finished clustering in 18.01305842399597 s
 stopped after 9 iterations
-18.088 s H_error tensor(17.2426, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3216, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.307 s H_error tensor(35.6264, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3237, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 4 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -432,10 +419,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.818182468414307 s
+finished clustering in 18.011980295181274 s
 stopped after 9 iterations
-18.105 s H_error tensor(0.2652, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3201, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.303 s H_error tensor(0.5245, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3218, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 4 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -444,11 +431,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.74892282485962 s
-reducing lr to  0.0009000000000000001
+finished clustering in 45.41540598869324 s
 stopped after 9 iterations
-45.64 s H_error tensor(39.7186, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.341 s H_error tensor(79.3431, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 4 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -457,13 +443,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.86300802230835 s
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
-reducing lr to  0.000729
+finished clustering in 45.356260776519775 s
 stopped after 9 iterations
-45.748 s H_error tensor(31.5750, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3159, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.261 s H_error tensor(63.2725, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 4 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -472,10 +455,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.659695863723755 s
+finished clustering in 45.20305800437927 s
 stopped after 9 iterations
-46.049 s H_error tensor(0.2849, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3202, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.63 s H_error tensor(0.5594, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3204, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 5 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -484,10 +467,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.555795431137085 s
+finished clustering in 19.80643367767334 s
 stopped after 9 iterations
-18.848 s H_error tensor(75.8324, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3260, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+20.095 s H_error tensor(165.5468, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3298, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 5 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -496,10 +479,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.93439793586731 s
+finished clustering in 18.309894323349 s
 stopped after 9 iterations
-18.225 s H_error tensor(87.6376, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3279, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.601 s H_error tensor(200.0039, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3314, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 5 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -508,12 +491,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.83573603630066 s
-reducing lr to  0.0009000000000000001
-reducing lr to  0.0008100000000000001
+finished clustering in 18.04975414276123 s
 stopped after 9 iterations
-18.125 s H_error tensor(20.7308, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3205, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.341 s H_error tensor(42.3190, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3235, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 5 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -522,10 +503,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.849249124526978 s
+finished clustering in 18.041488647460938 s
 stopped after 9 iterations
-18.139 s H_error tensor(0.4191, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.337 s H_error tensor(0.7921, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3232, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 5 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -534,10 +515,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.81473350524902 s
+finished clustering in 45.430968046188354 s
 stopped after 9 iterations
-45.717 s H_error tensor(50.4309, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.355 s H_error tensor(101.0921, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3156, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 5 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -546,11 +527,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.06744933128357 s
-reducing lr to  0.0009000000000000001
+finished clustering in 45.80238175392151 s
 stopped after 9 iterations
-45.974 s H_error tensor(39.4184, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.737 s H_error tensor(78.9932, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 5 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -559,10 +539,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.74902939796448 s
+finished clustering in 45.656827211380005 s
 stopped after 9 iterations
-46.153 s H_error tensor(0.4072, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3179, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+47.098 s H_error tensor(0.7837, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3184, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 6 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -571,10 +551,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.51271963119507 s
+finished clustering in 19.740346670150757 s
 stopped after 9 iterations
-18.806 s H_error tensor(109.4701, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3265, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+20.039 s H_error tensor(248.4735, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3302, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 6 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -583,10 +563,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.854060649871826 s
+finished clustering in 18.579153537750244 s
 stopped after 9 iterations
-18.146 s H_error tensor(115.6553, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3260, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.877 s H_error tensor(266.4767, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3309, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 6 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -595,10 +575,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.858007669448853 s
+finished clustering in 18.19995880126953 s
 stopped after 9 iterations
-18.147 s H_error tensor(29.5395, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3225, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.495 s H_error tensor(62.6631, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3271, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 6 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -607,10 +587,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.799740076065063 s
+finished clustering in 18.44798731803894 s
 stopped after 9 iterations
-18.09 s H_error tensor(0.6904, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3185, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.742 s H_error tensor(1.3285, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3197, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 6 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -619,10 +599,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.79896521568298 s
+finished clustering in 46.19928574562073 s
 stopped after 9 iterations
-45.691 s H_error tensor(62.6746, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+47.112 s H_error tensor(126.0733, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 6 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -631,10 +611,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.78843450546265 s
+finished clustering in 45.48201274871826 s
 stopped after 9 iterations
-45.683 s H_error tensor(47.3770, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.394 s H_error tensor(95.3731, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 6 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -643,10 +623,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.59889364242554 s
+finished clustering in 45.561443567276 s
 stopped after 9 iterations
-45.99 s H_error tensor(0.6340, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3200, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.996 s H_error tensor(1.2180, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3206, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 7 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -655,10 +635,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.591440677642822 s
+finished clustering in 19.869445323944092 s
 stopped after 9 iterations
-18.887 s H_error tensor(114.5728, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3255, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+20.163 s H_error tensor(266.2031, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3310, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 7 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -667,10 +647,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.8887619972229 s
+finished clustering in 18.633748292922974 s
 stopped after 9 iterations
-18.18 s H_error tensor(117.4510, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3260, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.929 s H_error tensor(279.5869, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3313, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 7 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -679,10 +659,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.913418531417847 s
+finished clustering in 18.411755561828613 s
 stopped after 9 iterations
-18.208 s H_error tensor(32.2005, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3208, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.713 s H_error tensor(69.1811, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3274, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 7 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -691,10 +671,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.892176151275635 s
+finished clustering in 18.422604084014893 s
 stopped after 9 iterations
-18.183 s H_error tensor(0.9958, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3184, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.723 s H_error tensor(2.3679, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3191, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 7 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -703,10 +683,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.97581481933594 s
+finished clustering in 45.46285271644592 s
 stopped after 9 iterations
-45.869 s H_error tensor(71.1180, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3165, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.377 s H_error tensor(142.4529, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 7 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -715,10 +695,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.83720421791077 s
+finished clustering in 45.47848701477051 s
 stopped after 9 iterations
-45.73 s H_error tensor(54.3600, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.392 s H_error tensor(108.8363, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 7 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -727,10 +707,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.93336725234985 s
+finished clustering in 45.3011155128479 s
 stopped after 9 iterations
-46.321 s H_error tensor(0.8211, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3194, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.739 s H_error tensor(1.7087, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3204, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 8 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -739,10 +719,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.52485203742981 s
+finished clustering in 19.476136445999146 s
 stopped after 9 iterations
-18.82 s H_error tensor(119.2554, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3258, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.778 s H_error tensor(255.6740, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3300, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 8 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -751,10 +731,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.03343963623047 s
+finished clustering in 18.123180389404297 s
 stopped after 9 iterations
-18.323 s H_error tensor(123.7881, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3259, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.417 s H_error tensor(272.5659, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3300, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 8 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -763,10 +743,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.902021646499634 s
+finished clustering in 18.141618728637695 s
 stopped after 9 iterations
-18.194 s H_error tensor(34.1314, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3218, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.441 s H_error tensor(70.6596, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3254, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 8 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -775,10 +755,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.834487676620483 s
+finished clustering in 17.925647258758545 s
 stopped after 9 iterations
-18.12 s H_error tensor(1.5150, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3172, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.215 s H_error tensor(3.8226, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3184, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 8 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -787,10 +767,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.93065404891968 s
+finished clustering in 45.20875954627991 s
 stopped after 9 iterations
-45.824 s H_error tensor(74.3511, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.113 s H_error tensor(147.8943, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3165, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 8 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -799,10 +779,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.40407919883728 s
+finished clustering in 46.04560136795044 s
 stopped after 9 iterations
-46.33 s H_error tensor(60.2699, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3163, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.989 s H_error tensor(119.3577, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 8 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -811,10 +791,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.891064405441284 s
+finished clustering in 45.325963735580444 s
 stopped after 9 iterations
-46.277 s H_error tensor(0.9829, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3188, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.761 s H_error tensor(2.1258, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 9 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -823,10 +803,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.57753586769104 s
+finished clustering in 19.486180067062378 s
 stopped after 9 iterations
-18.869 s H_error tensor(124.9479, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3249, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.788 s H_error tensor(266.4667, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3294, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 9 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -835,10 +815,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.91441011428833 s
+finished clustering in 17.99817943572998 s
 stopped after 9 iterations
-18.203 s H_error tensor(134.1271, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3247, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.297 s H_error tensor(303.2358, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3307, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 9 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -847,10 +827,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.84366464614868 s
+finished clustering in 18.134201526641846 s
 stopped after 9 iterations
-18.136 s H_error tensor(36.8445, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.431 s H_error tensor(76.6835, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3238, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 9 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -859,10 +839,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.776983499526978 s
+finished clustering in 18.076348066329956 s
 stopped after 9 iterations
-18.064 s H_error tensor(2.3133, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3174, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.367 s H_error tensor(5.1385, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3177, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 9 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -871,10 +851,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.81984329223633 s
+finished clustering in 45.462584018707275 s
 stopped after 9 iterations
-45.714 s H_error tensor(76.6844, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3164, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.373 s H_error tensor(152.6430, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 9 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -883,10 +863,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.969972372055054 s
+finished clustering in 45.63996171951294 s
 stopped after 9 iterations
-45.865 s H_error tensor(64.0998, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.549 s H_error tensor(127.4723, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3169, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 9 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -895,10 +875,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.77118253707886 s
+finished clustering in 45.383474349975586 s
 stopped after 9 iterations
-46.171 s H_error tensor(1.2266, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3183, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.816 s H_error tensor(2.5375, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 10 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -907,10 +887,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.57696843147278 s
+finished clustering in 19.444430828094482 s
 stopped after 9 iterations
-18.867 s H_error tensor(130.0662, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3246, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.75 s H_error tensor(266.5063, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3287, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 10 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -919,10 +899,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.84148931503296 s
+finished clustering in 18.13491153717041 s
 stopped after 9 iterations
-18.13 s H_error tensor(141.9668, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3245, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.432 s H_error tensor(313.4227, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3290, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 10 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -931,10 +911,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.884343147277832 s
+finished clustering in 18.098547220230103 s
 stopped after 9 iterations
-18.178 s H_error tensor(37.1961, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3204, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.393 s H_error tensor(76.1014, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3223, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 10 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -943,10 +923,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.903810739517212 s
+finished clustering in 18.136255741119385 s
 stopped after 9 iterations
-18.19 s H_error tensor(3.2067, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3158, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.427 s H_error tensor(7.8255, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3163, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 10 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -955,10 +935,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.00339865684509 s
+finished clustering in 45.656548500061035 s
 stopped after 9 iterations
-45.904 s H_error tensor(81.0688, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.575 s H_error tensor(160.7219, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3169, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 10 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -967,10 +947,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.01478409767151 s
+finished clustering in 45.48230028152466 s
 stopped after 9 iterations
-45.925 s H_error tensor(69.9598, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.41 s H_error tensor(138.2958, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 10 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -979,10 +959,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.71006155014038 s
+finished clustering in 45.22010016441345 s
 stopped after 9 iterations
-46.11 s H_error tensor(1.4085, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3181, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.654 s H_error tensor(2.9946, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 11 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -991,10 +971,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.59359645843506 s
+finished clustering in 19.489927530288696 s
 stopped after 9 iterations
-18.882 s H_error tensor(148.1486, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3251, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.783 s H_error tensor(303.7311, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3268, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 11 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1003,10 +983,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.943066596984863 s
+finished clustering in 18.251096963882446 s
 stopped after 9 iterations
-18.233 s H_error tensor(152.5979, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3247, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.543 s H_error tensor(316.2145, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3263, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 11 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1015,10 +995,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.91452670097351 s
+finished clustering in 18.105226755142212 s
 stopped after 9 iterations
-18.207 s H_error tensor(50.6307, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3208, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.402 s H_error tensor(103.4790, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3228, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 11 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1027,10 +1007,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.920263051986694 s
+finished clustering in 18.038707733154297 s
 stopped after 9 iterations
-18.207 s H_error tensor(3.7902, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3167, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.329 s H_error tensor(8.7011, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 11 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1039,10 +1019,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.17503118515015 s
+finished clustering in 46.34803652763367 s
 stopped after 9 iterations
-46.086 s H_error tensor(86.0144, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+47.276 s H_error tensor(175.0505, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3163, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 11 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1051,10 +1031,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.0649893283844 s
+finished clustering in 46.92981767654419 s
 stopped after 9 iterations
-45.965 s H_error tensor(76.1202, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3162, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+47.835 s H_error tensor(154.8367, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3165, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 11 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1063,10 +1043,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.03247594833374 s
+finished clustering in 45.9608952999115 s
 stopped after 9 iterations
-46.434 s H_error tensor(1.6064, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3180, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+47.392 s H_error tensor(3.4029, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3182, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 12 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1075,10 +1055,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.645808458328247 s
+finished clustering in 19.531468152999878 s
 stopped after 9 iterations
-18.932 s H_error tensor(152.6751, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3240, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.824 s H_error tensor(305.4955, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3251, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 12 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1087,10 +1067,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.969624996185303 s
+finished clustering in 18.200056552886963 s
 stopped after 9 iterations
-18.26 s H_error tensor(167.4350, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3250, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.499 s H_error tensor(341.4547, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3264, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 12 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1099,10 +1079,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.84495759010315 s
+finished clustering in 18.13252091407776 s
 stopped after 9 iterations
-18.13 s H_error tensor(49.3039, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3195, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.432 s H_error tensor(100.5323, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3208, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 12 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1111,10 +1091,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.885668992996216 s
+finished clustering in 18.05566692352295 s
 stopped after 9 iterations
-18.178 s H_error tensor(4.0862, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.352 s H_error tensor(8.8670, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 12 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1123,10 +1103,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.15190124511719 s
+finished clustering in 45.38514709472656 s
 stopped after 9 iterations
-46.041 s H_error tensor(90.7912, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.297 s H_error tensor(183.6633, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3158, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 12 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1135,10 +1115,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.9394326210022 s
+finished clustering in 45.37128305435181 s
 stopped after 9 iterations
-45.828 s H_error tensor(82.9764, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.279 s H_error tensor(167.8136, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3153, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 12 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1147,10 +1127,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.85221600532532 s
+finished clustering in 45.388678312301636 s
 stopped after 9 iterations
-46.25 s H_error tensor(1.7822, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3179, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.819 s H_error tensor(3.6663, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3181, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 13 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1159,10 +1139,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.66380500793457 s
+finished clustering in 19.602028131484985 s
 stopped after 9 iterations
-18.955 s H_error tensor(157.0109, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3241, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.897 s H_error tensor(319.5729, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3262, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 13 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1171,10 +1151,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.956804037094116 s
+finished clustering in 18.15445566177368 s
 stopped after 9 iterations
-18.245 s H_error tensor(169.2865, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3238, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.449 s H_error tensor(352.0518, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3265, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 13 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1183,11 +1163,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.919512271881104 s
-reducing lr to  0.0009000000000000001
+finished clustering in 18.222256183624268 s
 stopped after 9 iterations
-18.213 s H_error tensor(54.8630, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3195, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.519 s H_error tensor(112.1716, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3210, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 13 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1196,10 +1175,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.156036376953125 s
+finished clustering in 18.025026559829712 s
 stopped after 9 iterations
-18.447 s H_error tensor(4.0626, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3169, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.32 s H_error tensor(9.2649, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3172, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 13 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1208,10 +1187,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.012091875076294 s
+finished clustering in 45.510977029800415 s
 stopped after 9 iterations
-45.904 s H_error tensor(95.5225, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.42 s H_error tensor(192.3158, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3158, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 13 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1220,10 +1199,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.89489698410034 s
+finished clustering in 45.51948356628418 s
 stopped after 9 iterations
-45.789 s H_error tensor(89.2157, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.428 s H_error tensor(179.6622, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 13 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1232,10 +1211,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.922807455062866 s
+finished clustering in 45.426095485687256 s
 stopped after 9 iterations
-46.322 s H_error tensor(2.0023, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3196, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.871 s H_error tensor(4.2140, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3196, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 14 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1244,10 +1223,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.73184823989868 s
+finished clustering in 19.442100048065186 s
 stopped after 9 iterations
-19.017 s H_error tensor(160.6513, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3247, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.738 s H_error tensor(328.2145, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3251, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 14 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1256,10 +1235,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.94542932510376 s
+finished clustering in 18.150818347930908 s
 stopped after 9 iterations
-18.237 s H_error tensor(174.6444, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3240, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.447 s H_error tensor(353.8988, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3250, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 14 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1268,10 +1247,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.913583278656006 s
+finished clustering in 18.26692771911621 s
 stopped after 9 iterations
-18.206 s H_error tensor(54.7965, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.561 s H_error tensor(111.9431, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3195, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 14 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1280,10 +1259,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.86328101158142 s
+finished clustering in 18.1126868724823 s
 stopped after 9 iterations
-18.15 s H_error tensor(5.3349, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.404 s H_error tensor(12.2815, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 14 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1292,10 +1271,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.1182587146759 s
+finished clustering in 45.54186725616455 s
 stopped after 9 iterations
-46.022 s H_error tensor(103.1431, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3153, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.463 s H_error tensor(207.2798, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 14 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1304,10 +1283,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.80541920661926 s
+finished clustering in 45.609074115753174 s
 stopped after 9 iterations
-45.696 s H_error tensor(96.9835, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3149, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.51 s H_error tensor(194.9135, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3151, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 14 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1316,10 +1295,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.95394039154053 s
+finished clustering in 45.46394753456116 s
 stopped after 9 iterations
-46.367 s H_error tensor(2.4190, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3191, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.9 s H_error tensor(4.9743, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3188, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 15 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1328,10 +1307,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.56166100502014 s
+finished clustering in 19.5046124458313 s
 stopped after 9 iterations
-18.85 s H_error tensor(149.7954, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3253, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.807 s H_error tensor(304.4011, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3266, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 15 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1340,10 +1319,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.896429300308228 s
+finished clustering in 18.07425618171692 s
 stopped after 9 iterations
-18.184 s H_error tensor(170.2679, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3251, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.367 s H_error tensor(351.2596, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3266, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 15 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1352,10 +1331,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.85339665412903 s
+finished clustering in 18.090981483459473 s
 stopped after 9 iterations
-18.149 s H_error tensor(57.0165, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3199, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.387 s H_error tensor(115.4352, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3214, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 15 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1364,10 +1343,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.839290142059326 s
+finished clustering in 18.04421639442444 s
 stopped after 9 iterations
-18.13 s H_error tensor(5.0618, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.335 s H_error tensor(11.0581, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3151, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 15 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1376,10 +1355,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.95910596847534 s
+finished clustering in 45.406267404556274 s
 stopped after 9 iterations
-45.853 s H_error tensor(111.3777, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.313 s H_error tensor(226.0206, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3162, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 15 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1388,10 +1367,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.92357540130615 s
+finished clustering in 45.57556462287903 s
 stopped after 9 iterations
-45.818 s H_error tensor(105.0817, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.481 s H_error tensor(212.6460, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3159, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 15 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1400,10 +1379,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.67517042160034 s
+finished clustering in 45.361085176467896 s
 stopped after 9 iterations
-47.073 s H_error tensor(2.9576, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.791 s H_error tensor(6.0164, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 16 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1412,10 +1391,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.635250568389893 s
+finished clustering in 19.526509046554565 s
 stopped after 9 iterations
-18.928 s H_error tensor(160.2139, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3245, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.825 s H_error tensor(315.5465, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3246, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 16 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1424,10 +1403,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.9105441570282 s
+finished clustering in 18.189192533493042 s
 stopped after 9 iterations
-18.205 s H_error tensor(178.6037, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3251, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.485 s H_error tensor(348.6448, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3248, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 16 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1436,10 +1415,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.882378339767456 s
+finished clustering in 18.086989164352417 s
 stopped after 9 iterations
-18.172 s H_error tensor(64.9673, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.381 s H_error tensor(130.7793, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3186, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 16 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1448,10 +1427,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.03665781021118 s
+finished clustering in 18.118977785110474 s
 stopped after 9 iterations
-18.324 s H_error tensor(6.2256, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3148, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.412 s H_error tensor(13.4717, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3148, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 16 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1460,10 +1439,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.94439363479614 s
+finished clustering in 45.5019896030426 s
 stopped after 9 iterations
-45.851 s H_error tensor(130.0635, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.423 s H_error tensor(263.5316, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3155, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 16 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1472,10 +1451,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.408628940582275 s
+finished clustering in 45.628921031951904 s
 stopped after 9 iterations
-46.299 s H_error tensor(120.9168, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.534 s H_error tensor(244.5012, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 16 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1484,10 +1463,13 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.00545144081116 s
+finished clustering in 45.37426733970642 s
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
 stopped after 9 iterations
-46.417 s H_error tensor(4.0067, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3221, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.82 s H_error tensor(8.0558, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3220, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 17 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1496,10 +1478,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.599767446517944 s
+finished clustering in 19.61403799057007 s
 stopped after 9 iterations
-18.886 s H_error tensor(157.9035, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.909 s H_error tensor(329.6978, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3236, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 17 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1508,10 +1490,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.896766662597656 s
+finished clustering in 18.07037854194641 s
 stopped after 9 iterations
-18.189 s H_error tensor(168.9696, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3225, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.366 s H_error tensor(357.4441, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3238, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 17 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1520,10 +1502,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.946590662002563 s
+finished clustering in 18.10446810722351 s
 stopped after 9 iterations
-18.232 s H_error tensor(67.8995, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3172, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.396 s H_error tensor(138.6712, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3187, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 17 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1532,10 +1514,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.88672423362732 s
+finished clustering in 18.080599546432495 s
 stopped after 9 iterations
-18.173 s H_error tensor(4.4609, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3148, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.369 s H_error tensor(9.9399, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 17 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1544,10 +1526,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.10227847099304 s
+finished clustering in 45.51713514328003 s
 stopped after 9 iterations
-45.994 s H_error tensor(147.9560, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3151, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.417 s H_error tensor(299.9147, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3152, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 17 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1556,10 +1538,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.486119747161865 s
+finished clustering in 45.56014394760132 s
 stopped after 9 iterations
-46.408 s H_error tensor(133.7150, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3134, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.491 s H_error tensor(270.4114, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3133, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 17 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1568,10 +1550,11 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.337119340896606 s
+finished clustering in 45.53572940826416 s
+reducing lr to  0.0009000000000000001
 stopped after 9 iterations
-46.764 s H_error tensor(4.3810, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.976 s H_error tensor(8.9657, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3191, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 18 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1580,10 +1563,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 19.035629272460938 s
+finished clustering in 19.590106964111328 s
 stopped after 9 iterations
-19.327 s H_error tensor(171.1724, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3224, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.888 s H_error tensor(356.8150, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3241, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 18 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1592,10 +1575,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.39380192756653 s
+finished clustering in 18.392637252807617 s
 stopped after 9 iterations
-18.685 s H_error tensor(184.5015, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3230, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.701 s H_error tensor(386.8694, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3249, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 18 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1604,10 +1587,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.39510941505432 s
+finished clustering in 18.38765597343445 s
 stopped after 9 iterations
-18.682 s H_error tensor(82.9993, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3163, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.682 s H_error tensor(169.1142, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3174, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 18 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1616,10 +1599,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.260233879089355 s
+finished clustering in 18.433118104934692 s
 stopped after 9 iterations
-18.551 s H_error tensor(3.9617, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.727 s H_error tensor(8.4018, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3165, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 18 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1628,10 +1611,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.33257818222046 s
+finished clustering in 46.06459188461304 s
 stopped after 9 iterations
-46.233 s H_error tensor(168.7537, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3148, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.984 s H_error tensor(340.7795, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3148, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 18 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1640,10 +1623,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.54995369911194 s
+finished clustering in 45.475602865219116 s
 stopped after 9 iterations
-46.444 s H_error tensor(147.8255, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3130, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.39 s H_error tensor(298.6137, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3129, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 18 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1652,10 +1635,11 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.42289328575134 s
+finished clustering in 45.36443209648132 s
+reducing lr to  0.0009000000000000001
 stopped after 9 iterations
-46.84 s H_error tensor(5.1670, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.814 s H_error tensor(10.4339, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3206, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 19 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1664,10 +1648,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.59810996055603 s
+finished clustering in 19.64936637878418 s
 stopped after 9 iterations
-18.89 s H_error tensor(165.1267, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3219, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.943 s H_error tensor(350.2447, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3233, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 19 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1676,10 +1660,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.83849334716797 s
+finished clustering in 18.13678479194641 s
 stopped after 9 iterations
-18.128 s H_error tensor(175.3969, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3224, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.433 s H_error tensor(371.7594, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3236, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 19 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1688,10 +1672,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.9644718170166 s
+finished clustering in 18.125652313232422 s
 stopped after 9 iterations
-18.252 s H_error tensor(84.3677, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3172, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.418 s H_error tensor(172.8074, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3186, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 19 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1700,10 +1684,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.952763319015503 s
+finished clustering in 18.098386526107788 s
 stopped after 9 iterations
-18.244 s H_error tensor(4.5145, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3158, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.392 s H_error tensor(9.6325, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 19 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1712,10 +1696,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.08619737625122 s
+finished clustering in 46.24409103393555 s
 stopped after 9 iterations
-45.993 s H_error tensor(180.2474, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+47.162 s H_error tensor(364.7131, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3144, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 19 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1724,10 +1708,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.86527109146118 s
+finished clustering in 46.287057399749756 s
 stopped after 9 iterations
-45.761 s H_error tensor(158.6177, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3130, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+47.198 s H_error tensor(320.7491, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3129, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 19 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1736,10 +1720,13 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.79508113861084 s
+finished clustering in 45.7257034778595 s
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
 stopped after 9 iterations
-46.206 s H_error tensor(5.6654, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3196, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+47.159 s H_error tensor(11.1667, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3197, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 20 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1748,10 +1735,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.600755214691162 s
+finished clustering in 19.491516590118408 s
 stopped after 9 iterations
-18.893 s H_error tensor(169.7201, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3220, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.788 s H_error tensor(355.1484, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3236, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 20 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1760,10 +1747,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.916977882385254 s
+finished clustering in 18.144789934158325 s
 stopped after 9 iterations
-18.207 s H_error tensor(183.0078, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3225, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.434 s H_error tensor(373.0186, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3234, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 20 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1772,10 +1759,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.98435401916504 s
+finished clustering in 18.120912551879883 s
 stopped after 9 iterations
-18.28 s H_error tensor(86.7673, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3150, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.419 s H_error tensor(176.3450, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 20 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1784,10 +1771,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.09610152244568 s
+finished clustering in 18.144514083862305 s
 stopped after 9 iterations
-18.387 s H_error tensor(5.6416, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3170, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.439 s H_error tensor(12.6149, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3172, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 20 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1796,10 +1783,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.93317365646362 s
+finished clustering in 45.58229875564575 s
 stopped after 9 iterations
-45.818 s H_error tensor(195.6140, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.48 s H_error tensor(393.5190, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3145, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 20 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1808,10 +1795,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.88943910598755 s
+finished clustering in 45.59662365913391 s
 stopped after 9 iterations
-45.773 s H_error tensor(169.9648, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3130, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.493 s H_error tensor(341.9927, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3130, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 20 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1820,10 +1807,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.81440496444702 s
+finished clustering in 45.41136026382446 s
 stopped after 9 iterations
-46.224 s H_error tensor(7.0338, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.869 s H_error tensor(13.8370, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 21 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1832,10 +1819,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.593589782714844 s
+finished clustering in 19.55394434928894 s
 stopped after 9 iterations
-18.88 s H_error tensor(179.1765, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3212, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.848 s H_error tensor(377.4962, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3233, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 21 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1844,10 +1831,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.862441778182983 s
+finished clustering in 18.17985463142395 s
 stopped after 9 iterations
-18.155 s H_error tensor(188.9787, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.473 s H_error tensor(393.8939, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3235, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 21 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1856,10 +1843,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.867746829986572 s
+finished clustering in 18.11660361289978 s
 stopped after 9 iterations
-18.157 s H_error tensor(104.5284, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3149, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.41 s H_error tensor(212.7133, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3167, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 21 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1868,10 +1855,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.879487991333008 s
+finished clustering in 18.204822063446045 s
 stopped after 9 iterations
-18.178 s H_error tensor(4.7179, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.51 s H_error tensor(10.1232, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3170, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 21 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1880,10 +1867,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.98522210121155 s
+finished clustering in 45.57501554489136 s
 stopped after 9 iterations
-45.886 s H_error tensor(211.1011, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3143, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.494 s H_error tensor(424.3513, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3143, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 21 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1892,10 +1879,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.97645020484924 s
+finished clustering in 45.499693155288696 s
 stopped after 9 iterations
-45.876 s H_error tensor(180.7695, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3126, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.409 s H_error tensor(363.5355, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3125, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 21 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1904,10 +1891,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.02252507209778 s
+finished clustering in 45.3836407661438 s
 stopped after 9 iterations
-46.422 s H_error tensor(7.4723, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.827 s H_error tensor(14.5531, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 22 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -1916,10 +1903,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.63521146774292 s
+finished clustering in 19.474441051483154 s
 stopped after 9 iterations
-18.93 s H_error tensor(196.7448, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3219, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.77 s H_error tensor(411.6746, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3238, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 22 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -1928,10 +1915,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.9274160861969 s
+finished clustering in 18.20556116104126 s
 stopped after 9 iterations
-18.216 s H_error tensor(209.5191, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3231, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.498 s H_error tensor(428.0986, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3243, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 22 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -1940,10 +1927,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.933699369430542 s
+finished clustering in 18.095601797103882 s
 stopped after 9 iterations
-18.221 s H_error tensor(108.7982, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3154, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.387 s H_error tensor(221.0837, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3168, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 22 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -1952,10 +1939,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.94832420349121 s
+finished clustering in 18.076672077178955 s
 stopped after 9 iterations
-18.236 s H_error tensor(25.2680, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3182, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.369 s H_error tensor(53.4146, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3182, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 22 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -1964,10 +1951,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.097635984420776 s
+finished clustering in 45.4932324886322 s
 stopped after 9 iterations
-45.996 s H_error tensor(219.5287, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.394 s H_error tensor(439.3405, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3141, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 22 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -1976,10 +1963,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.00238847732544 s
+finished clustering in 45.513248920440674 s
 stopped after 9 iterations
-45.894 s H_error tensor(185.7945, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3126, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.42 s H_error tensor(372.2513, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3126, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 22 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -1988,10 +1975,14 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.896042585372925 s
+finished clustering in 45.47921323776245 s
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
 stopped after 9 iterations
-46.3 s H_error tensor(7.9239, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3181, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.91 s H_error tensor(15.5575, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3183, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 23 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2000,10 +1991,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.625802993774414 s
+finished clustering in 19.421836853027344 s
 stopped after 9 iterations
-18.917 s H_error tensor(214.3045, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3206, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.716 s H_error tensor(446.9526, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3224, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 23 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2012,10 +2003,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.923118591308594 s
+finished clustering in 18.079827308654785 s
 stopped after 9 iterations
-18.219 s H_error tensor(224.8024, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3212, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.378 s H_error tensor(464.5421, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3233, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 23 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2024,10 +2015,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.90625524520874 s
+finished clustering in 18.264015436172485 s
 stopped after 9 iterations
-18.194 s H_error tensor(134.8797, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3144, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.558 s H_error tensor(274.8742, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 23 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2036,10 +2027,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.873207330703735 s
+finished clustering in 18.0654296875 s
 stopped after 9 iterations
-18.166 s H_error tensor(6.5698, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3147, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.361 s H_error tensor(13.6730, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3148, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 23 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2048,10 +2039,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.103819370269775 s
+finished clustering in 45.431769132614136 s
 stopped after 9 iterations
-45.991 s H_error tensor(246.2103, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3138, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.332 s H_error tensor(493.8573, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3138, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 23 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2060,10 +2051,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.97803711891174 s
+finished clustering in 45.850322008132935 s
 stopped after 9 iterations
-45.876 s H_error tensor(208.8312, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3121, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.759 s H_error tensor(418.5350, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3121, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 23 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2072,14 +2063,15 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.02571105957031 s
+finished clustering in 45.515316009521484 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
 stopped after 9 iterations
-46.425 s H_error tensor(9.2617, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3170, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.94 s H_error tensor(18.2369, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3173, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 24 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2088,10 +2080,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.632007837295532 s
+finished clustering in 19.47915816307068 s
 stopped after 9 iterations
-18.919 s H_error tensor(204.6550, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.772 s H_error tensor(408.0708, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 24 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2100,10 +2092,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.90693950653076 s
+finished clustering in 18.30454659461975 s
 stopped after 9 iterations
-18.202 s H_error tensor(215.0841, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3223, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.611 s H_error tensor(419.6906, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3229, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 24 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2112,10 +2104,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.881726503372192 s
+finished clustering in 18.085163354873657 s
 stopped after 9 iterations
-18.185 s H_error tensor(130.9787, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3165, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.388 s H_error tensor(263.5635, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3166, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 24 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2124,10 +2116,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.883747339248657 s
+finished clustering in 18.08284068107605 s
 stopped after 9 iterations
-18.176 s H_error tensor(14.7009, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3176, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.377 s H_error tensor(31.2665, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3180, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 24 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2136,10 +2128,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.98045754432678 s
+finished clustering in 45.428229570388794 s
 stopped after 9 iterations
-45.876 s H_error tensor(256.4469, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3136, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.328 s H_error tensor(513.6255, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3136, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 24 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2148,10 +2140,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.9678270816803 s
+finished clustering in 45.537965297698975 s
 stopped after 9 iterations
-45.866 s H_error tensor(218.4074, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3118, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.452 s H_error tensor(437.5900, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3118, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 24 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2160,14 +2152,15 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.945517778396606 s
+finished clustering in 45.49919033050537 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
 stopped after 9 iterations
-46.36 s H_error tensor(9.7572, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3165, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.948 s H_error tensor(19.1823, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3167, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 25 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2176,10 +2169,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.569817066192627 s
+finished clustering in 19.522626638412476 s
 stopped after 9 iterations
-18.858 s H_error tensor(233.9407, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.816 s H_error tensor(482.5468, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3206, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 25 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2188,10 +2181,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.880773067474365 s
+finished clustering in 18.258909940719604 s
 stopped after 9 iterations
-18.176 s H_error tensor(243.3557, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3209, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.561 s H_error tensor(492.3340, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3228, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 25 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2200,10 +2193,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.976834058761597 s
+finished clustering in 18.110596895217896 s
 stopped after 9 iterations
-18.268 s H_error tensor(162.8285, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3141, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.403 s H_error tensor(329.6988, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3150, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 25 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2212,10 +2205,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.896991729736328 s
+finished clustering in 18.081096410751343 s
 stopped after 9 iterations
-18.188 s H_error tensor(8.3655, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3171, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.377 s H_error tensor(18.9312, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3177, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 25 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2224,10 +2217,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.13969802856445 s
+finished clustering in 45.52484393119812 s
 stopped after 9 iterations
-46.055 s H_error tensor(283.0153, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3137, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.461 s H_error tensor(566.4931, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3137, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 25 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2236,10 +2229,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.874062061309814 s
+finished clustering in 45.63383102416992 s
 stopped after 9 iterations
-45.763 s H_error tensor(240.8698, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3121, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.537 s H_error tensor(482.4452, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3120, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 25 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2248,14 +2241,15 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.640480279922485 s
+finished clustering in 45.3540985584259 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
+reducing lr to  0.00059049
 stopped after 9 iterations
-46.039 s H_error tensor(10.7140, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3174, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.787 s H_error tensor(20.9777, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3179, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 26 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2264,10 +2258,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.651090621948242 s
+finished clustering in 19.54279088973999 s
 stopped after 9 iterations
-18.943 s H_error tensor(226.0895, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3205, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.844 s H_error tensor(448.9207, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3218, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 26 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2276,10 +2270,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.8386812210083 s
+finished clustering in 18.13011908531189 s
 stopped after 9 iterations
-18.131 s H_error tensor(236.5744, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.423 s H_error tensor(478.5405, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3227, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 26 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2288,10 +2282,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.82945466041565 s
+finished clustering in 18.314998149871826 s
 stopped after 9 iterations
-18.12 s H_error tensor(161.2868, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3153, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.608 s H_error tensor(324.7200, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3159, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 26 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2300,10 +2294,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.85449457168579 s
+finished clustering in 18.13880753517151 s
 stopped after 9 iterations
-18.145 s H_error tensor(15.0393, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3211, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.429 s H_error tensor(35.8410, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3215, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 26 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2312,10 +2306,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.930883169174194 s
+finished clustering in 45.43602204322815 s
 stopped after 9 iterations
-45.824 s H_error tensor(297.0410, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3141, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.345 s H_error tensor(589.5817, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 26 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2324,10 +2318,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.83620810508728 s
+finished clustering in 45.62089729309082 s
 stopped after 9 iterations
-45.733 s H_error tensor(255.5603, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3123, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.54 s H_error tensor(506.8071, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3123, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 26 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2336,14 +2330,14 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.78355669975281 s
+finished clustering in 45.27685070037842 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
 stopped after 9 iterations
-46.193 s H_error tensor(11.6705, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3179, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.734 s H_error tensor(22.7467, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3184, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 27 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2352,10 +2346,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.55471634864807 s
+finished clustering in 19.49599528312683 s
 stopped after 9 iterations
-18.845 s H_error tensor(236.7736, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3184, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.798 s H_error tensor(506.0421, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3212, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 27 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2364,10 +2358,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.851083755493164 s
+finished clustering in 18.10330820083618 s
 stopped after 9 iterations
-18.148 s H_error tensor(248.1389, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3199, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.402 s H_error tensor(525.2516, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3229, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 27 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2376,10 +2370,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.899340391159058 s
+finished clustering in 18.03855609893799 s
 stopped after 9 iterations
-18.196 s H_error tensor(169.1055, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3122, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.335 s H_error tensor(347.1796, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3151, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 27 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2388,10 +2382,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.924468755722046 s
+finished clustering in 18.03933620452881 s
 stopped after 9 iterations
-18.212 s H_error tensor(9.9014, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3176, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.329 s H_error tensor(19.5467, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3180, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 27 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2400,10 +2394,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.02568817138672 s
+finished clustering in 45.65051484107971 s
 stopped after 9 iterations
-45.937 s H_error tensor(322.3633, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.58 s H_error tensor(642.0778, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 27 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2412,10 +2406,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.94778633117676 s
+finished clustering in 45.57578802108765 s
 stopped after 9 iterations
-45.851 s H_error tensor(278.7637, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3132, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.486 s H_error tensor(556.1224, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3133, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 27 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2424,15 +2418,15 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.94015717506409 s
+finished clustering in 45.75445747375488 s
 reducing lr to  0.0009000000000000001
 reducing lr to  0.0008100000000000001
 reducing lr to  0.000729
 reducing lr to  0.0006561000000000001
 reducing lr to  0.00059049
 stopped after 9 iterations
-46.348 s H_error tensor(13.8510, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3207, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+47.194 s H_error tensor(27.0914, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3211, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 28 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2441,10 +2435,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.831302404403687 s
+finished clustering in 19.534794092178345 s
 stopped after 9 iterations
-19.118 s H_error tensor(239.8901, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3197, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.828 s H_error tensor(489.4899, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3202, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 28 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2453,10 +2447,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.88763689994812 s
+finished clustering in 18.07838463783264 s
 stopped after 9 iterations
-18.179 s H_error tensor(254.4912, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3208, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.375 s H_error tensor(503.9091, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 28 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2465,10 +2459,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.80265522003174 s
+finished clustering in 18.098563194274902 s
 stopped after 9 iterations
-18.091 s H_error tensor(188.3940, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.395 s H_error tensor(378.5585, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3151, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 28 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2477,10 +2471,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.910240173339844 s
+finished clustering in 18.083198308944702 s
 stopped after 9 iterations
-18.198 s H_error tensor(14.1776, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3186, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.374 s H_error tensor(29.9215, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3189, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 28 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2489,10 +2483,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.0011146068573 s
+finished clustering in 45.58577489852905 s
 stopped after 9 iterations
-45.901 s H_error tensor(339.5258, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3147, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.5 s H_error tensor(676.5947, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3147, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 28 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2501,10 +2495,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.98813462257385 s
+finished clustering in 45.52944087982178 s
 stopped after 9 iterations
-45.905 s H_error tensor(304.7171, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3147, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.449 s H_error tensor(607.0734, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3146, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 28 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2513,10 +2507,12 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.726922273635864 s
+finished clustering in 45.338682889938354 s
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
 stopped after 9 iterations
-46.136 s H_error tensor(16.6501, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3237, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.784 s H_error tensor(32.6609, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3245, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 29 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2525,10 +2521,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.564498901367188 s
+finished clustering in 19.524000644683838 s
 stopped after 9 iterations
-18.857 s H_error tensor(216.7645, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3204, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.816 s H_error tensor(419.9734, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3202, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 29 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2537,10 +2533,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.106874465942383 s
+finished clustering in 18.156195878982544 s
 stopped after 9 iterations
-18.399 s H_error tensor(228.3053, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3217, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.45 s H_error tensor(441.9449, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 29 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2549,10 +2545,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.89907455444336 s
+finished clustering in 18.41391611099243 s
 stopped after 9 iterations
-18.189 s H_error tensor(176.9292, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3142, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.704 s H_error tensor(352.9066, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3137, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 29 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2561,10 +2557,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.835588932037354 s
+finished clustering in 18.100388765335083 s
 stopped after 9 iterations
-18.125 s H_error tensor(13.7465, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.394 s H_error tensor(30.6383, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3202, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 29 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2573,10 +2569,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.91307067871094 s
+finished clustering in 45.832452058792114 s
 stopped after 9 iterations
-45.813 s H_error tensor(355.1828, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3157, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.738 s H_error tensor(702.8911, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3158, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 29 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2585,10 +2581,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.85394787788391 s
+finished clustering in 45.71715998649597 s
 stopped after 9 iterations
-45.761 s H_error tensor(321.1273, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3160, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.632 s H_error tensor(634.9280, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3161, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 29 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2597,10 +2593,14 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.62397217750549 s
+finished clustering in 45.3157377243042 s
+reducing lr to  0.0009000000000000001
+reducing lr to  0.0008100000000000001
+reducing lr to  0.000729
+reducing lr to  0.0006561000000000001
 stopped after 9 iterations
-46.038 s H_error tensor(20.1186, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3296, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.759 s H_error tensor(39.3071, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3306, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 30 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2609,10 +2609,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.534220457077026 s
+finished clustering in 19.53981876373291 s
 stopped after 9 iterations
-18.822 s H_error tensor(225.0715, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3186, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.833 s H_error tensor(467.8381, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3203, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 30 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2621,10 +2621,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.980538368225098 s
+finished clustering in 18.169599771499634 s
 stopped after 9 iterations
-18.273 s H_error tensor(234.6375, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3189, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.463 s H_error tensor(482.4424, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3200, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 30 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2633,10 +2633,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.892099618911743 s
+finished clustering in 18.10250425338745 s
 stopped after 9 iterations
-18.183 s H_error tensor(198.8140, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3129, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.397 s H_error tensor(401.1374, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3151, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 30 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2645,10 +2645,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.878703832626343 s
+finished clustering in 18.088494777679443 s
 stopped after 9 iterations
-18.162 s H_error tensor(17.5679, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3205, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.375 s H_error tensor(35.7392, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3213, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 30 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2657,10 +2657,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.99526810646057 s
+finished clustering in 45.64675211906433 s
 stopped after 9 iterations
-45.898 s H_error tensor(385.4886, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3174, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.563 s H_error tensor(766.8120, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3175, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 30 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2669,10 +2669,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.00051832199097 s
+finished clustering in 46.01013779640198 s
 stopped after 9 iterations
-45.913 s H_error tensor(340.1346, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3173, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.936 s H_error tensor(673.3339, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3173, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 30 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2681,10 +2681,10 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 44.584988832473755 s
+finished clustering in 46.05653786659241 s
 stopped after 9 iterations
-45.983 s H_error tensor(29.0266, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3469, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+47.503 s H_error tensor(58.8443, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3503, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 31 self_attn.q_proj
 Pruning ...
 Normalized clustering
@@ -2693,10 +2693,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.572020053863525 s
+finished clustering in 19.492449522018433 s
 stopped after 9 iterations
-18.856 s H_error tensor(160.2616, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3182, device='cuda:7', grad_fn=<DivBackward0>)
-43125 MiB free out of 48676 MiB total
+19.784 s H_error tensor(320.5583, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3183, device='cuda:6', grad_fn=<DivBackward0>)
+38281 MiB free out of 48676 MiB total
 31 self_attn.k_proj
 Pruning ...
 Normalized clustering
@@ -2705,10 +2705,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 17.952353715896606 s
+finished clustering in 18.179638147354126 s
 stopped after 9 iterations
-18.244 s H_error tensor(177.0475, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3193, device='cuda:7', grad_fn=<DivBackward0>)
-43157 MiB free out of 48676 MiB total
+18.473 s H_error tensor(353.3711, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3194, device='cuda:6', grad_fn=<DivBackward0>)
+38313 MiB free out of 48676 MiB total
 31 self_attn.v_proj
 Pruning ...
 Normalized clustering
@@ -2717,10 +2717,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.205953359603882 s
+finished clustering in 18.136709690093994 s
 stopped after 9 iterations
-18.5 s H_error tensor(113.8908, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3133, device='cuda:7', grad_fn=<DivBackward0>)
-43189 MiB free out of 48676 MiB total
+18.432 s H_error tensor(226.5860, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3134, device='cuda:6', grad_fn=<DivBackward0>)
+38345 MiB free out of 48676 MiB total
 31 self_attn.o_proj
 Pruning ...
 Normalized clustering
@@ -2729,10 +2729,10 @@ using all the columns
 torch.Size([4096, 1024, 4]) torch.Size([1024, 4])
 torch.Size([4194304, 4])
 torch.Size([4194304, 4])
-finished clustering in 18.26839280128479 s
+finished clustering in 18.112359762191772 s
 stopped after 9 iterations
-18.573 s H_error tensor(109.6896, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3242, device='cuda:7', grad_fn=<DivBackward0>)
-43221 MiB free out of 48676 MiB total
+18.413 s H_error tensor(163.0121, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3247, device='cuda:6', grad_fn=<DivBackward0>)
+38409 MiB free out of 48676 MiB total
 31 mlp.gate_proj
 Pruning ...
 Normalized clustering
@@ -2741,10 +2741,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.88499617576599 s
+finished clustering in 45.654699087142944 s
 stopped after 9 iterations
-46.783 s H_error tensor(329.5021, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3184, device='cuda:7', grad_fn=<DivBackward0>)
-43167 MiB free out of 48676 MiB total
+46.566 s H_error tensor(663.5897, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3192, device='cuda:6', grad_fn=<DivBackward0>)
+38183 MiB free out of 48676 MiB total
 31 mlp.up_proj
 Pruning ...
 Normalized clustering
@@ -2753,10 +2753,10 @@ using all the columns
 torch.Size([11008, 1024, 4]) torch.Size([1024, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.553438663482666 s
+finished clustering in 46.00599694252014 s
 stopped after 9 iterations
-46.464 s H_error tensor(304.8575, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.3194, device='cuda:7', grad_fn=<DivBackward0>)
-43113 MiB free out of 48676 MiB total
+46.935 s H_error tensor(613.3081, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.3205, device='cuda:6', grad_fn=<DivBackward0>)
+38301 MiB free out of 48676 MiB total
 31 mlp.down_proj
 Pruning ...
 Normalized clustering
@@ -2765,13 +2765,13 @@ using all the columns
 torch.Size([4096, 2752, 4]) torch.Size([2752, 4])
 torch.Size([11272192, 4])
 torch.Size([11272192, 4])
-finished clustering in 45.200926780700684 s
+finished clustering in 45.52631974220276 s
 stopped after 9 iterations
-46.617 s H_error tensor(73.3413, device='cuda:7', grad_fn=<ViewBackward0>) average_error tensor(0.4058, device='cuda:7', grad_fn=<DivBackward0>)
-43431 MiB free out of 48676 MiB total
+46.99 s H_error tensor(135.9516, device='cuda:6', grad_fn=<ViewBackward0>) average_error tensor(0.4048, device='cuda:6', grad_fn=<DivBackward0>)
+38447 MiB free out of 48676 MiB total
 Total bits: 12995657728.0 Total params: 6476005376
 average bits per value: 2.0067397992227978
-7067.530824422836
+7517.4855699539185
 Loading tokenizer for meta-llama/Llama-2-7b-hf
 /home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
   warnings.warn(
@@ -2809,4 +2809,4 @@ Evaluating ...
 29
 30
 31
-Perplexity: 9.060719
+Perplexity: 8.344377

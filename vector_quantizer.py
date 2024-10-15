@@ -8,6 +8,7 @@ import transformers
 import packbits
 import tqdm
 from quant import *
+import low_rank_and_vector as lora_quantizer
 
 
 DEBUG = False 
@@ -101,6 +102,9 @@ def cluster(X, k, weights, n_iter = 100,
     #randomly select k centriods
     if centriods is None:
         n_1 = torch.from_numpy(np.random.choice(n, k, replace = False)).to(device)
+        # print("n_1", n_1)
+        # print("max", torch.max(n_1), "min", torch.min(n_1))
+        # print(X.shape)
         centriods = X[n_1, :]
         # print(centriods)
     #shape of (k, d)
@@ -118,8 +122,10 @@ def cluster(X, k, weights, n_iter = 100,
         assignments_old = assignments.clone()
     return assignments, centriods
     
-    
 
+
+
+    
 
 class VectorQuantizerTemp:
 
@@ -137,20 +143,29 @@ class VectorQuantizerTemp:
                                 dtype=W.dtype)
         self.nsamples = 0
 
+    def set_n_samples(self, nsamples):
+        self.nsamples = nsamples
+        
     def add_batch(self, inp, out, blocksize=1024):
         if DEBUG:
             self.inp1 = inp
             self.out1 = out
         if len(inp.shape) == 2:
             inp = inp.unsqueeze(0)
-        tmp = inp.shape[0]
+        # tmp = inp.shape[0]
         if isinstance(self.layer, nn.Linear) or isinstance(self.layer, transformers.Conv1D):
             if len(inp.shape) == 3:
                 inp = inp.reshape((-1, inp.shape[-1]))
             inp = inp.t()
-        self.H *= self.nsamples / (self.nsamples + tmp)
-        self.nsamples += tmp
-        inp = math.sqrt(2 / self.nsamples) * inp.float()
+        # self.H *= self.nsamples / (self.nsamples + tmp)
+        # self.nsamples += tmp
+        inp_use = math.sqrt(2 / self.nsamples) * inp.float()
+        H_tmp = inp_use.matmul(inp_use.t())
+        # if not torch.all(torch.isfinite(torch.linalg.cholesky(H_tmp))):
+        #     print("Warning: Hessian is not positive definite")
+        #     torch.save({'weights': self.layer.weight.data, 'H': self.H, 'H_tmp': H_tmp,
+        #                 'inp': inp}, 'test/weights_error.pt')
+        #     raise ValueError("Hessian is not positive definite")
         self.H += inp.matmul(inp.t())
 
     def fastquant(
@@ -376,7 +391,6 @@ class VectorQuantizerTemp:
         H_diag = H[column_mask,column_mask][subvector_assignments]
         #shape of (n, m/d, d)
 
-
         mappings, codebooks = cluster(weights_reshaped.reshape(-1,subvector_dim), k_codebook, H_diag.unsqueeze(0).expand(weights_reshaped.shape[0], -1, -1).reshape(-1, subvector_dim), n_iter = n_iters,
                                       device = self.dev, disable_tqdm=True)
 
@@ -429,10 +443,12 @@ class VectorQuantizerTemp:
             keep_top_colwise = 1,
             lr:float = 10,
             lr_multiple:float = 0.9,
-            n_iters:int = 100,
+            n_iters_cluster:int = 100,
+            n_iters:int = 1000,
             clamp_gradients:float = 1e-1,
             eps:float = 1e-4,
-            patience:int = 10):
+            patience:int = 50):
+    
         
         W = self.layer.weight.data.clone()
         if isinstance(self.layer, nn.Conv2d):
@@ -503,7 +519,7 @@ class VectorQuantizerTemp:
 
         mappings, codebooks = cluster(weights_reshaped.reshape(-1,subvector_dim), k_codebook, 
                                       (H_diag.unsqueeze(0).expand(weights_reshaped.shape[0], -1, -1) * denormalize_matrix[:,subvector_assignments]).reshape(-1, subvector_dim), 
-                                      n_iter = n_iters,
+                                      n_iter = n_iters_cluster,
                                       device = self.dev, disable_tqdm=True)
 
         prev_loss = float('inf')
@@ -523,6 +539,7 @@ class VectorQuantizerTemp:
             average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
 
             H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff)
+            print(H_error.item(), average_error.item())
             # print(f"average error {average_error}, H error {H_error}")
             H_error.backward()
 
@@ -549,11 +566,72 @@ class VectorQuantizerTemp:
 
         tock = time.time()
         print(round(tock-tick,3),"s","H_error", H_error, "average_error", average_error)
+        raise ValueError("stop")
         if isinstance(self.layer, transformers.Conv1D):
             weights_quantized = weights_quantized.t()
         self.layer.weight.data = weights_quantized.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
         # raise ValueError("stop")
         return total_bits, weights_quantized.numel()
+    
+    def low_rank(self,low_rank_frac:float = 1/16,
+                    n_bits:int = 6,
+                    sparse_rowise:float = 0,
+                    sparse_rowsie_criterion:list[str] = ["weight"],
+                    sparse_colwise:float = 0.5,
+                    sparse_colwise_criterion:list[str] = ["weight","hessian"],
+                    lr:float = 1e-2,
+                    lr_multiplier:float = 0.9,
+                    grad_clip = 1e-1,
+                    eps:float = 1e-3,
+                    n_iters = 1000,
+                    patience = 100
+    ):
+        
+        W = self.layer.weight.data.clone()
+        if isinstance(self.layer, nn.Conv2d):
+            W = W.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        W = W.float()
+
+        if hasattr(self, 'quantizer'):
+            raise ValueError("not supported")   
+            if not self.quantizer.ready():
+                self.quantizer.find_params(W, weight=True)
+
+        tick = time.time()
+
+        H = self.H
+        H = H.float()
+        H = torch.clip(H, -1e6, 1e6)
+        H += torch.eye(H.shape[0], device = H.device) * 1e-5
+        del self.H
+        
+        torch.save({'weights': W, 'H': H}, 'test/original_weights_test.pt')
+        # raise ValueError("stop")
+        weights_reconstructed, total_bits = lora_quantizer.low_rank_and_quantize(W, H, low_rank_frac = low_rank_frac,
+                                                                        n_bits = n_bits,
+                                                                        sparse_rowise = sparse_rowise,
+                                                                        sparse_rowsie_criterion = sparse_rowsie_criterion,
+                                                                        sparse_colwise = sparse_colwise,
+                                                                        sparse_colwise_criterion = sparse_colwise_criterion,
+                                                                        lr = lr,
+                                                                        lr_multiplier = lr_multiplier,
+                                                                        grad_clip = grad_clip,
+                                                                        eps = eps,
+                                                                        n_iters = n_iters,
+                                                                        patience = patience,
+                                                                        device = self.dev)
+        tock = time.time()
+        print("total time taken",round(tock-tick,3),"s")
+
+        if isinstance(self.layer, transformers.Conv1D):
+            weights_reconstructed = weights_reconstructed.t()
+        self.layer.weight.data = weights_reconstructed.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        # raise ValueError("stop")
+        return total_bits, weights_reconstructed.numel()
+        
+
     
     
 

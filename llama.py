@@ -1,3 +1,4 @@
+CUDA_LAUNCH_BLOCKING=1
 import time
 
 import torch
@@ -9,7 +10,8 @@ from modelutils import *
 from quant import *
 import random 
 import numpy as np
-import fine_tune
+import fine_tune as lora_fine_tune
+import src.finetune as finetune
 
 
 try:
@@ -28,7 +30,7 @@ def get_llama(model):
     torch.nn.init.normal_ = skip
     from transformers import LlamaForCausalLM
     model = LlamaForCausalLM.from_pretrained(model, torch_dtype='auto')
-    model.seqlen = 2048
+    model.seqlen = 4096
     print("Model loaded.", model)
     return model
 
@@ -49,7 +51,7 @@ def llama_sequential(model, dataloader, dev):
     inps = torch.zeros(
         (args.nsamples, model.seqlen, model.config.hidden_size), dtype=dtype, device=dev
     )
-    cache = {"i": 0, "attention_mask": None}
+    cache = {"i": 0, "attention_mask": None, "position_ids": None}
 
     class Catcher(nn.Module):
         def __init__(self, module):
@@ -60,6 +62,7 @@ def llama_sequential(model, dataloader, dev):
             inps[cache["i"]] = inp
             cache["i"] += 1
             cache["attention_mask"] = kwargs["attention_mask"]
+            cache["position_ids"] = kwargs["position_ids"]
             raise ValueError
 
     layers[0] = Catcher(layers[0])
@@ -78,6 +81,7 @@ def llama_sequential(model, dataloader, dev):
 
     outs = torch.zeros_like(inps)
     attention_mask = cache["attention_mask"]
+    position_ids = cache["position_ids"]
 
     print("Ready.")
 
@@ -88,30 +92,6 @@ def llama_sequential(model, dataloader, dev):
     for i in range(len(layers)):
         layer = layers[i].to(dev)
         
-        if args.fine_tune:
-            if i > 0:
-                with torch.no_grad():
-                    for j in range(args.nsamples):
-                        layers_target_output[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
-                    # layers_target_output = layer(layers_target_output, attention_mask=attention_mask)
-                
-                layer = fine_tune.finetune_module(layer, inps, layers_target_output, lora=args.lora_fine_tune, lora_kwargs={
-                                            "rank": args.lora_rank, "alpha": args.lora_alpha}, n_iters=args.fine_tune_n_iters,
-                                            lambda_regul=0.1)
-                
-                # return 
-                    
-            
-            else:
-                with torch.no_grad():
-                    print("initial layer")
-                    print(inps.shape)
-                    print(inps.shape)
-                    layers_target_output = torch.zeros_like(inps)
-                    for j in range(args.nsamples):
-                        layers_target_output[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
-                    print(layers_target_output.shape)   
-        # else:
         #     if i > 0:
         #         return
             
@@ -137,6 +117,7 @@ def llama_sequential(model, dataloader, dev):
                 ) == (not args.invert):
                     continue
                 gpts[name] = VectorQuantizerTemp(subset[name])
+                gpts[name].set_n_samples(args.nsamples)
                 if args.wbits < 16:
                     raise Exception("Quantization not supported.")
                     gpts[name].quantizer = Quantizer()
@@ -155,6 +136,7 @@ def llama_sequential(model, dataloader, dev):
                 for name in subset:
                     handles.append(subset[name].register_forward_hook(add_batch(name)))
                 for j in range(args.nsamples):
+                    # print("j", j)
                     outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
                 for h in handles:
                     h.remove()
@@ -188,6 +170,18 @@ def llama_sequential(model, dataloader, dev):
                         n_iters = args.n_iters,
                         clamp_gradients = args.clamp_gradients
                     )
+                elif args.low_rank:
+                    print("Low rank")
+                    n_bits, n_params = gpts[name].low_rank(
+                        low_rank_frac = args.low_rank_frac,
+                        n_bits = args.lora_n_bits,
+                        sparse_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
+                        sparse_colwise = args.keep_top_colwise if args.keep_top != 0 else 0,
+                        lr = args.lr,
+                        lr_multiplier = args.lr_multiple,
+                        n_iters = args.n_iters,
+                        grad_clip = args.clamp_gradients
+                    )
                 else:
                     n_bits, n_params = gpts[name].fastquant(
                         subvector_dim = args.subvector_dim,
@@ -200,6 +194,7 @@ def llama_sequential(model, dataloader, dev):
                         n_iters = args.n_iters,
                         clamp_gradients = args.clamp_gradients
                     )
+                
                 gpts[name].free()
                 free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
                 print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
@@ -209,6 +204,18 @@ def llama_sequential(model, dataloader, dev):
 
                 # return quantizers
         # return quantizers
+        if args.fine_tune:
+            print("Fine tuning ...")
+            finetune.finetune_groupwise(
+                layer,
+                inps,
+                outs,
+                devices= [dev],
+                args = args,
+                **{"attention_mask": attention_mask,
+                     "position_ids": position_ids}
+            )
+            print("Fine tuned")
 
         with torch.no_grad():
             for j in range(args.nsamples):
@@ -405,13 +412,13 @@ if __name__ == "__main__":
         nargs="+"
     )
     parser.add_argument(
-        "--lr", type=float, default=10, help="Learning rate for quantization."
+        "--lr", type=float, default=1e-3, help="Learning rate for quantization."
     )
     parser.add_argument(
         "--lr_multiple", type=float, default=0.9, help="Learning rate multiple."
     )
     parser.add_argument(
-        "--n_iters", type=int, default=100, help="Number of iterations."
+        "--n_iters", type=int, default=1000, help="Number of iterations."
     )
     parser.add_argument(
         "--clamp_gradients", type=float, default=0.1, help="Clamp gradients."
@@ -424,13 +431,13 @@ if __name__ == "__main__":
         "--structured_sparsity", action="store_true", help="Whether to use structured sparsity."
     )
     parser.add_argument(
-        "--keep_top_rowise", type=float, default=0.45, help="Keep top k rowise."
+        "--keep_top_rowise", type=float, default=0, help="Keep top k rowise."
     )
     parser.add_argument(
-        "--keep_top_colwise", type=float, default=0.9, help="Keep top k colwise."
+        "--keep_top_colwise", type=float, default=0, help="Keep top k colwise."
     )
     parser.add_argument(
-        "--fine_tune", action="store_true", help="Whether to fine tune the model."
+        "--next_layer_finetune", action="store_true", help="Whether to fine tune the model."
     )
     parser.add_argument(
         "--lora_fine_tune", action="store_true", help="Whether to use LoRA for fine tuning."
@@ -444,11 +451,71 @@ if __name__ == "__main__":
     parser.add_argument(
         "--fine_tune_n_iters", type=int, default=10, help="Number of iterations for fine tuning."
     )
+    parser.add_argument(
+        "--fine_tune", action="store_true", help="Whether to fine tune the model."
+    )
     
     parser.add_argument(
         "--normalized_clustering", action="store_true", help="Whether to use normalized clustering."
     )
+    parser.add_argument(
+        "--low_rank", action="store_true", help="Whether to use low rank approximation."
+    )
+    parser.add_argument(
+        "--low_rank_frac", type=float, default = 1/16, help="Low rank dimension."
+    )
+    parser.add_argument(
+        "--lora_n_bits", type=int, default=8, help="Number of bits for LoRA."
+    )
 
+    parser.add_argument(
+        "--finetune_max_epochs",
+        type=int,
+        default=5,
+        help="Run this many passes over training data when doing finetuning; No finetuning if set to 0.",
+    )
+    parser.add_argument(
+        "--finetune_early_stop",
+        type=int,
+        default=3,
+        help="Terminate finetuning if loss doesn't improve after this number of epochs.",
+    )
+    parser.add_argument(
+        "--finetune_lr",
+        type=float,
+        default=1e-5,
+        help="Finetuning learning rate",
+    )
+    parser.add_argument(
+        "--finetune_batch_size",
+        type=int,
+        default=1,
+        help="(finetuning only) train on batches of this many sequences, globally across all GPUs",
+    )
+    parser.add_argument(
+        "--offload_activations",
+        action="store_true",
+        help="Offload activations to RAM to save GPU memory.",
+    )
+    parser.add_argument(
+        "--finetune_adam_beta1",
+        type=float,
+        default=0.9,
+        help="Finetuning adam_beta1",
+    )
+    parser.add_argument(
+        "--finetune_adam_beta2",
+        type=float,
+        default=0.95,
+        help="Finetuning adam_beta2",
+    )
+    parser.add_argument("--finetune_keep_best", action="store_true")
+    parser.add_argument(
+        "--local_batch_size",
+        type=int,
+        default=None,
+        help="(finetuning only) Per-device and per-forward-pass batch size used to accumulate global --batch_size",
+    )
     args = parser.parse_args()
 
     # init W&B logging
@@ -458,6 +525,7 @@ if __name__ == "__main__":
 
     model = get_llama(args.model)
     model.eval()
+    print(model.seqlen)
 
     dataloader, testloader = get_loaders(
         args.dataset, nsamples=args.nsamples, seed=args.seed, model=args.model, seqlen=model.seqlen

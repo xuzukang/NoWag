@@ -1,0 +1,4169 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.03s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.50it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.39it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+Ready.
+0 self_attn.q_proj
+Pruning ...
+Low rank
+1/10000: 5.035s/50345.221s: average_error =  0.23604699969291687 H_error =  596.4354858398438
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+501/10000: 16.324s/325.82s: average_error =  0.2367573380470276 H_error =  17.317001342773438
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+reducing lr to  2.0546676624565718e-10
+reducing lr to  1.8492008962109147e-10
+reducing lr to  1.6642808065898232e-10
+reducing lr to  1.497852725930841e-10
+reducing lr to  1.348067453337757e-10
+reducing lr to  1.2132607080039814e-10
+reducing lr to  1.0919346372035833e-10
+reducing lr to  9.82741173483225e-11
+reducing lr to  8.844670561349026e-11
+reducing lr to  7.960203505214123e-11
+reducing lr to  7.164183154692712e-11
+reducing lr to  6.447764839223441e-11
+reducing lr to  5.802988355301097e-11
+reducing lr to  5.2226895197709874e-11
+reducing lr to  4.7004205677938887e-11
+reducing lr to  4.2303785110145e-11
+reducing lr to  3.80734065991305e-11
+reducing lr to  3.426606593921745e-11
+reducing lr to  3.083945934529571e-11
+reducing lr to  2.7755513410766138e-11
+reducing lr to  2.4979962069689525e-11
+reducing lr to  2.2481965862720573e-11
+reducing lr to  2.0233769276448516e-11
+reducing lr to  1.8210392348803664e-11
+reducing lr to  1.6389353113923297e-11
+reducing lr to  1.475041780253097e-11
+reducing lr to  1.3275376022277872e-11
+reducing lr to  1.1947838420050085e-11
+reducing lr to  1.0753054578045076e-11
+stopped after 909 iterations, final average error 0.2368272840976715 final H error 15.708982467651367
+25.591 s H_error tensor(15.7090, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.2368, device='cuda:5', grad_fn=<DivBackward0>)
+25.604 s H_error tensor(15.7090, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.2368, device='cuda:5', grad_fn=<DivBackward0>)
+39141 MiB free out of 48676 MiB total
+0 self_attn.k_proj
+Pruning ...
+Low rank
+1/10000: 3.479s/34787.848s: average_error =  0.18060283362865448 H_error =  477.89697265625
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+501/10000: 14.778s/294.977s: average_error =  0.1871417909860611 H_error =  11.245195388793945
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+reducing lr to  2.0546676624565718e-10
+reducing lr to  1.8492008962109147e-10
+reducing lr to  1.6642808065898232e-10
+reducing lr to  1.497852725930841e-10
+reducing lr to  1.348067453337757e-10
+reducing lr to  1.2132607080039814e-10
+reducing lr to  1.0919346372035833e-10
+reducing lr to  9.82741173483225e-11
+reducing lr to  8.844670561349026e-11
+reducing lr to  7.960203505214123e-11
+reducing lr to  7.164183154692712e-11
+reducing lr to  6.447764839223441e-11
+reducing lr to  5.802988355301097e-11
+reducing lr to  5.2226895197709874e-11
+reducing lr to  4.7004205677938887e-11
+reducing lr to  4.2303785110145e-11
+reducing lr to  3.80734065991305e-11
+reducing lr to  3.426606593921745e-11
+stopped after 958 iterations, final average error 0.18740400671958923 final H error 8.923698425292969
+25.161 s H_error tensor(8.9237, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.1874, device='cuda:5', grad_fn=<DivBackward0>)
+25.163 s H_error tensor(8.9237, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.1874, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+0 self_attn.v_proj
+Pruning ...
+Low rank
+1/10000: 3.294s/32944.338s: average_error =  0.7427986264228821 H_error =  67.5224380493164
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+501/10000: 14.742s/294.258s: average_error =  0.761580228805542 H_error =  19.18809700012207
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+1001/10000: 26.208s/261.814s: average_error =  0.7672068476676941 H_error =  16.774036407470703
+1501/10000: 37.682s/251.045s: average_error =  0.7704868912696838 H_error =  15.65717887878418
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+stopped after 1860 iterations, final average error 0.7716804146766663 final H error 15.285703659057617
+45.948 s H_error tensor(15.2857, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7717, device='cuda:5', grad_fn=<DivBackward0>)
+45.95 s H_error tensor(15.2857, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7717, device='cuda:5', grad_fn=<DivBackward0>)
+39015 MiB free out of 48676 MiB total
+0 self_attn.o_proj
+Pruning ...
+Low rank
+1/10000: 3.231s/32312.946s: average_error =  0.7795804142951965 H_error =  4.085714817047119
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+stopped after 224 iterations, final average error 0.7793183922767639 final H error 2.5096254348754883
+8.379 s H_error tensor(2.5096, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7793, device='cuda:5', grad_fn=<DivBackward0>)
+8.381 s H_error tensor(2.5096, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7793, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+0 mlp.gate_proj
+Pruning ...
+Low rank
+1/10000: 3.71s/37097.263s: average_error =  0.788027286529541 H_error =  1440.080810546875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+501/10000: 39.104s/780.517s: average_error =  0.8148327469825745 H_error =  938.0726928710938
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+1001/10000: 74.641s/745.664s: average_error =  0.8175700902938843 H_error =  920.9031372070312
+1501/10000: 110.189s/734.104s: average_error =  0.8184321522712708 H_error =  914.466064453125
+2001/10000: 145.743s/728.351s: average_error =  0.8187980651855469 H_error =  910.857177734375
+2501/10000: 181.296s/724.895s: average_error =  0.8189517855644226 H_error =  908.6422729492188
+3001/10000: 217.076s/723.347s: average_error =  0.8190088868141174 H_error =  907.1824951171875
+3501/10000: 252.79s/722.05s: average_error =  0.8190193176269531 H_error =  906.1768798828125
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+stopped after 3952 iterations, final average error 0.8190125226974487 final H error 905.6265258789062
+284.939 s H_error tensor(905.6265, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8190, device='cuda:5', grad_fn=<DivBackward0>)
+284.943 s H_error tensor(905.6265, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8190, device='cuda:5', grad_fn=<DivBackward0>)
+38995 MiB free out of 48676 MiB total
+0 mlp.up_proj
+Pruning ...
+Low rank
+1/10000: 3.787s/37873.254s: average_error =  0.8096811175346375 H_error =  1485.6632080078125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+501/10000: 39.363s/785.693s: average_error =  0.8371967673301697 H_error =  958.0973510742188
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+1001/10000: 74.947s/748.719s: average_error =  0.8397345542907715 H_error =  941.1862182617188
+1501/10000: 110.513s/736.265s: average_error =  0.8404830098152161 H_error =  934.9005737304688
+2001/10000: 146.074s/730.007s: average_error =  0.8407812118530273 H_error =  931.3349609375
+2501/10000: 181.633s/726.24s: average_error =  0.8408968448638916 H_error =  929.1052856445312
+3001/10000: 217.197s/723.749s: average_error =  0.8409326672554016 H_error =  927.6171264648438
+3501/10000: 252.778s/722.017s: average_error =  0.840932309627533 H_error =  926.571533203125
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+4001/10000: 288.356s/720.711s: average_error =  0.8409174680709839 H_error =  925.8604736328125
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+stopped after 4067 iterations, final average error 0.8409174680709839 final H error 925.8604736328125
+293.1 s H_error tensor(925.8605, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8409, device='cuda:5', grad_fn=<DivBackward0>)
+293.103 s H_error tensor(925.8605, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8409, device='cuda:5', grad_fn=<DivBackward0>)
+38943 MiB free out of 48676 MiB total
+0 mlp.down_proj
+Pruning ...
+Low rank
+1/10000: 4.749s/47494.814s: average_error =  0.8720218539237976 H_error =  8.324161529541016
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+stopped after 175 iterations, final average error 0.8720290660858154 final H error 8.2026948928833
+26.039 s H_error tensor(8.2027, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8720, device='cuda:5', grad_fn=<DivBackward0>)
+26.042 s H_error tensor(8.2027, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8720, device='cuda:5', grad_fn=<DivBackward0>)
+38797 MiB free out of 48676 MiB total
+1 self_attn.q_proj
+Pruning ...
+Low rank
+1/10000: 4.971s/49709.01s: average_error =  0.5006752014160156 H_error =  8702.9267578125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+501/10000: 16.518s/329.7s: average_error =  0.5548220276832581 H_error =  909.0537109375
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+1001/10000: 28.064s/280.359s: average_error =  0.5648488998413086 H_error =  790.5917358398438
+1501/10000: 39.627s/264.006s: average_error =  0.5690363049507141 H_error =  737.5693969726562
+2001/10000: 51.188s/255.814s: average_error =  0.571600615978241 H_error =  713.6217041015625
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+2501/10000: 62.737s/250.848s: average_error =  0.5722038149833679 H_error =  683.0509033203125
+3001/10000: 74.289s/247.547s: average_error =  0.5726799368858337 H_error =  669.6058349609375
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+3501/10000: 85.847s/245.206s: average_error =  0.5729814171791077 H_error =  659.8113403320312
+4001/10000: 97.409s/243.461s: average_error =  0.573074996471405 H_error =  652.4537353515625
+4501/10000: 108.96s/242.079s: average_error =  0.5731539726257324 H_error =  647.586181640625
+5001/10000: 120.514s/240.979s: average_error =  0.5732033848762512 H_error =  643.7613525390625
+5501/10000: 132.068s/240.081s: average_error =  0.5732341408729553 H_error =  640.5985107421875
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+6001/10000: 143.623s/239.331s: average_error =  0.5732455253601074 H_error =  638.3446044921875
+6501/10000: 155.173s/238.692s: average_error =  0.5732446312904358 H_error =  636.6043701171875
+7001/10000: 166.734s/238.157s: average_error =  0.5732353329658508 H_error =  635.075927734375
+7501/10000: 178.289s/237.687s: average_error =  0.5732197761535645 H_error =  633.6987915039062
+8001/10000: 189.836s/237.265s: average_error =  0.5731991529464722 H_error =  632.4430541992188
+8501/10000: 201.382s/236.892s: average_error =  0.5731742978096008 H_error =  631.2894287109375
+9001/10000: 212.929s/236.561s: average_error =  0.5731456875801086 H_error =  630.2241821289062
+9501/10000: 224.485s/236.275s: average_error =  0.5731133222579956 H_error =  629.2365112304688
+236.004 s H_error tensor(628.3213, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.5731, device='cuda:5', grad_fn=<DivBackward0>)
+236.006 s H_error tensor(628.3213, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.5731, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+1 self_attn.k_proj
+Pruning ...
+Low rank
+1/10000: 3.46s/34597.58s: average_error =  0.47296175360679626 H_error =  8992.2138671875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+501/10000: 14.947s/298.353s: average_error =  0.5294302105903625 H_error =  960.3612060546875
+1001/10000: 26.443s/264.161s: average_error =  0.5422517657279968 H_error =  868.6328735351562
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+1501/10000: 37.928s/252.687s: average_error =  0.5511274933815002 H_error =  812.6906127929688
+reducing lr to  0.0006461081889226679
+2001/10000: 49.419s/246.973s: average_error =  0.5552857518196106 H_error =  767.7997436523438
+2501/10000: 60.911s/243.545s: average_error =  0.5580902099609375 H_error =  751.241455078125
+reducing lr to  0.0005814973700304011
+3001/10000: 72.403s/241.264s: average_error =  0.5604177713394165 H_error =  739.6666870117188
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+3501/10000: 83.905s/239.662s: average_error =  0.5618649125099182 H_error =  709.7434692382812
+reducing lr to  0.00038152042447694626
+4001/10000: 95.394s/238.425s: average_error =  0.5619324445724487 H_error =  694.56884765625
+4501/10000: 106.892s/237.484s: average_error =  0.5619319677352905 H_error =  686.6551513671875
+reducing lr to  0.00034336838202925164
+5001/10000: 118.375s/236.703s: average_error =  0.5619401335716248 H_error =  678.122802734375
+reducing lr to  0.0003090315438263265
+5501/10000: 129.856s/236.059s: average_error =  0.5618513226509094 H_error =  671.542236328125
+6001/10000: 141.343s/235.532s: average_error =  0.5616413950920105 H_error =  666.84765625
+6501/10000: 152.84s/235.102s: average_error =  0.5614835023880005 H_error =  663.5173950195312
+reducing lr to  0.00027812838944369386
+7001/10000: 164.33s/234.724s: average_error =  0.5614175200462341 H_error =  659.2796630859375
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+7501/10000: 175.813s/234.386s: average_error =  0.5612834095954895 H_error =  655.9150390625
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+8001/10000: 187.306s/234.104s: average_error =  0.5611123442649841 H_error =  649.9535522460938
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+8501/10000: 198.799s/233.853s: average_error =  0.5608909726142883 H_error =  647.2581787109375
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+9001/10000: 210.289s/233.628s: average_error =  0.5607332587242126 H_error =  645.6512451171875
+9501/10000: 221.776s/233.424s: average_error =  0.5606074333190918 H_error =  644.4873657226562
+233.235 s H_error tensor(643.5057, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.5605, device='cuda:5', grad_fn=<DivBackward0>)
+233.237 s H_error tensor(643.5057, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.5605, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+1 self_attn.v_proj
+Pruning ...
+Low rank
+1/10000: 3.3s/32996.044s: average_error =  0.8135159015655518 H_error =  577.361328125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+501/10000: 14.792s/295.244s: average_error =  0.855398416519165 H_error =  176.99989318847656
+reducing lr to  0.004304672100000002
+1001/10000: 26.292s/262.654s: average_error =  0.8609589338302612 H_error =  166.15989685058594
+1501/10000: 37.79s/251.768s: average_error =  0.8629149794578552 H_error =  161.55941772460938
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+2001/10000: 49.287s/246.311s: average_error =  0.8634395003318787 H_error =  159.444091796875
+2501/10000: 60.781s/243.027s: average_error =  0.8635578155517578 H_error =  158.33326721191406
+3001/10000: 72.281s/240.857s: average_error =  0.8635246157646179 H_error =  157.49278259277344
+3501/10000: 83.781s/239.307s: average_error =  0.8633924722671509 H_error =  156.84259033203125
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+stopped after 3906 iterations, final average error 0.8632891178131104 final H error 156.54251098632812
+93.117 s H_error tensor(156.5425, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8633, device='cuda:5', grad_fn=<DivBackward0>)
+93.119 s H_error tensor(156.5425, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8633, device='cuda:5', grad_fn=<DivBackward0>)
+39237 MiB free out of 48676 MiB total
+1 self_attn.o_proj
+Pruning ...
+Low rank
+1/10000: 3.278s/32783.399s: average_error =  0.8372988104820251 H_error =  51.57845687866211
+501/10000: 14.967s/298.739s: average_error =  0.8431698083877563 H_error =  22.302684783935547
+1001/10000: 26.651s/266.249s: average_error =  0.8480260372161865 H_error =  19.05355453491211
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+stopped after 1225 iterations, final average error 0.8486726880073547 final H error 18.740097045898438
+31.898 s H_error tensor(18.7401, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8487, device='cuda:5', grad_fn=<DivBackward0>)
+31.9 s H_error tensor(18.7401, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8487, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+1 mlp.gate_proj
+Pruning ...
+Low rank
+1/10000: 3.759s/37588.089s: average_error =  0.7810283899307251 H_error =  5119.5888671875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+501/10000: 39.356s/785.558s: average_error =  0.806388795375824 H_error =  3262.296875
+1001/10000: 75.179s/751.039s: average_error =  0.807991623878479 H_error =  3199.553466796875
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+1501/10000: 110.864s/738.599s: average_error =  0.8076338171958923 H_error =  3173.92578125
+2001/10000: 146.418s/731.724s: average_error =  0.8072733283042908 H_error =  3160.785400390625
+2501/10000: 181.967s/727.576s: average_error =  0.8070632815361023 H_error =  3152.39013671875
+3001/10000: 217.521s/724.829s: average_error =  0.8069086074829102 H_error =  3146.59619140625
+3501/10000: 253.07s/722.852s: average_error =  0.80678391456604 H_error =  3142.404296875
+4001/10000: 288.601s/721.323s: average_error =  0.8066785335540771 H_error =  3139.25341796875
+4501/10000: 324.143s/720.158s: average_error =  0.8065872192382812 H_error =  3136.822998046875
+5001/10000: 359.681s/719.219s: average_error =  0.8065072894096375 H_error =  3134.90673828125
+5501/10000: 395.215s/718.441s: average_error =  0.8064373135566711 H_error =  3133.36865234375
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+stopped after 5731 iterations, final average error 0.8064230680465698 final H error 3133.03173828125
+411.618 s H_error tensor(3133.0317, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8064, device='cuda:5', grad_fn=<DivBackward0>)
+411.621 s H_error tensor(3133.0317, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8064, device='cuda:5', grad_fn=<DivBackward0>)
+39165 MiB free out of 48676 MiB total
+1 mlp.up_proj
+Pruning ...
+Low rank
+1/10000: 3.712s/37121.797s: average_error =  0.8595702052116394 H_error =  5411.4306640625
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+501/10000: 39.252s/783.473s: average_error =  0.8850815296173096 H_error =  3429.6787109375
+1001/10000: 74.782s/747.075s: average_error =  0.8863723278045654 H_error =  3350.01318359375
+1501/10000: 110.312s/734.925s: average_error =  0.8868552446365356 H_error =  3316.425537109375
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+2001/10000: 145.859s/728.929s: average_error =  0.8858526349067688 H_error =  3297.1865234375
+2501/10000: 181.42s/725.391s: average_error =  0.8851335644721985 H_error =  3286.296875
+3001/10000: 216.985s/723.043s: average_error =  0.8846566081047058 H_error =  3279.127685546875
+3501/10000: 252.537s/721.328s: average_error =  0.8843029737472534 H_error =  3274.091552734375
+4001/10000: 288.096s/720.061s: average_error =  0.884026825428009 H_error =  3270.393798828125
+4501/10000: 323.65s/719.063s: average_error =  0.8838037252426147 H_error =  3267.591796875
+5001/10000: 359.218s/718.292s: average_error =  0.883619487285614 H_error =  3265.41650390625
+5501/10000: 394.783s/717.656s: average_error =  0.8834642171859741 H_error =  3263.69384765625
+6001/10000: 430.335s/717.105s: average_error =  0.8833318948745728 H_error =  3262.3076171875
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+reducing lr to  2.0546676624565718e-10
+reducing lr to  1.8492008962109147e-10
+reducing lr to  1.6642808065898232e-10
+reducing lr to  1.497852725930841e-10
+reducing lr to  1.348067453337757e-10
+reducing lr to  1.2132607080039814e-10
+reducing lr to  1.0919346372035833e-10
+reducing lr to  9.82741173483225e-11
+reducing lr to  8.844670561349026e-11
+reducing lr to  7.960203505214123e-11
+reducing lr to  7.164183154692712e-11
+reducing lr to  6.447764839223441e-11
+reducing lr to  5.802988355301097e-11
+reducing lr to  5.2226895197709874e-11
+reducing lr to  4.7004205677938887e-11
+stopped after 6314 iterations, final average error 0.8832941055297852 final H error 3261.91552734375
+452.656 s H_error tensor(3261.9155, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8833, device='cuda:5', grad_fn=<DivBackward0>)
+452.659 s H_error tensor(3261.9155, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8833, device='cuda:5', grad_fn=<DivBackward0>)
+39197 MiB free out of 48676 MiB total
+1 mlp.down_proj
+Pruning ...
+Low rank
+1/10000: 4.707s/47069.163s: average_error =  0.8929497003555298 H_error =  33.77593231201172
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+stopped after 479 iterations, final average error 0.8957467675209045 final H error 27.89759063720703
+63.022 s H_error tensor(27.8976, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8957, device='cuda:5', grad_fn=<DivBackward0>)
+63.025 s H_error tensor(27.8976, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8957, device='cuda:5', grad_fn=<DivBackward0>)
+39429 MiB free out of 48676 MiB total
+2 self_attn.q_proj
+Pruning ...
+Low rank
+1/10000: 4.931s/49308.331s: average_error =  0.659337043762207 H_error =  10934.9697265625
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+final average error 0.6655982732772827, H error -1529.22265625
+5.162 s H_error tensor(-1529.2227, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.6656, device='cuda:5', grad_fn=<DivBackward0>)
+5.164 s H_error tensor(-1529.2227, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.6656, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+2 self_attn.k_proj
+Pruning ...
+Low rank
+1/10000: 3.4s/33996.356s: average_error =  0.6709337830543518 H_error =  11733.29296875
+reducing lr to  0.009000000000000001
+final average error 0.6733020544052124, H error -1323.27685546875
+3.491 s H_error tensor(-1323.2769, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.6733, device='cuda:5', grad_fn=<DivBackward0>)
+3.493 s H_error tensor(-1323.2769, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.6733, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+2 self_attn.v_proj
+Pruning ...
+Low rank
+1/10000: 3.298s/32980.759s: average_error =  0.8223665952682495 H_error =  4086.41259765625
+reducing lr to  0.009000000000000001
+final average error 0.8272550106048584, H error -678.22900390625
+3.481 s H_error tensor(-678.2290, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8273, device='cuda:5', grad_fn=<DivBackward0>)
+3.483 s H_error tensor(-678.2290, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8273, device='cuda:5', grad_fn=<DivBackward0>)
+39237 MiB free out of 48676 MiB total
+2 self_attn.o_proj
+Pruning ...
+Low rank
+1/10000: 3.291s/32913.301s: average_error =  0.843409538269043 H_error =  19.20380401611328
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+stopped after 468 iterations, final average error 0.8475279808044434 final H error 10.206302642822266
+14.194 s H_error tensor(10.2063, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8475, device='cuda:5', grad_fn=<DivBackward0>)
+14.196 s H_error tensor(10.2063, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8475, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+2 mlp.gate_proj
+Pruning ...
+Low rank
+1/10000: 3.763s/37626.765s: average_error =  0.8185476064682007 H_error =  8890.888671875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+501/10000: 39.457s/787.575s: average_error =  0.8555371165275574 H_error =  4981.43603515625
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+1001/10000: 74.987s/749.117s: average_error =  0.8582397699356079 H_error =  4843.087890625
+1501/10000: 110.528s/736.363s: average_error =  0.8592882752418518 H_error =  4781.609375
+2001/10000: 146.075s/730.009s: average_error =  0.8597272038459778 H_error =  4746.9755859375
+2501/10000: 181.626s/726.214s: average_error =  0.8599555492401123 H_error =  4726.1787109375
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+3001/10000: 217.191s/723.729s: average_error =  0.8589125871658325 H_error =  4705.98828125
+3501/10000: 252.734s/721.892s: average_error =  0.8580637574195862 H_error =  4692.19921875
+4001/10000: 288.29s/720.546s: average_error =  0.8574836254119873 H_error =  4682.36767578125
+4501/10000: 323.858s/719.524s: average_error =  0.8570476174354553 H_error =  4675.02197265625
+5001/10000: 359.425s/718.707s: average_error =  0.8566969037055969 H_error =  4669.31494140625
+5501/10000: 394.975s/718.006s: average_error =  0.8564075231552124 H_error =  4664.77685546875
+6001/10000: 430.537s/717.442s: average_error =  0.8561643958091736 H_error =  4661.10009765625
+6501/10000: 466.1s/716.966s: average_error =  0.8559567332267761 H_error =  4658.0712890625
+7001/10000: 501.666s/716.563s: average_error =  0.855776846408844 H_error =  4655.5419921875
+7501/10000: 537.215s/716.191s: average_error =  0.8556196689605713 H_error =  4653.40625
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+reducing lr to  2.0546676624565718e-10
+reducing lr to  1.8492008962109147e-10
+reducing lr to  1.6642808065898232e-10
+reducing lr to  1.497852725930841e-10
+reducing lr to  1.348067453337757e-10
+reducing lr to  1.2132607080039814e-10
+reducing lr to  1.0919346372035833e-10
+reducing lr to  9.82741173483225e-11
+reducing lr to  8.844670561349026e-11
+reducing lr to  7.960203505214123e-11
+reducing lr to  7.164183154692712e-11
+reducing lr to  6.447764839223441e-11
+reducing lr to  5.802988355301097e-11
+reducing lr to  5.2226895197709874e-11
+reducing lr to  4.7004205677938887e-11
+reducing lr to  4.2303785110145e-11
+reducing lr to  3.80734065991305e-11
+reducing lr to  3.426606593921745e-11
+reducing lr to  3.083945934529571e-11
+reducing lr to  2.7755513410766138e-11
+reducing lr to  2.4979962069689525e-11
+reducing lr to  2.2481965862720573e-11
+stopped after 7893 iterations, final average error 0.8555493950843811 final H error 4652.43408203125
+565.305 s H_error tensor(4652.4341, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8555, device='cuda:5', grad_fn=<DivBackward0>)
+565.309 s H_error tensor(4652.4341, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8555, device='cuda:5', grad_fn=<DivBackward0>)
+38995 MiB free out of 48676 MiB total
+2 mlp.up_proj
+Pruning ...
+Low rank
+1/10000: 3.762s/37615.995s: average_error =  0.8756366968154907 H_error =  8758.064453125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+501/10000: 39.484s/788.11s: average_error =  0.910042405128479 H_error =  4900.7109375
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+1001/10000: 75.028s/749.536s: average_error =  0.9117531776428223 H_error =  4777.4326171875
+1501/10000: 110.56s/736.574s: average_error =  0.9124406576156616 H_error =  4720.16796875
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+2001/10000: 146.112s/730.193s: average_error =  0.9113158583641052 H_error =  4681.53857421875
+2501/10000: 181.648s/726.3s: average_error =  0.9102230072021484 H_error =  4656.7841796875
+3001/10000: 217.188s/723.719s: average_error =  0.9095160365104675 H_error =  4640.09423828125
+3501/10000: 252.742s/721.914s: average_error =  0.9089812636375427 H_error =  4628.06982421875
+4001/10000: 288.284s/720.53s: average_error =  0.9085469245910645 H_error =  4619.03466796875
+4501/10000: 323.826s/719.454s: average_error =  0.9081863760948181 H_error =  4612.0634765625
+5001/10000: 359.379s/718.615s: average_error =  0.9078789949417114 H_error =  4606.54736328125
+5501/10000: 394.931s/717.925s: average_error =  0.9076191782951355 H_error =  4602.1298828125
+6001/10000: 430.591s/717.532s: average_error =  0.9073901772499084 H_error =  4598.5078125
+6501/10000: 466.314s/717.295s: average_error =  0.9071835875511169 H_error =  4595.4716796875
+7001/10000: 501.87s/716.855s: average_error =  0.9070133566856384 H_error =  4593.00146484375
+7501/10000: 537.424s/716.47s: average_error =  0.9068616628646851 H_error =  4590.9150390625
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+reducing lr to  2.0546676624565718e-10
+reducing lr to  1.8492008962109147e-10
+reducing lr to  1.6642808065898232e-10
+reducing lr to  1.497852725930841e-10
+reducing lr to  1.348067453337757e-10
+reducing lr to  1.2132607080039814e-10
+reducing lr to  1.0919346372035833e-10
+reducing lr to  9.82741173483225e-11
+reducing lr to  8.844670561349026e-11
+reducing lr to  7.960203505214123e-11
+stopped after 7970 iterations, final average error 0.9067662358283997 final H error 4589.60302734375
+570.811 s H_error tensor(4589.6030, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9068, device='cuda:5', grad_fn=<DivBackward0>)
+570.814 s H_error tensor(4589.6030, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9068, device='cuda:5', grad_fn=<DivBackward0>)
+38943 MiB free out of 48676 MiB total
+2 mlp.down_proj
+Pruning ...
+Low rank
+1/10000: 4.81s/48100.066s: average_error =  0.8975617289543152 H_error =  29.519912719726562
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+501/10000: 65.747s/1312.317s: average_error =  0.9011603593826294 H_error =  22.769561767578125
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+stopped after 514 iterations, final average error 0.9011603593826294 final H error 22.769561767578125
+67.397 s H_error tensor(22.7696, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9012, device='cuda:5', grad_fn=<DivBackward0>)
+67.4 s H_error tensor(22.7696, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9012, device='cuda:5', grad_fn=<DivBackward0>)
+38797 MiB free out of 48676 MiB total
+3 self_attn.q_proj
+Pruning ...
+Low rank
+1/10000: 4.943s/49432.027s: average_error =  0.739130973815918 H_error =  8114.1591796875
+final average error 0.7394852042198181, H error -3031.83251953125
+4.966 s H_error tensor(-3031.8325, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7395, device='cuda:5', grad_fn=<DivBackward0>)
+4.968 s H_error tensor(-3031.8325, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7395, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+3 self_attn.k_proj
+Pruning ...
+Low rank
+1/10000: 3.293s/32932.405s: average_error =  0.76095050573349 H_error =  20533.01953125
+final average error 0.7620640993118286, H error -7155.2041015625
+3.339 s H_error tensor(-7155.2041, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7621, device='cuda:5', grad_fn=<DivBackward0>)
+3.341 s H_error tensor(-7155.2041, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7621, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+3 self_attn.v_proj
+Pruning ...
+Low rank
+1/10000: 3.307s/33071.511s: average_error =  0.8363203406333923 H_error =  6296.5205078125
+final average error 0.8373839259147644, H error -1215.524658203125
+3.353 s H_error tensor(-1215.5247, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8374, device='cuda:5', grad_fn=<DivBackward0>)
+3.355 s H_error tensor(-1215.5247, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8374, device='cuda:5', grad_fn=<DivBackward0>)
+39237 MiB free out of 48676 MiB total
+3 self_attn.o_proj
+Pruning ...
+Low rank
+1/10000: 3.312s/33115.358s: average_error =  0.836513102054596 H_error =  46.57172393798828
+501/10000: 14.814s/295.695s: average_error =  0.8483602404594421 H_error =  13.838736534118652
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+stopped after 682 iterations, final average error 0.8487081527709961 final H error 13.710837364196777
+18.995 s H_error tensor(13.7108, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8487, device='cuda:5', grad_fn=<DivBackward0>)
+18.998 s H_error tensor(13.7108, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8487, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+3 mlp.gate_proj
+Pruning ...
+Low rank
+1/10000: 3.742s/37421.134s: average_error =  0.8715605139732361 H_error =  16024.970703125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+501/10000: 39.274s/783.911s: average_error =  0.9088484644889832 H_error =  7710.15478515625
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+1001/10000: 74.823s/747.479s: average_error =  0.9138219356536865 H_error =  7413.3125
+1501/10000: 110.371s/735.318s: average_error =  0.9151905179023743 H_error =  7285.67724609375
+2001/10000: 145.915s/729.21s: average_error =  0.9157648682594299 H_error =  7211.6552734375
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+2501/10000: 181.448s/725.502s: average_error =  0.9154375791549683 H_error =  7157.4208984375
+3001/10000: 217.004s/723.107s: average_error =  0.9142657518386841 H_error =  7115.88720703125
+3501/10000: 252.552s/721.372s: average_error =  0.9135400056838989 H_error =  7086.798828125
+4001/10000: 288.106s/720.085s: average_error =  0.9130042195320129 H_error =  7064.642578125
+4501/10000: 323.655s/719.074s: average_error =  0.9125709533691406 H_error =  7047.12109375
+5001/10000: 359.201s/718.258s: average_error =  0.9122035503387451 H_error =  7032.91650390625
+5501/10000: 394.749s/717.596s: average_error =  0.911885142326355 H_error =  7021.20361328125
+6001/10000: 430.296s/717.04s: average_error =  0.9116061329841614 H_error =  7011.423828125
+6501/10000: 465.846s/716.576s: average_error =  0.9113708138465881 H_error =  7003.3251953125
+7001/10000: 501.399s/716.182s: average_error =  0.9111666679382324 H_error =  6996.51025390625
+7501/10000: 536.95s/715.838s: average_error =  0.9109951257705688 H_error =  6990.7919921875
+8001/10000: 572.482s/715.513s: average_error =  0.9108386039733887 H_error =  6985.8291015625
+8501/10000: 608.017s/715.23s: average_error =  0.9106948971748352 H_error =  6981.4775390625
+9001/10000: 643.547s/714.973s: average_error =  0.9105613231658936 H_error =  6977.625
+9501/10000: 679.096s/714.763s: average_error =  0.9104399085044861 H_error =  6974.2138671875
+714.552 s H_error tensor(6971.1865, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9103, device='cuda:5', grad_fn=<DivBackward0>)
+714.555 s H_error tensor(6971.1865, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9103, device='cuda:5', grad_fn=<DivBackward0>)
+38995 MiB free out of 48676 MiB total
+3 mlp.up_proj
+Pruning ...
+Low rank
+1/10000: 3.723s/37233.567s: average_error =  0.8990955352783203 H_error =  14915.2099609375
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+501/10000: 39.488s/788.186s: average_error =  0.9348277449607849 H_error =  7071.43603515625
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+1001/10000: 75.267s/751.921s: average_error =  0.9417689442634583 H_error =  6762.55078125
+1501/10000: 111.038s/739.76s: average_error =  0.9419127106666565 H_error =  6641.8251953125
+2001/10000: 146.569s/732.479s: average_error =  0.9420442581176758 H_error =  6567.8896484375
+2501/10000: 182.089s/728.066s: average_error =  0.9420132040977478 H_error =  6517.50244140625
+3001/10000: 217.615s/725.142s: average_error =  0.9418952465057373 H_error =  6481.30419921875
+3501/10000: 253.154s/723.092s: average_error =  0.9417868256568909 H_error =  6455.083984375
+4001/10000: 288.698s/721.564s: average_error =  0.9416515231132507 H_error =  6434.86328125
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+4501/10000: 324.261s/720.42s: average_error =  0.9403275847434998 H_error =  6407.5927734375
+5001/10000: 359.812s/719.48s: average_error =  0.9391091465950012 H_error =  6386.291015625
+5501/10000: 395.372s/718.727s: average_error =  0.9381781816482544 H_error =  6369.6650390625
+6001/10000: 430.926s/718.09s: average_error =  0.9374247193336487 H_error =  6356.185546875
+6501/10000: 466.487s/717.561s: average_error =  0.9367926716804504 H_error =  6345.0205078125
+7001/10000: 502.032s/717.086s: average_error =  0.9362494349479675 H_error =  6335.62890625
+7501/10000: 537.598s/716.702s: average_error =  0.9357759356498718 H_error =  6327.6298828125
+8001/10000: 573.14s/716.335s: average_error =  0.9353582859039307 H_error =  6320.74853515625
+8501/10000: 608.679s/716.009s: average_error =  0.934986412525177 H_error =  6314.77490234375
+9001/10000: 644.251s/715.755s: average_error =  0.934653103351593 H_error =  6309.5517578125
+9501/10000: 679.814s/715.519s: average_error =  0.9343526363372803 H_error =  6304.9560546875
+715.281 s H_error tensor(6300.8989, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9341, device='cuda:5', grad_fn=<DivBackward0>)
+715.284 s H_error tensor(6300.8989, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9341, device='cuda:5', grad_fn=<DivBackward0>)
+38943 MiB free out of 48676 MiB total
+3 mlp.down_proj
+Pruning ...
+Low rank
+1/10000: 4.735s/47348.242s: average_error =  0.876643717288971 H_error =  87.04161071777344
+501/10000: 65.631s/1309.997s: average_error =  0.892906129360199 H_error =  47.40697479248047
+1001/10000: 126.477s/1263.506s: average_error =  0.901677668094635 H_error =  43.78770446777344
+reducing lr to  0.009000000000000001
+1501/10000: 187.364s/1248.26s: average_error =  0.9078179001808167 H_error =  42.034767150878906
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+stopped after 1658 iterations, final average error 0.9079645872116089 final H error 41.99505615234375
+206.543 s H_error tensor(41.9951, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9080, device='cuda:5', grad_fn=<DivBackward0>)
+206.546 s H_error tensor(41.9951, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9080, device='cuda:5', grad_fn=<DivBackward0>)
+38797 MiB free out of 48676 MiB total
+4 self_attn.q_proj
+Pruning ...
+Low rank
+1/10000: 4.872s/48721.616s: average_error =  0.716488242149353 H_error =  5938.005859375
+final average error 0.7168846726417542, H error -2724.64111328125
+4.895 s H_error tensor(-2724.6411, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7169, device='cuda:5', grad_fn=<DivBackward0>)
+4.897 s H_error tensor(-2724.6411, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7169, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+4 self_attn.k_proj
+Pruning ...
+Low rank
+final average error 0.7405949234962463, H error -5144.1787109375
+3.367 s H_error tensor(-5144.1787, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7406, device='cuda:5', grad_fn=<DivBackward0>)
+3.369 s H_error tensor(-5144.1787, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7406, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+4 self_attn.v_proj
+Pruning ...
+Low rank
+1/10000: 3.257s/32572.029s: average_error =  0.8331083059310913 H_error =  7426.0908203125
+reducing lr to  0.009000000000000001
+final average error 0.8339869379997253, H error -636.9927978515625
+3.303 s H_error tensor(-636.9928, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8340, device='cuda:5', grad_fn=<DivBackward0>)
+3.305 s H_error tensor(-636.9928, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8340, device='cuda:5', grad_fn=<DivBackward0>)
+39237 MiB free out of 48676 MiB total
+4 self_attn.o_proj
+Pruning ...
+Low rank
+1/10000: 3.295s/32953.331s: average_error =  0.8331454992294312 H_error =  219.12274169921875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+501/10000: 14.785s/295.107s: average_error =  0.8477292656898499 H_error =  67.9515380859375
+1001/10000: 26.283s/262.568s: average_error =  0.8552810549736023 H_error =  58.90830993652344
+1501/10000: 37.779s/251.693s: average_error =  0.861329197883606 H_error =  54.18572235107422
+reducing lr to  0.0018530201888518425
+2001/10000: 49.281s/246.28s: average_error =  0.865997314453125 H_error =  51.353248596191406
+2501/10000: 60.774s/243.0s: average_error =  0.8700591325759888 H_error =  49.29657745361328
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+stopped after 2676 iterations, final average error 0.8702560067176819 final H error 49.200164794921875
+64.817 s H_error tensor(49.2002, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8703, device='cuda:5', grad_fn=<DivBackward0>)
+64.819 s H_error tensor(49.2002, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8703, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+4 mlp.gate_proj
+Pruning ...
+Low rank
+1/10000: 3.645s/36449.893s: average_error =  0.8681894540786743 H_error =  26731.78515625
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+final average error 0.9099109172821045, H error -192.39794921875
+22.404 s H_error tensor(-192.3979, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9099, device='cuda:5', grad_fn=<DivBackward0>)
+22.407 s H_error tensor(-192.3979, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9099, device='cuda:5', grad_fn=<DivBackward0>)
+38995 MiB free out of 48676 MiB total
+4 mlp.up_proj
+Pruning ...
+Low rank
+1/10000: 3.698s/36983.182s: average_error =  0.8983620405197144 H_error =  23796.8203125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+final average error 0.9421920776367188, H error -50.772705078125
+24.142 s H_error tensor(-50.7727, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9422, device='cuda:5', grad_fn=<DivBackward0>)
+24.145 s H_error tensor(-50.7727, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9422, device='cuda:5', grad_fn=<DivBackward0>)
+38943 MiB free out of 48676 MiB total
+4 mlp.down_proj
+Pruning ...
+Low rank
+1/10000: 4.759s/47588.437s: average_error =  0.8771657943725586 H_error =  304.73846435546875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+501/10000: 65.63s/1309.985s: average_error =  0.8937937617301941 H_error =  147.26077270507812
+1001/10000: 126.44s/1263.133s: average_error =  0.9029487371444702 H_error =  132.297607421875
+reducing lr to  0.0018530201888518425
+1501/10000: 187.282s/1247.718s: average_error =  0.9092962741851807 H_error =  125.04755401611328
+2001/10000: 248.124s/1239.998s: average_error =  0.9140646457672119 H_error =  120.63514709472656
+2501/10000: 308.934s/1235.241s: average_error =  0.9179169535636902 H_error =  117.49915313720703
+3001/10000: 369.712s/1231.964s: average_error =  0.921087920665741 H_error =  115.13813781738281
+reducing lr to  0.0016677181699666583
+3501/10000: 430.52s/1229.706s: average_error =  0.9236376881599426 H_error =  113.33719635009766
+4001/10000: 491.419s/1228.24s: average_error =  0.9256495237350464 H_error =  111.98423767089844
+reducing lr to  0.0015009463529699924
+4501/10000: 552.291s/1227.04s: average_error =  0.9273576736450195 H_error =  110.85984802246094
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+stopped after 4674 iterations, final average error 0.9274553656578064 final H error 110.7885971069336
+573.398 s H_error tensor(110.7886, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9275, device='cuda:5', grad_fn=<DivBackward0>)
+573.401 s H_error tensor(110.7886, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.9275, device='cuda:5', grad_fn=<DivBackward0>)
+38797 MiB free out of 48676 MiB total
+5 self_attn.q_proj
+Pruning ...
+Low rank
+1/10000: 4.905s/49054.017s: average_error =  0.7261599898338318 H_error =  28943.32421875
+final average error 0.7274315357208252, H error -27199.478515625
+5.004 s H_error tensor(-27199.4785, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7274, device='cuda:5', grad_fn=<DivBackward0>)
+5.006 s H_error tensor(-27199.4785, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7274, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+5 self_attn.k_proj
+Pruning ...
+Low rank
+1/10000: 3.312s/33118.737s: average_error =  0.743390679359436 H_error =  20970.154296875
+final average error 0.7447092533111572, H error -77908.28125
+3.358 s H_error tensor(-77908.2812, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7447, device='cuda:5', grad_fn=<DivBackward0>)
+3.36 s H_error tensor(-77908.2812, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.7447, device='cuda:5', grad_fn=<DivBackward0>)
+39205 MiB free out of 48676 MiB total
+5 self_attn.v_proj
+Pruning ...
+Low rank
+1/10000: 3.329s/33287.823s: average_error =  0.8368498086929321 H_error =  16671.373046875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+final average error 0.838410496711731, H error -2371.56787109375
+3.421 s H_error tensor(-2371.5679, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8384, device='cuda:5', grad_fn=<DivBackward0>)
+3.423 s H_error tensor(-2371.5679, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8384, device='cuda:5', grad_fn=<DivBackward0>)
+39237 MiB free out of 48676 MiB total
+5 self_attn.o_proj
+Pruning ...
+Low rank
+1/10000: 3.284s/32844.436s: average_error =  0.8300333023071289 H_error =  672.3155517578125
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+reducing lr to  0.00034336838202925164
+501/10000: 14.769s/294.791s: average_error =  0.8402107357978821 H_error =  134.78591918945312
+1001/10000: 26.256s/262.303s: average_error =  0.8446775674819946 H_error =  112.67473602294922
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+1501/10000: 37.751s/251.505s: average_error =  0.8480597138404846 H_error =  100.66669464111328
+2001/10000: 49.235s/246.054s: average_error =  0.8507634997367859 H_error =  92.89008331298828
+2501/10000: 60.722s/242.792s: average_error =  0.853240430355072 H_error =  86.95514678955078
+reducing lr to  0.0002503155504993245
+3001/10000: 72.219s/240.651s: average_error =  0.8553308248519897 H_error =  82.47504425048828
+3501/10000: 83.719s/239.128s: average_error =  0.8572326302528381 H_error =  78.87599182128906
+reducing lr to  0.00022528399544939206
+4001/10000: 95.221s/237.993s: average_error =  0.85897296667099 H_error =  75.8599853515625
+4501/10000: 106.721s/237.105s: average_error =  0.8604767322540283 H_error =  73.4219970703125
+reducing lr to  0.00020275559590445286
+5001/10000: 118.208s/236.368s: average_error =  0.8618031144142151 H_error =  71.36199951171875
+reducing lr to  0.00018248003631400757
+5501/10000: 129.699s/235.774s: average_error =  0.8629603385925293 H_error =  69.63389587402344
+reducing lr to  0.00016423203268260683
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+reducing lr to  6.362685441135955e-05
+reducing lr to  5.7264168970223595e-05
+reducing lr to  5.153775207320124e-05
+reducing lr to  4.6383976865881114e-05
+reducing lr to  4.1745579179293e-05
+reducing lr to  3.75710212613637e-05
+reducing lr to  3.381391913522733e-05
+reducing lr to  3.0432527221704597e-05
+reducing lr to  2.7389274499534138e-05
+reducing lr to  2.4650347049580723e-05
+reducing lr to  2.218531234462265e-05
+reducing lr to  1.9966781110160387e-05
+reducing lr to  1.797010299914435e-05
+reducing lr to  1.6173092699229914e-05
+reducing lr to  1.4555783429306922e-05
+reducing lr to  1.310020508637623e-05
+reducing lr to  1.1790184577738607e-05
+reducing lr to  1.0611166119964747e-05
+reducing lr to  9.550049507968273e-06
+reducing lr to  8.595044557171446e-06
+reducing lr to  7.735540101454301e-06
+reducing lr to  6.9619860913088715e-06
+reducing lr to  6.265787482177985e-06
+reducing lr to  5.639208733960187e-06
+reducing lr to  5.075287860564168e-06
+reducing lr to  4.5677590745077515e-06
+reducing lr to  4.110983167056976e-06
+reducing lr to  3.6998848503512788e-06
+reducing lr to  3.329896365316151e-06
+reducing lr to  2.9969067287845362e-06
+reducing lr to  2.6972160559060827e-06
+reducing lr to  2.4274944503154745e-06
+reducing lr to  2.1847450052839273e-06
+reducing lr to  1.9662705047555346e-06
+reducing lr to  1.7696434542799813e-06
+reducing lr to  1.5926791088519833e-06
+reducing lr to  1.433411197966785e-06
+reducing lr to  1.2900700781701065e-06
+reducing lr to  1.161063070353096e-06
+reducing lr to  1.0449567633177863e-06
+reducing lr to  9.404610869860078e-07
+reducing lr to  8.46414978287407e-07
+reducing lr to  7.617734804586663e-07
+reducing lr to  6.855961324127997e-07
+reducing lr to  6.170365191715197e-07
+reducing lr to  5.553328672543678e-07
+reducing lr to  4.99799580528931e-07
+reducing lr to  4.498196224760379e-07
+reducing lr to  4.0483766022843414e-07
+reducing lr to  3.643538942055907e-07
+reducing lr to  3.2791850478503163e-07
+reducing lr to  2.951266543065285e-07
+reducing lr to  2.6561398887587566e-07
+reducing lr to  2.390525899882881e-07
+reducing lr to  2.151473309894593e-07
+reducing lr to  1.936325978905134e-07
+reducing lr to  1.7426933810146205e-07
+reducing lr to  1.5684240429131584e-07
+reducing lr to  1.4115816386218426e-07
+reducing lr to  1.2704234747596583e-07
+reducing lr to  1.1433811272836925e-07
+reducing lr to  1.0290430145553233e-07
+reducing lr to  9.26138713099791e-08
+reducing lr to  8.335248417898118e-08
+reducing lr to  7.501723576108307e-08
+reducing lr to  6.751551218497476e-08
+reducing lr to  6.076396096647729e-08
+reducing lr to  5.468756486982956e-08
+reducing lr to  4.921880838284661e-08
+reducing lr to  4.4296927544561945e-08
+reducing lr to  3.986723479010575e-08
+reducing lr to  3.588051131109518e-08
+reducing lr to  3.2292460179985664e-08
+reducing lr to  2.90632141619871e-08
+reducing lr to  2.615689274578839e-08
+reducing lr to  2.354120347120955e-08
+reducing lr to  2.1187083124088596e-08
+reducing lr to  1.9068374811679737e-08
+reducing lr to  1.7161537330511763e-08
+reducing lr to  1.5445383597460585e-08
+reducing lr to  1.3900845237714528e-08
+reducing lr to  1.2510760713943076e-08
+reducing lr to  1.1259684642548768e-08
+reducing lr to  1.0133716178293891e-08
+reducing lr to  9.120344560464503e-09
+reducing lr to  8.208310104418052e-09
+reducing lr to  7.387479093976247e-09
+reducing lr to  6.648731184578623e-09
+reducing lr to  5.983858066120761e-09
+reducing lr to  5.385472259508685e-09
+reducing lr to  4.846925033557817e-09
+reducing lr to  4.362232530202035e-09
+reducing lr to  3.926009277181832e-09
+reducing lr to  3.5334083494636486e-09
+reducing lr to  3.180067514517284e-09
+reducing lr to  2.8620607630655554e-09
+reducing lr to  2.575854686759e-09
+reducing lr to  2.3182692180831003e-09
+reducing lr to  2.0864422962747904e-09
+reducing lr to  1.8777980666473114e-09
+reducing lr to  1.6900182599825802e-09
+reducing lr to  1.5210164339843222e-09
+reducing lr to  1.36891479058589e-09
+reducing lr to  1.232023311527301e-09
+reducing lr to  1.1088209803745709e-09
+reducing lr to  9.979388823371138e-10
+reducing lr to  8.981449941034024e-10
+reducing lr to  8.083304946930622e-10
+reducing lr to  7.27497445223756e-10
+reducing lr to  6.547477007013804e-10
+reducing lr to  5.892729306312424e-10
+reducing lr to  5.303456375681182e-10
+reducing lr to  4.773110738113064e-10
+reducing lr to  4.2957996643017577e-10
+reducing lr to  3.866219697871582e-10
+reducing lr to  3.479597728084424e-10
+reducing lr to  3.1316379552759816e-10
+reducing lr to  2.818474159748384e-10
+reducing lr to  2.5366267437735453e-10
+reducing lr to  2.2829640693961908e-10
+reducing lr to  2.0546676624565718e-10
+reducing lr to  1.8492008962109147e-10
+reducing lr to  1.6642808065898232e-10
+reducing lr to  1.497852725930841e-10
+reducing lr to  1.348067453337757e-10
+reducing lr to  1.2132607080039814e-10
+reducing lr to  1.0919346372035833e-10
+reducing lr to  9.82741173483225e-11
+reducing lr to  8.844670561349026e-11
+reducing lr to  7.960203505214123e-11
+reducing lr to  7.164183154692712e-11
+reducing lr to  6.447764839223441e-11
+stopped after 5968 iterations, final average error 0.863584578037262 final H error 68.69486236572266
+140.447 s H_error tensor(68.6949, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8636, device='cuda:5', grad_fn=<DivBackward0>)
+140.449 s H_error tensor(68.6949, device='cuda:5', grad_fn=<ViewBackward0>) average_error tensor(0.8636, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+5 mlp.gate_proj
+Pruning ...
+Low rank
+1/10000: 3.768s/37680.471s: average_error =  0.8603503704071045 H_error =  31498.591796875
+reducing lr to  0.009000000000000001
+reducing lr to  0.008100000000000001
+reducing lr to  0.007290000000000001
+reducing lr to  0.006561000000000002
+reducing lr to  0.005904900000000002
+reducing lr to  0.005314410000000002
+reducing lr to  0.004782969000000002
+reducing lr to  0.004304672100000002
+reducing lr to  0.003874204890000002
+reducing lr to  0.003486784401000002
+reducing lr to  0.003138105960900002
+reducing lr to  0.0028242953648100018
+reducing lr to  0.0025418658283290017
+reducing lr to  0.0022876792454961017
+reducing lr to  0.0020589113209464917
+reducing lr to  0.0018530201888518425
+reducing lr to  0.0016677181699666583
+reducing lr to  0.0015009463529699924
+reducing lr to  0.0013508517176729932
+reducing lr to  0.001215766545905694
+reducing lr to  0.0010941898913151245
+reducing lr to  0.0009847709021836122
+reducing lr to  0.0008862938119652509
+reducing lr to  0.0007976644307687258
+reducing lr to  0.0007178979876918532
+reducing lr to  0.0006461081889226679
+reducing lr to  0.0005814973700304011
+reducing lr to  0.0005233476330273611
+reducing lr to  0.000471012869724625
+reducing lr to  0.0004239115827521625
+reducing lr to  0.00038152042447694626
+501/10000: 39.31s/784.634s: average_error =  0.8960800766944885 H_error =  5588.064453125
+reducing lr to  0.00034336838202925164
+reducing lr to  0.0003090315438263265
+reducing lr to  0.00027812838944369386
+reducing lr to  0.0002503155504993245
+reducing lr to  0.00022528399544939206
+1001/10000: 74.839s/747.642s: average_error =  0.906434178352356 H_error =  4730.59423828125
+reducing lr to  0.00020275559590445286
+reducing lr to  0.00018248003631400757
+reducing lr to  0.00016423203268260683
+1501/10000: 110.382s/735.391s: average_error =  0.9127407073974609 H_error =  4344.1748046875
+reducing lr to  0.00014780882941434616
+reducing lr to  0.00013302794647291155
+2001/10000: 145.948s/729.375s: average_error =  0.9171707630157471 H_error =  4096.1171875
+2501/10000: 181.498s/725.703s: average_error =  0.9204684495925903 H_error =  3944.38134765625
+reducing lr to  0.00011972515182562039
+reducing lr to  0.00010775263664305835
+3001/10000: 217.049s/723.257s: average_error =  0.9232227802276611 H_error =  3813.495361328125
+reducing lr to  9.697737297875251e-05
+reducing lr to  8.727963568087727e-05
+reducing lr to  7.855167211278955e-05
+reducing lr to  7.06965049015106e-05
+3501/10000: 252.672s/721.713s: average_error =  0.9253891706466675 H_error =  3719.777099609375
+reducing lr to  6.362685441135955e-05
+4001/10000: 288.338s/720.666s: average_error =  0.9269310832023621 H_error =  3629.2255859375
+4501/10000: 323.862s/719.534s: average_error =  0.9281529784202576 H_error =  3561.382568359375
+reducing lr to  5.7264168970223595e-05
+5001/10000: 359.389s/718.634s: average_error =  0.9291291236877441 H_error =  3505.95947265625
+5501/10000: 394.918s/717.902s: average_error =  0.9300353527069092 H_error =  3459.751953125
+reducing lr to  5.153775207320124e-05
+6001/10000: 430.434s/717.27s: average_error =  0.9307965636253357 H_error =  3419.87060546875
+6501/10000: 465.969s/716.766s: average_error =  0.9314651489257812 H_error =  3385.39453125
+7001/10000: 501.503s/716.33s: average_error =  0.9321021437644958 H_error =  3355.1347

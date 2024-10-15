@@ -1,0 +1,3207 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.04s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.39it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.30it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+Ready.
+0 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 157.4398865699768 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+stopped after 258 iterations
+178.258 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4306, device='cuda:5', grad_fn=<DivBackward0>)
+15600 MiB free out of 48676 MiB total
+0 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.18739867210388 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+stopped after 386 iterations
+182.63 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4216, device='cuda:5', grad_fn=<DivBackward0>)
+15600 MiB free out of 48676 MiB total
+0 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.4839460849762 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+stopped after 175 iterations
+166.632 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.7664, device='cuda:5', grad_fn=<DivBackward0>)
+15536 MiB free out of 48676 MiB total
+0 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 149.66443610191345 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+207.626 s H_error tensor(0.3996, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.5817, device='cuda:5', grad_fn=<DivBackward0>)
+15568 MiB free out of 48676 MiB total
+0 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.52041101455688 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+reducing lr to  [1.3302794647291146e-05]
+reducing lr to  [1.1972515182562031e-05]
+reducing lr to  [1.0775263664305828e-05]
+reducing lr to  [9.697737297875246e-06]
+reducing lr to  [8.727963568087722e-06]
+reducing lr to  [7.85516721127895e-06]
+reducing lr to  [7.069650490151056e-06]
+reducing lr to  [6.362685441135951e-06]
+reducing lr to  [5.7264168970223554e-06]
+reducing lr to  [5.15377520732012e-06]
+reducing lr to  [4.638397686588108e-06]
+reducing lr to  [4.174557917929298e-06]
+reducing lr to  [3.7571021261363684e-06]
+reducing lr to  [3.3813919135227317e-06]
+reducing lr to  [3.0432527221704586e-06]
+reducing lr to  [2.7389274499534128e-06]
+reducing lr to  [2.4650347049580716e-06]
+reducing lr to  [2.2185312344622644e-06]
+reducing lr to  [1.996678111016038e-06]
+reducing lr to  [1.7970102999144342e-06]
+reducing lr to  [1.6173092699229909e-06]
+reducing lr to  [1.4555783429306917e-06]
+reducing lr to  [1.3100205086376225e-06]
+reducing lr to  [1.1790184577738603e-06]
+reducing lr to  [1.0611166119964742e-06]
+reducing lr to  [9.550049507968269e-07]
+reducing lr to  [8.595044557171442e-07]
+reducing lr to  [7.735540101454298e-07]
+reducing lr to  [6.961986091308869e-07]
+reducing lr to  [6.265787482177982e-07]
+reducing lr to  [5.639208733960183e-07]
+reducing lr to  [5.075287860564165e-07]
+reducing lr to  [4.567759074507748e-07]
+403.921 s H_error tensor(0.8803, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(1.0465, device='cuda:5', grad_fn=<DivBackward0>)
+15514 MiB free out of 48676 MiB total
+0 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.87914443016052 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+409.599 s H_error tensor(175.7527, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3313, device='cuda:5', grad_fn=<DivBackward0>)
+15460 MiB free out of 48676 MiB total
+0 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 178.70291924476624 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+504.389 s H_error tensor(0.5731, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3456, device='cuda:5', grad_fn=<DivBackward0>)
+15778 MiB free out of 48676 MiB total
+1 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.88730311393738 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+stopped after 201 iterations
+172.127 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.5330, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+1 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.03707337379456 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+stopped after 296 iterations
+175.328 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4947, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+1 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 81.17248797416687 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+stopped after 530 iterations
+120.883 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.8928, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+1 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.39942526817322 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+229.477 s H_error tensor(4.6783, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4059, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+1 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 211.22287797927856 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+reducing lr to  [1.3302794647291146e-05]
+reducing lr to  [1.1972515182562031e-05]
+reducing lr to  [1.0775263664305828e-05]
+reducing lr to  [9.697737297875246e-06]
+reducing lr to  [8.727963568087722e-06]
+reducing lr to  [7.85516721127895e-06]
+reducing lr to  [7.069650490151056e-06]
+reducing lr to  [6.362685441135951e-06]
+reducing lr to  [5.7264168970223554e-06]
+402.608 s H_error tensor(1.6796, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(1.4947, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+1 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 186.1936650276184 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+376.364 s H_error tensor(707.2352, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3242, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+1 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.40246486663818 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+stopped after 138 iterations
+256.563 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.6772, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+2 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.747953414917 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+232.181 s H_error tensor(22.6494, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4332, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+2 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 126.5199568271637 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+194.019 s H_error tensor(1515.0786, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3655, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+2 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.33626127243042 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+228.868 s H_error tensor(816.3828, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3407, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+2 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.35117721557617 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+stopped after 152 iterations
+164.839 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.6826, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+2 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.99178552627563 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+396.528 s H_error tensor(1969.8842, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3427, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+2 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 194.8148250579834 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+389.532 s H_error tensor(1760.2354, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3400, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+2 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.37698483467102 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+533.029 s H_error tensor(6.5861, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3900, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+3 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 85.07497096061707 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+reducing lr to  [1.3302794647291146e-05]
+reducing lr to  [1.1972515182562031e-05]
+reducing lr to  [1.0775263664305828e-05]
+reducing lr to  [9.697737297875246e-06]
+reducing lr to  [8.727963568087722e-06]
+reducing lr to  [7.85516721127895e-06]
+reducing lr to  [7.069650490151056e-06]
+reducing lr to  [6.362685441135951e-06]
+reducing lr to  [5.7264168970223554e-06]
+reducing lr to  [5.15377520732012e-06]
+reducing lr to  [4.638397686588108e-06]
+reducing lr to  [4.174557917929298e-06]
+reducing lr to  [3.7571021261363684e-06]
+reducing lr to  [3.3813919135227317e-06]
+reducing lr to  [3.0432527221704586e-06]
+160.311 s H_error tensor(6577.9082, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3932, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+3 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.17056012153625 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+230.487 s H_error tensor(6561.4609, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3950, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+3 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.3699333667755 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+228.67 s H_error tensor(1978.0792, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3875, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+3 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.14037251472473 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+stopped after 183 iterations
+166.952 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.6551, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+3 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 172.6952567100525 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+368.836 s H_error tensor(1.1847, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.5772, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+3 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.49293971061707 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+403.077 s H_error tensor(1811.6378, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3671, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+3 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 184.58845901489258 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+stopped after 228 iterations
+253.425 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.8907, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+4 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.71150851249695 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+232.116 s H_error tensor(2658.0908, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4007, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+4 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.21317553520203 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+228.754 s H_error tensor(1964.8079, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4051, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+4 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.43817257881165 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+228.755 s H_error tensor(1175.1542, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3944, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+4 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 82.69306564331055 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+stopped after 190 iterations
+96.883 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.6986, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+4 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.6644082069397 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+403.12 s H_error tensor(7.8331, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4783, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+4 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 211.11353492736816 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+401.927 s H_error tensor(1.9082, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4775, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+4 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 124.38174653053284 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+stopped after 185 iterations
+182.838 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.7742, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+5 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.75601720809937 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+232.458 s H_error tensor(4993.0322, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4092, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+5 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.03218817710876 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+228.273 s H_error tensor(4549.2075, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4111, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+5 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.3146471977234 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+210.667 s H_error tensor(1817.0146, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4018, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+5 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.3800847530365 s
+stopped after 128 iterations
+163.076 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.9739, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+5 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.78907990455627 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+403.087 s H_error tensor(2656.8789, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3795, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+5 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 211.38814759254456 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+391.771 s H_error tensor(1179.2722, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4047, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+5 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.2275514602661 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+534.211 s H_error tensor(24.2025, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3864, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+6 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.72432351112366 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+231.843 s H_error tensor(12483.7881, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4192, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+6 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 41.350067138671875 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+reducing lr to  [1.3302794647291146e-05]
+reducing lr to  [1.1972515182562031e-05]
+reducing lr to  [1.0775263664305828e-05]
+reducing lr to  [9.697737297875246e-06]
+reducing lr to  [8.727963568087722e-06]
+reducing lr to  [7.85516721127895e-06]
+reducing lr to  [7.069650490151056e-06]
+reducing lr to  [6.362685441135951e-06]
+reducing lr to  [5.7264168970223554e-06]
+reducing lr to  [5.15377520732012e-06]
+reducing lr to  [4.638397686588108e-06]
+reducing lr to  [4.174557917929298e-06]
+reducing lr to  [3.7571021261363684e-06]
+reducing lr to  [3.3813919135227317e-06]
+reducing lr to  [3.0432527221704586e-06]
+reducing lr to  [2.7389274499534128e-06]
+reducing lr to  [2.4650347049580716e-06]
+reducing lr to  [2.2185312344622644e-06]
+reducing lr to  [1.996678111016038e-06]
+reducing lr to  [1.7970102999144342e-06]
+reducing lr to  [1.6173092699229909e-06]
+reducing lr to  [1.4555783429306917e-06]
+73.455 s H_error tensor(10965.6523, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4201, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+6 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.39257669448853 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+227.812 s H_error tensor(4355.3604, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4071, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+6 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.85306477546692 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+stopped after 149 iterations
+164.089 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.7854, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+6 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.90611600875854 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+405.041 s H_error tensor(6101.7656, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3598, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+6 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 158.86923813819885 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+350.988 s H_error tensor(4079.6689, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3643, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+6 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.50904631614685 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+stopped after 630 iterations
+413.428 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(1.5326, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+7 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 130.12341165542603 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+190.448 s H_error tensor(10263.8096, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4211, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+7 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.95221948623657 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+228.281 s H_error tensor(9882.6260, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4210, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+7 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.32948279380798 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+228.386 s H_error tensor(3970.3726, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4099, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+7 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.17044734954834 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+228.749 s H_error tensor(104.0947, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4044, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+7 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 179.10262989997864 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+369.235 s H_error tensor(59.3181, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4170, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+7 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.99674534797668 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+406.771 s H_error tensor(896.3362, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4034, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+7 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 206.70481896400452 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+515.007 s H_error tensor(31.2581, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3759, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+8 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.41599011421204 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+232.665 s H_error tensor(11415.1309, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4084, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+8 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.97467184066772 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+228.095 s H_error tensor(1531.3411, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4584, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+8 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 101.71994733810425 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+172.637 s H_error tensor(3986.4111, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4019, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+8 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.01995515823364 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+228.182 s H_error tensor(67.7650, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4208, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+8 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.87617087364197 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+stopped after 691 iterations
+342.698 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4089, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+8 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 197.3671519756317 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+382.979 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4136, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+8 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.2259283065796 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+533.901 s H_error tensor(34.3459, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3723, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+9 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.42359828948975 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+221.69 s H_error tensor(9772.8369, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4156, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+9 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 128.5893852710724 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+203.743 s H_error tensor(12906.4678, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4105, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+9 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.16389560699463 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+229.103 s H_error tensor(3935.4590, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4086, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+9 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.07978534698486 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+228.418 s H_error tensor(111.5462, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4011, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+9 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 178.17088961601257 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+371.92 s H_error tensor(33.4527, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4371, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+9 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.43488073349 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+405.472 s H_error tensor(22.5293, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4438, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+9 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.17644000053406 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+518.183 s H_error tensor(39.6377, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3686, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+10 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.48178005218506 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+232.538 s H_error tensor(13549.1250, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4107, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+10 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.02773571014404 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+228.1 s H_error tensor(11300.5684, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4165, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+10 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 130.19973373413086 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+193.935 s H_error tensor(3666.5886, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4122, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+10 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.9190125465393 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+stopped after 150 iterations
+164.14 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.8435, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+10 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.98007941246033 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+405.321 s H_error tensor(2.9622, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4547, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+10 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.84471893310547 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+395.578 s H_error tensor(146.3814, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4507, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+10 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.2538514137268 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+532.868 s H_error tensor(39.2777, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3882, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+11 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.3673231601715 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+224.582 s H_error tensor(19276.5449, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4221, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+11 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 110.78292965888977 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+185.81 s H_error tensor(20521.9258, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4171, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+11 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.25218296051025 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+228.297 s H_error tensor(730.2979, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4816, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+11 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 153.04001426696777 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+stopped after 132 iterations
+163.033 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.6865, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+11 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 201.85528898239136 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+385.949 s H_error tensor(5016.3008, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3688, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+11 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.29005575180054 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+403.087 s H_error tensor(5740.9443, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3689, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+11 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.05892729759216 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+reducing lr to  [1.3302794647291146e-05]
+reducing lr to  [1.1972515182562031e-05]
+reducing lr to  [1.0775263664305828e-05]
+reducing lr to  [9.697737297875246e-06]
+reducing lr to  [8.727963568087722e-06]
+reducing lr to  [7.85516721127895e-06]
+reducing lr to  [7.069650490151056e-06]
+reducing lr to  [6.362685441135951e-06]
+519.877 s H_error tensor(54.3604, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3673, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+12 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.27330923080444 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+232.388 s H_error tensor(21548.1836, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4214, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+12 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.87612414360046 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+228.619 s H_error tensor(23623.9805, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4200, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+12 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.97609972953796 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+219.552 s H_error tensor(9939.2510, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4068, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+12 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 124.94591808319092 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+stopped after 240 iterations
+143.142 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.8461, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+12 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.7126431465149 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+404.289 s H_error tensor(7379.5698, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3633, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+12 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.6579074859619 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+393.022 s H_error tensor(7889.3721, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3653, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+12 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 212.16984701156616 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+533.266 s H_error tensor(56.8382, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3613, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+13 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 156.50025033950806 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+232.169 s H_error tensor(486.3419, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.5114, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+13 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 79.76089119911194 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+153.656 s H_error tensor(3181.8701, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4870, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+13 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.92438197135925 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+228.822 s H_error tensor(7085.0938, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4299, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+13 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.83379578590393 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+reducing lr to  [2.7812838944369376e-05]
+reducing lr to  [2.503155504993244e-05]
+reducing lr to  [2.2528399544939195e-05]
+reducing lr to  [2.0275559590445276e-05]
+reducing lr to  [1.8248003631400748e-05]
+reducing lr to  [1.6423203268260675e-05]
+reducing lr to  [1.4780882941434607e-05]
+reducing lr to  [1.3302794647291146e-05]
+reducing lr to  [1.1972515182562031e-05]
+reducing lr to  [1.0775263664305828e-05]
+reducing lr to  [9.697737297875246e-06]
+reducing lr to  [8.727963568087722e-06]
+reducing lr to  [7.85516721127895e-06]
+reducing lr to  [7.069650490151056e-06]
+reducing lr to  [6.362685441135951e-06]
+reducing lr to  [5.7264168970223554e-06]
+reducing lr to  [5.15377520732012e-06]
+reducing lr to  [4.638397686588108e-06]
+reducing lr to  [4.174557917929298e-06]
+reducing lr to  [3.7571021261363684e-06]
+reducing lr to  [3.3813919135227317e-06]
+reducing lr to  [3.0432527221704586e-06]
+reducing lr to  [2.7389274499534128e-06]
+reducing lr to  [2.4650347049580716e-06]
+reducing lr to  [2.2185312344622644e-06]
+reducing lr to  [1.996678111016038e-06]
+reducing lr to  [1.7970102999144342e-06]
+reducing lr to  [1.6173092699229909e-06]
+reducing lr to  [1.4555783429306917e-06]
+reducing lr to  [1.3100205086376225e-06]
+reducing lr to  [1.1790184577738603e-06]
+reducing lr to  [1.0611166119964742e-06]
+reducing lr to  [9.550049507968269e-07]
+reducing lr to  [8.595044557171442e-07]
+reducing lr to  [7.735540101454298e-07]
+reducing lr to  [6.961986091308869e-07]
+reducing lr to  [6.265787482177982e-07]
+reducing lr to  [5.639208733960183e-07]
+reducing lr to  [5.075287860564165e-07]
+reducing lr to  [4.567759074507748e-07]
+228.239 s H_error tensor(55.1849, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3920, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+13 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.51175928115845 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+385.727 s H_error tensor(262.7370, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4542, device='cuda:5', grad_fn=<DivBackward0>)
+15438 MiB free out of 48676 MiB total
+13 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 210.82445120811462 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+403.987 s H_error tensor(8174.5093, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3724, device='cuda:5', grad_fn=<DivBackward0>)
+15212 MiB free out of 48676 MiB total
+13 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 211.95074439048767 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+reducing lr to  [7.17897987691853e-05]
+reducing lr to  [6.461081889226677e-05]
+reducing lr to  [5.81497370030401e-05]
+reducing lr to  [5.233476330273609e-05]
+reducing lr to  [4.7101286972462485e-05]
+reducing lr to  [4.239115827521624e-05]
+reducing lr to  [3.8152042447694614e-05]
+reducing lr to  [3.433683820292515e-05]
+reducing lr to  [3.090315438263264e-05]
+520.213 s H_error tensor(61.5895, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3723, device='cuda:5', grad_fn=<DivBackward0>)
+15530 MiB free out of 48676 MiB total
+14 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 155.88533997535706 s
+230.638 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+14 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.44049835205078 s
+227.084 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+15632 MiB free out of 48676 MiB total
+14 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 152.7747700214386 s
+227.698 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+14 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 60.0900399684906 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+stopped after 181 iterations
+65.612 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.9666, device='cuda:5', grad_fn=<DivBackward0>)
+39273 MiB free out of 48676 MiB total
+14 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 45.94932723045349 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+127.32 s H_error tensor(72.9166, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.4884, device='cuda:5', grad_fn=<DivBackward0>)
+39047 MiB free out of 48676 MiB total
+14 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 45.9059419631958 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+reducing lr to  [0.0004782969]
+reducing lr to  [0.00043046721]
+reducing lr to  [0.000387420489]
+reducing lr to  [0.0003486784401]
+reducing lr to  [0.00031381059609000004]
+reducing lr to  [0.00028242953648100003]
+reducing lr to  [0.00025418658283290005]
+reducing lr to  [0.00022876792454961005]
+reducing lr to  [0.00020589113209464906]
+reducing lr to  [0.00018530201888518417]
+reducing lr to  [0.00016677181699666576]
+reducing lr to  [0.0001500946352969992]
+reducing lr to  [0.0001350851717672993]
+reducing lr to  [0.00012157665459056936]
+reducing lr to  [0.00010941898913151243]
+reducing lr to  [9.847709021836118e-05]
+reducing lr to  [8.862938119652506e-05]
+reducing lr to  [7.976644307687256e-05]
+129.215 s H_error tensor(9396.1855, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.3738, device='cuda:5', grad_fn=<DivBackward0>)
+38821 MiB free out of 48676 MiB total
+14 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 46.68039584159851 s
+reducing lr to  [0.0009000000000000001]
+reducing lr to  [0.0008100000000000001]
+reducing lr to  [0.000729]
+reducing lr to  [0.0006561000000000001]
+reducing lr to  [0.00059049]
+reducing lr to  [0.000531441]
+stopped after 149 iterations
+67.761 s H_error tensor(0., device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(0.9958, device='cuda:5', grad_fn=<DivBackward0>)
+39139 MiB free out of 48676 MiB total
+15 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 2.225616216659546 s
+1225.818 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39273 MiB free out of 48676 MiB total
+15 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 0.7790141105651855 s
+1224.237 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39241 MiB free out of 48676 MiB total
+15 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 0.7839939594268799 s
+1330.181 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+15664 MiB free out of 48676 MiB total
+15 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 4.110990285873413 s
+1291.438 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39337 MiB free out of 48676 MiB total
+15 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 1.8351798057556152 s
+3412.382 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39283 MiB free out of 48676 MiB total
+15 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 1.8651399612426758 s
+3284.271 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39401 MiB free out of 48676 MiB total
+15 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 2.772294759750366 s
+3341.174 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39547 MiB free out of 48676 MiB total
+16 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 2.197406768798828 s
+1223.262 s H_error tensor(nan, device='cuda:5', grad_fn=<SumBackward0>) average_error tensor(nan, device='cuda:5', grad_fn=<DivBackward0>)
+39273 MiB free out of 48676 MiB total
+16 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished clustering in 0.7661890983581543 s
