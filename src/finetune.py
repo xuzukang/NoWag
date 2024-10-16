@@ -84,17 +84,17 @@ def finetune_groupwise(
     assert isinstance(devices, (list, tuple)) and len(devices) >= 1, f"Found devices = {devices}"
     assert isinstance(train_inps, (list, tuple)) and isinstance(train_inps, (list, tuple))
     assert len(train_inps) == len(train_outs) == len(devices)
-    for i in range(len(devices)):
-        assert isinstance(train_inps[i], torch.Tensor) and isinstance(train_outs[i], torch.Tensor)
-        if not args.offload_activations:
-            assert train_inps[i].device == train_outs[i].device == devices[i], (
-                train_inps[i].device,
-                train_outs[i].device,
-                devices,
-            )
-        else:
-            assert train_inps[i].device == train_outs[i].device == torch.device("cpu")
-            assert train_inps[i].is_pinned() and train_outs[i].is_pinned()
+    # for i in range(len(devices)):
+    #     assert isinstance(train_inps[i], torch.Tensor) and isinstance(train_outs[i], torch.Tensor)
+    #     if not args.offload_activations:
+    #         assert train_inps[i].device == train_outs[i].device == devices[i], (
+    #             train_inps[i].device,
+    #             train_outs[i].device,
+    #             devices,
+    #         )
+    #     else:
+    #         assert train_inps[i].device == train_outs[i].device == torch.device("cpu")
+    #         assert train_inps[i].is_pinned() and train_outs[i].is_pinned()
 
     # replicate non-trainable parameters to each GPU
     replicas = kwargs_by_device = None
@@ -138,6 +138,8 @@ def finetune_groupwise(
         local_batch_size,
     )
     train_batches_per_epoch = num_samples_per_device // local_batch_size
+    print("train_inps[0]", train_inps[0].shape, train_inps[0].device, train_inps[0].dtype)
+    print("train_outs[0]", train_outs[0].shape, train_outs[0].device, train_outs[0].dtype)
     train_batch_iterators = [
         iterate_minibatches(train_inps[i], train_outs[i], batch_size=local_batch_size, device=devices[i])
         for i in range(len(devices))
@@ -186,6 +188,7 @@ def finetune_groupwise(
         loss_numerator = loss_denominator = 0
         for _ in range(train_batches_per_epoch):
             if len(devices) == 1:
+                # print("train_batch_iterators[0]", train_batch_iterators[0].shape, train_batch_iterators[0].dtype, train_batch_iterators[0].device)
                 loss = _compute_mse_on_batch(layer, train_batch_iterators[0], **kwargs)
             else:
                 loss = _compute_mse_parallel(
@@ -236,6 +239,8 @@ def finetune_groupwise(
             print("-" * 10)
             print(f"epoch={epoch}")
             print(f"train loss={train_loss_epoch:.2e}\t")
+            free, total = torch.cuda.mem_get_info(int(devices[0].split(":")[1]))
+            print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
             if run_validation:
                 print(f"valid loss={valid_loss_epoch:.2e}\t")
 
@@ -311,6 +316,7 @@ def _compute_mse_on_batch(
                 repeats = [len(inps_batch)] + [1 for _ in range(value.ndim - 1)]
                 kwargs[name] = value.tile(*repeats)
 
+    # print("inps_batch", inps_batch.shape, inps_batch.device, inps_batch.dtype)
     outs_prediction, *_unused = layer(inps_batch, **kwargs)
     assert outs_prediction.shape == outs_batch.shape
     return F.mse_loss(outs_prediction, outs_batch)

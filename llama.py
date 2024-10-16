@@ -4,7 +4,7 @@ import time
 import torch
 import random
 import torch.nn as nn
-
+from typing import List, Optional, Tuple, Union
 from vector_quantizer import *
 from modelutils import *
 from quant import *
@@ -34,8 +34,90 @@ def get_llama(model):
     print("Model loaded.", model)
     return model
 
+class QuantizedLinear(nn.Module):
+    def __init__(self, quantized_parameters, bias: Optional[nn.Parameter]):
+        super().__init__()
+        codebooks, mappings, mask, rowise_norms, colwise_norms, sparse_parameters, weight_shape, subvector_assignment = quantized_parameters
+        self.out_features, self.in_features = weight_shape
+        self.codebooks = nn.Parameter(codebooks.clone(), requires_grad=True)
+        self.mappings = nn.Parameter(mappings.clone(), requires_grad=False)
+        self.mask = nn.Parameter(~mask.clone(), requires_grad=False)
+        self.mask_sum = self.mask.sum().item()
+        self.subvector_assignment = nn.Parameter(subvector_assignment.clone(), requires_grad=False)
+        self.rowise_norms = nn.Parameter(rowise_norms.clone(), requires_grad=True)
+        self.colwise_norms = nn.Parameter(colwise_norms.clone(), requires_grad=True)
+        if self.mask_sum > 0:
+            self.sparse_parameters = nn.Parameter(sparse_parameters.clone(), requires_grad=True)
+        if bias is not None:
+            print("here: bias", bias)
+            self.bias = bias
+        else:
+            print("not here")
+            self.bias = nn.Parameter(torch.zeros(self.out_features, dtype=self.codebooks.dtype,
+                                                    device=self.codebooks.device
+                                                 ), requires_grad=True)
+        self.use_checkpoint = False
 
-# @torch.no_grad()
+    def _construct_quantized_weight(self):
+        if self.mappings.dtype == self.codebooks.dtype:
+            print("current dtypes:", self.mappings.dtype, self.codebooks.dtype, self.subvector_assignment.dtype)
+            self.mappings = self.mappings.int()
+            self.subvector_assignment = self.subvector_assignment.int()
+            self.mask = self.mask.bool()
+            print("new dtypes:", self.mappings.dtype, self.codebooks.dtype, self.subvector_assignment.dtype)
+        
+            
+        quantized_weight = torch.zeros(self.out_features, self.in_features, device=self.codebooks.device,
+                                       dtype=self.codebooks.dtype)
+        
+        quantized_weight[:,self.subvector_assignment] = self.codebooks[self.mappings,:].reshape(self.out_features, -1, self.codebooks.shape[-1])
+        
+        quantized_weight = self.rowise_norms.unsqueeze(0) * self.colwise_norms.unsqueeze(1) * quantized_weight
+        if self.mask_sum > 0:
+            quantized_weight[self.mask] = self.sparse_parameters
+        return quantized_weight
+        
+            
+        
+    def _forward(self, input: torch.Tensor):
+        # print(input.dtype,self.quantized_weight.dtype)
+        # if self.bias is not None:
+        #     print(self.bias.dtype)
+        self.quantized_weight = self._construct_quantized_weight()
+        return F.linear(input, self.quantized_weight, self.bias)
+
+    def forward(self, input: torch.Tensor):
+        return self._forward(input)
+    
+    def to(self, *args, **kwargs):
+        print("to: args", args, "kwargs", kwargs)
+        self.codebooks = self.codebooks.to(*args, **kwargs)
+        self.mappings = self.mappings.to(*args, **kwargs)
+        self.mask = self.mask.to(*args, **kwargs)
+        self.rowise_norms = self.rowise_norms.to(*args, **kwargs)
+        self.colwise_norms = self.colwise_norms.to(*args, **kwargs)
+        if self.mask_sum > 0:
+            self.sparse_parameters = self.sparse_parameters.to(*args, **kwargs)
+        if self.bias is not None:
+            print(self.bias.dtype)
+            print(self.bias)
+            self.bias = self.bias.to(*args, **kwargs)
+        return super().to(*args, **kwargs)
+
+def cast_to_dtype(module, dtype):   
+    #cast the quantized weights to the original dtype
+    for name, param in module.named_children():
+        if isinstance(param, QuantizedLinear):
+            print("casting to dtype", name, dtype)
+            print("current dtypes:", param.quantized_weight.dtype)
+            if param.bias is not None:
+                print(param.bias.dtype)
+            param.to(dtype = dtype)
+        else:
+            cast_to_dtype(param, dtype)
+    return module
+
+@torch.no_grad()
 def llama_sequential(model, dataloader, dev):
     print("Starting...")
 
@@ -82,6 +164,8 @@ def llama_sequential(model, dataloader, dev):
     outs = torch.zeros_like(inps)
     attention_mask = cache["attention_mask"]
     position_ids = cache["position_ids"]
+    print("position_ids", position_ids.shape)
+    print("attention_mask", attention_mask.shape)
 
     print("Ready.")
 
@@ -91,7 +175,8 @@ def llama_sequential(model, dataloader, dev):
     total_params = 0
     for i in range(len(layers)):
         layer = layers[i].to(dev)
-        
+        layer_dtype_orig = next(layer.parameters()).dtype
+        print("layer original dtype", layer_dtype_orig)
         #     if i > 0:
         #         return
             
@@ -160,7 +245,7 @@ def llama_sequential(model, dataloader, dev):
                     
                 elif args.normalized_clustering:
                     print("Normalized clustering")
-                    n_bits, n_params = gpts[name].normalized_clustering(
+                    weights_new, n_bits, n_params = gpts[name].normalized_clustering(
                         subvector_dim = args.subvector_dim,
                         k_codebook = args.k_cosine_codebook,
                         keep_top_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
@@ -170,6 +255,15 @@ def llama_sequential(model, dataloader, dev):
                         n_iters = args.n_iters,
                         clamp_gradients = args.clamp_gradients
                     )
+                    new_linear = QuantizedLinear(weights_new, subset[name].bias)
+                    new_linear.to(dev)
+                    module = getattr(layer, name.split(".")[0])
+                    setattr(module, name.split(".")[1], new_linear)
+                    del weights_new
+                    # print(name)
+                    # # print(getattr(layer, name))
+                    # print(layer)
+                    
                 elif args.low_rank:
                     print("Low rank")
                     n_bits, n_params = gpts[name].low_rank(
@@ -206,28 +300,52 @@ def llama_sequential(model, dataloader, dev):
         # return quantizers
         if args.fine_tune:
             print("Fine tuning ...")
+            print(layer)
+            print("attempting to cast to float32")
+            layer = layer.to(dtype=torch.float32)
+            # layer = cast_to_dtype(layer ,torch.float32)
+            kwargs = {"attention_mask": attention_mask,
+                      "position_ids": position_ids}
+            free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+            print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+            for name in kwargs:
+                if kwargs[name] is not None:
+                    kwargs[name] = kwargs[name].to(dev)
+                    if kwargs[name].dtype == torch.float16:
+                        kwargs[name] = kwargs[name].to(dtype=torch.float32)
+                    print(name, kwargs[name].shape, kwargs[name].device, kwargs[name].dtype)
             finetune.finetune_groupwise(
-                layer,
-                inps,
-                outs,
+                layer = layer,
+                train_inps = [inps.to(dev).to(dtype=torch.float32)],
+                train_outs = [outs.to(dev).to(dtype=torch.float32)],
                 devices= [dev],
                 args = args,
-                **{"attention_mask": attention_mask,
-                     "position_ids": position_ids}
+                valid_inps = None,
+                valid_outs = None,
+                **kwargs
             )
+            free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+            print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+            print("trying to convert back to original dtype")
+            # layer = cast_to_dtype(layer ,layer_dtype_orig)
+            layer = layer.to(dtype=layer_dtype_orig)
             print("Fine tuned")
-
         with torch.no_grad():
             for j in range(args.nsamples):
                 outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
 
-        layers[i] = layer.cpu()
+        free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+        print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+        layers[i] = layer.to(torch.device("cpu"))
         del layer
         del gpts
         torch.cuda.empty_cache()
+        print("after cast to cpu")
+        free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+        print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
 
         inps, outs = outs, inps
-
+        # break
     model.config.use_cache = use_cache
 
     print("Total bits:", total_bits, "Total params:", total_params)

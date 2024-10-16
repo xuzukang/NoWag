@@ -1,0 +1,4492 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.26s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.26it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.16it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+position_ids torch.Size([1, 4096])
+attention_mask torch.Size([1, 1, 4096, 4096])
+Ready.
+layer original dtype torch.float16
+0 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.734
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+71364 MiB free out of 81050 MiB total
+0 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.633
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+71300 MiB free out of 81050 MiB total
+0 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.6
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+71236 MiB free out of 81050 MiB total
+0 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.506
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+71236 MiB free out of 81050 MiB total
+0 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.394
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+71010 MiB free out of 81050 MiB total
+0 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.658
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70870 MiB free out of 81050 MiB total
+0 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.464
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70758 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+70758 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=7.24e-06	
+41770 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=5.27e-06	
+41770 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=5.07e-06	
+41770 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=4.99e-06	
+41770 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=4.94e-06	
+41770 MiB free out of 81050 MiB total
+41770 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+41770 MiB free out of 81050 MiB total
+after cast to cpu
+70978 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+1 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 18.991
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70916 MiB free out of 81050 MiB total
+1 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.421
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70916 MiB free out of 81050 MiB total
+1 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.453
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70852 MiB free out of 81050 MiB total
+1 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.421
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70852 MiB free out of 81050 MiB total
+1 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.251
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70648 MiB free out of 81050 MiB total
+1 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.403
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70368 MiB free out of 81050 MiB total
+1 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.069
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70428 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+70428 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=6.17e-03	
+41320 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=3.62e-04	
+41320 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.26e-04	
+41320 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.79e-04	
+41320 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.47e-04	
+41320 MiB free out of 81050 MiB total
+41320 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+41320 MiB free out of 81050 MiB total
+after cast to cpu
+70560 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+2 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 18.979
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70240 MiB free out of 81050 MiB total
+2 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.432
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70176 MiB free out of 81050 MiB total
+2 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.439
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70176 MiB free out of 81050 MiB total
+2 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.409
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70176 MiB free out of 81050 MiB total
+2 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.381
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70068 MiB free out of 81050 MiB total
+2 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.464
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69960 MiB free out of 81050 MiB total
+2 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.365
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+70020 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+70020 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.67e-04	
+40912 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.45e-04	
+40912 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.41e-04	
+40912 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.40e-04	
+40912 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.39e-04	
+40912 MiB free out of 81050 MiB total
+40912 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+40912 MiB free out of 81050 MiB total
+after cast to cpu
+70002 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+3 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.016
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69854 MiB free out of 81050 MiB total
+3 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.513
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69854 MiB free out of 81050 MiB total
+3 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.481
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69854 MiB free out of 81050 MiB total
+3 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.436
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69854 MiB free out of 81050 MiB total
+3 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.438
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69682 MiB free out of 81050 MiB total
+3 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.619
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69402 MiB free out of 81050 MiB total
+3 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.481
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69634 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+69634 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=3.50e-04	
+40526 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.91e-04	
+40526 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.78e-04	
+40526 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.73e-04	
+40526 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.70e-04	
+40526 MiB free out of 81050 MiB total
+40526 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+40526 MiB free out of 81050 MiB total
+after cast to cpu
+69616 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+4 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.037
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69296 MiB free out of 81050 MiB total
+4 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.507
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69296 MiB free out of 81050 MiB total
+4 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.529
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69296 MiB free out of 81050 MiB total
+4 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.5
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69296 MiB free out of 81050 MiB total
+4 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.304
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69296 MiB free out of 81050 MiB total
+4 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.529
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69188 MiB free out of 81050 MiB total
+4 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.203
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+69248 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+69248 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=6.01e-04	
+40076 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=5.22e-04	
+40076 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=5.02e-04	
+40076 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=4.93e-04	
+40076 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=4.88e-04	
+40076 MiB free out of 81050 MiB total
+40076 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+40076 MiB free out of 81050 MiB total
+after cast to cpu
+69058 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+5 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.013
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68910 MiB free out of 81050 MiB total
+5 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.513
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68910 MiB free out of 81050 MiB total
+5 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.515
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68910 MiB free out of 81050 MiB total
+5 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.472
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68910 MiB free out of 81050 MiB total
+5 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.384
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68802 MiB free out of 81050 MiB total
+5 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.472
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68802 MiB free out of 81050 MiB total
+5 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.166
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68862 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+68862 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=9.03e-04	
+39562 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=8.01e-04	
+39562 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=7.72e-04	
+39562 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=7.59e-04	
+39562 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=7.52e-04	
+39562 MiB free out of 81050 MiB total
+39562 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+39562 MiB free out of 81050 MiB total
+after cast to cpu
+68628 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+6 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.004
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68394 MiB free out of 81050 MiB total
+6 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.539
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68394 MiB free out of 81050 MiB total
+6 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.515
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68394 MiB free out of 81050 MiB total
+6 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.534
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68394 MiB free out of 81050 MiB total
+6 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.351
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68394 MiB free out of 81050 MiB total
+6 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.431
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68286 MiB free out of 81050 MiB total
+6 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.279
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68346 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+68346 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.39e-03	
+39110 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.22e-03	
+39110 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.19e-03	
+39110 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.17e-03	
+39110 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.16e-03	
+39110 MiB free out of 81050 MiB total
+39110 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+39110 MiB free out of 81050 MiB total
+after cast to cpu
+68176 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+7 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.024
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67942 MiB free out of 81050 MiB total
+7 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.487
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67942 MiB free out of 81050 MiB total
+7 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.488
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67942 MiB free out of 81050 MiB total
+7 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.478
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67942 MiB free out of 81050 MiB total
+7 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.288
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67942 MiB free out of 81050 MiB total
+7 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.507
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67942 MiB free out of 81050 MiB total
+7 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.331
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+68002 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+68002 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.89e-03	
+38766 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.72e-03	
+38766 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.67e-03	
+38766 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.65e-03	
+38766 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.64e-03	
+38766 MiB free out of 81050 MiB total
+38766 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+38766 MiB free out of 81050 MiB total
+after cast to cpu
+67768 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+8 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 18.995
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67534 MiB free out of 81050 MiB total
+8 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.565
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67534 MiB free out of 81050 MiB total
+8 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.549
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67534 MiB free out of 81050 MiB total
+8 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.532
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67534 MiB free out of 81050 MiB total
+8 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.493
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67534 MiB free out of 81050 MiB total
+8 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.602
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67534 MiB free out of 81050 MiB total
+8 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.371
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67594 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+67594 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.40e-03	
+38422 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.24e-03	
+38422 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.19e-03	
+38422 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.17e-03	
+38422 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.15e-03	
+38422 MiB free out of 81050 MiB total
+38422 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+38422 MiB free out of 81050 MiB total
+after cast to cpu
+67360 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+9 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 18.99
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67126 MiB free out of 81050 MiB total
+9 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.492
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67126 MiB free out of 81050 MiB total
+9 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.512
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67126 MiB free out of 81050 MiB total
+9 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.479
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67126 MiB free out of 81050 MiB total
+9 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.363
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67126 MiB free out of 81050 MiB total
+9 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.425
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67126 MiB free out of 81050 MiB total
+9 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.196
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+67186 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+67186 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.93e-03	
+37950 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.73e-03	
+37950 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.68e-03	
+37950 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.65e-03	
+37950 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.63e-03	
+37950 MiB free out of 81050 MiB total
+37950 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+37950 MiB free out of 81050 MiB total
+after cast to cpu
+66888 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+10 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.025
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66654 MiB free out of 81050 MiB total
+10 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.534
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66654 MiB free out of 81050 MiB total
+10 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.595
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66654 MiB free out of 81050 MiB total
+10 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.536
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66654 MiB free out of 81050 MiB total
+10 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.48
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66654 MiB free out of 81050 MiB total
+10 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.557
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66654 MiB free out of 81050 MiB total
+10 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.438
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66714 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+66714 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=3.50e-03	
+37542 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=3.31e-03	
+37542 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=3.25e-03	
+37542 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=3.21e-03	
+37542 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=3.19e-03	
+37542 MiB free out of 81050 MiB total
+37542 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+37542 MiB free out of 81050 MiB total
+after cast to cpu
+66308 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+11 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.04
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66074 MiB free out of 81050 MiB total
+11 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.532
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66074 MiB free out of 81050 MiB total
+11 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.575
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66074 MiB free out of 81050 MiB total
+11 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.568
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66074 MiB free out of 81050 MiB total
+11 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.662
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66074 MiB free out of 81050 MiB total
+11 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.473
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66074 MiB free out of 81050 MiB total
+11 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.316
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66306 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+66306 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=4.02e-03	
+37134 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=3.78e-03	
+37134 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=3.70e-03	
+37134 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=3.66e-03	
+37134 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=3.63e-03	
+37134 MiB free out of 81050 MiB total
+37134 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+37134 MiB free out of 81050 MiB total
+after cast to cpu
+66028 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+12 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.137
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65794 MiB free out of 81050 MiB total
+12 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.607
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65794 MiB free out of 81050 MiB total
+12 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.628
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65794 MiB free out of 81050 MiB total
+12 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.609
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65794 MiB free out of 81050 MiB total
+12 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.633
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65794 MiB free out of 81050 MiB total
+12 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.667
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65794 MiB free out of 81050 MiB total
+12 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.498
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+66026 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+66026 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=4.77e-03	
+36790 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=4.41e-03	
+36790 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=4.31e-03	
+36790 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=4.25e-03	
+36790 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=4.22e-03	
+36790 MiB free out of 81050 MiB total
+36790 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+36790 MiB free out of 81050 MiB total
+after cast to cpu
+65620 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+13 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.051
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65386 MiB free out of 81050 MiB total
+13 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.55
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65386 MiB free out of 81050 MiB total
+13 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.531
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65386 MiB free out of 81050 MiB total
+13 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.512
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65386 MiB free out of 81050 MiB total
+13 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.51
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65386 MiB free out of 81050 MiB total
+13 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.551
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65386 MiB free out of 81050 MiB total
+13 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.327
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65618 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+65618 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=5.35e-03	
+36382 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=4.96e-03	
+36382 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=4.85e-03	
+36382 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=4.79e-03	
+36382 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=4.75e-03	
+36382 MiB free out of 81050 MiB total
+36382 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+36382 MiB free out of 81050 MiB total
+after cast to cpu
+65212 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+14 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.037
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64978 MiB free out of 81050 MiB total
+14 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.536
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64978 MiB free out of 81050 MiB total
+14 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.536
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64978 MiB free out of 81050 MiB total
+14 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.541
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64978 MiB free out of 81050 MiB total
+14 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.55
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64978 MiB free out of 81050 MiB total
+14 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.798
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64978 MiB free out of 81050 MiB total
+14 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.524
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+65210 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+65210 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=6.30e-03	
+35974 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=5.96e-03	
+35974 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=5.85e-03	
+35974 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=5.78e-03	
+35974 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=5.74e-03	
+35974 MiB free out of 81050 MiB total
+35974 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+35974 MiB free out of 81050 MiB total
+after cast to cpu
+64804 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+15 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.058
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64570 MiB free out of 81050 MiB total
+15 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.523
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64570 MiB free out of 81050 MiB total
+15 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.563
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64570 MiB free out of 81050 MiB total
+15 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.567
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64570 MiB free out of 81050 MiB total
+15 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.607
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64570 MiB free out of 81050 MiB total
+15 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.647
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64570 MiB free out of 81050 MiB total
+15 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.418
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64802 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+64802 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=7.53e-03	
+35566 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=7.00e-03	
+35566 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=6.84e-03	
+35566 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=6.76e-03	
+35566 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=6.71e-03	
+35566 MiB free out of 81050 MiB total
+35566 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+35566 MiB free out of 81050 MiB total
+after cast to cpu
+64396 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+16 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.067
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64162 MiB free out of 81050 MiB total
+16 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.593
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64162 MiB free out of 81050 MiB total
+16 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.573
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64162 MiB free out of 81050 MiB total
+16 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.519
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64162 MiB free out of 81050 MiB total
+16 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.524
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64162 MiB free out of 81050 MiB total
+16 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.754
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64162 MiB free out of 81050 MiB total
+16 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.518
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+64394 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+64394 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=9.94e-03	
+35158 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=9.28e-03	
+35158 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=9.11e-03	
+35158 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=9.01e-03	
+35158 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=8.94e-03	
+35158 MiB free out of 81050 MiB total
+35158 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+35158 MiB free out of 81050 MiB total
+after cast to cpu
+63988 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+17 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.051
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63754 MiB free out of 81050 MiB total
+17 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.606
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63754 MiB free out of 81050 MiB total
+17 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.625
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63754 MiB free out of 81050 MiB total
+17 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.589
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63754 MiB free out of 81050 MiB total
+17 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.665
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63754 MiB free out of 81050 MiB total
+17 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.878
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63754 MiB free out of 81050 MiB total
+17 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.47
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63986 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+63986 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.03e-02	
+34750 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=9.44e-03	
+34750 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=9.23e-03	
+34750 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=9.14e-03	
+34750 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=9.07e-03	
+34750 MiB free out of 81050 MiB total
+34750 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+34750 MiB free out of 81050 MiB total
+after cast to cpu
+63580 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+18 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.071
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63346 MiB free out of 81050 MiB total
+18 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.615
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63346 MiB free out of 81050 MiB total
+18 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.593
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63346 MiB free out of 81050 MiB total
+18 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.535
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63346 MiB free out of 81050 MiB total
+18 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.536
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63346 MiB free out of 81050 MiB total
+18 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.684
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63346 MiB free out of 81050 MiB total
+18 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.511
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63578 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+63578 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.20e-02	
+34342 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.08e-02	
+34342 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.05e-02	
+34342 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.04e-02	
+34342 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.03e-02	
+34342 MiB free out of 81050 MiB total
+34342 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+34342 MiB free out of 81050 MiB total
+after cast to cpu
+63172 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+19 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.038
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62938 MiB free out of 81050 MiB total
+19 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.541
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62938 MiB free out of 81050 MiB total
+19 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.556
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62938 MiB free out of 81050 MiB total
+19 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.549
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62938 MiB free out of 81050 MiB total
+19 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.589
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62938 MiB free out of 81050 MiB total
+19 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.696
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62938 MiB free out of 81050 MiB total
+19 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.548
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+63170 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+63170 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.32e-02	
+33934 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.20e-02	
+33934 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.18e-02	
+33934 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.16e-02	
+33934 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.16e-02	
+33934 MiB free out of 81050 MiB total
+33934 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+33934 MiB free out of 81050 MiB total
+after cast to cpu
+62764 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+20 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.062
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62530 MiB free out of 81050 MiB total
+20 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.543
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62530 MiB free out of 81050 MiB total
+20 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.55
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62530 MiB free out of 81050 MiB total
+20 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.532
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62530 MiB free out of 81050 MiB total
+20 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.551
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62530 MiB free out of 81050 MiB total
+20 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.657
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62530 MiB free out of 81050 MiB total
+20 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.432
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62762 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+62762 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.67e-02	
+33526 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.50e-02	
+33526 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.45e-02	
+33526 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.43e-02	
+33526 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.41e-02	
+33526 MiB free out of 81050 MiB total
+33526 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+33526 MiB free out of 81050 MiB total
+after cast to cpu
+62356 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+21 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.136
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62122 MiB free out of 81050 MiB total
+21 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.61
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62122 MiB free out of 81050 MiB total
+21 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.58
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62122 MiB free out of 81050 MiB total
+21 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.594
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62122 MiB free out of 81050 MiB total
+21 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.58
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62122 MiB free out of 81050 MiB total
+21 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.714
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62122 MiB free out of 81050 MiB total
+21 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.42
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+62354 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+62354 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=1.63e-02	
+33118 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.49e-02	
+33118 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.46e-02	
+33118 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.45e-02	
+33118 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.44e-02	
+33118 MiB free out of 81050 MiB total
+33118 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+33118 MiB free out of 81050 MiB total
+after cast to cpu
+61948 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+22 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.13
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61714 MiB free out of 81050 MiB total
+22 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.53
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61714 MiB free out of 81050 MiB total
+22 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.583
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61714 MiB free out of 81050 MiB total
+22 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.554
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61714 MiB free out of 81050 MiB total
+22 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.528
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61714 MiB free out of 81050 MiB total
+22 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.757
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61714 MiB free out of 81050 MiB total
+22 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.552
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61946 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+61946 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.35e-02	
+32710 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.06e-02	
+32710 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.96e-02	
+32710 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.91e-02	
+32710 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.88e-02	
+32710 MiB free out of 81050 MiB total
+32710 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+32710 MiB free out of 81050 MiB total
+after cast to cpu
+61540 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+23 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.242
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61306 MiB free out of 81050 MiB total
+23 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.518
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61306 MiB free out of 81050 MiB total
+23 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.547
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61306 MiB free out of 81050 MiB total
+23 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.532
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61306 MiB free out of 81050 MiB total
+23 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.545
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61306 MiB free out of 81050 MiB total
+23 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.597
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61306 MiB free out of 81050 MiB total
+23 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.378
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61538 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+61538 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.01e-02	
+32302 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.90e-02	
+32302 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.88e-02	
+32302 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.86e-02	
+32302 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.85e-02	
+32302 MiB free out of 81050 MiB total
+32302 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+32302 MiB free out of 81050 MiB total
+after cast to cpu
+61132 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+24 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.091
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60898 MiB free out of 81050 MiB total
+24 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.581
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60898 MiB free out of 81050 MiB total
+24 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.55
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60898 MiB free out of 81050 MiB total
+24 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.545
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60898 MiB free out of 81050 MiB total
+24 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.612
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60898 MiB free out of 81050 MiB total
+24 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.692
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60898 MiB free out of 81050 MiB total
+24 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.549
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+61130 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+61130 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.28e-02	
+31894 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.13e-02	
+31894 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.09e-02	
+31894 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.07e-02	
+31894 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.05e-02	
+31894 MiB free out of 81050 MiB total
+31894 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+31894 MiB free out of 81050 MiB total
+after cast to cpu
+60724 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+25 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.174
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60490 MiB free out of 81050 MiB total
+25 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.639
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60490 MiB free out of 81050 MiB total
+25 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.644
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60490 MiB free out of 81050 MiB total
+25 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.628
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60490 MiB free out of 81050 MiB total
+25 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.683
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60490 MiB free out of 81050 MiB total
+25 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.817
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60490 MiB free out of 81050 MiB total
+25 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.492
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60722 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+60722 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.52e-02	
+31486 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.33e-02	
+31486 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.27e-02	
+31486 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.24e-02	
+31486 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.22e-02	
+31486 MiB free out of 81050 MiB total
+31486 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+31486 MiB free out of 81050 MiB total
+after cast to cpu
+60316 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+26 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.246
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60082 MiB free out of 81050 MiB total
+26 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.581
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60082 MiB free out of 81050 MiB total
+26 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.598
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60082 MiB free out of 81050 MiB total
+26 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.641
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60082 MiB free out of 81050 MiB total
+26 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.658
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60082 MiB free out of 81050 MiB total
+26 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.729
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60082 MiB free out of 81050 MiB total
+26 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.477
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+60314 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+60314 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.83e-02	
+31078 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.61e-02	
+31078 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.54e-02	
+31078 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.51e-02	
+31078 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.49e-02	
+31078 MiB free out of 81050 MiB total
+31078 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+31078 MiB free out of 81050 MiB total
+after cast to cpu
+59908 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+27 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.083
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59674 MiB free out of 81050 MiB total
+27 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.634
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59674 MiB free out of 81050 MiB total
+27 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.558
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59674 MiB free out of 81050 MiB total
+27 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.596
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59674 MiB free out of 81050 MiB total
+27 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.688
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59674 MiB free out of 81050 MiB total
+27 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.791
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59674 MiB free out of 81050 MiB total
+27 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.471
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59906 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+59906 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.89e-02	
+30670 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=2.72e-02	
+30670 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=2.67e-02	
+30670 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=2.64e-02	
+30670 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=2.62e-02	
+30670 MiB free out of 81050 MiB total
+30670 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+30670 MiB free out of 81050 MiB total
+after cast to cpu
+59500 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+28 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.097
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59266 MiB free out of 81050 MiB total
+28 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.71
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59266 MiB free out of 81050 MiB total
+28 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.585
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59266 MiB free out of 81050 MiB total
+28 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.591
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59266 MiB free out of 81050 MiB total
+28 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.73
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59266 MiB free out of 81050 MiB total
+28 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.815
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59266 MiB free out of 81050 MiB total
+28 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.655
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59498 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+59498 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=3.66e-02	
+30262 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=3.41e-02	
+30262 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=3.34e-02	
+30262 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=3.31e-02	
+30262 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=3.28e-02	
+30262 MiB free out of 81050 MiB total
+30262 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+30262 MiB free out of 81050 MiB total
+after cast to cpu
+59092 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+29 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.123
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58858 MiB free out of 81050 MiB total
+29 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.565
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58858 MiB free out of 81050 MiB total
+29 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.579
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58858 MiB free out of 81050 MiB total
+29 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.566
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58858 MiB free out of 81050 MiB total
+29 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.531
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58858 MiB free out of 81050 MiB total
+29 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.586
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58858 MiB free out of 81050 MiB total
+29 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.387
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+59090 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+59090 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=4.26e-02	
+29854 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=3.93e-02	
+29854 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=3.82e-02	
+29854 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=3.76e-02	
+29854 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=3.71e-02	
+29854 MiB free out of 81050 MiB total
+29854 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+29854 MiB free out of 81050 MiB total
+after cast to cpu
+58684 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+30 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.098
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58450 MiB free out of 81050 MiB total
+30 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.607
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58450 MiB free out of 81050 MiB total
+30 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.61
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58450 MiB free out of 81050 MiB total
+30 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.606
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58450 MiB free out of 81050 MiB total
+30 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.748
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58450 MiB free out of 81050 MiB total
+30 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.787
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58450 MiB free out of 81050 MiB total
+30 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.345
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58682 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+58682 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=6.73e-02	
+29446 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=5.47e-02	
+29446 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=5.23e-02	
+29446 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=5.12e-02	
+29446 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=5.04e-02	
+29446 MiB free out of 81050 MiB total
+29446 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+29446 MiB free out of 81050 MiB total
+after cast to cpu
+58276 MiB free out of 81050 MiB total
+layer original dtype torch.float16
+31 self_attn.q_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 19.1
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58042 MiB free out of 81050 MiB total
+31 self_attn.k_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.594
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58042 MiB free out of 81050 MiB total
+31 self_attn.v_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.581
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58042 MiB free out of 81050 MiB total
+31 self_attn.o_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 17.595
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58042 MiB free out of 81050 MiB total
+31 mlp.gate_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.727
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58042 MiB free out of 81050 MiB total
+31 mlp.up_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.856
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58042 MiB free out of 81050 MiB total
+31 mlp.down_proj
+Pruning ...
+Normalized clustering
+using all the rows
+using all the columns
+finished in: 41.545
+not here
+to: args ('cuda:0',) kwargs {}
+torch.float32
+Parameter containing:
+tensor([0., 0., 0.,  ..., 0., 0., 0.], device='cuda:0', requires_grad=True)
+58274 MiB free out of 81050 MiB total
+Fine tuning ...
+LlamaDecoderLayer(
+  (self_attn): LlamaAttention(
+    (q_proj): QuantizedLinear()
+    (k_proj): QuantizedLinear()
+    (v_proj): QuantizedLinear()
+    (o_proj): QuantizedLinear()
+    (rotary_emb): LlamaRotaryEmbedding()
+  )
+  (mlp): LlamaMLP(
+    (gate_proj): QuantizedLinear()
+    (up_proj): QuantizedLinear()
+    (down_proj): QuantizedLinear()
+    (act_fn): SiLUActivation()
+  )
+  (input_layernorm): LlamaRMSNorm()
+  (post_attention_layernorm): LlamaRMSNorm()
+)
+attempting to cast to float32
+58274 MiB free out of 81050 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:0 torch.float32
+position_ids torch.Size([1, 4096]) cuda:0 torch.int64
+Found 30 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.codebooks', 'self_attn.q_proj.rowise_norms', 'self_attn.q_proj.colwise_norms', 'self_attn.q_proj.bias', 'self_attn.k_proj.codebooks', 'self_attn.k_proj.rowise_norms', 'self_attn.k_proj.colwise_norms', 'self_attn.k_proj.bias', 'self_attn.v_proj.codebooks', 'self_attn.v_proj.rowise_norms', 'self_attn.v_proj.colwise_norms', 'self_attn.v_proj.bias', 'self_attn.o_proj.codebooks', 'self_attn.o_proj.rowise_norms', 'self_attn.o_proj.colwise_norms', 'self_attn.o_proj.bias', 'mlp.gate_proj.codebooks', 'mlp.gate_proj.rowise_norms', 'mlp.gate_proj.colwise_norms', 'mlp.gate_proj.bias', 'mlp.up_proj.codebooks', 'mlp.up_proj.rowise_norms', 'mlp.up_proj.colwise_norms', 'mlp.up_proj.bias', 'mlp.down_proj.codebooks', 'mlp.down_proj.rowise_norms', 'mlp.down_proj.colwise_norms', 'mlp.down_proj.bias', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 135936 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:0 torch.float32
+----------
+epoch=0
+train loss=2.25e-01	
+29038 MiB free out of 81050 MiB total
+----------
+epoch=1
+train loss=1.69e-01	
+29038 MiB free out of 81050 MiB total
+----------
+epoch=2
+train loss=1.53e-01	
+29038 MiB free out of 81050 MiB total
+----------
+epoch=3
+train loss=1.45e-01	
+29038 MiB free out of 81050 MiB total
+----------
+epoch=4
+train loss=1.39e-01	
+29038 MiB free out of 81050 MiB total
+29038 MiB free out of 81050 MiB total
+trying to convert back to original dtype
+Fine tuned
+29038 MiB free out of 81050 MiB total
+after cast to cpu
+57868 MiB free out of 81050 MiB total
+Total bits: 12995657728.0 Total params: 6476005376
+average bits per value: 2.0067397992227978
+18354.76216816902
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Dataset: wikitext2
+Evaluating ...
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+Perplexity: 6.923431

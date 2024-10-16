@@ -144,7 +144,7 @@ class VectorQuantizerTemp:
         self.nsamples = 0
 
     def set_n_samples(self, nsamples):
-        self.nsamples = nsamples
+        self.nsamples = 0
         
     def add_batch(self, inp, out, blocksize=1024):
         if DEBUG:
@@ -152,20 +152,14 @@ class VectorQuantizerTemp:
             self.out1 = out
         if len(inp.shape) == 2:
             inp = inp.unsqueeze(0)
-        # tmp = inp.shape[0]
+        tmp = inp.shape[0]
         if isinstance(self.layer, nn.Linear) or isinstance(self.layer, transformers.Conv1D):
             if len(inp.shape) == 3:
                 inp = inp.reshape((-1, inp.shape[-1]))
             inp = inp.t()
-        # self.H *= self.nsamples / (self.nsamples + tmp)
-        # self.nsamples += tmp
-        inp_use = math.sqrt(2 / self.nsamples) * inp.float()
-        H_tmp = inp_use.matmul(inp_use.t())
-        # if not torch.all(torch.isfinite(torch.linalg.cholesky(H_tmp))):
-        #     print("Warning: Hessian is not positive definite")
-        #     torch.save({'weights': self.layer.weight.data, 'H': self.H, 'H_tmp': H_tmp,
-        #                 'inp': inp}, 'test/weights_error.pt')
-        #     raise ValueError("Hessian is not positive definite")
+        self.H *= self.nsamples / (self.nsamples + tmp)
+        self.nsamples += tmp
+        inp = math.sqrt(2 / self.nsamples) * inp.float()
         self.H += inp.matmul(inp.t())
 
     def fastquant(
@@ -490,8 +484,10 @@ class VectorQuantizerTemp:
 
 
         weights_norms_rowwise = torch.norm(W, dim = 0)
+        weights_norms_rowwise[torch.abs(weights_norms_rowwise) < 1e-6] = 1
         weights_normalized = W / weights_norms_rowwise.unsqueeze(0)
         weights_norms_columnwise = torch.norm(weights_normalized, dim = 1)
+        weights_norms_columnwise[torch.abs(weights_norms_columnwise) < 1e-6] = 1
         weights_normalized = weights_normalized / weights_norms_columnwise.unsqueeze(1)
 
         denormalize_matrix = weights_norms_rowwise.unsqueeze(0) * weights_norms_columnwise.unsqueeze(1)
@@ -522,56 +518,60 @@ class VectorQuantizerTemp:
                                       n_iter = n_iters_cluster,
                                       device = self.dev, disable_tqdm=True)
 
-        prev_loss = float('inf')
-        codebooks_use = codebooks.clone().requires_grad_(True)
+        # prev_loss = float('inf')
+        # codebooks_use = codebooks.clone().requires_grad_(True)
 
-        inital_patience = patience
-        for i in range(n_iters):
+        # inital_patience = patience
+        # for i in range(n_iters):
 
             
 
-            weights_quantized = torch.empty_like(W)
-            weights_quantized[:,subvector_assignments] = codebooks_use[mappings,:].reshape(weights_quantized.shape[0], -1, subvector_dim)
-            weights_quantized *= denormalize_matrix
-            weights_quantized[~mask] = W[~mask]
+        #     weights_quantized = torch.empty_like(W)
+        #     weights_quantized[:,subvector_assignments] = codebooks_use[mappings,:].reshape(weights_quantized.shape[0], -1, subvector_dim)
+        #     weights_quantized *= denormalize_matrix
+        #     weights_quantized[~mask] = W[~mask]
 
-            diff = W - weights_quantized
-            average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
+        #     diff = W - weights_quantized
+        #     average_error = torch.sum(torch.abs(diff)**1)/torch.sum(torch.abs(W)**1)
 
-            H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff)
-            print(H_error.item(), average_error.item())
-            # print(f"average error {average_error}, H error {H_error}")
-            H_error.backward()
+        #     H_error = torch.einsum('ik,kl,il->', diff, H/H.shape[0], diff)
+        #     # print(H_error.item(), average_error.item())
+        #     # print(f"average error {average_error}, H error {H_error}")
+        #     H_error.backward()
 
 
-            if H_error > prev_loss:
-                lr = lr * lr_multiple
-                print("reducing lr to ", lr)
-            prev_loss = H_error.item()
+        #     if H_error > prev_loss:
+        #         lr = lr * lr_multiple
+        #         print("reducing lr to ", lr)
+        #     prev_loss = H_error.item()
 
-            if prev_loss - H_error < eps:
-                patience -= 1
-                if patience == 0:
-                    print("stopped after", i, "iterations")
-                    break
-            else:
-                patience = inital_patience
+        #     if prev_loss - H_error < eps:
+        #         patience -= 1
+        #         if patience == 0:
+        #             print("stopped after", i, "iterations")
+        #             break
+        #     else:
+        #         patience = inital_patience
+            
+        #     if H_error < eps:
+        #         print("stopped after", i, "iterations")
+        #         break
     
-            if i < n_iters - 1:
-                with torch.no_grad():
+        #     if i < n_iters - 1:
+        #         with torch.no_grad():
 
-                    codebooks_use.grad = torch.clamp(codebooks_use.grad, -clamp_gradients, clamp_gradients)
-                    codebooks_use -= lr * codebooks_use.grad
-                    codebooks_use.grad.zero_()
+        #             codebooks_use.grad = torch.clamp(codebooks_use.grad, -clamp_gradients, clamp_gradients)
+        #             codebooks_use -= lr * codebooks_use.grad
+        #             codebooks_use.grad.zero_()
 
         tock = time.time()
-        print(round(tock-tick,3),"s","H_error", H_error, "average_error", average_error)
-        raise ValueError("stop")
-        if isinstance(self.layer, transformers.Conv1D):
-            weights_quantized = weights_quantized.t()
-        self.layer.weight.data = weights_quantized.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        print("finished in:",round(tock-tick,3),)
         # raise ValueError("stop")
-        return total_bits, weights_quantized.numel()
+        # if isinstance(self.layer, transformers.Conv1D):
+        #     weights_quantized = weights_quantized.t()
+        # self.layer.weight.data = weights_quantized.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        # raise ValueError("stop")
+        return (codebooks, mappings, mask, weights_norms_rowwise, weights_norms_columnwise, W[~mask], W.shape, subvector_assignments), total_bits, W.numel()
     
     def low_rank(self,low_rank_frac:float = 1/16,
                     n_bits:int = 6,
@@ -627,9 +627,9 @@ class VectorQuantizerTemp:
 
         if isinstance(self.layer, transformers.Conv1D):
             weights_reconstructed = weights_reconstructed.t()
-        self.layer.weight.data = weights_reconstructed.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        # self.layer.weight.data = weights_reconstructed.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
         # raise ValueError("stop")
-        return total_bits, weights_reconstructed.numel()
+        return weights_reconstructed.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype), total_bits, weights_reconstructed.numel()
         
 
     
