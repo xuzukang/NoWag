@@ -62,14 +62,14 @@ def calculate_hessians(layer, inps):
         out, *_ = layer(inps[j].unsqueeze(0))
 
 def quantize_layer(layer,args):
-    # for name in ["v_proj", "k_proj", "q_proj", "o_proj"]:
-    #     getattr(getattr(layer, "self_attn"), name).quantize(d = args.subvector_dim_mha,
-    #                                                         n_centriods = 2**(int(args.bits_per_value_mha*args.subvector_dim_mha)),
-    #                                                         n_iter = args.n_iters_quantize,
-    #                                                         normalize_rowwise = args.normalize_rowise_mha,
-    #                                                         normalize_columnwise = args.normalize_columnwise_mha, 
-    #                                                         diagonal_only = args.diagonal_only_mha,
-    #                                                         damping = args.percdamp/100)
+    for name in ["v_proj", "k_proj", "q_proj", "o_proj"]:
+        getattr(getattr(layer, "self_attn"), name).quantize(d = args.subvector_dim_mha,
+                                                            n_centriods = 2**(int(args.bits_per_value_mha*args.subvector_dim_mha)),
+                                                            n_iter = args.n_iters_quantize,
+                                                            normalize_rowwise = args.normalize_rowise_mha,
+                                                            normalize_columnwise = args.normalize_columnwise_mha, 
+                                                            diagonal_only = args.diagonal_only_mha,
+                                                            damping = args.percdamp/100)
     getattr(layer, "mlp").quantize(d = args.subvector_dim_mlp,
                                 n_centriods = 2**(int(args.bits_per_value_mlp*args.subvector_dim_mlp)),
                                 n_iter = args.n_iters_quantize,
@@ -294,7 +294,7 @@ def llama_sequential(model, dataloader, dev):
         # layer = cast_to_dtype(layer ,layer_dtype_orig)
         layer = layer.to(dtype=layer_dtype_orig)
     
-        # if not args.
+        
         with torch.no_grad():
             for j in range(args.nsamples):
                 outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
@@ -597,7 +597,9 @@ if __name__ == "__main__":
         wandb.init(config=args)
 
     model = get_llama(args.model)
-    model.eval()
+    model.to(args.device)
+    mode = model.bfloat16
+    
     print(model.seqlen)
 
     dataloader, testloader = get_loaders(
@@ -608,21 +610,31 @@ if __name__ == "__main__":
     torch.cuda.manual_seed(args.seed)
     random.seed(args.seed)
     np.random.seed(args.seed)
+    
+    i = 0
+    for batch in dataloader:
+        print("batch", i)
+        x = batch[0].to(args.device).bfloat16()
+        out = model(input_ids=x, labels=x)  
+        #get the loss
+        loss = out.loss
+        loss.backward()
+        i += 1
 
     
-    if args.quantize:
-        tick = time.time()
-        n_params = sum(p.numel() for p in model.parameters())
-        llama_sequential(model, dataloader, args.device)
-        print(time.time() - tick)
-    if len(args.save)>0:
-        os.makedirs(args.save, exist_ok=True)
-        model.save_pretrained(args.save)
+    # if args.quantize:
+    #     tick = time.time()
+    #     n_params = sum(p.numel() for p in model.parameters())
+    #     llama_sequential(model, dataloader, args.device)
+    #     print(time.time() - tick)
+    # if len(args.save)>0:
+    #     os.makedirs(args.save, exist_ok=True)
+    #     model.save_pretrained(args.save)
         
-    for dataset in ["wikitext2"]: #, "ptb", "c4"]:
-        dataloader, testloader = get_loaders(
-            dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
-        )
-        print("Dataset:", dataset)
-        llama_eval(model, testloader, args.device, dataset, args.log_wandb)
+    # for dataset in ["wikitext2"]: #, "ptb", "c4"]:
+    #     dataloader, testloader = get_loaders(
+    #         dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
+    #     )
+    #     print("Dataset:", dataset)
+    #     llama_eval(model, testloader, args.device, dataset, args.log_wandb)
 

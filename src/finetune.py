@@ -117,7 +117,10 @@ def finetune_groupwise(
         param.grad = torch.zeros_like(param)
     if replicas:
         replacement_tables = _make_parameter_replacement_tables(layer, replicas, param_names, differentiable_parameters)
-
+    
+    # for i, name in enumerate(param_names):
+    #     print(f"param {i}: {name} {differentiable_parameters[i].numel()}, {differentiable_parameters[i].shape}")
+        
     print(f"Fine-tuning {sum(param.numel() for param in differentiable_parameters)} parameters")
     opt = torch.optim.Adam(
         differentiable_parameters, lr=args.finetune_lr, betas=(args.finetune_adam_beta1, args.finetune_adam_beta2)

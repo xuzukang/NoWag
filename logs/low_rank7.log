@@ -1,0 +1,996 @@
+Arguments: Namespace(model='meta-llama/Llama-2-7b-hf', dataset='wikitext2', seed=0, device='cuda:4', nsamples=128, percdamp=1, sparsity=0, prunen=0, prunem=0, blocksize=128, gmp=False, wbits=16, minlayer=-1, maxlayer=1000, prune_only='', invert=False, save='/data/lliu/model_compression_weights/llama2_7b/low_rank/try1', true_sequential=False, log_wandb=False, quantize=True, low_rank=196, keep_top_rowise=0.5, keep_top_colwise=1.0, keep_top_frac=0.75, keep_bottom_frac=0, add_bias=True, subvector_dim_mha=4, bits_per_value_mha=2, normalize_rowise_mha=False, normalize_columnwise_mha=False, diagonal_only_mha=True, subvector_dim_mlp=2, bits_per_value_mlp=2.75, normalize_rowise_mlp=False, normalize_columnwise_mlp=False, diagonal_only_mlp=True, n_iters_quantize=100, finetune_max_epochs=5, finetune_early_stop=3, finetune_lr=1e-05, finetune_batch_size=1, offload_activations=False, finetune_adam_beta1=0.9, finetune_adam_beta2=0.95, finetune_keep_best=False, local_batch_size=None)
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.06s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.18s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.31s/it]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+position_ids torch.Size([1, 4096])
+attention_mask torch.Size([1, 1, 4096, 4096])
+Ready.
+Layer 0
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 24199 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=3.46e-05	
+9839 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=2.51e-05	
+9839 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=2.23e-05	
+9839 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=2.11e-05	
+9839 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=2.04e-05	
+9839 MiB free out of 48676 MiB total
+post_fine_tuning 9839 MiB free out of 48676 MiB total
+9839 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+9833 MiB free out of 48676 MiB total
+layer: 0
+done in 0:22:31.720989 overall time: 0:22:31.721029 estimated time left: 11:38:23.351886
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 1
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=2.91e-01	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=2.23e-01	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=1.54e-01	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=9.03e-02	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=4.62e-02	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 1
+done in 0:20:25.659218 overall time: 0:42:57.683467 estimated time left: 10:44:25.252000
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 2
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=3.92e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=3.38e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=3.09e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=2.90e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=2.76e-04	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 2
+done in 0:19:09.662485 overall time: 1:02:07.677438 estimated time left: 10:00:34.215234
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 3
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=7.21e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=6.07e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=5.54e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=5.21e-04	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=5.02e-04	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 3
+done in 0:19:15.766849 overall time: 1:21:23.780727 estimated time left: 9:29:46.465087
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 4
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=1.52e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=1.32e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=1.23e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=1.17e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=1.13e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 4
+done in 0:19:51.395848 overall time: 1:41:15.529068 estimated time left: 9:06:47.856970
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 5
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=2.56e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=2.14e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=1.91e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=1.79e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=1.73e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 5
+done in 0:19:37.532273 overall time: 2:00:53.431107 estimated time left: 8:43:51.534796
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 6
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=2.53e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=2.02e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=1.79e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=1.65e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=1.56e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 6
+done in 0:19:45.822861 overall time: 2:20:39.601114 estimated time left: 8:22:21.432549
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 7
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=4.39e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=3.31e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=2.80e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=2.56e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=2.44e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 7
+done in 0:19:58.371126 overall time: 2:40:38.340996 estimated time left: 8:01:55.022989
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 8
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=7.70e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=5.89e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=4.93e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=4.40e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=4.12e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 8
+done in 0:20:16.187416 overall time: 3:00:54.883151 estimated time left: 7:42:20.256942
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 9
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=7.90e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=6.35e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=5.39e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=4.84e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=4.54e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 9
+done in 0:19:12.164830 overall time: 3:20:07.410476 estimated time left: 7:20:16.303048
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 10
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=9.93e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=7.91e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=6.77e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=6.13e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=5.80e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 10
+done in 0:19:55.518087 overall time: 3:40:03.295856 estimated time left: 7:00:06.292088
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 11
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+Pre fine tuning: 23657 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.q_proj.A.centriods', 'self_attn.q_proj.B.centriods', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.k_proj.A.centriods', 'self_attn.k_proj.B.centriods', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.v_proj.A.centriods', 'self_attn.v_proj.B.centriods', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'self_attn.o_proj.A.centriods', 'self_attn.o_proj.B.centriods', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 1163284 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:4 torch.float32
+----------
+epoch=0
+train loss=1.13e-02	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=1
+train loss=8.68e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=2
+train loss=6.98e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=3
+train loss=5.98e-03	
+11353 MiB free out of 48676 MiB total
+----------
+epoch=4
+train loss=5.45e-03	
+11353 MiB free out of 48676 MiB total
+post_fine_tuning 11353 MiB free out of 48676 MiB total
+11353 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+total size:  202375168 total Megabytes:  tensor(33.9944, device='cuda:4') bits per value:  tensor(1.4091, device='cuda:4')
+11353 MiB free out of 48676 MiB total
+layer: 11
+done in 0:19:49.082038 overall time: 3:59:52.752612 estimated time left: 6:39:47.921020
+after cast to cpu
+39287 MiB free out of 48676 MiB total
+Layer 12
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:4') bits per value:  tensor(8.6182, device='cuda:4')
+Quantizing ...
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+A.shape =  torch.Size([4072, 196]) B.shape =  torch.Size([196, 4052])
+weights.shape =  torch.Size([4072, 196])
+quantized
+weights.shape =  torch.Size([196, 4052])
+quantized
+weights.shape =  torch.Size([8258, 4096])

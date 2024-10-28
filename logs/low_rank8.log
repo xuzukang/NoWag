@@ -1,0 +1,84 @@
+Arguments: Namespace(model='meta-llama/Llama-2-7b-hf', dataset='wikitext2', seed=0, device='cuda:5', nsamples=128, percdamp=1, sparsity=0, prunen=0, prunem=0, blocksize=128, gmp=False, wbits=16, minlayer=-1, maxlayer=1000, prune_only='', invert=False, save='/data/lliu/model_compression_weights/llama2_7b/low_rank/try1', true_sequential=False, log_wandb=False, quantize=True, low_rank=196, keep_top_rowise=0.5, keep_top_colwise=1.0, keep_top_frac=0.75, keep_bottom_frac=0, add_bias=True, subvector_dim_mha=4, bits_per_value_mha=2, normalize_rowise_mha=False, normalize_columnwise_mha=False, diagonal_only_mha=True, subvector_dim_mlp=2, bits_per_value_mlp=2.75, normalize_rowise_mlp=False, normalize_columnwise_mlp=False, diagonal_only_mlp=True, n_iters_quantize=100, finetune_max_epochs=5, finetune_early_stop=3, finetune_lr=1e-05, finetune_batch_size=1, offload_activations=False, finetune_adam_beta1=0.9, finetune_adam_beta2=0.95, finetune_keep_best=False, local_batch_size=None)
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.39s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.15it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.06it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+position_ids torch.Size([1, 4096])
+attention_mask torch.Size([1, 1, 4096, 4096])
+Ready.
+Layer 0
+layer original dtype torch.float16
+Performing low rank approximation
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using low rank =  196
+row mask =  4072 column mask =  4052
+using importances
+keeping 8258 top channels and 0 bottom channels
+total size:  202375168 total Megabytes:  tensor(207.9134, device='cuda:5') bits per value:  tensor(8.6182, device='cuda:5')
+Quantizing ...
+weights.shape =  torch.Size([8258, 4096])
+quantized
+weights.shape =  torch.Size([4096, 8258])
+quantized
+weights.shape =  torch.Size([8258, 4096])
+quantized
+total size:  202375168 total Megabytes:  tensor(44.6085, device='cuda:5') bits per value:  tensor(1.8491, device='cuda:5')
+Pre fine tuning: 24199 MiB free out of 48676 MiB total
+Found 28 differentiable parameters
+differentiable parameters: dict_keys(['self_attn.q_proj.A', 'self_attn.q_proj.B', 'self_attn.q_proj.weights_norms_rowwise', 'self_attn.q_proj.sparse_weights1', 'self_attn.q_proj.sparse_weights2', 'self_attn.k_proj.A', 'self_attn.k_proj.B', 'self_attn.k_proj.weights_norms_rowwise', 'self_attn.k_proj.sparse_weights1', 'self_attn.k_proj.sparse_weights2', 'self_attn.v_proj.A', 'self_attn.v_proj.B', 'self_attn.v_proj.weights_norms_rowwise', 'self_attn.v_proj.sparse_weights1', 'self_attn.v_proj.sparse_weights2', 'self_attn.o_proj.A', 'self_attn.o_proj.B', 'self_attn.o_proj.weights_norms_rowwise', 'self_attn.o_proj.sparse_weights1', 'self_attn.o_proj.sparse_weights2', 'mlp.b1', 'mlp.b3', 'mlp.b2', 'mlp.w1.centriods', 'mlp.w2.centriods', 'mlp.w3.centriods', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+Fine-tuning 7524308 parameters
+train_inps[0] torch.Size([128, 4096, 4096]) cuda:5 torch.float32
+train_outs[0] torch.Size([128, 4096, 4096]) cuda:5 torch.float32
+Traceback (most recent call last):
+  File "/data/lliu/huffman/llama_low_rank.py", line 616, in <module>
+    llama_sequential(model, dataloader, args.device)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/llama_low_rank.py", line 282, in llama_sequential
+    fine_tune(layer, dev, inps, outs, **kwargs)
+  File "/data/lliu/huffman/llama_low_rank.py", line 86, in fine_tune
+    finetune.finetune_groupwise(
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/src/finetune.py", line 206, in finetune_groupwise
+    (loss / num_accumulation_steps).backward()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/_tensor.py", line 492, in backward
+    torch.autograd.backward(
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/autograd/__init__.py", line 251, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.00 GiB. GPU 5 has a total capacty of 47.54 GiB of which 1.66 GiB is free. Including non-PyTorch memory, this process has 45.86 GiB memory in use. Of the allocated memory 43.49 GiB is allocated by PyTorch, and 2.02 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
