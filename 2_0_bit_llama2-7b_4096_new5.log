@@ -1,0 +1,1039 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.21s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.32it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.21it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+39011 MiB free out of 48676 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:5 torch.float16
+position_ids torch.Size([1, 4096]) cuda:5 torch.int64
+position_ids torch.Size([1, 4096])
+attention_mask torch.Size([1, 1, 4096, 4096])
+Ready.
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+0 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 1.8915133476257324
+final loss 1.5419642925262451
+quantized
+not here
+quantized in 21.470109462738037 seconds
+37287 MiB free out of 48676 MiB total
+0 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 0.11391407996416092
+final loss 0.09255972504615784
+quantized
+not here
+quantized in 18.68256115913391 seconds
+37351 MiB free out of 48676 MiB total
+0 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 1.56924569606781
+final loss 1.1642513275146484
+quantized
+not here
+quantized in 20.003593921661377 seconds
+37415 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 2.551227954450397e-07 val loss: 1.584857027836506e-07
+8191 MiB free out of 48676 MiB total
+epoch 1 loss: 1.4828121408516637e-07 val loss: 1.4133734183019442e-07
+6143 MiB free out of 48676 MiB total
+epoch 2 loss: 1.3629835216022457e-07 val loss: 1.3380055996492501e-07
+6143 MiB free out of 48676 MiB total
+epoch 3 loss: 1.299419018496728e-07 val loss: 1.291432161210082e-07
+6143 MiB free out of 48676 MiB total
+epoch 4 loss: 1.2566828078153236e-07 val loss: 1.2575423902205785e-07
+6143 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+0 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 0.022952867671847343
+final loss 0.017653457820415497
+quantized
+not here
+quantized in 21.686476230621338 seconds
+37565 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 1.5087526108459315e-06 val loss: 1.1251816758317545e-06
+7263 MiB free out of 48676 MiB total
+epoch 1 loss: 1.0338758276162707e-06 val loss: 9.354499219682566e-07
+7263 MiB free out of 48676 MiB total
+epoch 2 loss: 9.080443388320703e-07 val loss: 8.551540098267196e-07
+7263 MiB free out of 48676 MiB total
+epoch 3 loss: 8.434831717529789e-07 val loss: 8.054430082893305e-07
+7263 MiB free out of 48676 MiB total
+epoch 4 loss: 8.004758496049647e-07 val loss: 7.697159034592005e-07
+7263 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+0 mlp.up_proj
+Pruning ...
+realigning
+initial loss 3.7205560207366943
+final loss 3.465118169784546
+quantized
+not here
+quantized in 52.31175756454468 seconds
+36455 MiB free out of 48676 MiB total
+0 mlp.gate_proj
+Pruning ...
+realigning
+initial loss 5.386017322540283
+final loss 4.603618144989014
+quantized
+not here
+quantized in 54.49829816818237 seconds
+36369 MiB free out of 48676 MiB total
+finished: {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 69120
+optimizing the following parameters: dict_keys(['mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 45096960
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 1.6611327025017886e-06 val loss: 1.4364835436708745e-06
+8715 MiB free out of 48676 MiB total
+epoch 1 loss: 1.4033027504467555e-06 val loss: 1.341168882618149e-06
+6667 MiB free out of 48676 MiB total
+epoch 2 loss: 1.337465027617668e-06 val loss: 1.2911649989177931e-06
+6667 MiB free out of 48676 MiB total
+epoch 3 loss: 1.2978294261500878e-06 val loss: 1.2573522880643395e-06
+6667 MiB free out of 48676 MiB total
+epoch 4 loss: 1.2693559723331305e-06 val loss: 1.2317231323777378e-06
+6667 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+0 mlp.down_proj
+Pruning ...
+realigning
+initial loss 0.019204722717404366
+final loss 0.015687618404626846
+quantized
+not here
+quantized in 50.98078012466431 seconds
+35431 MiB free out of 48676 MiB total
+finished: {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+Fine tuning ...
+the following parameters will not be optimized: dict_keys([])
+number of parameters to not optimize: 0
+optimizing the following parameters: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms', 'mlp.down_proj.bias', 'mlp.down_proj.quantizer.centriods', 'mlp.down_proj.quantizer.rowwise_norms', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 93440
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 3.5230891484161475e-06 val loss: 3.2332719399619236e-06
+6579 MiB free out of 48676 MiB total
+epoch 1 loss: 3.2452566518514914e-06 val loss: 3.1780732285824342e-06
+6579 MiB free out of 48676 MiB total
+epoch 2 loss: 3.2094200648202786e-06 val loss: 3.153320633941803e-06
+6579 MiB free out of 48676 MiB total
+epoch 3 loss: 3.1903780914888102e-06 val loss: 3.1387667007720665e-06
+6579 MiB free out of 48676 MiB total
+epoch 4 loss: 3.177655202080132e-06 val loss: 3.1282778536478872e-06
+6579 MiB free out of 48676 MiB total
+35431 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+Fine tuned
+6579 MiB free out of 48676 MiB total
+after cast to cpu
+37897 MiB free out of 48676 MiB total
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+1 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 24.879276275634766
+final loss 19.753314971923828
+quantized
+not here
+quantized in 21.2804434299469 seconds
+37927 MiB free out of 48676 MiB total
+1 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 1.046298623085022
+final loss 0.9181568622589111
+quantized
+not here
+quantized in 18.854348182678223 seconds
+37799 MiB free out of 48676 MiB total
+1 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 23.06422996520996
+final loss 17.799293518066406
+quantized
+not here
+quantized in 20.500797510147095 seconds
+37671 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.003552008658232353 val loss: 0.00010033869466496981
+7167 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00792275770015749 val loss: 0.0007787110625940841
+7167 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0027710532628759665 val loss: 0.0016811380119179375
+7167 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0020769708353611804 val loss: 0.0022184414192452095
+7167 MiB free out of 48676 MiB total
+epoch 4 loss: 0.0014587713718441364 val loss: 0.0016275938323815353
+7167 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+1 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 0.07894966006278992
+final loss 0.07291785627603531
+quantized
+not here
+quantized in 20.918651819229126 seconds
+37577 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 5.496172091312701e-05 val loss: 2.991833684973244e-05
+7243 MiB free out of 48676 MiB total
+epoch 1 loss: 2.5459805385708023e-05 val loss: 2.72824123612736e-05
+7243 MiB free out of 48676 MiB total
+epoch 2 loss: 1.862169187205609e-05 val loss: 2.8247110776646878e-05
+7243 MiB free out of 48676 MiB total
+epoch 3 loss: 1.5067480767072539e-05 val loss: 2.9372036578934058e-05
+7243 MiB free out of 48676 MiB total
+epoch 4 loss: 1.2435028690305217e-05 val loss: 2.9882472063036403e-05
+7243 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+1 mlp.up_proj
+Pruning ...
+realigning
+initial loss 14.539880752563477
+final loss 13.122976303100586
+quantized
+not here
+quantized in 54.3313729763031 seconds
+36489 MiB free out of 48676 MiB total
+1 mlp.gate_proj
+Pruning ...
+realigning
+initial loss 28.298242568969727
+final loss 18.258420944213867
+quantized
+not here
+quantized in 52.69783329963684 seconds
+36209 MiB free out of 48676 MiB total
+finished: {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 69120
+optimizing the following parameters: dict_keys(['mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 45096960
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.06436540884897113 val loss: 0.00019499418885970954
+8555 MiB free out of 48676 MiB total
+epoch 1 loss: 0.012046979400111013 val loss: 0.0007942823576740921
+6507 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0012007921914118924 val loss: 0.001973412014194764
+6507 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0003995276179011853 val loss: 0.002698666008654982
+6507 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00018712144176902257 val loss: 0.002892841526772827
+6507 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+1 mlp.down_proj
+Pruning ...
+realigning
+initial loss 0.16646301746368408
+final loss 0.16646301746368408
+quantized
+not here
+quantized in 49.31676936149597 seconds
+35249 MiB free out of 48676 MiB total
+finished: {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+Fine tuning ...
+the following parameters will not be optimized: dict_keys([])
+number of parameters to not optimize: 0
+optimizing the following parameters: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms', 'mlp.down_proj.bias', 'mlp.down_proj.quantizer.centriods', 'mlp.down_proj.quantizer.rowwise_norms', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 93440
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00014203103120280502 val loss: 0.000439161216490902
+6075 MiB free out of 48676 MiB total
+epoch 1 loss: 7.369161542669644e-05 val loss: 0.0004729585016320925
+6075 MiB free out of 48676 MiB total
+epoch 2 loss: 9.397838320523988e-05 val loss: 0.0004160530152148567
+6075 MiB free out of 48676 MiB total
+epoch 3 loss: 7.950276670953826e-05 val loss: 0.0004350845956651028
+6075 MiB free out of 48676 MiB total
+epoch 4 loss: 6.605206445442491e-05 val loss: 0.0003970386605942622
+6075 MiB free out of 48676 MiB total
+35249 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+Fine tuned
+6075 MiB free out of 48676 MiB total
+after cast to cpu
+37929 MiB free out of 48676 MiB total
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+2 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 91.00123596191406
+final loss 73.7677001953125
+quantized
+not here
+quantized in 22.663697719573975 seconds
+37841 MiB free out of 48676 MiB total
+2 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 14.669179916381836
+final loss 14.043401718139648
+quantized
+not here
+quantized in 18.81831407546997 seconds
+37713 MiB free out of 48676 MiB total
+2 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 76.12307739257812
+final loss 64.83029174804688
+quantized
+not here
+quantized in 20.801831245422363 seconds
+37585 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 3.960787813639399e-05 val loss: 0.0002657980367075652
+7165 MiB free out of 48676 MiB total
+epoch 1 loss: 7.892019092992086e-05 val loss: 0.00028890028079331387
+7165 MiB free out of 48676 MiB total
+epoch 2 loss: 6.466259449666723e-05 val loss: 0.00026352756867709104
+7165 MiB free out of 48676 MiB total
+epoch 3 loss: 4.7488630556813405e-05 val loss: 0.00028228496557858307
+7165 MiB free out of 48676 MiB total
+epoch 4 loss: 4.1064438804028214e-05 val loss: 0.0002669499590410851
+7165 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+2 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 0.2880493700504303
+final loss 0.26858142018318176
+quantized
+not here
+quantized in 21.458640098571777 seconds
+37415 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 3.343199428229582e-05 val loss: 0.00023779438015480991
+7241 MiB free out of 48676 MiB total
+epoch 1 loss: 2.7276440903278854e-05 val loss: 0.00023760103067616
+7241 MiB free out of 48676 MiB total
+epoch 2 loss: 2.621252801304763e-05 val loss: 0.00023691857677476946
+7241 MiB free out of 48676 MiB total
+epoch 3 loss: 2.5600712447726437e-05 val loss: 0.00023663904084969545
+7241 MiB free out of 48676 MiB total
+epoch 4 loss: 2.4818509885449203e-05 val loss: 0.00023605135993420845
+7241 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+2 mlp.up_proj
+Pruning ...
+realigning
+initial loss 28.75741195678711
+final loss 28.383888244628906
+quantized
+not here
+quantized in 51.79126763343811 seconds
+36391 MiB free out of 48676 MiB total
+2 mlp.gate_proj
+Pruning ...
+realigning
+initial loss 39.36668395996094
+final loss 36.787017822265625
+quantized
+not here
+quantized in 51.87780404090881 seconds
+36047 MiB free out of 48676 MiB total
+finished: {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 69120
+optimizing the following parameters: dict_keys(['mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 45096960
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 5.645845683943662e-05 val loss: 0.00014513196856569266
+8393 MiB free out of 48676 MiB total
+epoch 1 loss: 5.223158200351463e-05 val loss: 0.00014501531131827505
+6345 MiB free out of 48676 MiB total
+epoch 2 loss: 5.008277307183562e-05 val loss: 0.0001449421815777896
+6345 MiB free out of 48676 MiB total
+epoch 3 loss: 4.8446583804206966e-05 val loss: 0.00014491370257019298
+6345 MiB free out of 48676 MiB total
+epoch 4 loss: 4.7060776324769904e-05 val loss: 0.0001449028350180015
+6345 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+2 mlp.down_proj
+Pruning ...
+realigning
+initial loss 0.16317114233970642
+final loss 0.16167762875556946
+quantized
+not here
+quantized in 49.46429991722107 seconds
+35109 MiB free out of 48676 MiB total
+finished: {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+Fine tuning ...
+the following parameters will not be optimized: dict_keys([])
+number of parameters to not optimize: 0
+optimizing the following parameters: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms', 'mlp.down_proj.bias', 'mlp.down_proj.quantizer.centriods', 'mlp.down_proj.quantizer.rowwise_norms', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 93440
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 5.090260043516537e-05 val loss: 0.0001097506251426239
+6191 MiB free out of 48676 MiB total
+epoch 1 loss: 5.031928739640534e-05 val loss: 0.00010973133430525195
+6191 MiB free out of 48676 MiB total
+epoch 2 loss: 5.006548525443577e-05 val loss: 0.00010970839684887324
+6191 MiB free out of 48676 MiB total
+epoch 3 loss: 4.9885698018670155e-05 val loss: 0.0001097172266781854
+6191 MiB free out of 48676 MiB total
+epoch 4 loss: 4.974878396524218e-05 val loss: 0.00010975469967888785
+6191 MiB free out of 48676 MiB total
+35109 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+Fine tuned
+6191 MiB free out of 48676 MiB total
+after cast to cpu
+37757 MiB free out of 48676 MiB total
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+3 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 209.94189453125
+final loss 172.89352416992188
+quantized
+not here
+quantized in 22.199427366256714 seconds
+37755 MiB free out of 48676 MiB total
+3 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 36.83937072753906
+final loss 36.20749282836914
+quantized
+not here
+quantized in 18.80600905418396 seconds
+37691 MiB free out of 48676 MiB total
+3 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 181.8148956298828
+final loss 159.92437744140625
+quantized
+not here
+quantized in 20.825116395950317 seconds
+37563 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00010184194454154749 val loss: 0.0007674049556953833
+8199 MiB free out of 48676 MiB total
+epoch 1 loss: 0.0004899707360834782 val loss: 0.0008203350953408517
+6151 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00039027514674216945 val loss: 0.0008480349279125221
+6151 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0003766097854338568 val loss: 0.0009114128406508826
+6151 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00025473053770497245 val loss: 0.0008310195771628059
+6151 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+3 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 0.3475668430328369
+final loss 0.3005266785621643
+quantized
+not here
+quantized in 21.646493196487427 seconds
+37307 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 3.332376714837437e-05 val loss: 0.0006277924367168453
+8253 MiB free out of 48676 MiB total
+epoch 1 loss: 8.294638381300956e-05 val loss: 0.0006237044763111044
+6205 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00017307627677354276 val loss: 0.0006286546304181684
+6205 MiB free out of 48676 MiB total
+epoch 3 loss: 8.878267230727488e-05 val loss: 0.0006262944698391948
+6205 MiB free out of 48676 MiB total
+epoch 4 loss: 7.423505851278378e-05 val loss: 0.0006292513280641288
+6205 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+3 mlp.up_proj
+Pruning ...
+realigning
+initial loss 46.8112678527832
+final loss 46.61445617675781
+quantized
+not here
+quantized in 52.83635902404785 seconds
+36197 MiB free out of 48676 MiB total
+3 mlp.gate_proj
+Pruning ...
+realigning
+initial loss 59.73869323730469
+final loss 58.459312438964844
+quantized
+not here
+quantized in 53.79850244522095 seconds
+35939 MiB free out of 48676 MiB total
+finished: {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 69120
+optimizing the following parameters: dict_keys(['mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 45096960
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00011692836778820492 val loss: 0.00038685019899276085
+8285 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00010607896473402434 val loss: 0.0003920944582205266
+6237 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00010210585807612915 val loss: 0.00039583773650520016
+6237 MiB free out of 48676 MiB total
+epoch 3 loss: 9.939100898748165e-05 val loss: 0.00039835180177760776
+6237 MiB free out of 48676 MiB total
+epoch 4 loss: 9.725599601040358e-05 val loss: 0.0004000441804237198
+6237 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+3 mlp.down_proj
+Pruning ...
+realigning
+initial loss 0.31633758544921875
+final loss 0.31356167793273926
+quantized
+not here
+quantized in 50.3588080406189 seconds
+35939 MiB free out of 48676 MiB total
+finished: {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+Fine tuning ...
+the following parameters will not be optimized: dict_keys([])
+number of parameters to not optimize: 0
+optimizing the following parameters: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms', 'mlp.down_proj.bias', 'mlp.down_proj.quantizer.centriods', 'mlp.down_proj.quantizer.rowwise_norms', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 93440
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 9.998930948995621e-05 val loss: 0.0002453557899571024
+6657 MiB free out of 48676 MiB total
+epoch 1 loss: 9.735058836213284e-05 val loss: 0.0002488104191797902
+6657 MiB free out of 48676 MiB total
+epoch 2 loss: 9.668860087685971e-05 val loss: 0.00024863301769073587
+4609 MiB free out of 48676 MiB total
+epoch 3 loss: 9.622983930057671e-05 val loss: 0.00024959548227343475
+4609 MiB free out of 48676 MiB total
+epoch 4 loss: 9.589241062712972e-05 val loss: 0.0002479379900250933
+4609 MiB free out of 48676 MiB total
+35939 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+Fine tuned
+4609 MiB free out of 48676 MiB total
+after cast to cpu
+37585 MiB free out of 48676 MiB total
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+4 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 173.2545623779297
+final loss 151.3118896484375
+quantized
+not here
+quantized in 21.828127145767212 seconds
+37583 MiB free out of 48676 MiB total
+4 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 35.103912353515625
+final loss 34.45220947265625
+quantized
+not here
+quantized in 18.881430864334106 seconds
+37519 MiB free out of 48676 MiB total
+4 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 152.16207885742188
+final loss 140.99227905273438
+quantized
+not here
+quantized in 20.532180309295654 seconds
+37519 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 7.325170969352257e-05 val loss: 0.0007411502483591903
+7303 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00023427558562616468 val loss: 0.0008872391408658586
+7303 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0001979732050756411 val loss: 0.001097296455554897
+7303 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0002187297089619733 val loss: 0.0008364161149074789
+7303 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00013197867730241342 val loss: 0.0008586225994804408
+7303 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+4 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 0.6638990640640259
+final loss 0.5204932689666748
+quantized
+not here
+quantized in 22.718947172164917 seconds
+37263 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 5.614537242593087e-05 val loss: 0.0006399301746569108
+8241 MiB free out of 48676 MiB total
+epoch 1 loss: 7.8249024085153e-05 val loss: 0.0006448926542361733
+8241 MiB free out of 48676 MiB total
+epoch 2 loss: 9.511392367755889e-05 val loss: 0.0006391731003532186
+8241 MiB free out of 48676 MiB total
+epoch 3 loss: 6.986557977484154e-05 val loss: 0.0006448330459534191
+8241 MiB free out of 48676 MiB total
+epoch 4 loss: 7.866705597336932e-05 val loss: 0.0006364005457726307
+8241 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+4 mlp.up_proj
+Pruning ...
+realigning
+initial loss 60.03063201904297
+final loss 59.59275817871094
+quantized
+not here
+quantized in 52.79371953010559 seconds
+36153 MiB free out of 48676 MiB total
+4 mlp.gate_proj
+Pruning ...
+realigning
+initial loss 85.28044891357422
+final loss 81.19554138183594
+quantized
+not here
+quantized in 52.9323410987854 seconds
+35895 MiB free out of 48676 MiB total
+finished: {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 69120
+optimizing the following parameters: dict_keys(['mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 45096960
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00020807058922400756 val loss: 0.00047620368059142493
+7217 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00018386030694728106 val loss: 0.0004745672886201646
+7217 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00017375101219840872 val loss: 0.00047465636816923507
+7217 MiB free out of 48676 MiB total
+epoch 3 loss: 0.00016752321394619685 val loss: 0.0004751210599351907
+7217 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00016310814640974058 val loss: 0.00047584531239408534
+7217 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+4 mlp.down_proj
+Pruning ...
+realigning
+initial loss 0.6327054500579834
+final loss 0.6104578375816345
+quantized
+not here
+quantized in 55.756754636764526 seconds
+35895 MiB free out of 48676 MiB total
+finished: {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+Fine tuning ...
+the following parameters will not be optimized: dict_keys([])
+number of parameters to not optimize: 0
+optimizing the following parameters: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms', 'mlp.down_proj.bias', 'mlp.down_proj.quantizer.centriods', 'mlp.down_proj.quantizer.rowwise_norms', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 93440
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.0001925981918020625 val loss: 0.0003552250946086133
+6667 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00018586640544526745 val loss: 0.00035348413803149015
+4619 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00018358086470016133 val loss: 0.000352453876985237
+4619 MiB free out of 48676 MiB total
+epoch 3 loss: 0.00018191571541592566 val loss: 0.00035164393193554133
+4619 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00018061389960166707 val loss: 0.00035116614708385896
+4619 MiB free out of 48676 MiB total
+35895 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+Fine tuned
+4619 MiB free out of 48676 MiB total
+after cast to cpu
+37585 MiB free out of 48676 MiB total
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+5 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 211.39549255371094
+final loss 176.26512145996094
+quantized
+not here
+quantized in 21.63503861427307 seconds
+37583 MiB free out of 48676 MiB total
+5 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 39.805908203125
+final loss 39.32218933105469
+quantized
+not here
+quantized in 19.226611852645874 seconds
+37583 MiB free out of 48676 MiB total
+5 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 171.0006866455078
+final loss 153.38803100585938
+quantized
+not here
+quantized in 20.716715335845947 seconds
+37519 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00020151788373823365 val loss: 0.0010709094494814053
+7175 MiB free out of 48676 MiB total
+epoch 1 loss: 0.0003568026266975721 val loss: 0.0014216646741260774
+7175 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0003792548826027087 val loss: 0.0011982943178736605
+7175 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0003773094517214304 val loss: 0.0010649384894350078
+7175 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00036662863664105316 val loss: 0.0012368241877993569
+7175 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+5 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 1.1866066455841064
+final loss 1.0562758445739746
+quantized
+not here
+quantized in 22.859074592590332 seconds
+37317 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00010276884648874329 val loss: 0.0007468267322110478
+7207 MiB free out of 48676 MiB total
+epoch 1 loss: 0.0004295250832058173 val loss: 0.0007571399437438231
+7207 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00026531059413059666 val loss: 0.0007750225049676374
+7207 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0002902892069016616 val loss: 0.0007889026273915078
+7207 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00026060322491616716 val loss: 0.0007826098371879198
+7207 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+5 mlp.up_proj
+Pruning ...
+realigning
+initial loss 72.25131225585938
+final loss 71.78131866455078
+quantized
+not here
+quantized in 52.0264630317688 seconds
+37317 MiB free out of 48676 MiB total
+5 mlp.gate_proj
+Pruning ...
+realigning
+initial loss 101.80679321289062
+final loss 97.59947204589844
+quantized
+not here
+quantized in 51.24744248390198 seconds
+36973 MiB free out of 48676 MiB total
+finished: {'mlp.up_proj': Linear(in_features=4096, out_features=11008, bias=False), 'mlp.gate_proj': Linear(in_features=4096, out_features=11008, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 69120
+optimizing the following parameters: dict_keys(['mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 45096960
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.0002985290171864108 val loss: 0.0005631432759400923
+6843 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00026759077957194677 val loss: 0.0005617064016405493
+6843 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0002542173018014182 val loss: 0.0005619524454232305
+6843 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0002454974162446888 val loss: 0.0005627605205518194
+6843 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00023877843852915248 val loss: 0.0005631202438962646
+6843 MiB free out of 48676 MiB total
+finished adding batches
+subset {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+5 mlp.down_proj
+Pruning ...
+realigning
+initial loss 1.084740161895752
+final loss 1.0399901866912842
+quantized
+not here
+quantized in 53.95796513557434 seconds
+35949 MiB free out of 48676 MiB total
+finished: {'mlp.down_proj': Linear(in_features=11008, out_features=4096, bias=False)}
+Fine tuning ...
+the following parameters will not be optimized: dict_keys([])
+number of parameters to not optimize: 0
+optimizing the following parameters: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms', 'mlp.gate_proj.bias', 'mlp.gate_proj.quantizer.centriods', 'mlp.gate_proj.quantizer.rowwise_norms', 'mlp.up_proj.bias', 'mlp.up_proj.quantizer.centriods', 'mlp.up_proj.quantizer.rowwise_norms', 'mlp.down_proj.bias', 'mlp.down_proj.quantizer.centriods', 'mlp.down_proj.quantizer.rowwise_norms', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 93440
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00032775314571154013 val loss: 0.00039398051376338117
+6151 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00031973052705325244 val loss: 0.00039690644916845486
+6151 MiB free out of 48676 MiB total
+epoch 2 loss: 0.00031553362759950687 val loss: 0.00039880081749288365
+6151 MiB free out of 48676 MiB total
+epoch 3 loss: 0.00031285752413623413 val loss: 0.00039990025470615365
+6151 MiB free out of 48676 MiB total
+epoch 4 loss: 0.00031083586372915306 val loss: 0.00040083025123749394
+6151 MiB free out of 48676 MiB total
+35949 MiB free out of 48676 MiB total
+trying to convert back to original dtype
+Fine tuned
+6151 MiB free out of 48676 MiB total
+after cast to cpu
+37585 MiB free out of 48676 MiB total
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj'], ['self_attn.o_proj'], ['mlp.up_proj', 'mlp.gate_proj'], ['mlp.down_proj']]
+finished adding batches
+subset {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+6 self_attn.k_proj
+Pruning ...
+realigning
+initial loss 308.35516357421875
+final loss 250.7684326171875
+quantized
+not here
+quantized in 21.46737575531006 seconds
+37583 MiB free out of 48676 MiB total
+6 self_attn.v_proj
+Pruning ...
+realigning
+initial loss 58.35337448120117
+final loss 57.446712493896484
+quantized
+not here
+quantized in 18.90263819694519 seconds
+37691 MiB free out of 48676 MiB total
+6 self_attn.q_proj
+Pruning ...
+realigning
+initial loss 282.79107666015625
+final loss 246.71371459960938
+quantized
+not here
+quantized in 20.431818962097168 seconds
+37563 MiB free out of 48676 MiB total
+finished: {'self_attn.k_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.v_proj': Linear(in_features=4096, out_features=4096, bias=False), 'self_attn.q_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 27648
+optimizing the following parameters: dict_keys(['self_attn.o_proj.weight', 'mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 152051712
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.0004891562700777285 val loss: 0.0013119688665028661
+7391 MiB free out of 48676 MiB total
+epoch 1 loss: 0.0007963118363250032 val loss: 0.0012989633760298602
+7391 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0009346081207013412 val loss: 0.0013234721554908901
+7391 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0009437969130203783 val loss: 0.0013655847287736833
+7391 MiB free out of 48676 MiB total
+epoch 4 loss: 0.0009970570533823775 val loss: 0.0013811623721267097
+7391 MiB free out of 48676 MiB total
+finished adding batches
+subset {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+6 self_attn.o_proj
+Pruning ...
+realigning
+initial loss 2.393383502960205
+final loss 1.8801827430725098
+quantized
+not here
+quantized in 22.864564418792725 seconds
+37447 MiB free out of 48676 MiB total
+finished: {'self_attn.o_proj': Linear(in_features=4096, out_features=4096, bias=False)}
+the following parameters will not be optimized: dict_keys(['self_attn.q_proj.bias', 'self_attn.q_proj.quantizer.centriods', 'self_attn.q_proj.quantizer.rowwise_norms', 'self_attn.k_proj.bias', 'self_attn.k_proj.quantizer.centriods', 'self_attn.k_proj.quantizer.rowwise_norms', 'self_attn.v_proj.bias', 'self_attn.v_proj.quantizer.centriods', 'self_attn.v_proj.quantizer.rowwise_norms', 'self_attn.o_proj.bias', 'self_attn.o_proj.quantizer.centriods', 'self_attn.o_proj.quantizer.rowwise_norms'])
+number of parameters to not optimize: 36864
+optimizing the following parameters: dict_keys(['mlp.gate_proj.weight', 'mlp.up_proj.weight', 'mlp.down_proj.weight', 'input_layernorm.weight', 'post_attention_layernorm.weight'])
+total number of parameters to optimize: 135274496
+n accumulation steps: 1
+n batches: 128
+epoch 0 loss: 0.00017618747148162583 val loss: 0.0009864712083071936
+7273 MiB free out of 48676 MiB total
+epoch 1 loss: 0.00036235727020539343 val loss: 0.0010027234566223342
+7273 MiB free out of 48676 MiB total
+epoch 2 loss: 0.0005617472858148176 val loss: 0.0010057381696242373
+7273 MiB free out of 48676 MiB total
+epoch 3 loss: 0.0006198722255135181 val loss: 0.0009968407175620086
+7273 MiB free out of 48676 MiB total
+epoch 4 loss: 0.000530652288375677 val loss: 0.001004000998364063
+7273 MiB free out of 48676 MiB total
+Traceback (most recent call last):
+  File "/data/lliu/huffman/llama.py", line 690, in <module>
+    llama_sequential(model, dataloader, valloader, args.device)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/llama.py", line 281, in llama_sequential
+    outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/transformers/models/llama/modeling_llama.py", line 413, in forward
+    hidden_states, self_attn_weights, present_key_value = self.self_attn(
+                                                          ^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/transformers/models/llama/modeling_llama.py", line 310, in forward
+    query_states = self.q_proj(hidden_states)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/llama.py", line 61, in forward
+    return F.linear(input, self.quantized_weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

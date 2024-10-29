@@ -62,14 +62,14 @@ def calculate_hessians(layer, inps):
         out, *_ = layer(inps[j].unsqueeze(0))
 
 def quantize_layer(layer,args):
-    # for name in ["v_proj", "k_proj", "q_proj", "o_proj"]:
-    #     getattr(getattr(layer, "self_attn"), name).quantize(d = args.subvector_dim_mha,
-    #                                                         n_centriods = 2**(int(args.bits_per_value_mha*args.subvector_dim_mha)),
-    #                                                         n_iter = args.n_iters_quantize,
-    #                                                         normalize_rowwise = args.normalize_rowise_mha,
-    #                                                         normalize_columnwise = args.normalize_columnwise_mha, 
-    #                                                         diagonal_only = args.diagonal_only_mha,
-    #                                                         damping = args.percdamp/100)
+    for name in ["v_proj", "k_proj", "q_proj", "o_proj"]:
+        getattr(getattr(layer, "self_attn"), name).quantize(d = args.subvector_dim_mha,
+                                                            n_centriods = 2**(int(args.bits_per_value_mha*args.subvector_dim_mha)),
+                                                            n_iter = args.n_iters_quantize,
+                                                            normalize_rowwise = args.normalize_rowise_mha,
+                                                            normalize_columnwise = args.normalize_columnwise_mha, 
+                                                            diagonal_only = args.diagonal_only_mha,
+                                                            damping = args.percdamp/100)
     getattr(layer, "mlp").quantize(d = args.subvector_dim_mlp,
                                 n_centriods = 2**(int(args.bits_per_value_mlp*args.subvector_dim_mlp)),
                                 n_iter = args.n_iters_quantize,
@@ -490,7 +490,7 @@ if __name__ == "__main__":
         "--quantize", action="store_true", help="Whether to quantize."
     )
     parser.add_argument(
-        "--low_rank", type=int, default=196, help="Low rank fraction for MHA."
+        "--low_rank", type=int, default=512, help="Low rank fraction for MHA."
     )
     parser.add_argument(
         "--keep_top_rowise", type=float, default=0.5, help="Keep top rowise for MHA."

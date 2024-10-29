@@ -12,7 +12,8 @@ import random
 import numpy as np
 import fine_tune as lora_fine_tune
 import src.finetune as finetune
-
+import src.finetune_new as finetune_new
+import src.quantizer as quantizer
 
 try:
     import wandb
@@ -35,74 +36,55 @@ def get_llama(model):
     return model
 
 class QuantizedLinear(nn.Module):
-    def __init__(self, quantized_parameters, bias: Optional[nn.Parameter]):
+    def __init__(self, quantizer:quantizer.Quantize, bias: Optional[nn.Parameter],create_bias: bool = True):
         super().__init__()
-        codebooks, mappings, mask, rowise_norms, colwise_norms, sparse_parameters, weight_shape, subvector_assignment = quantized_parameters
-        self.out_features, self.in_features = weight_shape
-        self.codebooks = nn.Parameter(codebooks.clone(), requires_grad=True)
-        self.mappings = nn.Parameter(mappings.clone(), requires_grad=False)
-        self.mask = nn.Parameter(~mask.clone(), requires_grad=False)
-        self.mask_sum = self.mask.sum().item()
-        self.subvector_assignment = nn.Parameter(subvector_assignment.clone(), requires_grad=False)
-        self.rowise_norms = nn.Parameter(rowise_norms.clone(), requires_grad=True)
-        self.colwise_norms = nn.Parameter(colwise_norms.clone(), requires_grad=True)
-        if self.mask_sum > 0:
-            self.sparse_parameters = nn.Parameter(sparse_parameters.clone(), requires_grad=True)
+        self.quantizer = quantizer
         if bias is not None:
             print("here: bias", bias)
             self.bias = bias
         else:
             print("not here")
-            self.bias = nn.Parameter(torch.zeros(self.out_features, dtype=self.codebooks.dtype,
-                                                    device=self.codebooks.device
+            if create_bias:
+                self.bias = nn.Parameter(torch.zeros(self.quantizer.n_out,
+                                                     dtype=self.quantizer.centriods.dtype,
+                                                    device=self.quantizer.centriods.device
                                                  ), requires_grad=True)
+            else:
+                self.bias = None
         self.use_checkpoint = False
-
-    def _construct_quantized_weight(self):
-        if self.mappings.dtype == self.codebooks.dtype:
-            print("current dtypes:", self.mappings.dtype, self.codebooks.dtype, self.subvector_assignment.dtype)
-            self.mappings = self.mappings.int()
-            self.subvector_assignment = self.subvector_assignment.int()
-            self.mask = self.mask.bool()
-            print("new dtypes:", self.mappings.dtype, self.codebooks.dtype, self.subvector_assignment.dtype)
+        self.grad_disabled = False
         
-            
-        quantized_weight = torch.zeros(self.out_features, self.in_features, device=self.codebooks.device,
-                                       dtype=self.codebooks.dtype)
         
-        quantized_weight[:,self.subvector_assignment] = self.codebooks[self.mappings,:].reshape(self.out_features, -1, self.codebooks.shape[-1])
         
-        quantized_weight = self.rowise_norms.unsqueeze(0) * self.colwise_norms.unsqueeze(1) * quantized_weight
-        if self.mask_sum > 0:
-            quantized_weight[self.mask] = self.sparse_parameters
-        return quantized_weight
-        
-            
-        
-    def _forward(self, input: torch.Tensor):
-        # print(input.dtype,self.quantized_weight.dtype)
-        # if self.bias is not None:
-        #     print(self.bias.dtype)
-        self.quantized_weight = self._construct_quantized_weight()
-        return F.linear(input, self.quantized_weight, self.bias)
-
     def forward(self, input: torch.Tensor):
-        return self._forward(input)
+        if self.grad_disabled:
+            return F.linear(input, self.quantized_weight, self.bias)
+            
+        return F.linear(input, self.quantizer(), self.bias)
     
-    def to(self, *args, **kwargs):
-        print("to: args", args, "kwargs", kwargs)
-        self.codebooks = self.codebooks.to(*args, **kwargs)
-        self.mappings = self.mappings.to(*args, **kwargs)
-        self.mask = self.mask.to(*args, **kwargs)
-        self.rowise_norms = self.rowise_norms.to(*args, **kwargs)
-        self.colwise_norms = self.colwise_norms.to(*args, **kwargs)
-        if self.mask_sum > 0:
-            self.sparse_parameters = self.sparse_parameters.to(*args, **kwargs)
+    def disable_grad(self):
+        for param in self.parameters():
+            param.requires_grad = False
+        
+        self.register_buffer("quantized_weight", self.quantizer())
+        self.grad_disabled = True
+        self.verbose = True
+            
+    def enable_grad(self):
+        for param in self.parameters():
+            param.requires_grad = True
+        
+        self.grad_disabled = False
+        self.verbose = False
+        del self.quantized_weight
+            
+    def get_n_bits(self):
+        n_bits = self.quantizer.get_n_bits()
         if self.bias is not None:
-            print(self.bias.dtype)
-            print(self.bias)
-            self.bias = self.bias.to(*args, **kwargs)
-        return super().to(*args, **kwargs)
+            n_bits += self.bias.numel() *16
+        return n_bits
+    
+
 
 def cast_to_dtype(module, dtype):   
     #cast the quantized weights to the original dtype
@@ -117,8 +99,35 @@ def cast_to_dtype(module, dtype):
             cast_to_dtype(param, dtype)
     return module
 
+def finetune_fn(
+    layer: nn.Module,
+    inps: torch.Tensor,
+    outs: torch.Tensor,
+    val_inps: Optional[torch.Tensor],
+    val_outs: Optional[torch.Tensor],
+    args,
+    kwargs: dict,
+    dev:str):
+    
+    
+    layer.to(torch.float32)
+    finetune_new.finetune_amp_eps_wrapper(
+        layer = layer,
+        train_inps = inps.to(dev).to(dtype = torch.float32),
+        train_outputs = outs.to(dev).to(dtype = torch.float32),
+        val_inps = val_inps.to(dev).to(dtype = torch.float32) if val_inps is not None else None,
+        val_outputs = val_outs.to(dev).to(dtype = torch.float32) if val_outs is not None else None,
+        args = args,
+        layer_kwargs = kwargs,
+        early_stop_eps = 1e-6
+        
+    )
+    layer.to(torch.float32)
+    return layer
+                
+
 @torch.no_grad()
-def llama_sequential(model, dataloader, dev):
+def llama_sequential(model, dataloader, dataloader_val, dev):
     print("Starting...")
 
     use_cache = model.config.use_cache
@@ -133,7 +142,8 @@ def llama_sequential(model, dataloader, dev):
     inps = torch.zeros(
         (args.nsamples, model.seqlen, model.config.hidden_size), dtype=dtype, device=dev
     )
-    cache = {"i": 0, "attention_mask": None, "position_ids": None}
+
+    train_cache = {"i": 0, "attention_mask": None, "position_ids": None}
 
     class Catcher(nn.Module):
         def __init__(self, module):
@@ -141,10 +151,10 @@ def llama_sequential(model, dataloader, dev):
             self.module = module
 
         def forward(self, inp, **kwargs):
-            inps[cache["i"]] = inp
-            cache["i"] += 1
-            cache["attention_mask"] = kwargs["attention_mask"]
-            cache["position_ids"] = kwargs["position_ids"]
+            inps[train_cache["i"]] = inp
+            train_cache["i"] += 1
+            train_cache["attention_mask"] = kwargs["attention_mask"]
+            train_cache["position_ids"] = kwargs["position_ids"]
             raise ValueError
 
     layers[0] = Catcher(layers[0])
@@ -156,14 +166,58 @@ def llama_sequential(model, dataloader, dev):
                 pass
     layers[0] = layers[0].module
 
+
+    if args.nsamples_val > 0:
+        inps_val = torch.zeros(
+            (args.nsamples_val, model.seqlen, model.config.hidden_size), dtype=dtype, device=dev
+        )
+
+        val_cache = {"i": 0, "attention_mask": None, "position_ids": None}
+
+        class Catcher_val(nn.Module):
+            def __init__(self, module):
+                super().__init__()
+                self.module = module
+
+            def forward(self, inp, **kwargs):
+                inps_val[val_cache["i"]] = inp
+                val_cache["i"] += 1
+                val_cache["attention_mask"] = kwargs["attention_mask"]
+                val_cache["position_ids"] = kwargs["position_ids"]
+                raise ValueError
+
+        layers[0] = Catcher_val(layers[0])
+        with torch.no_grad():
+            for batch in dataloader_val:
+                try:
+                    model(batch[0].to(dev))
+                except ValueError:
+                    pass
+        val_outs = torch.zeros_like(inps_val)
+
+        layers[0] = layers[0].module
+
     layers[0] = layers[0].cpu()
     model.model.embed_tokens = model.model.embed_tokens.cpu()
     model.model.norm = model.model.norm.cpu()
     torch.cuda.empty_cache()
 
     outs = torch.zeros_like(inps)
-    attention_mask = cache["attention_mask"]
-    position_ids = cache["position_ids"]
+    attention_mask = train_cache["attention_mask"]
+    position_ids = train_cache["position_ids"]
+    
+    kwargs = {"attention_mask": attention_mask,
+                      "position_ids": position_ids}
+    free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+    print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+
+    for name in kwargs:
+        if kwargs[name] is not None:
+            kwargs[name] = kwargs[name].to(dev)
+            if kwargs[name].dtype == torch.float16:
+                kwargs[name] = kwargs[name].to(dtype=torch.float16)
+            print(name, kwargs[name].shape, kwargs[name].device, kwargs[name].dtype)
+                    
     print("position_ids", position_ids.shape)
     print("attention_mask", attention_mask.shape)
 
@@ -175,6 +229,7 @@ def llama_sequential(model, dataloader, dev):
     total_params = 0
     for i in range(len(layers)):
         layer = layers[i].to(dev)
+        # print(layer)
         layer_dtype_orig = next(layer.parameters()).dtype
         print("layer original dtype", layer_dtype_orig)
         #     if i > 0:
@@ -191,8 +246,9 @@ def llama_sequential(model, dataloader, dev):
             ]
         else:
             sequential = [list(full.keys())]
+        print("sequential", sequential)
 
-        for names in sequential:
+        for l,names in enumerate(sequential):
             subset = {n: full[n] for n in names}
 
             gpts = {}
@@ -226,105 +282,92 @@ def llama_sequential(model, dataloader, dev):
                 for h in handles:
                     h.remove()
 
+                for j in range(args.nsamples_val):
+                    val_outs[j] = layer(inps_val[j].unsqueeze(0), attention_mask=attention_mask)[0]
+
+            print("finished adding batches")
+            print("subset", subset)
             for name in subset:
                 print(i, name)
                 print("Pruning ...")
-                sparsity = args.sparsity
-                if args.structured_sparsity:
-                    print("Structured sparsity")
-                    n_bits, n_params = gpts[name].structured_sparse_quantize(
-                        subvector_dim = args.subvector_dim,
-                        k_codebook = args.k_cosine_codebook,
-                        keep_top_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
-                        keep_top_colwise = args.keep_top_colwise if args.keep_top != 0 else 0,
-                        lr = args.lr,   
-                        lr_multiple = args.lr_multiple,
-                        n_iters = args.n_iters,
-                        clamp_gradients = args.clamp_gradients
-                )
-                    
-                elif args.normalized_clustering:
-                    print("Normalized clustering")
-                    weights_new, n_bits, n_params = gpts[name].normalized_clustering(
-                        subvector_dim = args.subvector_dim,
-                        k_codebook = args.k_cosine_codebook,
-                        keep_top_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
-                        keep_top_colwise = args.keep_top_colwise if args.keep_top != 0 else 0,
-                        lr = args.lr,
-                        lr_multiple = args.lr_multiple,
-                        n_iters = args.n_iters,
-                        clamp_gradients = args.clamp_gradients
-                    )
-                    new_linear = QuantizedLinear(weights_new, subset[name].bias)
-                    new_linear.to(dev)
-                    module = getattr(layer, name.split(".")[0])
-                    setattr(module, name.split(".")[1], new_linear)
-                    del weights_new
-                    # print(name)
-                    # # print(getattr(layer, name))
-                    # print(layer)
-                    
-                elif args.low_rank:
-                    print("Low rank")
-                    n_bits, n_params = gpts[name].low_rank(
-                        low_rank_frac = args.low_rank_frac,
-                        n_bits = args.lora_n_bits,
-                        sparse_rowise = args.keep_top_rowise if args.keep_top != 0 else 0,
-                        sparse_colwise = args.keep_top_colwise if args.keep_top != 0 else 0,
-                        lr = args.lr,
-                        lr_multiplier = args.lr_multiple,
-                        n_iters = args.n_iters,
-                        grad_clip = args.clamp_gradients
-                    )
-                else:
-                    n_bits, n_params = gpts[name].fastquant(
-                        subvector_dim = args.subvector_dim,
-                        k_magnitude_codebook = args.k_magnitude_codebook,
-                        k_cosine_codebook = args.k_cosine_codebook,
-                        keep_top = args.keep_top,
-                        keep_top_criterion = args.keep_top_criterion,
-                        lr = args.lr,
-                        lr_multiple = args.lr_multiple,
-                        n_iters = args.n_iters,
-                        clamp_gradients = args.clamp_gradients
-                    )
+                tick = time.time()
+                H = gpts[name].get_H()
+                W = gpts[name].get_W()
+                bias = getattr(subset[name], "bias", None)
                 
+                n_params = W.numel()
+                if bias is not None:
+                    n_params += bias.numel()
+                    
+                quantized = quantizer.Quantize.quantize(W, H,
+                                                        args.subvector_dim,
+                                                        args.k_cosine_codebook,
+                                                        args.n_iters,
+                                                        args.normalize_rowwise,
+                                                        args.normalize_colwise,
+                                                        args.align_quantize,
+                                                        args.regularization,
+                                                        args.lr,
+                                                        args.lr_multiple,
+                                                        align_clip_grad=args.clamp_gradients,
+                                                        damping = args.percdamp,    
+                                                        seed = args.seed,                           
+                )
+                
+                # new_layer = QuantizedLinear(quantized, getattr(subset[name], "bias", None), create_bias = True)
+                # new_layer.disable_grad()
+                #first set the existing layer to none
+                getattr(layer, name.split(".")[0]).__setattr__(name.split(".")[1], None)
+                setattr(getattr(layer, name.split(".")[0]), name.split(".")[1], QuantizedLinear(quantized, getattr(subset[name], "bias", None), create_bias = True))
+                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).disable_grad()                               
+                print("quantized in", time.time() - tick, "seconds")                       
                 gpts[name].free()
                 free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
                 print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-
-                total_bits += n_bits
+                del W
+                del H
+                total_bits += getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).get_n_bits()
                 total_params += n_params
 
                 # return quantizers
-        # return quantizers
-        if args.fine_tune:
+            print("finished:", subset)
+            if args.fine_tune_quip_like and l != len(sequential) - 1:
+                layer = finetune_fn(
+                    layer = layer, 
+                    inps = inps, outs = outs, 
+                    val_inps = inps_val if args.nsamples_val > 0 else None, 
+                    val_outs = val_outs if args.nsamples_val > 0 else None,
+                    args = args, kwargs = kwargs, dev = dev
+                )
+                
+        if args.fine_tune or args.fine_tune_quip_like:
+            #set everything to trainable
+            for sublists in sequential:
+                for name in sublists:
+                    getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).enable_grad()
             print("Fine tuning ...")
-            print(layer)
-            print("attempting to cast to float32")
-            layer = layer.to(dtype=torch.float32)
-            # layer = cast_to_dtype(layer ,torch.float32)
-            kwargs = {"attention_mask": attention_mask,
-                      "position_ids": position_ids}
-            free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
-            print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-            for name in kwargs:
-                if kwargs[name] is not None:
-                    kwargs[name] = kwargs[name].to(dev)
-                    if kwargs[name].dtype == torch.float16:
-                        kwargs[name] = kwargs[name].to(dtype=torch.float32)
-                    print(name, kwargs[name].shape, kwargs[name].device, kwargs[name].dtype)
-            finetune.finetune_groupwise(
-                layer = layer,
-                train_inps = [inps.to(dev).to(dtype=torch.float32)],
-                train_outs = [outs.to(dev).to(dtype=torch.float32)],
-                devices= [dev],
-                args = args,
-                valid_inps = None,
-                valid_outs = None,
-                **kwargs
+            #switch to float16
+            layer = finetune_fn(
+                layer = layer, 
+                inps = inps, outs = outs, 
+                val_inps = inps_val if args.nsamples_val > 0 else None, 
+                val_outs = val_outs if args.nsamples_val > 0 else None,
+                args = args, kwargs = kwargs, dev = dev
             )
-            free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
+            
+            
+            # layer = layer.to(dtype=torch.float32)
+            
+            
+            # finetune_new.finetune_amp_eps_wrapper(
+            #     layer = layer,
+            #     train_inps = inps.to(dev).to(dtype = torch.float32),
+            #     train_outputs = outs.to(dev).to(dtype = torch.float32),
+            #     args = args,
+            #     layer_kwargs = kwargs,
+            #     early_stop_eps = 1e-6
+            # )
+            # free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
             print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
             print("trying to convert back to original dtype")
             # layer = cast_to_dtype(layer ,layer_dtype_orig)
@@ -333,6 +376,8 @@ def llama_sequential(model, dataloader, dev):
         with torch.no_grad():
             for j in range(args.nsamples):
                 outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+            for j in range(args.nsamples_val):  
+                val_outs[j] = layer(inps_val[j].unsqueeze(0), attention_mask=attention_mask)[0]
 
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
@@ -345,6 +390,7 @@ def llama_sequential(model, dataloader, dev):
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
 
         inps, outs = outs, inps
+        # return 
         # break
     model.config.use_cache = use_cache
 
@@ -471,9 +517,15 @@ if __name__ == "__main__":
         "--nsamples", type=int, default=128, help="Number of calibration data samples."
     )
     parser.add_argument(
+        "--nsamples_val",
+        type=int,
+        default=16,
+        help="Number of validation data samples.",
+    )
+    parser.add_argument(
         "--percdamp",
         type=float,
-        default=0.01,
+        default=0,
         help="Percent of the average Hessian diagonal to use for dampening.",
     )
     parser.add_argument("--sparsity", type=float, default=0, help="Target sparsity")
@@ -506,7 +558,7 @@ if __name__ == "__main__":
     parser.add_argument("--invert", action="store_true", help="Invert subset.")
     parser.add_argument("--save", type=str, default="", help="Path to saved model.")
     parser.add_argument(
-        "--true-sequential",
+        "--true_sequential",
         action="store_true",
         help="Whether to run in true sequential model.",
     )
@@ -514,7 +566,7 @@ if __name__ == "__main__":
         "--log_wandb", action="store_true", help="Whether to log to wandb."
     )
     parser.add_argument(
-        "--subvector_dim", type=int, default=16, help="Subvector dimension."
+        "--subvector_dim", type=int, default=4, help="Subvector dimension."
     )
     parser.add_argument(
         "--k_magnitude_codebook", type=int, default=256, help="Magnitude codebook size."
@@ -523,20 +575,13 @@ if __name__ == "__main__":
         "--k_cosine_codebook", type=int, default=256, help="Cosine codebook size."
     )
     parser.add_argument(
-        "--keep_top", type=float, default=0.01, help="Keep top k subvectors."
-    )
-    parser.add_argument(
-        "--keep_top_criterion", type=str, default=['magnitude', 'hessian'], help="Keep top criterion.", 
-        nargs="+"
-    )
-    parser.add_argument(
         "--lr", type=float, default=1e-3, help="Learning rate for quantization."
     )
     parser.add_argument(
         "--lr_multiple", type=float, default=0.9, help="Learning rate multiple."
     )
     parser.add_argument(
-        "--n_iters", type=int, default=1000, help="Number of iterations."
+        "--n_iters", type=int, default=100, help="Number of iterations."
     )
     parser.add_argument(
         "--clamp_gradients", type=float, default=0.1, help="Clamp gradients."
@@ -546,48 +591,30 @@ if __name__ == "__main__":
         "--quantize", action="store_true", help="Whether to quantize the model."
     )
     parser.add_argument(
-        "--structured_sparsity", action="store_true", help="Whether to use structured sparsity."
+        "--normalize_rowwise", action="store_true", help="Whether to normalize rowwise."
     )
     parser.add_argument(
-        "--keep_top_rowise", type=float, default=0, help="Keep top k rowise."
+        "--normalize_colwise", action="store_true", help="Whether to normalize colwise."
     )
     parser.add_argument(
-        "--keep_top_colwise", type=float, default=0, help="Keep top k colwise."
+        "--align_quantize", action="store_true", help="Whether to align quantization."
     )
     parser.add_argument(
-        "--next_layer_finetune", action="store_true", help="Whether to fine tune the model."
-    )
-    parser.add_argument(
-        "--lora_fine_tune", action="store_true", help="Whether to use LoRA for fine tuning."
-    )
-    parser.add_argument(
-        "--lora_rank", type=int, default=1, help="Rank for LoRA."
-    )
-    parser.add_argument(
-        "--lora_alpha", type=float, default=0.1, help="Alpha for LoRA."
-    )
-    parser.add_argument(
-        "--fine_tune_n_iters", type=int, default=10, help="Number of iterations for fine tuning."
-    )
-    parser.add_argument(
-        "--fine_tune", action="store_true", help="Whether to fine tune the model."
+        "--regularization", type=float, default=0, help="Regularization."
     )
     
     parser.add_argument(
-        "--normalized_clustering", action="store_true", help="Whether to use normalized clustering."
+        "--fine_tune", action="store_true", help="Whether to fine tune the model."
     )
     parser.add_argument(
-        "--low_rank", action="store_true", help="Whether to use low rank approximation."
+        "--fine_tune_quip_like", action="store_true", help="Whether to fine tune the model."
     )
     parser.add_argument(
-        "--low_rank_frac", type=float, default = 1/16, help="Low rank dimension."
+        "--fnn_device", type=str, default=None, help="Whether to put the mlp/fnn on a separate device."
     )
+    
     parser.add_argument(
-        "--lora_n_bits", type=int, default=8, help="Number of bits for LoRA."
-    )
-
-    parser.add_argument(
-        "--finetune_max_epochs",
+        "--finetune_epochs",
         type=int,
         default=5,
         help="Run this many passes over training data when doing finetuning; No finetuning if set to 0.",
@@ -595,7 +622,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--finetune_early_stop",
         type=int,
-        default=3,
+        default=5,
         help="Terminate finetuning if loss doesn't improve after this number of epochs.",
     )
     parser.add_argument(
@@ -645,8 +672,10 @@ if __name__ == "__main__":
     model.eval()
     print(model.seqlen)
 
-    dataloader, testloader = get_loaders(
-        args.dataset, nsamples=args.nsamples, seed=args.seed, model=args.model, seqlen=model.seqlen
+    dataloader, valloader, testloader = get_loaders(
+        args.dataset, nsamples_train=args.nsamples,
+        nsamples_val=args.nsamples_val,
+          seed=args.seed, model=args.model, seqlen=model.seqlen
     )
 
     torch.manual_seed(args.seed)    
@@ -658,11 +687,11 @@ if __name__ == "__main__":
     if args.quantize:
         tick = time.time()
         n_params = sum(p.numel() for p in model.parameters())
-        llama_sequential(model, dataloader, args.device)
-        print(time.time() - tick)
+        llama_sequential(model, dataloader, valloader, args.device)
+        print("total time taken:", time.time() - tick)
 
     for dataset in ["wikitext2"]: #, "ptb", "c4"]:
-        dataloader, testloader = get_loaders(
+        dataloader, valloader, testloader = get_loaders(
             dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
         )
         print("Dataset:", dataset)

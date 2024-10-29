@@ -140,7 +140,7 @@ class VectorQuantizerTemp:
         self.rows = W.shape[0]
         self.columns = W.shape[1]
         self.H = torch.zeros((self.columns, self.columns), device=self.dev,
-                                dtype=W.dtype)
+                                dtype=torch.float32)
         self.nsamples = 0
 
     def set_n_samples(self, nsamples):
@@ -159,8 +159,22 @@ class VectorQuantizerTemp:
             inp = inp.t()
         self.H *= self.nsamples / (self.nsamples + tmp)
         self.nsamples += tmp
-        inp = math.sqrt(2 / self.nsamples) * inp.float()
+        inp = math.sqrt(2 / self.nsamples) * inp.to(torch.float32)
         self.H += inp.matmul(inp.t())
+        
+    def get_W(self):
+        W = self.layer.weight.data
+        if isinstance(self.layer, nn.Conv2d):
+            W = W.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        W = W.float()
+        
+        return W
+
+    def get_H(self):
+        return self.H.float()
+        
 
     def fastquant(
         self, subvector_dim:int = 16,

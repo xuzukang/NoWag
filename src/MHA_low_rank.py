@@ -5,6 +5,7 @@ import transformers
 import math
 import src.quantizer as quantizer
 import numpy as np
+import src.utils.alignment.low_rank_align as low_rank_align
 
 
 def create_mask_helper(data:list,percent_top,d  =1):
@@ -149,6 +150,11 @@ class Low_Rank_linear(nn.Module):
                 sparse_rowsie_criterion:list[str] = ["weight"],
                 sparse_colwise:float = 0,
                 sparse_colwise_criterion:list[str] = ["weight","hessian"],
+                regulatization_lambda:float = 1e-3,
+                damping:float = 1e-3,
+                align_params:list[str] = ["A","B"],
+                align_epochs:int = 100,
+                lr:float = 1e-3,
                 d:int = 1):
         
         low_rank_use = int(np.ceil(low_rank/d)*d)
@@ -159,7 +165,9 @@ class Low_Rank_linear(nn.Module):
         if hasattr(self, 'H_in'):
             H = self.H_in.clone().float()
         else:
-            H = None
+            raise ValueError("The Hessian is not available")
+
+        
         
         if sparse_colwise > 0:
             self.register_buffer("column_mask", create_mask(W, H, sparse_colwise, sparse_colwise_criterion, dim = 0, d=d))
@@ -186,15 +194,64 @@ class Low_Rank_linear(nn.Module):
         U, S, V = torch.svd(weights_normalized)
         # print("S.shape = ", S.shape, "U.shape = ", U.shape, "V.shape = ", V.shape)
         # print("low_rank = ", low_rank)
-        self.A = nn.Parameter((U[:, :low_rank_use] @ torch.sqrt(torch.diag(S[:low_rank_use]))).to(original_dtype))
-        self.B = nn.Parameter((torch.sqrt(torch.diag(S[:low_rank_use])) @ V[:, :low_rank_use].T).to(original_dtype))
-        self.weights_norms_rowwise = nn.Parameter((weights_norms_rowwise).to(original_dtype))
+        A = (U[:, :low_rank_use] @ torch.sqrt(torch.diag(S[:low_rank_use])))
+        B = (torch.sqrt(torch.diag(S[:low_rank_use])) @ V[:, :low_rank_use].T)
+        sparse_1 = W[self.row_mask,:][:, ~self.column_mask]
+        sparse_2 = W[~self.row_mask]
+
+        def reconstruct_fn(A:torch.Tensor[torch.float32],
+                            B:torch.Tensor[torch.float32],
+                            sparse_1:torch.Tensor[torch.float32],
+                            sparse_2:torch.Tensor[torch.float32],
+                            weights_norms_rowwise:torch.Tensor[torch.float32],
+                            row_mask:torch.Tensor[torch.bool],
+                            column_mask:torch.Tensor[torch.bool]):
+            weights_reconstructed = torch.zeros_like(W)
+            weights_reconstructed[row_mask,:][:, column_mask] = (A @ B) * weights_norms_rowwise.unsqueeze(0)
+            weights_reconstructed[row_mask,:][:, ~column_mask] = sparse_1
+            weights_reconstructed[~row_mask] = sparse_2
+
+            return weights_reconstructed
+        
+        #if the alignment epochs is greater than 0, align the low rank
+        if align_epochs > 0:
+            parameters_dict = {"A":A.requires_grad_("A" in align_params),
+                               "B":B.requires_grad_("B" in align_params),
+                               "sparse_1":sparse_1.requires_grad_("sparse_1" in align_params), 
+                               "sparse_2":sparse_2.requires_grad_("sparse_2" in align_params),
+                                "weights_norms_rowwise":weights_norms_rowwise.requires_grad_("weights_norms_rowwise" in align_params),
+                                "row_mask":self.row_mask,
+                                "column_mask":self.column_mask}
+            
+            ids = torch.arange(W.shape[0], device = W.device, dtype = W.dtype)
+            #first ensure that the diagonal of the hessian is positive
+            H[ids, ids] = torch.min(torch.diag(H), 1e-5)
+            H[ids, ids] += damping * torch.mean(torch.diag(H))
+            
+            parameters_dict = low_rank_align.align_low_rank(W, reconstruct_fn, parameters_dict, H, 
+                                          regulatization_lambda, align_epochs, lr, verbose = int(np.ciel(align_epochs/10)))
+            
+            A = parameters_dict["A"].clone()
+            B = parameters_dict["B"].clone()
+            sparse_1 = parameters_dict["sparse_1"].clone()
+            sparse_2 = parameters_dict["sparse_2"].clone()
+            weights_norms_rowwise = parameters_dict["weights_norms_rowwise"].clone()
+            self.row_mask = parameters_dict["row_mask"].clone()
+            self.column_mask = parameters_dict["column_mask"].clone()
+
+            del parameters_dict
+
+            
+
+        self.A = nn.Parameter(A.to(original_dtype))
+        self.B = nn.Parameter(B.to(original_dtype))
+        self.weights_norms_rowwise = nn.Parameter(weights_norms_rowwise.to(original_dtype))
         
         # self.register_buffer("sparse_weights1",self.W[self.row_mask,:][:, ~self.column_mask].clone().to(original_dtype))
         # self.register_buffer("sparse_weights2",self.W[~self.row_mask].to(original_dtype))
         
-        self.sparse_weights1 = nn.Parameter((self.W[self.row_mask,:][:, ~self.column_mask].clone()).to(original_dtype))
-        self.sparse_weights2 = nn.Parameter(self.W[~self.row_mask].to(original_dtype))
+        self.sparse_weights1 = nn.Parameter(sparse_1.to(original_dtype))
+        self.sparse_weights2 = nn.Parameter(sparse_2.to(original_dtype))
         del self.W
         del W
         del H
@@ -223,11 +280,8 @@ class Low_Rank_linear(nn.Module):
             self.B = quantizer.Quantize(B_values, torch.clip(self.H_in.float(), -1e5,1e5)
                                         , **kwargs).to(device)
         else:
-            self.A = quantizer.Quantize(A_values, hessian=None, importances = A_grad**2
-                                        , **kwargs).to(device)
-            self.B = quantizer.Quantize(B_values, hessian=None, importances = B_grad**2
-                                        , **kwargs).to(device)
-
+            raise ValueError("The Hessian is not available")
+        
         # print(self.A())
         assert self.A().shape == A_values.shape, f"self.A.shape = {self.A().shape}, A_values.shape = {A_values.shape}"
         assert self.B().shape == B_values.shape, f"self.B.shape = {self.B().shape}, B_values.shape = {B_values.shape}"

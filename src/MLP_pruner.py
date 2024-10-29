@@ -254,9 +254,7 @@ class pruned_feed_forward(nn.Module):
             del self.H_in
             del self.H_hidden
         else:
-            self.w1 = quantizer.Quantize(w1_values, importances = w1_grad, **kwargs)
-            self.w2 = quantizer.Quantize(w2_values, importances = w2_grad, **kwargs)
-            self.w3 = quantizer.Quantize(w3_values, importances = w3_grad, **kwargs)
+            raise ValueError("Hessian must be computed before quantizing")
 
         if kwargs.get('add_bias', False):
             if not hasattr(self, 'b1'):
