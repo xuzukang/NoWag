@@ -3,15 +3,20 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.amp as amp
 import argparse
+from copy import deepcopy
 
+@torch.enable_grad()
 def align_low_rank(original_weight:torch.Tensor,
-                                 reconstruct_fn:nn.Module|callable,
+                                 reconstruct_fn:callable,
                                  reconstruct_params:dict[str, torch.Tensor],
                                  hessian:torch.Tensor,
                                  regularization_lambda:float,
                                  epochs:int,
                                  lr:float,
+                                 lr_multiplier:float,
                                  parameters_to_exclude:list[str]=[],
+                                 early_stop_eps:float = 1e-7,
+                                 patience:int = 100,
                                  verbose:int = -1)->dict[str, torch.Tensor]:
     """aligns the low rank to be close to the original weight on the callibration dataset
 
@@ -27,34 +32,57 @@ def align_low_rank(original_weight:torch.Tensor,
     
     
     
-    params_to_optimize = {name: param for name, param in reconstruct_params.items() if param.requires_grad and name not in parameters_to_exclude}
-
+    params_to_optimize = {}
+    for name, param in reconstruct_params.items():
+        if isinstance(param, torch.Tensor):
+            if param.requires_grad and name not in parameters_to_exclude:
+                print(name)
+                params_to_optimize[name] = param
     
-    optimizer = torch.optim.Adam(nn.ParameterList(params_to_optimize.values())
+    # name: param for name, param in reconstruct_params.items() if param.requires_grad and name not in parameters_to_exclude}
+    # print("params to optimize", params_to_optimize)
+    # print(lr)
+    optimizer = torch.optim.Adam(params_to_optimize.values()
                                  , lr = lr)
+    optimizer_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=lr_multiplier)
 
     hessain_to_use = hessian.clone()/hessian.shape[0]
-    ids = torch.arange(hessian.shape[0], device=hessian.device, dtype = hessian.dtype)
+    ids = torch.arange(hessian.shape[0], device=hessian.device)
     hessain_to_use[ids, ids] += regularization_lambda
     
-
+    prev_loss = float('inf')
+    remaining_patience = patience
     for epoch in range(epochs):
 
         optimizer.zero_grad()
         
         reconstructed_weights = reconstruct_fn(**reconstruct_params)
-        
+        # print(reconstructed_weights)
         diff = original_weight - reconstructed_weights
-
+        # print(diff)
+        # print(diff)
         loss = torch.einsum('ij,jk,ik->', diff, hessain_to_use, diff)
-
+        # print(loss)
         loss.backward()
         optimizer.step()
+        
+        if loss.item() > prev_loss - early_stop_eps:
+            remaining_patience -= 1
+            if remaining_patience == 0:
+                print("early stopping at epoch", epoch)
+                break
+            optimizer_scheduler.step()
+        else:
+            remaining_patience = patience
+            prev_loss = loss.item()
+            best_weights = deepcopy(reconstruct_params)
         
         if verbose > 0 and epoch % verbose == 0:
             print(f"Epoch {epoch} Loss {loss.item()}")
         
         if loss < 0:
             print("breaking because the loss is negative")
-        
-    return reconstruct_params
+    # print(params_to_optimize)
+    print("last loss", loss.item())
+    # raise ValueError("done")
+    return best_weights

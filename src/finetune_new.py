@@ -49,6 +49,7 @@ def finetune_amp(layer: modeling_llama.LlamaDecoderLayer,
                                  betas = (args.finetune_adam_beta1, args.finetune_adam_beta2),
                                     eps=adam_eps)   
     
+    # print("initial parameter",list(parameters_to_optimize.keys())[0], parameters_to_optimize[list(parameters_to_optimize.keys())[0]])
     #set the model to train mode
     layer.train()
     
@@ -150,6 +151,7 @@ def finetune_amp(layer: modeling_llama.LlamaDecoderLayer,
         
     
     if args.finetune_keep_best:
+        # print("best weight 1:",list(best_weights.keys())[0], best_weights[list(best_weights.keys())[0]])
         layer.load_state_dict({name: param for name, param in best_weights.items()}, strict=False)
     return layer
 

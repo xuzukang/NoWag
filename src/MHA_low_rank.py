@@ -8,7 +8,7 @@ import numpy as np
 import src.utils.alignment.low_rank_align as low_rank_align
 
 
-def create_mask_helper(data:list,percent_top,d  =1):
+def create_mask_helper(data:list,frac_top,d  =1):
     """
     data: list of torch.tensor of shape (n)
     percent_top: float, the percentage of the top values to keep
@@ -20,7 +20,7 @@ def create_mask_helper(data:list,percent_top,d  =1):
     big_i = 0
     # print(mask.sum(), (100-percent_top)/100 * mask.numel())
     # raise ValueError("The mask is not sparse enough")
-    while (mask.sum() > (100-percent_top)/100 * mask.numel()) or (mask.sum()%d != 0):
+    while (mask.sum() > (1-frac_top) * mask.numel()) or (mask.sum()%d != 0):
         # print(mask.sum())
         mask &= data[i%len(data)] < datas_sorted[i][big_i]
         i += 1
@@ -35,7 +35,7 @@ def create_mask_helper(data:list,percent_top,d  =1):
 
 def create_mask(weights:torch.Tensor,
                 H:torch.Tensor,
-                sparse_percent:float = 0,
+                sparse_frac:float = 0,
                 sparse_criterion:list[str] = ["weight","hessian"],
                 dim:int = 0,
                 d:int = 1):
@@ -53,8 +53,9 @@ def create_mask(weights:torch.Tensor,
         else:
             raise ValueError(f"Criterion {criterion} not recognized")
     assert len(tmp) > 0, "tmp is empty"
-    
-    mask = create_mask_helper(tmp, sparse_percent, d)
+    print(tmp)
+    print("sparse_frac = ", sparse_frac)
+    mask = create_mask_helper(tmp, sparse_frac, d)
     return mask
 
 def construct_weights(module,weights,mask, row_norms, column_norms,
@@ -67,6 +68,26 @@ def construct_weights(module,weights,mask, row_norms, column_norms,
     return weights_reconstructed
 
 
+def reconstruct_fn(A:torch.Tensor,
+                            B:torch.Tensor,
+                            sparse_1:torch.Tensor,
+                            sparse_2:torch.Tensor,
+                            weights_norms_rowwise:torch.Tensor,
+                            row_mask:torch.Tensor,
+                            column_mask:torch.Tensor,
+                            n_in:int,
+                            n_out:int):
+    weights_reconstructed = torch.zeros((n_out, n_in), device = A.device, dtype = A.dtype)
+    # print(torch.sum(row_mask), torch.sum(column_mask))
+    # print((A @ B) * weights_norms_rowwise.unsqueeze(0))
+    weights_reconstructed[row_mask.unsqueeze(1)*column_mask.unsqueeze(0)] = ((A @ B) * weights_norms_rowwise.unsqueeze(0)).flatten()
+    # print("reconstructed weights = ", weights_reconstructed)
+    weights_reconstructed[row_mask.unsqueeze(1) * (~column_mask).unsqueeze(0)] = sparse_1.flatten() 
+    weights_reconstructed[~row_mask] = sparse_2
+    # print("reconstructed weights = ", weights_reconstructed)
+    return weights_reconstructed
+        
+        
 
 class Low_Rank_linear(nn.Module):
     
@@ -77,33 +98,57 @@ class Low_Rank_linear(nn.Module):
         assert W.shape[0] == W.shape[1]
         self.W = W.clone().requires_grad_(False)
         self.n_original_params = W.numel()
+        self.n_out, self.n_in = W.shape
+        
         self.low_ranked = False
         self.quantized = False
         self.add_batch_ = False
+        self.use_precomputed = False
         
     def forward(self, x:torch.Tensor):
         if self.quantized:
             y = torch.zeros_like(x)
-            hidden = F.linear(x[..., self.column_mask] * self.weights_norms_rowwise.unsqueeze(0), self.B())
-            y[...,self.row_mask] = torch.nn.functional.linear(hidden, self.A())
+            
+            if self.use_precomputed:
+                hidden = F.linear(x[..., self.column_mask] * self.weights_norms_rowwise.unsqueeze(0), self.B())
+                y[...,self.row_mask] = torch.nn.functional.linear(hidden, self.A())
+            else:
+                hidden = F.linear(x[..., self.column_mask] * self.weights_norms_rowwise.unsqueeze(0), self.B_precomputed)
+                y[...,self.row_mask] = torch.nn.functional.linear(hidden, self.A_precomputed)
+
             y[...,self.row_mask] += torch.nn.functional.linear(x[..., ~self.column_mask], self.sparse_weights1)
             y[...,~self.row_mask] = torch.nn.functional.linear(x, self.sparse_weights2)
             return y 
         elif self.low_ranked:
             
-            y = torch.zeros_like(x)
-            hidden = F.linear(x[..., self.column_mask] * self.weights_norms_rowwise.unsqueeze(0), self.B)
-            self.add_batch(x[..., self.column_mask], hidden)
-            y[...,self.row_mask] = torch.nn.functional.linear(hidden, self.A)
-            y[...,self.row_mask] += torch.nn.functional.linear(x[..., ~self.column_mask], self.sparse_weights1)
-            y[...,~self.row_mask] = torch.nn.functional.linear(x, self.sparse_weights2)
-            return y    
+            return F.linear(x, reconstruct_fn(
+                self.A, self.B, self.sparse_weights1, self.sparse_weights2, self.weights_norms_rowwise, self.row_mask, self.column_mask, self.n_in, self.n_out
+            ))
             # hidden = F.linear(x, self.A)
             # self.add_batch(x, hidden)
             # return F.linear(hidden, self.B) * self.weights_norms_rowwise.unsqueeze(0)
         else:
             self.add_batch(x)
             return F.linear(x, self.W)
+        
+    def disable_grad(self):
+        for param in self.parameters():
+            param.requires_grad = False
+        
+        if self.quantized:
+            self.use_precomputed = True
+            self.register_buffer("A_precomputed", self.A())
+            self.register_buffer("B_precomputed", self.B())
+        
+
+    def enable_grad(self):
+        for param in self.parameters():
+            param.requires_grad = True
+        
+        if self.quantized:
+            self.use_precomputed = False
+            del self.A_precomputed
+            del self.B_precomputed
         
     def add_batch(self, inp:torch.Tensor, hidden:torch.Tensor = None):
         if not self.add_batch_:
@@ -135,12 +180,12 @@ class Low_Rank_linear(nn.Module):
 
         self.H_in *= self.nsamples / (self.nsamples + tmp)
         self.nsamples += tmp
-        inp = math.sqrt(2 / self.nsamples) * inp.float()
+        inp = math.sqrt(2 / self.nsamples) * inp.to(torch.float32)
         self.H_in += torch.clip(inp.matmul(inp.t()), -1e5, 1e5)
         
         if hidden is not None:
             self.H_hidden *= self.nsamples / (self.nsamples + tmp)
-            hidden = math.sqrt(2 / self.nsamples) * hidden.float()
+            hidden = math.sqrt(2 / self.nsamples) * hidden.to(torch.float32)
             self.H_hidden += torch.clip(hidden.matmul(hidden.t()), -1e5, 1e5)
             
     
@@ -155,19 +200,21 @@ class Low_Rank_linear(nn.Module):
                 align_params:list[str] = ["A","B"],
                 align_epochs:int = 100,
                 lr:float = 1e-3,
+                lr_multiplier:float = 1,
                 d:int = 1):
         
         low_rank_use = int(np.ceil(low_rank/d)*d)
         print("using low rank = ", low_rank_use)
         
         original_dtype = self.W.dtype
-        W = self.W.clone().float()
+        W = self.W.clone().to(torch.float32)
         if hasattr(self, 'H_in'):
-            H = self.H_in.clone().float()
+            H = self.H_in.clone().to(torch.float32)
         else:
             raise ValueError("The Hessian is not available")
 
         
+        print(sparse_rowise, sparse_rowsie_criterion, sparse_colwise, sparse_colwise_criterion)
         
         if sparse_colwise > 0:
             self.register_buffer("column_mask", create_mask(W, H, sparse_colwise, sparse_colwise_criterion, dim = 0, d=d))
@@ -199,19 +246,7 @@ class Low_Rank_linear(nn.Module):
         sparse_1 = W[self.row_mask,:][:, ~self.column_mask]
         sparse_2 = W[~self.row_mask]
 
-        def reconstruct_fn(A:torch.Tensor[torch.float32],
-                            B:torch.Tensor[torch.float32],
-                            sparse_1:torch.Tensor[torch.float32],
-                            sparse_2:torch.Tensor[torch.float32],
-                            weights_norms_rowwise:torch.Tensor[torch.float32],
-                            row_mask:torch.Tensor[torch.bool],
-                            column_mask:torch.Tensor[torch.bool]):
-            weights_reconstructed = torch.zeros_like(W)
-            weights_reconstructed[row_mask,:][:, column_mask] = (A @ B) * weights_norms_rowwise.unsqueeze(0)
-            weights_reconstructed[row_mask,:][:, ~column_mask] = sparse_1
-            weights_reconstructed[~row_mask] = sparse_2
-
-            return weights_reconstructed
+        # @torch.enable_grad()
         
         #if the alignment epochs is greater than 0, align the low rank
         if align_epochs > 0:
@@ -221,18 +256,21 @@ class Low_Rank_linear(nn.Module):
                                "sparse_2":sparse_2.requires_grad_("sparse_2" in align_params),
                                 "weights_norms_rowwise":weights_norms_rowwise.requires_grad_("weights_norms_rowwise" in align_params),
                                 "row_mask":self.row_mask,
-                                "column_mask":self.column_mask}
+                                "column_mask":self.column_mask,
+                                "n_in":self.n_in,
+                                "n_out":self.n_out}
             
-            ids = torch.arange(W.shape[0], device = W.device, dtype = W.dtype)
+            ids = torch.arange(W.shape[0], device = W.device)
             #first ensure that the diagonal of the hessian is positive
-            H[ids, ids] = torch.min(torch.diag(H), 1e-5)
+            H[ids, ids] = torch.clip(torch.diag(H), 1e-5)
             H[ids, ids] += damping * torch.mean(torch.diag(H))
             
             parameters_dict = low_rank_align.align_low_rank(W, reconstruct_fn, parameters_dict, H, 
-                                          regulatization_lambda, align_epochs, lr, verbose = int(np.ciel(align_epochs/10)))
+                                          regulatization_lambda, align_epochs, lr, lr_multiplier,
+                                          verbose = int(np.ceil(align_epochs/10)))
             
-            A = parameters_dict["A"].clone()
-            B = parameters_dict["B"].clone()
+            A = parameters_dict["A"].detach().clone()
+            B = parameters_dict["B"].detach().clone()
             sparse_1 = parameters_dict["sparse_1"].clone()
             sparse_2 = parameters_dict["sparse_2"].clone()
             weights_norms_rowwise = parameters_dict["weights_norms_rowwise"].clone()
@@ -275,9 +313,11 @@ class Low_Rank_linear(nn.Module):
         del self.B
         print("A.shape = ", A_values.shape, "B.shape = ", B_values.shape)
         if hasattr(self, 'H_hidden'):
-            self.A = quantizer.Quantize(A_values, torch.clip(self.H_hidden.float(),-1e5,1e5)
+            self.A = quantizer.Quantize.quantize(A_values,
+                                                  torch.clip(self.H_hidden.float(),-1e5,1e5)
                                         , **kwargs).to(device)
-            self.B = quantizer.Quantize(B_values, torch.clip(self.H_in.float(), -1e5,1e5)
+            self.B = quantizer.Quantize.quantize(B_values, 
+                                                torch.clip(self.H_in.float(), -1e5,1e5)
                                         , **kwargs).to(device)
         else:
             raise ValueError("The Hessian is not available")
@@ -296,6 +336,10 @@ class Low_Rank_linear(nn.Module):
         
     def turn_on_batch_add(self):
         self.add_batch_ = True
+        
+    def turn_off_batch_add(self):
+        self.add_batch_ = False
+        
         
     def get_n_bits(self):
         

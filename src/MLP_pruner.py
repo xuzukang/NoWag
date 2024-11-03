@@ -110,13 +110,20 @@ class pruned_feed_forward(nn.Module):
         self.b1 = None
         self.b3 = None
         self.b2 = None
+        self.use_precomputed = False
 
     def forward(self, x:torch.Tensor):
         if self.quantized:
-            return F.linear((
-                self.activation(F.linear(x, self.w1(), bias = self.b1))
-                                * F.linear(x, self.w3(), bias = self.b3)
-            ), self.w2(), bias = self.b2)
+            if self.use_precomputed:
+                return F.linear((
+                    self.activation(F.linear(x, self.w1_precomputed, bias = self.b1))
+                                    * F.linear(x, self.w3_precomputed, bias = self.b3)
+                ), self.w2_precomputed, bias = self.b2)
+            else:
+                return F.linear((
+                    self.activation(F.linear(x, self.w1(), bias = self.b1))
+                                    * F.linear(x, self.w3(), bias = self.b3)
+                ), self.w2(), bias = self.b2)
         elif self.pruned:
             
             hidden = self.activation(F.linear(x, self.w1, self.b1)) * F.linear(x, self.w3, self.b3)
@@ -129,8 +136,28 @@ class pruned_feed_forward(nn.Module):
             # self.add_batch(x, hidden)
             self.add_importances(x, hidden)
             return F.linear(hidden, self.w2)
-            
-            
+
+    def disable_grad(self):
+        for param in self.parameters():
+            param.requires_grad = False
+
+        if self.quantized:
+            self.use_precomputed = True
+            self.register_buffer("w1_precomputed", self.w1())
+            self.register_buffer("w2_precomputed", self.w2())
+            self.register_buffer("w3_precomputed", self.w3())
+
+    
+    def enable_grad(self):
+        for param in self.parameters():
+            param.requires_grad = True
+
+        if self.quantized:
+            self.use_precomputed = False
+            del self.w1_precomputed
+            del self.w2_precomputed
+            del self.w3_precomputed
+
     
     def add_batch(self, inp:torch.Tensor, hidden:torch.Tensor):
         if not self.add_batch_:
@@ -247,9 +274,9 @@ class pruned_feed_forward(nn.Module):
         del self.w3
 
         if hasattr(self, 'H_in'):
-            self.w1 = quantizer.Quantize(w1_values, self.H_in, **kwargs)
-            self.w2 = quantizer.Quantize(w2_values, self.H_hidden, **kwargs)
-            self.w3 = quantizer.Quantize(w3_values, self.H_in, **kwargs)
+            self.w1 = quantizer.Quantize.quantize(w1_values, self.H_in, **kwargs)
+            self.w2 = quantizer.Quantize.quantize(w2_values, self.H_hidden, **kwargs)
+            self.w3 = quantizer.Quantize.quantize(w3_values, self.H_in, **kwargs)
             
             del self.H_in
             del self.H_hidden
@@ -269,6 +296,9 @@ class pruned_feed_forward(nn.Module):
         
     def turn_on_batch_add(self):
         self.add_batch_ = True
+        
+    def turn_off_batch_add(self):
+        self.add_batch_ = False
         
     def get_n_bits(self):
         
