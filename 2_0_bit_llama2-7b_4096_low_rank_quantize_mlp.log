@@ -1,0 +1,88 @@
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.27s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.26it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.16it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+4096
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+Starting...
+38748 MiB free out of 48676 MiB total
+attention_mask torch.Size([1, 1, 4096, 4096]) cuda:6 torch.float16
+position_ids torch.Size([1, 4096]) cuda:6 torch.int64
+position_ids torch.Size([1, 4096])
+attention_mask torch.Size([1, 1, 4096, 4096])
+Ready.
+layer original dtype torch.float16
+sequential [['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj', 'self_attn.o_proj', 'mlp.up_proj', 'mlp.down_proj', 'mlp.gate_proj']]
+finished adding batches
+subset ['self_attn.k_proj', 'self_attn.v_proj', 'self_attn.q_proj', 'self_attn.o_proj', 'mlp.up_proj', 'mlp.down_proj', 'mlp.gate_proj']
+0 self_attn.k_proj
+low_ranking ...
+using low rank =  512
+early stopping at epoch 100
+last loss 0.09359163045883179 best loss 0.07638201117515564
+0 self_attn.v_proj
+low_ranking ...
+using low rank =  512
+last loss 0.723954975605011 best loss 0.723954975605011
+0 self_attn.q_proj
+low_ranking ...
+using low rank =  512
+last loss 0.05139857158064842 best loss 0.05139857158064842
+0 self_attn.o_proj
+low_ranking ...
+using low rank =  512
+early stopping at epoch 356
+last loss 0.25418251752853394 best loss 0.2541825771331787
+0 mlp.up_proj
+low_ranking ...
+0 mlp.down_proj
+low_ranking ...
+0 mlp.gate_proj
+low_ranking ...
+Quantizing ...
+0 mlp.up_proj
+Linear Layer with 4096 inputs and 11008 outputs
+realigning
+0 0.0009312607580795884
+initial loss 0.0009312607580795884
+final loss inf
+quantized
+Traceback (most recent call last):
+  File "/data/lliu/huffman/llama_low_rank_and_quantize.py", line 676, in <module>
+    llama_sequential(model, dataloader, valloader, args.device)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/llama_low_rank_and_quantize.py", line 280, in llama_sequential
+    module.quantize(
+  File "/data/lliu/huffman/src/linear_compress.py", line 249, in quantize
+    self.W = quantizer.Quantize.quantize(W, H, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/src/quantizer.py", line 255, in quantize
+    raise ValueError("done")
+ValueError: done

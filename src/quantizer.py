@@ -103,7 +103,6 @@ class Quantize(nn.Module):
                     n_iter:int = 100,
                     normalize_rowwise:bool = False,
                     normalize_columnwise:bool = False,
-                    align_centriods:bool = False,
                     align_regularization:float = 1e-3,
                     align_lr:float = 1e-3,
                     align_lr_multiplier:float = 0.9,
@@ -112,7 +111,9 @@ class Quantize(nn.Module):
                     align_clip_grad:float = 0,
                     n_sub_steps:int = 1,
                     damping:float = 1e-3,
-                    seed:int = 0):
+                    seed:int = 0,
+                    debug:bool = False,
+                    debug_path:str = ""):
         """quantize the weights using k-means clustering
 
         Args:
@@ -187,73 +188,23 @@ class Quantize(nn.Module):
                 weights_reconstructed = centriods[assignments].reshape(weights_normalized.shape)
                 weights_reconstructed *= denormalize_matrix
                 return weights_reconstructed
-            
-        if align_centriods:
-
-
-            hessian_use = hessian.clone()/hessian.shape[0]
-            ids = torch.arange(hessian.shape[0], device=hessian.device)
-            hessian_use[ids, ids] += align_regularization
-            # print(hessian_use.dtype)
-            prev_loss = np.inf
-            remaining_patience = align_early_stop_patience
-            centriods.requires_grad_(True)
-            for i in range(1):
-                assignments = cluster_e_step(weights_subvectors, centriods, importances)
-                centriods = cluster_m_step(weights_subvectors, assignments, n_centriods, importances)
-            centriods = centriods.requires_grad_(True)
-            centriods_optimizer = torch.optim.Adam([centriods], lr = align_lr)
-            centriods_scheduler = torch.optim.lr_scheduler.StepLR(centriods_optimizer, step_size = 1, gamma = align_lr_multiplier)
-            for i in range(n_iter):
-                # print(i)
-                assignments = cluster_e_step(weights_subvectors, centriods, importances)
-                # for j in range(n_sub_steps):
-                loss,centriods = quantize_align.align_cluster_one_step(
-                    weights, centriods,
-                    reconstruction_fn,
-                    {"assignments":assignments, "denormalize_matrix":denoramalize_matrix},
-                    hessian_use,
-                    centriods_optimizer,
-                    align_clip_grad
-                )
-                if i == 0:
-                    print("initial loss", loss)
-                if loss < align_early_stop_eps:
+        
+        #first cluster
+        for i in range(n_iter):
+            assignments = cluster_e_step(
+                weights_subvectors, centriods, importances)
+            # print(assignments)
+            # print(assignments.shape)
+            centriods = cluster_m_step(weights_subvectors, assignments, n_centriods, importances)
+            if i > 0:
+                if torch.all(assignments == assignments_old):
+                    # print("breaking at iteration", i)
                     break
-                if loss > prev_loss - align_early_stop_eps:
-                    remaining_patience -= 1
-                    if remaining_patience == 0:
-                        break
-                    # align_lr *= align_lr_multiplier
-                    # print("reducing lr to", align_lr)
-                    centriods_scheduler.step()
-                    n_sub_steps *= 0.5
-                    n_sub_steps = max(1, int(n_sub_steps))
-                else:
-                    best_centriods = centriods.clone().detach()
-                    best_assignments = assignments.clone()
-                    remaining_patience = align_early_stop_patience
-                    prev_loss = loss
-            print("final loss", prev_loss)
-            del centriods_optimizer
-            del centriods_scheduler
-            
-        else:
-            for i in range(n_iter):
-                assignments = cluster_e_step(
-                    weights_subvectors, centriods, importances)
-                # print(assignments)
-                # print(assignments.shape)
-                centriods = cluster_m_step(weights_subvectors, assignments, n_centriods, importances)
-                if i > 0:
-                    if torch.all(assignments == assignments_old):
-                        # print("breaking at iteration", i)
-                        break
-                    # print("n_change:", torch.sum(assignments != assignments_old))
-                assignments_old = assignments.clone()
-            
-            best_centriods = centriods
-            best_assignments = assignments
+                # print("n_change:", torch.sum(assignments != assignments_old))
+            assignments_old = assignments.clone()
+        
+        best_centriods = centriods
+        best_assignments = assignments
         
         #align again n_iter times with a new optimizer
         print("realigning")
@@ -276,6 +227,8 @@ class Quantize(nn.Module):
                 centriods_optimizer,
                 align_clip_grad
             )
+            if i % (n_iter//10) == 0:
+                print(i,loss)
             # print(i,loss,remaining_patience)
             if i == 0:
                 print("initial loss", loss)
@@ -299,6 +252,7 @@ class Quantize(nn.Module):
             
             
         print("quantized")
+        raise ValueError("done")
         return Quantize(best_centriods.detach().clone(), best_assignments, rowwise_norms, columnwise_norms, n_out, n_in)
         
     def forward(self):

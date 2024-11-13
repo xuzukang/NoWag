@@ -198,7 +198,7 @@ class Low_Rank_linear(nn.Module):
                 regulatization_lambda:float = 1e-3,
                 damping:float = 1e-3,
                 align_params:list[str] = ["A","B"],
-                align_epochs:int = 100,
+                align_epochs:int = 0,
                 lr:float = 1e-3,
                 lr_multiplier:float = 1,
                 d:int = 1):

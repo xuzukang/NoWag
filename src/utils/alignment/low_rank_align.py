@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torch.amp as amp
 import argparse
 from copy import deepcopy
+import src.utils.alignment.grads as grads
 
 @torch.enable_grad()
 def align_low_rank(original_weight:torch.Tensor,
@@ -86,3 +87,68 @@ def align_low_rank(original_weight:torch.Tensor,
     print("last loss", loss.item())
     # raise ValueError("done")
     return best_weights
+
+
+def align_simple(original_weight,
+                 A,B,lr,hessian,
+                    regularization_lambda,
+                    epochs,
+                    lr_multiplier,
+                early_stop_eps = 1e-7,
+                patience:int = 100,
+                verbose:int = -1)->tuple[torch.Tensor, torch.Tensor]:
+    
+    
+    optimizer = torch.optim.Adam([A,B], lr = lr)
+    
+    optimizer_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=lr_multiplier)
+    
+    hessain_to_use = hessian.clone()
+    
+    ids = torch.arange(hessian.shape[0], device=hessian.device)
+    hessain_to_use[ids, ids] += regularization_lambda
+    
+    prev_loss = float('inf')
+    remaining_patience = patience
+    for epoch in range(epochs):
+
+        optimizer.zero_grad()
+        
+        reconstructed_weights = A @ B
+        
+        diff = original_weight - reconstructed_weights
+        loss = torch.einsum('ij,jk,ik->', diff, hessain_to_use, diff)
+        
+        #gradients use the hardcoded gradients
+        A_grad,B_grad = grads.grad_quadratic_low_rank(A, B, original_weight, hessain_to_use)
+        
+        A.grad = A_grad
+        B.grad = B_grad
+        
+        optimizer.step()
+        
+        if loss.item() > prev_loss - early_stop_eps:
+            remaining_patience -= 1
+            if remaining_patience == 0:
+                print("early stopping at epoch", epoch)
+                break
+            optimizer_scheduler.step()
+
+        elif loss < early_stop_eps:
+            print("breaking because the loss is negative")
+            break
+            
+        else:
+            remaining_patience = patience
+            prev_loss = loss.item()
+            best_A = A.clone()
+            best_B = B.clone()
+            
+        # if verbose > 0 and epoch % verbose == 0:
+        #     print(f"Epoch {epoch} Loss {loss.item()}")
+        
+    
+    print("last loss", loss.item(), "best loss", prev_loss)
+    return best_A, best_B
+        
+        
