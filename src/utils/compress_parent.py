@@ -4,7 +4,7 @@ import torch.nn as nn
 
 
 class CompressorParent(nn.Module):
-
+    """Parent class of all compression algorithms"""
     def __init__(self):
         super(CompressorParent, self).__init__()
 
@@ -12,4 +12,7 @@ class CompressorParent(nn.Module):
         raise NotImplementedError
     
     def update_discrete(self):
-        raise NotImplementedError
+        """if our compression algorithm has discrete values, we need to update them"""
+        pass 
+    
+    

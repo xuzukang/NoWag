@@ -31,7 +31,7 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
             sparse_values (Optional[torch.FloatTensor], optional): The sparse values of the weight matrix, of shape sum(~sparse_mask). Defaults to None.
             reference_weight (Optional[torch.FloatTensor], optional): The reference weight matrix, of shape (n_out,n_in). Defaults to None.
         """
-        super(ScalarQuantizer, self).__init__(codes, codebook, reconstructed_shape)
+        super(ScalarQuantizer, self).__init__(codes, codebook, reconstructed_shape, reference_weight)
 
         if norms_1 is not None:
             self.register_buffer('norms_1', norms_1)
@@ -49,8 +49,6 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
             self.sparse_mask = None
             self.sparse_values = None
 
-        if reference_weight is not None:
-            self.register_buffer('reference_weight', reference_weight)
 
 
     def set_additional_attributes_as_trainable(self):
@@ -90,14 +88,14 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
     def update_discrete(self):
         assert hasattr(self, 'reference_weight'), "reference_weight must be provided to update the discrete values"
         with torch.no_grad():
-            self.codes = quantizer_utils.round_to_the_nearest(self.reference_weight.view(-1), self.codebook)
+            self.codes = quantizer_utils.round_to_the_nearest(self.get_reference_weight().view(-1), self.codebook)
 
 
     @staticmethod
     def quantize(weight:torch.FloatTensor,
                  n_bits:int,
-                 sparse_threshold:Optional[float] = float('inf'),
-                 norm_order:Optional[List[int]] = [],
+                 sparse_threshold:float = float('inf'),
+                 norm_order:List[int] = [],
     ):
         """quantize the input weight matrix
 
@@ -132,14 +130,11 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
                                norm_1, 
                                norm_0, 
                                sparse_mask,  
-                               sparse_weights)
+                               sparse_weights,
+                               weight_use)
     
-    def get_n_bits(self):
-        n_bits = 0
-        #sum the bits of the codebook
-        n_bits += self.codebook.numel() * 16
-        #sum the bits of the codes
-        n_bits += self.codes.numel() * torch.log2(torch.tensor(self.codebook.numel())).item()
+    def get_n_bits(self):   
+        n_bits = super().get_n_bits()
         #sum the bits of the norms
         if self.norms_1 is not None:
             n_bits += self.norms_1.numel() * 16
@@ -150,6 +145,7 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
             n_bits += self.sparse_mask.numel() * 3 * 16 # 3 because we need 4 bytes for the location of this sparse value
         
         return n_bits
+    
 
         
         

@@ -141,7 +141,10 @@ class VectorQuantizerTemp:
         self.columns = W.shape[1]
         self.H = torch.zeros((self.columns, self.columns), device=self.dev,
                                 dtype=torch.float32)
+        self.H_val = torch.zeros((self.columns, self.columns), device=self.dev,
+                                dtype=torch.float32)
         self.nsamples = 0
+        self.nsamples_val = 0
 
     def set_n_samples(self, nsamples):
         self.nsamples = 0
@@ -160,7 +163,23 @@ class VectorQuantizerTemp:
         self.H *= self.nsamples / (self.nsamples + tmp)
         self.nsamples += tmp
         inp = math.sqrt(2 / self.nsamples) * inp.to(torch.float32)
-        self.H += inp.matmul(inp.t())
+        self.H += inp.matmul(inp.t())/self.H.shape[0]
+        
+    def add_batch_val(self, inp, out, blocksize=1024):
+        if DEBUG:
+            self.inp2 = inp
+            self.out2 = out
+        if len(inp.shape) == 2:
+            inp = inp.unsqueeze(0)
+        tmp = inp.shape[0]
+        if isinstance(self.layer, nn.Linear) or isinstance(self.layer, transformers.Conv1D):
+            if len(inp.shape) == 3:
+                inp = inp.reshape((-1, inp.shape[-1]))
+            inp = inp.t()
+        self.H_val *= self.nsamples_val / (self.nsamples_val + tmp)
+        self.nsamples_val += tmp
+        inp = math.sqrt(2 / self.nsamples_val) * inp.to(torch.float32)
+        self.H_val += inp.matmul(inp.t())/self.H_val.shape[0]
         
     def get_W(self):
         W = self.layer.weight.data
@@ -174,6 +193,10 @@ class VectorQuantizerTemp:
 
     def get_H(self):
         return self.H.float()
+    
+    def get_H_val(self):
+        return self.H_val.float()
+    
         
 
     def fastquant(
