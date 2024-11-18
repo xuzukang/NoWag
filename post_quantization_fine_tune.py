@@ -51,7 +51,7 @@ def swap_layers(model:llama.LlamaForCausalLM):
             parent_module = getattr(layer, name.split(".")[0])
             module:nn.Linear= getattr(parent_module, name.split(".")[1])
 
-            vq = vector_quantizer.VectorQuantizer_SampleReassign.blank_recreate(
+            vq = vector_quantizer.VectorQuantizer.blank_recreate(
                 module.weight,
                 d = 4,
                 n_bits = 2,

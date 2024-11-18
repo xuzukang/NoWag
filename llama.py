@@ -314,7 +314,7 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
                 if bias is not None:
                     n_params += bias.numel()
                     
-                vq = vector_quantizer.VectorQuantizer_SampleReassign.quantize(
+                vq = vector_quantizer.VectorQuantizer.quantize(
                     W,
                     H,
                     args.subvector_dim,
