@@ -26,6 +26,7 @@ def finetune_amp(layer: modeling_llama.LlamaDecoderLayer,
                                       val_outputs: torch.Tensor,
                                       args:argparse.Namespace,
                                       parameters_to_optimize:dict = None,
+                                      discrete_update_fn: Optional[Callable] = None,
                                       layer_kwargs:dict = None, early_stop_eps:float = 1e-7,adam_eps:float = 1e-7):
     
     
@@ -116,6 +117,8 @@ def finetune_amp(layer: modeling_llama.LlamaDecoderLayer,
                 scaler.step(optimizer)
                 scaler.update()
                 optimizer.zero_grad()
+                if discrete_update_fn is not None:
+                    discrete_update_fn(layer)
             #     scaler.step(optimizer)
             #     scaler.update()
 
@@ -311,29 +314,29 @@ def finetune_end_to_end(model: modeling_llama.LlamaModel,
         model.load_state_dict({name: param for name, param in best_weights.items()}, strict=False)
     return model
 
-def finetune_amp_eps_wrapper(layer: modeling_llama.LlamaDecoderLayer,
-                                      train_inps: torch.Tensor,
-                                      train_outputs: torch.Tensor,
-                                      val_inps: torch.Tensor,
-                                      val_outputs: torch.Tensor,
-                                      args:argparse.Namespace,
-                                      parameters_to_optimize:dict = None,
-                                      layer_kwargs:dict = None, 
-                                      early_stop_eps:float = 1e-7,
-                                      adam_eps_range:tuple = (1e-7, 1e-6, 1e-5, 1e-4)):
+# def finetune_amp_eps_wrapper(layer: modeling_llama.LlamaDecoderLayer,
+#                                       train_inps: torch.Tensor,
+#                                       train_outputs: torch.Tensor,
+#                                       val_inps: torch.Tensor,
+#                                       val_outputs: torch.Tensor,
+#                                       args:argparse.Namespace,
+#                                       parameters_to_optimize:dict = None,
+#                                       layer_kwargs:dict = None, 
+#                                       early_stop_eps:float = 1e-7,
+#                                       adam_eps_range:tuple = (1e-7, 1e-6, 1e-5, 1e-4)):
     
-    for eps in adam_eps_range:
-        try:
-            return finetune_amp(layer, train_inps, train_outputs, 
-                                val_inps, val_outputs,
-                                args, parameters_to_optimize, layer_kwargs, early_stop_eps,
-                                eps)
-        except NANError as e:
-            print(e.message)
-            print(f"trying the next epsilon value {eps}")
-            continue
-    print("all epsilon values failed")
-    raise NANError("all epsilon values failed")
+#     for eps in adam_eps_range:
+#         try:
+#             return finetune_amp(layer, train_inps, train_outputs, 
+#                                 val_inps, val_outputs,
+#                                 args, parameters_to_optimize, layer_kwargs, early_stop_eps,
+#                                 eps)
+#         except NANError as e:
+#             print(e.message)
+#             print(f"trying the next epsilon value {eps}")
+#             continue
+#     print("all epsilon values failed")
+#     raise NANError("all epsilon values failed")
 
             
         

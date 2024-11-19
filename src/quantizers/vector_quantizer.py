@@ -71,7 +71,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         
         weight_use = weight.clone()
         norm_0,norm_1,weight_use = quantizer_utils.normalize(weight_use,norm_order)
-    
+        print("norm_0", norm_0)
+        print("norm_1", norm_1)
         denormalize_matrix = torch.ones_like(weight_use)
         if norm_0 is not None:
             denormalize_matrix = denormalize_matrix * norm_0.unsqueeze(0)
@@ -322,9 +323,13 @@ if __name__ == "__main__":
     
 
     vq = VectorQuantizer.quantize(W, hessian
-                                  , d = 4, n_bits = 2, n_iter = 100, initialize_method = "grid")
+                                  , d = 4, n_bits = 2, n_iter = 100, initialize_method = "kmeans")
     print(vq.get_n_bits()/vq.get_n_original_parameters())
     vq.set_additional_attributes_as_trainable()
+    
+    for name,param in vq.named_parameters():
+        print(name, param.shape, param.requires_grad)
+        
     # sys.path.append(os.getcwd())
     import src.alignment.hessian_general_align as hessian_general_align
     
@@ -339,13 +344,14 @@ if __name__ == "__main__":
                           patience = 100,
                           patience_scheduler= 1,
                           eps = 1e-4,
-                          lr = 1e-1,
+                          lr = 1e-3,
                           low_bound = 1e-6,
                           clip_grad = 1e-1,
                           discrete_update_every = 1,
                           lr_multiplier=0.9,
-                          verbose = 10)
-    
+                          verbose = 100)
+    print("norm_0", vq.norms_0)
+    print("norm_1", vq.norms_1)
     print(vq().dtype)
     vq.clean()
     vq.to(torch.float16)

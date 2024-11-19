@@ -28,3 +28,13 @@ def buffer_to_param(module:nn.Module, buffer_name:str):
     delattr(module, buffer_name)
     module.register_parameter(buffer_name, nn.Parameter(buffer))
     return module
+
+@torch.no_grad()
+def update_discrete(module:nn.Module):
+    for name, child in module.named_children():
+        if hasattr(child, "update_discrete"):
+            if isinstance(getattr(child, "update_discrete"), callable):
+                child.update_discrete()
+        #otherwise look for its children
+        update_discrete(child)
+    

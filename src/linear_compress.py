@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import transformers
 import math
-import src.quantizer as quantizer
 import numpy as np
 import os
 from typing import Tuple, Optional, Union, List
@@ -37,7 +36,7 @@ class LinearQuantized(compress_parent.CompressorParent):
 
         else:
             if add_bias:
-                self.original_bias = nn.Parameter(torch.zeros(self.out_features), requires_grad = True)
+                self.original_bias = nn.Parameter(torch.zeros(self.out_features), requires_grad = True).to(self.original_weight.device).to(self.original_weight.dtype) 
             else:
                 self.original_bias = None
 
@@ -49,11 +48,11 @@ class LinearQuantized(compress_parent.CompressorParent):
         """enable hessian logging
         """
         self.log_hessian = True
-        self.hessian = torch.zeros(self.original_parameters, self.original_parameters, device=self.original_weight.device,
+        self.hessian = torch.zeros(self.in_features, self.in_features, device=self.original_weight.device,
                                 dtype = torch.float32)
         self.n_samples = 0
 
-    def dump_hessian(self)->torch.FloatTensor:
+    def dump_hessian(self)->List[torch.FloatTensor]:
         """gives the hessian calculated and stops logging the inputs for the hessian
 
         Returns:
@@ -63,7 +62,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         self.log_hessian = False
         del self.hessian
         del self.n_samples
-        return hessian
+        return [hessian] #returning a list for consistency with the low rank sparse
     
     def log_to_hessian_(self, x:torch.FloatTensor):
         """log to the hessian
@@ -71,8 +70,9 @@ class LinearQuantized(compress_parent.CompressorParent):
         Args:
             x (torch.FloatTensor): x is of shape (..., in_features)
         """
-        x_flattened = x.reshape(-1, self.in_features)
+        x_flattened = x.reshape(-1, self.in_features).to(torch.float32)
         n_new_samples = x_flattened.shape[0]
+        # print(n_new_samples)
         #multiply the hessian by:
         self.hessian *= self.n_samples/(self.n_samples + n_new_samples)
         #outer product of the flattened x
@@ -85,10 +85,11 @@ class LinearQuantized(compress_parent.CompressorParent):
         """forward pass of the linear layer"""
         if self.log_hessian:
             self.log_to_hessian_(x)
-        return F.linear(x, self.reconstruct(), self.original_bias)
+        W = self.reconstruct()
+        return F.linear(x, W, self.original_bias)
 
         
-    def quantize(self, quantizer_class:QuantizerParent, **kwargs):
+    def quantize(self, quantizer_class:QuantizerParent,**kwargs):
         """quantize the weights"""
         self.quantizer = quantizer_class.quantize(self.original_weight, self.hessian, **kwargs)
         self.quantized = True
@@ -177,6 +178,22 @@ class LinearQuantized(compress_parent.CompressorParent):
     
     def get_n_original_parameters(self):
         return self.original_parameters
+    
+    def set_additional_attributes_as_trainable(self):   
+        for children in self.children():
+            if hasattr(children, 'set_additional_attributes_as_trainable'):
+                if isinstance(getattr(children, 'set_additional_attributes_as_trainable'),callable):
+                    children.set_additional_attributes_as_trainable()'
+
+    def set_additional_attributes_as_non_trainable(self):
+        for children in self.children():
+            if hasattr(children, 'set_additional_attributes_as_non_trainable'):
+                if isinstance(getattr(children, 'set_additional_attributes_as_non_trainable'),callable):
+                    children.set_additional_attributes_as_non_trainable()
+        
+    def get_additional_attributes(self):
+        return self.quantizer.get_additional_attributes()
+
     
     
 
@@ -268,10 +285,14 @@ class LowRankSparse(LinearQuantized):
             self.B.update_discrete()
             
     def forward(self, x:torch.FloatTensor):
+        """should act like a linear layer"""
         if self.low_ranked:
             x = x.reshape(-1, self.in_features)
             y = torch.zeros(x.shape[0], self.out_features, device = x.device, dtype = x.dtype)
             y[:,~self.mask_1] += F.linear(x, self.sparse_values_1)
+            #we should pass it like this for 2 reasons
+            #1. its faster
+            #2. it allows for both A and B to log the hessian
             y[:,self.mask_1] += self.B(self.A(x[:,self.mask_0])) + F.linear(x[:,~self.mask_0], self.sparse_values_0)
             
         else:
@@ -281,27 +302,33 @@ class LowRankSparse(LinearQuantized):
     def enable_hessian_logging(self):
         """enable hessian logging
         """
-        self.log_hessian = True
-        self.hessian = torch.zeros(self.original_parameters, self.original_parameters, device=self.original_weight.device,
-                                dtype = torch.float32)
-        self.n_samples = 0
         if self.low_ranked:
+            #if its low rank, we do not need the hessian for the 
+            #parent layer but we do need it for the A and B
+            self.dump_hessian()
             self.A.enable_hessian_logging()
             self.B.enable_hessian_logging()
-
+        else:
+            self.log_hessian = True
+            self.hessian = torch.zeros(self.in_features, self.in_features, device=self.original_weight.device,
+                                    dtype = torch.float32)
+            self.n_samples = 0
+            
+            
     def dump_hessian(self)->List[torch.FloatTensor]:
         """gives the hessian calculated and stops logging the inputs for the hessian
 
         Returns:
             torch.FloatTensor: the hessian
         """
-        hessians = [self.hessian]
-        self.log_hessian = False
-        del self.hessian
-        del self.n_samples
+        hessians = []
         if self.low_ranked:
             hessians.append(self.A.dump_hessian())
             hessians.append(self.B.dump_hessian())
+        else:
+            self.log_hessian = False
+            del self.hessian
+            del self.n_samples
         return hessians
     
     def clean(self):
@@ -311,7 +338,7 @@ class LowRankSparse(LinearQuantized):
         super(LowRankSparse, self).clean()
         
     def get_n_bits(self):
-        return self.A.get_n_bits() + self.B.get_n_bits() + self.sparse_weights.numel() * 16 + 16 * (self.out_features + self.in_features - self.n_non_sparse_0 - self.n_non_sparse_1)
+        return self.A.get_n_bits() + self.B.get_n_bits() + (self.sparse_values_0.numel() + self.sparse_values_1.numel()) * 16 + 16 * (self.out_features + self.in_features - self.n_non_sparse_0 - self.n_non_sparse_1)
     
     
 

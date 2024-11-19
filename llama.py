@@ -14,7 +14,8 @@ import fine_tune as lora_fine_tune
 import src.finetune as finetune
 import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
-import src.alignment.hessian_general_align as hessian_general_align
+import src.linear_compress as linear_compress
+import src.utils.utils as utils
 try:
     import wandb
     has_wandb = True
@@ -107,12 +108,13 @@ def finetune_fn(
     val_inps: Optional[torch.Tensor],
     val_outs: Optional[torch.Tensor],
     args,
+    discrete_update_fn,
     kwargs: dict,
     dev:str):
     
     
     layer.to(torch.float32)
-    finetune.finetune_amp_eps_wrapper(
+    finetune.finetune_amp(
         layer = layer,
         train_inps = inps.to(dev).to(dtype = torch.float32),
         train_outputs = outs.to(dev).to(dtype = torch.float32),
@@ -120,10 +122,12 @@ def finetune_fn(
         val_outputs = val_outs.to(dev).to(dtype = torch.float32) if val_outs is not None else None,
         args = args,
         layer_kwargs = kwargs,
-        early_stop_eps = 1e-6
+        early_stop_eps = 1e-6,
+        discrete_update_fn= discrete_update_fn 
+        
         
     )
-    layer.to(torch.float32)
+    # layer.to(torch.float32)
     return layer
                 
 
@@ -239,6 +243,7 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
         full = find_layers(layer)
 
         if args.true_sequential:
+            # raise Exception("Not supported yet.")
             sequential = [
                 ["self_attn.k_proj", "self_attn.v_proj", "self_attn.q_proj"],
                 ["self_attn.o_proj"],
@@ -250,88 +255,69 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
         print("sequential", sequential)
 
         for l,names in enumerate(sequential):
-            subset = {n: full[n] for n in names}
-
-            gpts = {}
-            for name in subset:
-                if (
-                    not (args.minlayer <= i < args.maxlayer and args.prune_only in name)
-                ) == (not args.invert):
-                    continue
-                gpts[name] = VectorQuantizerTemp(subset[name])
-                gpts[name].set_n_samples(args.nsamples)
-                if args.wbits < 16:
-                    raise Exception("Quantization not supported.")
-                    gpts[name].quantizer = Quantizer()
-                    gpts[name].quantizer.configure(
-                        args.wbits, perchannel=True, sym=False, mse=False
-                    )
-
-            def add_batch(name):
-                def tmp(_, inp, out):
-                    gpts[name].add_batch(inp[0].data, out.data)
-
-                return tmp
+            for name in names:
+                parent_module = getattr(layer, name.split(".")[0])
+                sublayer:nn.Linear = getattr(parent_module, name.split(".")[1])
+                print("sublayer", sublayer)
+                new_layer = linear_compress.LinearQuantized(sublayer.weight,
+                                                            sublayer.bias,
+                                                            add_bias = args.add_bias)
+                new_layer.enable_hessian_logging()
+                new_layer.to(dev)
+                new_layer.to(sublayer.weight.dtype)
+                
+                #delete the old layer
+                delattr(parent_module, name.split(".")[1])
+                setattr(parent_module, name.split(".")[1], new_layer)
             
-            def add_batch_val(name):
-                def tmp(_, inp, out):
-                    gpts[name].add_batch_val(inp[0].data, out.data)
-
-                return tmp
-
-            with torch.no_grad():
-                handles = []
-                for name in subset:
-                    handles.append(subset[name].register_forward_hook(add_batch(name)))
-                for j in range(args.nsamples):
-                    # print("j", j)
-                    outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
-                for h in handles:
-                    h.remove()
-                    
-                handles = []
-                for name in subset:
-                    handles.append(subset[name].register_forward_hook(add_batch_val(name)))
-
+            #garbage collect
+            torch.cuda.empty_cache()
+            
+            #pass the inputs through the models:
+            for j in range(args.nsamples):
+                # print("j", j)
+                outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+            
+            #get the hessians
+            train_hessians = {}
+            for name in names:
+                train_hessians[name] = getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).dump_hessian()[0]
+                
+            if args.nsamples_val > 0:
+                print("val")
+                #turn back on the hessian logging
+                for name in names:
+                    getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).enable_hessian_logging()
+                
                 for j in range(args.nsamples_val):
                     val_outs[j] = layer(inps_val[j].unsqueeze(0), attention_mask=attention_mask)[0]
-                    
-                for h in handles:
-                    h.remove()
-
-            print("finished adding batches")
-            print("subset", subset)
-            for name in subset:
-                print(i, name)
-                print("Pruning ...")
-                tick = time.time()
-                H = gpts[name].get_H()
-                H_val = gpts[name].get_H_val()
-                W = gpts[name].get_W()
-                bias = getattr(subset[name], "bias", None)
                 
-                n_params = W.numel()
-                if bias is not None:
-                    n_params += bias.numel()
+                #get the hessians
+                val_hessians = {}
+                for name in names:
+                    val_hessians[name] = getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).dump_hessian()[0]
                     
-                vq = vector_quantizer.VectorQuantizer.quantize(
-                    W,
-                    H,
-                    args.subvector_dim,
-                    args.n_bits_per_value,
-                    args.n_iters,
-                    args.norm_order,
+            #put the train hessians back in
+            for name in names:
+                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).hessian = train_hessians[name]
+            
+            #quantize
+            for name in names:
+                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).quantize(
+                    vector_quantizer.VectorQuantizer,
+                    d = args.subvector_dim,
+                    n_bits = args.n_bits_per_value,
+                    n_iter = args.n_iters,
+                    initialize_method = args.initialize_method,
+                    norm_order = args.norm_order,
                 )
-                if args.no_val or args.nsamples_val == 0:
-                    H_val = None
-                #turn on the additional parameters
-                vq.set_additional_attributes_as_trainable()
-                #align the quantizer
-                vq = hessian_general_align.align(
-                    vq, W, H, 
-                    H_val, 
-                    args.lr, args.lr_multiple, args.n_iters,
-                    patience_scheduler= 1,
+                #align
+                # print("val_hessians", val_hessians) 
+                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).align(
+                    val_hessian = val_hessians[name] if args.nsamples_val > 0 else None,
+                    lr = args.lr,
+                    lr_multiplier = args.lr_multiple,
+                    n_iters = args.n_iters,
                     val_every = 1,
                     discrete_update_every= 1,
                     clip_grad = args.clamp_gradients,
@@ -339,47 +325,9 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
                     verbose = args.n_iters//10,
                     patience= 10**6,
                 )
-                vq.clean()
-                # quantizer.Quantize.quantize(W, H,
-                #                                         args.subvector_dim,
-                #                                         args.k_cosine_codebook,
-                #                                         args.n_iters,
-                #                                         args.normalize_rowwise,
-                #                                         args.normalize_colwise,
-                #                                         args.align_quantize,
-                #                                         args.regularization,
-                #                                         args.lr,
-                #                                         args.lr_multiple,
-                #                                         align_clip_grad=args.clamp_gradients,
-                #                                         damping = args.percdamp,    
-                #                                         seed = args.seed,                           
-                # )
-                
-                # new_layer = QuantizedLinear(quantized, getattr(subset[name], "bias", None), create_bias = True)
-                # new_layer.disable_grad()
-                #first set the existing layer to none
-                getattr(layer, name.split(".")[0]).__setattr__(name.split(".")[1], None)
-                setattr(getattr(layer, name.split(".")[0]), name.split(".")[1], QuantizedLinear(vq, getattr(subset[name], "bias", None), create_bias = True))
-                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).disable_grad()                               
-                print("quantized in", time.time() - tick, "seconds")                       
-                gpts[name].free()
-                free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
-                print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-                del W
-                del H
-                total_bits += getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).get_n_bits()
-                total_params += n_params
-                # break
-                # return quantizers
-            print("finished:", subset)
+                    
             if args.fine_tune_quip_like and l != len(sequential) - 1:
-                layer = finetune_fn(
-                    layer = layer, 
-                    inps = inps, outs = outs, 
-                    val_inps = inps_val if args.nsamples_val > 0 else None, 
-                    val_outs = val_outs if args.nsamples_val > 0 else None,
-                    args = args, kwargs = kwargs, dev = dev
-                )
+                raise Exception("Not supported anymore")
                 
         if args.fine_tune or args.fine_tune_quip_like:
             #set everything to trainable
@@ -393,7 +341,8 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
                 inps = inps, outs = outs, 
                 val_inps = inps_val if args.nsamples_val > 0 else None, 
                 val_outs = val_outs if args.nsamples_val > 0 else None,
-                args = args, kwargs = kwargs, dev = dev
+                args = args, kwargs = kwargs, dev = dev,
+                discrete_update_fn = utils.update_discrete if args.update_discrete_finetune else None
             )
             
             
@@ -424,7 +373,6 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
         layers[i] = layer.to(torch.device("cpu"))
         del layer
-        del gpts
         torch.cuda.empty_cache()
         print("after cast to cpu")
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
@@ -604,6 +552,13 @@ if __name__ == "__main__":
         "--n_bits_per_value", type=int, default=2, help="Number of bits per value."
     )
     parser.add_argument(
+        "--initialize_method", type = str, default = "kmeans", help = "Initialization method.",
+        choices = ["kmeans", "grid"]
+    )
+    parser.add_argument(
+        "--add_bias", action="store_true", help="Whether to add bias."
+    )
+    parser.add_argument(
         "--lr", type=float, default=1e-3, help="Learning rate for quantization."
     )
     parser.add_argument(
@@ -628,12 +583,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--regularization", type=float, default=0, help="Regularization."
     )
-    
     parser.add_argument(
         "--fine_tune", action="store_true", help="Whether to fine tune the model."
     )
     parser.add_argument(
         "--fine_tune_quip_like", action="store_true", help="Whether to fine tune the model."
+    )
+    parser.add_argument(
+        "--update_discrete_finetune", action="store_true", help="Whether to update discrete variables during finetuning."
     )
     parser.add_argument(
         "--fnn_device", type=str, default=None, help="Whether to put the mlp/fnn on a separate device."
@@ -699,7 +656,8 @@ if __name__ == "__main__":
     model = get_llama(args.model)
     model.eval()
     print(model.seqlen)
-
+    # print("n samples val", args.nsamples_val)
+    # raise Exception("stop")
     dataloader, valloader, testloader = get_loaders(
         args.dataset, nsamples_train=args.nsamples,
         nsamples_val=args.nsamples_val,

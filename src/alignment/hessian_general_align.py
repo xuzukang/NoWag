@@ -95,6 +95,7 @@ def align(compression_module:compress_parent.CompressorParent,
             
             if val_loss < low_bound:
                 print("early stopping")
+                break
 
             
         if val_hessian is None:
