@@ -1,349 +1,360 @@
-"""Utilities for internal **block-wise** finetuning used during initial AQLM calibration"""
-from __future__ import annotations
+# a simpler version of fine tunining to work on one GPU
 
-import warnings
-from argparse import Namespace
-from typing import Any, Callable, Iterable, Iterator, List, Optional, Sequence, Union
-from collections import defaultdict
-from copy import deepcopy
-from typing import Any, Dict, Iterator, List, Sequence, Tuple
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn.parallel.scatter_gather import Gather
+import torch.cuda.amp as amp
+import transformers.models.llama.modeling_llama as modeling_llama
+import argparse
+import tqdm
+import numpy as np
+from typing import List, Optional, Callable
+from copy import deepcopy
+import wandb
 
-
-def iterate_minibatches(
-    *tensors: torch.Tensor,
-    batch_size: int,
-    allow_incomplete: bool = True,
-    device: Optional[torch.device] = None,
-    callback: Callable[[Sequence[torch.Tensor]], Sequence[torch.Tensor]] = lambda x: x,
-) -> Iterator[Sequence[torch.Tensor]]:
-    """
-    Samples data points *forever*, in random order, with less overhead than DataLoader;
-    Adapted from https://github.com/stanis-morozov/unq/blob/master/lib/utils.py
-    probably implemented over9000 times in transformers, torch, etc
-    :param tensors: one or more tensors with the same 0-th dimension
-    :param batch_size: sample this many points with each yield
-    :param allow_incomplete: if True and if dataset size is not divisible by batch size, the last batch
-        may have less than :batch_size: samples to cover the entire dataset. If False, the last batch is dropped
-    :param callback: optional function to be called on each batch of tensors before it is yielded to the user
-    :returns: generates a tuple of minibatches from each tensor, same length as input *tensors
-        If a batch contains only one tensor, this function will yield a tensor (and not a tuple/list with one tensor)
-    """
-    num_samples = len(tensors[0])
-    assert all(len(x) == num_samples for x in tensors)
-    indices = torch.randperm(num_samples, device=tensors[0].device)
-    while True:
-        prev_batch = None
-        for batch_start in range(0, len(indices), batch_size):
-            if not allow_incomplete and batch_start + batch_size > len(indices):
-                break
-            batch_ix = indices[batch_start : batch_start + batch_size]
-            batch = callback(tuple(tensor[batch_ix].to(device, non_blocking=True) for tensor in tensors))
-            if prev_batch is not None:
-                yield prev_batch
-            prev_batch = batch if isinstance(batch, (list, tuple)) and len(tensors) > 1 else batch[0]
-            del batch
-        yield prev_batch
-
-
-
-def replace_parameter_(module: nn.Module, name: str, new_value: torch.Tensor):
-    """A hacky way to substitute an already registered parameter with a non-parameter tensor. Breaks future use."""
-    if name in module._parameters:
-        module._parameters[name] = new_value
-    else:
-        setattr(module, name, new_value)
-
-
-@torch.enable_grad()
-def finetune_groupwise(
-    *,
-    layer: nn.Module,
-    train_inps: Sequence[torch.Tensor],
-    train_outs: Sequence[torch.Tensor],
-    devices: Sequence[torch.device],
-    args: Namespace,
-    valid_inps: Sequence[torch.Tensor] = None,
-    valid_outs: Sequence[torch.Tensor] = None,
-    verbose: bool = True,
-    **kwargs,
-) -> nn.Module:
-    """
-    Fine-tune a module with pre-quantized linear layers so as to minimize MSE between layer-wise inps/outs
-
-    :param layer: a trainable module where linear layers are replaced by QuantizedLinear instances
-    :param inps: a list of tensors of input activations, [nsamples_per_device, seq_len, hidden_size]
-    :param outs: a list of tensors of previous output activations, [nsamples_per_device, seq_len, hidden_size]
-    :param args: quantization hyperparameters from main.py
-    :param kwargs: additional keyword arguments to be passed into layer on each forward
-    """
-    assert isinstance(devices, (list, tuple)) and len(devices) >= 1, f"Found devices = {devices}"
-    assert isinstance(train_inps, (list, tuple)) and isinstance(train_inps, (list, tuple))
-    assert len(train_inps) == len(train_outs) == len(devices)
-    # for i in range(len(devices)):
-    #     assert isinstance(train_inps[i], torch.Tensor) and isinstance(train_outs[i], torch.Tensor)
-    #     if not args.offload_activations:
-    #         assert train_inps[i].device == train_outs[i].device == devices[i], (
-    #             train_inps[i].device,
-    #             train_outs[i].device,
-    #             devices,
-    #         )
-    #     else:
-    #         assert train_inps[i].device == train_outs[i].device == torch.device("cpu")
-    #         assert train_inps[i].is_pinned() and train_outs[i].is_pinned()
-
-    # replicate non-trainable parameters to each GPU
-    replicas = kwargs_by_device = None
-    if len(devices) > 1:
-        replicas = torch.nn.parallel.replicate(layer, devices)
-        replicas[0] = layer
-        kwargs_by_device = []
-        for device in devices:
-            kwargs_by_device.append(
-                {k: (v.to(device, non_blocking=True) if isinstance(v, torch.Tensor) else v) for k, v in kwargs.items()}
-            )
-
-    # initialize trainable parameters on main device; prepare to send them to replicas
-    differentiable_parameters_by_name = {name: param for name, param in layer.named_parameters() if param.requires_grad}
-    print(f"Found {len(differentiable_parameters_by_name)} differentiable parameters")
-    print("differentiable parameters:", differentiable_parameters_by_name.keys())
-    param_names, differentiable_parameters = zip(*differentiable_parameters_by_name.items())
-    differentiable_parameters = nn.ParameterList(differentiable_parameters)
-    for param in differentiable_parameters:
-        param.grad = torch.zeros_like(param)
-    if replicas:
-        replacement_tables = _make_parameter_replacement_tables(layer, replicas, param_names, differentiable_parameters)
-    
-    # for i, name in enumerate(param_names):
-    #     print(f"param {i}: {name} {differentiable_parameters[i].numel()}, {differentiable_parameters[i].shape}")
+class NANError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
         
-    print(f"Fine-tuning {sum(param.numel() for param in differentiable_parameters)} parameters")
-    opt = torch.optim.Adam(
-        differentiable_parameters, lr=args.finetune_lr, betas=(args.finetune_adam_beta1, args.finetune_adam_beta2)
-    )
+@torch.enable_grad()
+def finetune_amp(layer: modeling_llama.LlamaDecoderLayer,
+                                      train_inps: torch.Tensor,
+                                      train_outputs: torch.Tensor,
+                                      val_inps: torch.Tensor,
+                                      val_outputs: torch.Tensor,
+                                      args:argparse.Namespace,
+                                      parameters_to_optimize:dict = None,
+                                      layer_kwargs:dict = None, early_stop_eps:float = 1e-7,adam_eps:float = 1e-7):
+    
+    
+    # if we want to put the fnn on a separate device
+    device = args.device
+    if args.fnn_device is not None:
+        layer.mlp.to(args.fnn_device)
+        #add a hook to transfer the inputs to the device and the outputs back to the original device
+        layer.mlp.register_forward_pre_hook(lambda module, inputs: inputs.to(args.fnn_device))
+        layer.mlp.register_forward_hook(lambda module, inputs, outputs: outputs.to(device))
+        
+    #get the parameters
+    if parameters_to_optimize is None:
+        parameters_to_optimize = {name: param for name, param in layer.named_parameters() if param.requires_grad}
+        parameters_not_to_optimize = {name: param for name, param in layer.named_parameters() if not param.requires_grad}
+        print("the following parameters will not be optimized:", parameters_not_to_optimize.keys())
+        print("number of parameters to not optimize:", sum([param.numel() for param in parameters_not_to_optimize.values()]))
+    else:
+        print("using the provided parameters")
+    
+    print("optimizing the following parameters:",parameters_to_optimize.keys())
+    print("total number of parameters to optimize:", sum([param.numel() for param in parameters_to_optimize.values()]))
+    optimizer = torch.optim.Adam(nn.ParameterList(parameters_to_optimize.values()), lr=args.finetune_lr,
+                                 betas = (args.finetune_adam_beta1, args.finetune_adam_beta2),
+                                    eps=adam_eps)   
+    
+    # print("initial parameter",list(parameters_to_optimize.keys())[0], parameters_to_optimize[list(parameters_to_optimize.keys())[0]])
+    #set the model to train mode
+    layer.train()
+    
+    local_batch_size = args.local_batch_size if args.local_batch_size is not None else args.finetune_batch_size
+    #check that the local batch size is a multiple of the number of data points
+    assert len(train_inps) % local_batch_size == 0, "the local batch size should be a multiple of the number of data points"
+    
+    n_accumulation_steps = args.finetune_batch_size//local_batch_size
+    #check that the number of accumulation steps is a multiple of the local batch size
+    assert args.finetune_batch_size % local_batch_size == 0, "the number of accumulation steps should be a multiple of the local batch size"
+    
+    n_batches = int(np.ceil(len(train_inps)/local_batch_size))
+    if val_inps is not None:
+        n_batches_val = int(np.ceil(len(val_inps)/local_batch_size))
+    
+    indexes = torch.randperm(len(train_inps), device=torch.device('cpu'))
+    
+    #move the train_inps and train_outputs to cpu to save gpu memory
+    train_inps = train_inps.cpu()
+    train_outputs = train_outputs.cpu()
+    
+    scaler = amp.GradScaler()
+    prev_epoch_loss = np.inf
+    patience = args.finetune_early_stop
+    print("n accumulation steps:", n_accumulation_steps)
+    print("n batches:", n_batches)
+    for epoch in range(args.finetune_epochs):
+        # print(f"epoch {epoch}")
+        total_loss = 0
+        n = 0
+        for i in range(n_batches):
+            # print(i)
+            # optimizer.zero_grad()
+            #get the batch
+            batch_idx = indexes[i*local_batch_size:(i+1)*local_batch_size]
+            
+            batch_inps = train_inps[batch_idx].to(device)
+            batch_outputs = train_outputs[batch_idx].to(device)
+            
+            with amp.autocast():
+                #forward pass
+                out, *_ = layer(batch_inps, **layer_kwargs)
+                loss = F.mse_loss(out, batch_outputs)
+            # print(f"epoch {epoch} batch {i} loss: {loss.item()}")
+            if not torch.isfinite(loss):
+                raise NANError("NAN detected in the loss, suggesting increasing the epsilon value")
+            # loss.backward()
+            scaler.scale(loss/n_accumulation_steps).backward()
+            #print out the gradient for the first parameter
+            # if i == 4:
+            #     print(parameters_to_optimize[list(parameters_to_optimize.keys())[0]].grad)
+            #     print(out)
+            #     print(batch_outputs)
+            
+            total_loss += loss.item()
+            if args.log_wandb:
+                wandb.log({"loss": loss.item()})
+            n += 1
+            
+            if (i+1) % n_accumulation_steps == 0:
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()
+            #     scaler.step(optimizer)
+            #     scaler.update()
 
-    assert args.finetune_batch_size % len(devices) == 0, "batch_size must be divisible by the number of GPUs"
-
-    num_samples_per_device = len(train_inps[0])
-    local_batch_size = args.local_batch_size
-    if local_batch_size is None:
-        local_batch_size = args.finetune_batch_size // len(devices)
-
-    assert all(len(inps_tensor) == num_samples_per_device for inps_tensor in train_inps)
-    assert args.finetune_batch_size % (local_batch_size * len(devices)) == 0, ""
-    num_accumulation_steps = args.finetune_batch_size // (local_batch_size * len(devices))
-    assert num_samples_per_device % local_batch_size * num_accumulation_steps == 0, (
-        num_samples_per_device,
-        local_batch_size,
-    )
-    train_batches_per_epoch = num_samples_per_device // local_batch_size
-    print("train_inps[0]", train_inps[0].shape, train_inps[0].device, train_inps[0].dtype)
-    print("train_outs[0]", train_outs[0].shape, train_outs[0].device, train_outs[0].dtype)
-    train_batch_iterators = [
-        iterate_minibatches(train_inps[i], train_outs[i], batch_size=local_batch_size, device=devices[i])
-        for i in range(len(devices))
-    ]
-
-    run_validation = False
-    if valid_inps and valid_outs:
-        run_validation = True
-        num_valid_samples_per_device = len(valid_inps[0])
-        valid_batches_per_epoch = num_valid_samples_per_device // local_batch_size
-        valid_batch_iterators = [
-            iterate_minibatches(valid_inps[i], valid_outs[i], batch_size=local_batch_size, device=devices[i])
-            for i in range(len(devices))
-        ]
-
-    if run_validation:
-        # evaluate before training
-        layer.eval()
-        loss_numerator = loss_denominator = 0
-        with torch.no_grad():
-            for _ in range(valid_batches_per_epoch):
-                if len(devices) == 1:
-                    loss = _compute_mse_on_batch(layer, valid_batch_iterators[0], **kwargs)
-                else:
-                    loss = _compute_mse_parallel(
-                        devices,
-                        replicas,
-                        differentiable_parameters,
-                        replacement_tables,
-                        valid_batch_iterators,
-                        kwargs_by_device,
-                    )
-                loss_numerator += loss.item()
-                loss_denominator += 1
-        valid_loss_epoch = loss_numerator / loss_denominator
-        print(f"Evaluation before training.")
-        print(f"valid loss={valid_loss_epoch:.2e}\t")
-        best_loss = valid_loss_epoch
-        best_parameters_by_name = deepcopy(differentiable_parameters_by_name)
-        worse_count = 0
-
-    steps_accumulated = 0
-    for epoch in range(args.finetune_max_epochs):
-        layer.train()
-        # train epoch
-        loss_numerator = loss_denominator = 0
-        for _ in range(train_batches_per_epoch):
-            if len(devices) == 1:
-                # print("train_batch_iterators[0]", train_batch_iterators[0].shape, train_batch_iterators[0].dtype, train_batch_iterators[0].device)
-                loss = _compute_mse_on_batch(layer, train_batch_iterators[0], **kwargs)
-            else:
-                loss = _compute_mse_parallel(
-                    devices,
-                    replicas,
-                    differentiable_parameters,
-                    replacement_tables,
-                    train_batch_iterators,
-                    kwargs_by_device,
-                )
-
-            (loss / num_accumulation_steps).backward()
-            steps_accumulated += 1
-
-            if not torch.isfinite(loss).item():
-                raise ValueError(f"Fine-tuning loss is {loss}")
-
-            if steps_accumulated >= num_accumulation_steps:
-                opt.step()
-                opt.zero_grad()
-                steps_accumulated = 0
-
-            loss_numerator += loss.item()
-            loss_denominator += 1
-        train_loss_epoch = loss_numerator / loss_denominator
-        if run_validation:
-            layer.eval()
-            # val epoch
-            loss_numerator = loss_denominator = 0
+        if val_inps is not None:
+            total_loss_val = 0
+            n_val = 0
             with torch.no_grad():
-                for _ in range(valid_batches_per_epoch):
-                    if len(devices) == 1:
-                        loss = _compute_mse_on_batch(layer, valid_batch_iterators[0], **kwargs)
-                    else:
-                        loss = _compute_mse_parallel(
-                            devices,
-                            replicas,
-                            differentiable_parameters,
-                            replacement_tables,
-                            valid_batch_iterators,
-                            kwargs_by_device,
-                        )
-                    loss_numerator += loss.item()
-                    loss_denominator += 1
-            valid_loss_epoch = loss_numerator / loss_denominator
-        # log losses in the end of the epoch
-        if verbose:
-            print("-" * 10)
-            print(f"epoch={epoch}")
-            print(f"train loss={train_loss_epoch:.2e}\t")
-            free, total = torch.cuda.mem_get_info(int(devices[0].split(":")[1]))
-            print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-            if run_validation:
-                print(f"valid loss={valid_loss_epoch:.2e}\t")
+                for i in range(n_batches_val):
+                    #get the batch
+                    batch_inps = val_inps[i*local_batch_size:(i+1)*local_batch_size].to(device)
+                    batch_outputs = val_outputs[i*local_batch_size:(i+1)*local_batch_size].to(device)
+                    
+                    with amp.autocast():
+                        #forward pass
+                        out, *_ = layer(batch_inps, **layer_kwargs)
+                        loss = F.mse_loss(out, batch_outputs)
+                    total_loss_val += loss.item()
+                    n_val += 1
+            if args.log_wandb:   
+                wandb.log({"epoch_loss": total_loss/n, "val_loss": total_loss_val/n_val})
+            print(f"epoch {epoch} loss: {total_loss/n} val loss: {total_loss_val/n_val}")
 
-        if run_validation:
-            if valid_loss_epoch < best_loss:
-                print(f"new best loss {valid_loss_epoch:.2e} on epoch {epoch}")
-                best_loss = valid_loss_epoch
-                best_parameters_by_name = deepcopy(differentiable_parameters_by_name)
-                worse_count = 0
-            else:
-                worse_count += 1
-                if worse_count >= args.finetune_early_stop:
-                    break
-
-    if run_validation:
-        layer.load_state_dict(best_parameters_by_name, strict=False)
-
+        else:
+            if args.log_wandb:
+                wandb.log({"epoch_loss": total_loss/n})    
+            print(f"epoch {epoch} loss: {total_loss/n}")
+            total_loss_val = total_loss # a hacky way to avoid the if statement
+            n_val = n
+        free, total = torch.cuda.mem_get_info(int(device.split(":")[1]))
+        print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+        if total_loss_val/n_val > prev_epoch_loss - early_stop_eps:
+            patience -= 1
+            if patience == 0:
+                print("early stopping")
+                break
+        #otherwise
+        else:
+            patience = args.finetune_early_stop
+            prev_epoch_loss = total_loss_val/n_val
+            if args.finetune_keep_best:
+                best_weights = deepcopy(parameters_to_optimize)
+        
+    
+    if args.finetune_keep_best:
+        # print("best weight 1:",list(best_weights.keys())[0], best_weights[list(best_weights.keys())[0]])
+        layer.load_state_dict({name: param for name, param in best_weights.items()}, strict=False)
     return layer
 
+def cross_entropy_loss(logits, target_logits):
+    target_probs = F.softmax(target_logits, -1)
+    return -torch.sum(target_probs * F.log_softmax(logits, -1), -1).mean()
 
-def _make_parameter_replacement_tables(
-    layer: nn.Module, replicas: Sequence[nn.Module], param_names: Sequence[str], parameters: nn.ParameterList
-) -> Sequence[List[Sequence[Tuple[nn.Module, str]]]]:
-    """
-    Prepare auxiliary data structures for quickly copying parameters to replicas for data-parallel training.
-
-    """
-    assert len(param_names) == len(parameters)
-    assert len(replicas) > 1
-    assert replicas[0] is layer
-
-    parameters_by_name = dict(zip(param_names, parameters))
-
-    param_to_name = {param: name for name, param in parameters_by_name.items()}
-    param_occurences = defaultdict(list)  # param_name -> List [ Tuple [submodule name, attr name] ]
-    for submodule_name, submodule in layer.named_modules():
-        for attr_name, param in submodule.named_parameters(recurse=False):  # immediate params (excluding children)
-            if param in param_to_name:
-                param_name = param_to_name[param]
-                param_occurences[param_name].append((submodule_name, attr_name))
-    assert len(param_occurences) == len(parameters), "internal error: not all parameters were found"
-
-    replacement_tables = []
-    for replica in replicas:
-        replacement_table = list()  # for each master param -> List[ Tuple[replica submodule, attr name] ]
-        replica_modules_by_name: Dict[str, nn.Module] = dict(replica.named_modules())
-
-        for param_name, master_param in zip(param_names, parameters):
-            param_replacements = list()
-            for submodule_name, attr_name in param_occurences[param_name]:
-                param_replacements.append((replica_modules_by_name[submodule_name], attr_name))
-            replacement_table.append(param_replacements)
-        replacement_tables.append(replacement_table)
-    return replacement_tables
+@torch.enable_grad()
+def finetune_end_to_end(model: modeling_llama.LlamaModel,
+                        teacher: modeling_llama.LlamaModel,
+                        train_inps: List[torch.FloatTensor],
+                        args:argparse.Namespace,
+                        val_inps: Optional[List[torch.FloatTensor]] = None,
+                        discrete_update_fn: Optional[Callable] = None,
+                        parameters_to_optimize:List[str] = None, 
+                        model_kwargs:dict = {}, early_stop_eps:float = 1e-7,adam_eps:float = 1e-4):
+    
 
 
-def _compute_mse_on_batch(
-    layer: nn.Module, batch_iter: Iterator[Tuple[torch.Tensor, torch.Tensor]], **kwargs
-) -> torch.Tensor:
-    """
-    Compute the activation MSE error between transformer layers
-    :param
-    """
-    inps_batch, outs_batch = next(batch_iter)
-    inps_batch = inps_batch.to(dtype=torch.float32)
-    outs_batch = outs_batch.to(dtype=torch.float32)
+    device = args.device
+        
+    #get the parameters
+    if parameters_to_optimize is None:
+        parameters_to_optimize = {name: param for name, param in model.named_parameters() if param.requires_grad}
+        parameters_not_to_optimize = {name: param for name, param in model.named_parameters() if not param.requires_grad}
+        print("the following parameters will not be optimized:", parameters_not_to_optimize.keys())
+        print("number of parameters to not optimize:", sum([param.numel() for param in parameters_not_to_optimize.values()]))
+    else:
+        print("using the provided parameters")
+    
+    print("optimizing the following parameters:",parameters_to_optimize.keys())
 
-    if inps_batch.shape[0] != 1:  # replicate kwargs to match the batch size
-        for name, value in list(kwargs.items()):
-            if isinstance(value, torch.Tensor) and value.shape[0] == 1:
-                if name not in ("attention_mask", "position_ids"):
-                    warnings.warn(f"Tiling an unexpected kwarg {name} over batch size; make sure this is valid.")
-                repeats = [len(inps_batch)] + [1 for _ in range(value.ndim - 1)]
-                kwargs[name] = value.tile(*repeats)
+    n_total_params = 0
+    for param in parameters_to_optimize.keys():
+        print(param, f"{parameters_to_optimize[param].numel():,}")
+        n_total_params += parameters_to_optimize[param].numel()
+    print("total number of parameters to optimize:", 
+            f"{n_total_params:,}")
+    
+    optimizer = torch.optim.Adam(nn.ParameterList(parameters_to_optimize.values()), lr=args.finetune_lr,
+                                 betas = (args.finetune_adam_beta1, args.finetune_adam_beta2),
+                                    eps=adam_eps)   
+    
+    # print("initial parameter",list(parameters_to_optimize.keys())[0], parameters_to_optimize[list(parameters_to_optimize.keys())[0]])
+    #set the model to train mode
+    model.train()
+    teacher.eval()
+    
+    
+    
+    n_accumulation_steps = args.n_accumulation_steps
+    
+    n_batches = len(train_inps)
+    if val_inps is not None:
+        n_batches_val = len(val_inps)
+    
+    indexes = torch.randperm(len(train_inps), device=torch.device('cpu'))
 
-    # print("inps_batch", inps_batch.shape, inps_batch.device, inps_batch.dtype)
-    outs_prediction, *_unused = layer(inps_batch, **kwargs)
-    assert outs_prediction.shape == outs_batch.shape
-    return F.mse_loss(outs_prediction, outs_batch)
+    
+    scaler = amp.GradScaler()
+    prev_epoch_loss = np.inf
+    patience = args.finetune_early_stop
+    print("n accumulation steps:", n_accumulation_steps)
+    print("n batches:", n_batches)
+
+    free, total = torch.cuda.mem_get_info(int(device.split(":")[1]))
+    print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+    
+
+    for epoch in range(args.finetune_epochs):
+        # print(f"epoch {epoch}")
+        total_loss = 0
+        n = 0
+        for batch_idx in tqdm.tqdm(indexes):
+            batch = train_inps[batch_idx][0].to(device)
+            # with amp.autocast():
+                #forward pass
+            out = model(batch)[0]
+            # print(out.dtype)
+            with torch.no_grad():
+                teacher_out = teacher(batch)[0]
+                # print(teacher_out.dtype)
+                # print(teacher_out)
+            loss = cross_entropy_loss(out, teacher_out)
+            if args.log_wandb:
+                wandb.log({"loss": loss.item()})
+            if not torch.isfinite(loss):
+                raise NANError("NAN detected in the loss, suggesting increasing the epsilon value")
+            
+            loss.backward()
+            # scaler.scale(loss/n_accumulation_steps).backward()
+            #print out the gradient for the first parameter
+            # if i == 4:
+            #     print(parameters_to_optimize[list(parameters_to_optimize.keys())[0]].grad)
+            #     print(out)
+            #     print(batch_outputs)
+            
+            total_loss += loss.item()
+            n += 1
+            
+            if (n+1) % n_accumulation_steps == 0:
+                optimizer.step()
+                optimizer.zero_grad()
+                if discrete_update_fn is not None:
+                    discrete_update_fn(model)
+       
+
+        if val_inps is not None:
+            total_loss_val = 0
+            n_val = 0
+            with torch.no_grad():
+                for val_batch in val_inps:  
+                    val_batch = val_batch.to(device)
+                    
+                    # with amp.autocast():
+                        #forward pass
+                    out, *_ = model(val_batch)
+                    teacher_out, *_ = teacher(val_batch)
+                    total_loss_val += loss.item()
+                    n_val += 1
+            if args.log_wandb:   
+                wandb.log({"epoch_loss": total_loss/n, "val_loss": total_loss_val/n_val})
+            print(f"epoch {epoch} loss: {total_loss/n} val loss: {total_loss_val/n_val}")
+
+        else:    
+            if args.log_wandb:
+                wandb.log({"epoch_loss": total_loss/n})
+            print(f"epoch {epoch} loss: {total_loss/n}")
+            total_loss_val = total_loss # a hacky way to avoid the if statement
+            n_val = n
+        free, total = torch.cuda.mem_get_info(int(device.split(":")[1]))
+        print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+        if total_loss_val/n_val > prev_epoch_loss - early_stop_eps:
+            patience -= 1
+            if patience == 0:
+                print("early stopping")
+                break
+        #otherwise
+        else:
+            patience = args.finetune_early_stop
+            prev_epoch_loss = total_loss_val/n_val
+            if args.finetune_keep_best:
+                best_weights = deepcopy(parameters_to_optimize)
+        
+    
+    if args.finetune_keep_best:
+        # print("best weight 1:",list(best_weights.keys())[0], best_weights[list(best_weights.keys())[0]])
+        model.load_state_dict({name: param for name, param in best_weights.items()}, strict=False)
+    return model
+
+def finetune_amp_eps_wrapper(layer: modeling_llama.LlamaDecoderLayer,
+                                      train_inps: torch.Tensor,
+                                      train_outputs: torch.Tensor,
+                                      val_inps: torch.Tensor,
+                                      val_outputs: torch.Tensor,
+                                      args:argparse.Namespace,
+                                      parameters_to_optimize:dict = None,
+                                      layer_kwargs:dict = None, 
+                                      early_stop_eps:float = 1e-7,
+                                      adam_eps_range:tuple = (1e-7, 1e-6, 1e-5, 1e-4)):
+    
+    for eps in adam_eps_range:
+        try:
+            return finetune_amp(layer, train_inps, train_outputs, 
+                                val_inps, val_outputs,
+                                args, parameters_to_optimize, layer_kwargs, early_stop_eps,
+                                eps)
+        except NANError as e:
+            print(e.message)
+            print(f"trying the next epsilon value {eps}")
+            continue
+    print("all epsilon values failed")
+    raise NANError("all epsilon values failed")
+
+            
+        
+            
+            
+
+                
+                
+            
+            
+
+    
+    
+    
+    
+    
+    
+    
+                                      
 
 
-def _compute_mse_parallel(
-    devices: Sequence[torch.device],
-    replicas: Sequence[nn.Module],
-    parameters_to_replicate: nn.ParameterList,
-    replacement_tables: Sequence[List[Sequence[Tuple[nn.Module, str]]]],
-    batch_iterators: Sequence[Iterator[Tuple[torch.Tensor, torch.Tensor]]],
-    kwargs_by_device: Sequence[Dict[str, Any]],
-) -> torch.Tensor:
-    """Compute MSE in parallel over multiple GPUs, each GPU processes a portion of samples"""
-    replicated_parameters = torch.nn.parallel.replicate(parameters_to_replicate, devices, detach=False)
-    funcs_by_replica = [_compute_mse_on_batch for _ in replicas]
-    inputs_by_replica = []
-    for i in range(len(devices)):
-        if i != 0:  # no overrides needed for master module
-            for replacement_param, replacement_table in zip(replicated_parameters[i], replacement_tables[i]):
-                for (replica_submodule, attr_name) in replacement_table:
-                    replace_parameter_(replica_submodule, attr_name, replacement_param)
-        inputs_by_replica.append((replicas[i], batch_iterators[i]))
-    mse_components = torch.nn.parallel.parallel_apply(
-        funcs_by_replica, inputs_by_replica, kwargs_by_device, devices=devices
-    )
-    return Gather.apply(devices[0], 0, *(mse.view(1) for mse in mse_components)).mean()
+    
+
+

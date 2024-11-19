@@ -12,7 +12,7 @@ import random
 import numpy as np
 import fine_tune as lora_fine_tune
 import src.finetune as finetune
-import src.finetune_amp as finetune_amp
+import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.utils.alignment.hessian_general_align as hessian_general_align
 try:
@@ -112,7 +112,7 @@ def finetune_fn(
     
     
     layer.to(torch.float32)
-    finetune_amp.finetune_amp_eps_wrapper(
+    finetune.finetune_amp_eps_wrapper(
         layer = layer,
         train_inps = inps.to(dev).to(dtype = torch.float32),
         train_outputs = outs.to(dev).to(dtype = torch.float32),

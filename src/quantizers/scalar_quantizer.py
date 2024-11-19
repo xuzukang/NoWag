@@ -31,41 +31,33 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
             sparse_values (Optional[torch.FloatTensor], optional): The sparse values of the weight matrix, of shape sum(~sparse_mask). Defaults to None.
             reference_weight (Optional[torch.FloatTensor], optional): The reference weight matrix, of shape (n_out,n_in). Defaults to None.
         """
-        super(ScalarQuantizer, self).__init__(codes, codebook, reconstructed_shape, reference_weight)
+        super(ScalarQuantizer, self).__init__(codes, codebook, reconstructed_shape, reference_weight,
+                                                {"norms_1":norms_1, "norms_0":norms_0, "sparse_values":sparse_values})
 
-        if norms_1 is not None:
-            self.register_buffer('norms_1', norms_1)
-        else:
-            self.norms_1 = None
-        if norms_0 is not None:
-            self.register_buffer('norms_0', norms_0)
-        else:
-            self.norms_0 = None
         if sparse_mask is not None:
             self.register_buffer('sparse_mask', sparse_mask)
             assert sparse_values is not None, "sparse_values must be provided if sparse_mask is provided"
-            self.register_buffer('sparse_values', sparse_values)
+            # self.register_buffer('sparse_values', sparse_values)
         else:
             self.sparse_mask = None
-            self.sparse_values = None
 
 
 
-    def set_additional_attributes_as_trainable(self):
-        if self.norms_1 is not None:
-            utils.buffer_to_param(self, 'norms_1')
-        if self.norms_0 is not None:
-            utils.buffer_to_param(self, 'norms_0')
-        if self.sparse_mask is not None:
-            utils.buffer_to_param(self, 'sparse_values')
+    # def set_additional_attributes_as_trainable(self):
+    #     if self.norms_1 is not None:
+    #         self.norms_1.requires_grad = True
+    #     if self.norms_0 is not None:
+    #         self.norms_0.requires_grad = True
+    #     if self.sparse_mask is not None:
+    #         self.sparse_values.requires_grad = True
 
-    def set_additional_attributes_as_buffers(self):
-        if self.norms_1 is not None:
-            utils.param_to_buffer(self, 'norms_1')
-        if self.norms_0 is not None:
-            utils.param_to_buffer(self, 'norms_0')
-        if self.sparse_mask is not None:
-            utils.param_to_buffer(self, 'sparse_values')
+    # def set_additional_attributes_as_non_trainable(self):
+    #     if self.norms_1 is not None:
+    #         self.norms_1.requires_grad = False
+    #     if self.norms_0 is not None:
+    #         self.norms_0.requires_grad = False
+    #     if self.sparse_mask is not None:
+    #         self.sparse_values.requires_grad = False
 
 
         
@@ -95,7 +87,7 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
     def quantize(weight:torch.FloatTensor,
                  n_bits:int,
                  sparse_threshold:float = float('inf'),
-                 norm_order:List[int] = [],
+                 norm_order:List[int] = [0,1],
     ):
         """quantize the input weight matrix
 

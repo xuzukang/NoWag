@@ -12,7 +12,7 @@ import random
 import numpy as np
 import fine_tune as lora_fine_tune
 import src.finetune as finetune
-import src.finetune_amp as finetune_amp
+import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.utils.alignment.hessian_general_align as hessian_general_align
 from llama import *
@@ -67,6 +67,13 @@ def swap_layers(model:llama.LlamaForCausalLM):
 
     return model
 
+@torch.no_grad()
+def update_direcete(module:nn.Module):
+    for name, child in module.named_children():
+        if isinstance(child, vector_quantizer.VectorQuantizer):
+            child.update_discrete()
+        update_direcete(child)
+
 
 if __name__ == "__main__":
     import argparse
@@ -92,7 +99,10 @@ if __name__ == "__main__":
         "--device", type=str, default="cuda:0", help="Device to run on."
     )
     parser.add_argument(
-        "--nsamples", type=int, default=128*4, help="Number of calibration data samples."
+        "--nsamples", type=int, default=128, help="Number of calibration data samples."
+    )
+    parser.add_argument(
+        "--n_accumulation_steps", type=int, default=16, help="Number of accumulation steps."
     )
     parser.add_argument(
         "--nsamples_val",
@@ -119,12 +129,6 @@ if __name__ == "__main__":
         help="Finetuning learning rate",
     )
     parser.add_argument(
-        "--finetune_batch_size",
-        type=int,
-        default=1024,
-        help="(finetuning only) train on batches of this many sequences, globally across all GPUs",
-    )
-    parser.add_argument(
         "--offload_activations",
         action="store_true",
         help="Offload activations to RAM to save GPU memory.",
@@ -142,13 +146,12 @@ if __name__ == "__main__":
         help="Finetuning adam_beta2",
     )
     parser.add_argument("--finetune_keep_best", action="store_true")
-    parser.add_argument(
-        "--local_batch_size",
-        type=int,
-        default=None,
-        help="(finetuning only) Per-device and per-forward-pass batch size used to accumulate global --batch_size",
-    )
     args = parser.parse_args()
+    
+    torch.manual_seed(args.seed)    
+    torch.cuda.manual_seed(args.seed)
+    random.seed(args.seed)
+    np.random.seed(args.seed)
 
     # init W&B logging
     if args.log_wandb:
@@ -186,15 +189,12 @@ if __name__ == "__main__":
     )
 
     if args.finetune_epochs > 0:
-        finetune_amp.finetune_end_to_end(
+        finetune.finetune_end_to_end(
             model, target_model,
             dataloader, args,
             val_inps = None,
+            # discrete_update_fn = update_direcete,
         )
-    torch.manual_seed(args.seed)    
-    torch.cuda.manual_seed(args.seed)
-    random.seed(args.seed)
-    np.random.seed(args.seed)
 
     model.seqlen = 4096
 

@@ -10,8 +10,9 @@ class QuantizerParent(compress_parent.CompressorParent):
     def __init__(self, codes:torch.LongTensor,
                  codebook:torch.FloatTensor,
                  reconstructed_shape:Union[Tuple[int,int], torch.Size],
-                 reference_weight : Optional[torch.FloatTensor]):
-        super(QuantizerParent, self).__init__()
+                 reference_weight : Optional[torch.FloatTensor],
+                 additional_attributes:Optional[dict]=None):
+        super(QuantizerParent, self).__init__(additional_attributes)
         self.register_buffer('codes', codes)
         self.codebook = nn.Parameter(codebook)
         self.reconstructed_shape = reconstructed_shape 

@@ -1,0 +1,10 @@
+========== 2024-11-18 16:05:03.577636 ==========
+cuda:0 NVIDIA A100 80GB PCIe: 33396 MiB free out of 81050 MiB total, temperature: 70 C
+cuda:1 NVIDIA A100 80GB PCIe: 64994 MiB free out of 81050 MiB total, temperature: 69 C
+cuda:2 NVIDIA RTX A6000: 21826 MiB free out of 48676 MiB total, temperature: 64 C
+cuda:3 NVIDIA RTX A6000: 21818 MiB free out of 48676 MiB total, temperature: 63 C
+cuda:4 NVIDIA RTX A6000: 21818 MiB free out of 48676 MiB total, temperature: 39 C
+cuda:5 NVIDIA RTX A6000: 21858 MiB free out of 48676 MiB total, temperature: 32 C
+cuda:6 NVIDIA RTX A6000: 1804 MiB free out of 48676 MiB total, temperature: 66 C
+cuda:7 NVIDIA RTX A6000: 1804 MiB free out of 48676 MiB total, temperature: 58 C
+
