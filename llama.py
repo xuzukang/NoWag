@@ -14,7 +14,7 @@ import fine_tune as lora_fine_tune
 import src.finetune as finetune
 import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
-import src.utils.alignment.hessian_general_align as hessian_general_align
+import src.alignment.hessian_general_align as hessian_general_align
 try:
     import wandb
     has_wandb = True

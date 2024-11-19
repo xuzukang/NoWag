@@ -85,6 +85,7 @@ class ScalarQuantizer(quantizer_parent.QuantizerParent):
 
     @staticmethod
     def quantize(weight:torch.FloatTensor,
+                 hessian:torch.FloatTensor,
                  n_bits:int,
                  sparse_threshold:float = float('inf'),
                  norm_order:List[int] = [0,1],

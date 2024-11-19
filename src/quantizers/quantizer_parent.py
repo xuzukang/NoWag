@@ -18,6 +18,9 @@ class QuantizerParent(compress_parent.CompressorParent):
         self.reconstructed_shape = reconstructed_shape 
         self.register_buffer('reference_weight', reference_weight)
         self.n_out, self.n_in = self.reconstructed_shape
+        
+    
+    
 
     
     def forward(self):
@@ -29,7 +32,9 @@ class QuantizerParent(compress_parent.CompressorParent):
         return self()
     
     @staticmethod
-    def quantize(**kwargs):
+    def quantize(weight:torch.FloatTensor, 
+                 hessian:torch.FloatTensor,
+                **kwargs):
         raise NotImplementedError
     
     def get_n_bits(self):

@@ -52,7 +52,7 @@ def align(compression_module:compress_parent.CompressorParent,
         patience_scheduler (int, optional): the patience for the learning rate scheduler. Defaults to 2.
         eps (float, optional): the minimum improvement in the loss to consider it as an improvement. Defaults to 1e-5.
     Returns:
-        compress_parent.CompressorParent: _description_
+        compress_parent.CompressorParent: the aligned compression module
     """
     
     #initialize the optimizer

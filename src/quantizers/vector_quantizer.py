@@ -92,9 +92,11 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         if initialize_method == "grid":
             grid_points = []
             for i in range(d):
-                grid_points.append(torch.linspace(torch.min(weight_subvectors[:,i]), torch.max(weight_subvectors[:,i]), n_bits).cpu().tolist())
+                grid_points.append(torch.linspace(torch.min(weight_subvectors[:,i]), torch.max(weight_subvectors[:,i]), 2**n_bits).cpu().tolist())
             centriods = itertools.product(*grid_points)
+            print(len(grid_points))
             centriods = torch.tensor(list(centriods)).to(weight.device)
+            print(centriods.shape)
             assignments = quantizer_utils.cluster_e_step(
                 weight_subvectors, centriods, importances)
         
@@ -196,71 +198,75 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
     @staticmethod
     def quantize(weight:torch.FloatTensor,
                  hessian:torch.FloatTensor,
-                 mask_fn: Callable[[torch.FloatTensor,float], torch.BoolTensor],
+                 mask_fn: Callable[[torch.FloatTensor, torch.FloatTensor,float], torch.BoolTensor],
                 d:int = 4,
                 n_bits:int = 2, #number of bits per weight
                 frac_sparse:float = 0.005,
                 n_iter:int = 100,
                 initialize_method:Literal["grid","kmeans"] = "kmeans",
                 norm_order:list[int] = [0,1]):
+        with torch.no_grad():
+            weight_use = weight.clone()
+            mask = mask_fn(weight_use,
+                        hessian,
+                        frac_sparse) #some thing to note is that we can actually do structured sparsity here
+            weight_use[~mask] = 0
+            sparse_values = weight_use[~mask]
+            norm_0,norm_1,weight_use = quantizer_utils.normalize(weight_use,norm_order)
         
-        weight_use = weight.clone()
-        mask = mask_fn(weight_use)
-        weight_use[~mask] = 0
-        sparse_values = weight_use[~mask]
-        norm_0,norm_1,weight_use = quantizer_utils.normalize(weight_use,norm_order)
-    
-        denormalize_matrix = torch.ones_like(weight_use)
-        if norm_0 is not None:
-            denormalize_matrix = denormalize_matrix * norm_0.unsqueeze(0)
-        if norm_1 is not None:
-            denormalize_matrix = denormalize_matrix * norm_1.unsqueeze(1)
-        
-        denormalize_matrix[~mask] = 0
+            denormalize_matrix = torch.ones_like(weight_use)
+            if norm_0 is not None:
+                denormalize_matrix = denormalize_matrix * norm_0.unsqueeze(0)
+            if norm_1 is not None:
+                denormalize_matrix = denormalize_matrix * norm_1.unsqueeze(1)
             
+            denormalize_matrix[~mask] = 0
+                
+                
+            H_diag = torch.diag(hessian)
+            H_diag = H_diag.reshape(-1,d)
+            importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1, -1) * denormalize_matrix.reshape(denormalize_matrix.shape[0], -1, d) ** 0
+                                                    ).reshape(-1, d)
             
-        H_diag = torch.diag(hessian)
-        H_diag = H_diag.reshape(-1,d)
-        importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1, -1) * denormalize_matrix.reshape(denormalize_matrix.shape[0], -1, d) ** 0
-                                                ).reshape(-1, d)
-        
-        weight_subvectors = weight_use.reshape(-1,d)
-        n_subvectors = weight_subvectors.shape[0]
-        n_centriods = 2**(n_bits * d)
-        # print(n_centriods)
-        
-        if initialize_method == "grid":
-            grid_points = []
-            for i in range(d):
-                grid_points.append(torch.linspace(torch.min(weight_subvectors[:,i]), torch.max(weight_subvectors[:,i]), n_bits).cpu().tolist())
-            centriods = itertools.product(*grid_points)
-            centriods = torch.tensor(list(centriods)).to(weight.device)
-            assignments = quantizer_utils.cluster_e_step(
-                weight_subvectors, centriods, importances)
-        
-        elif initialize_method == "kmeans":
-
-            n_1 = torch.from_numpy(np.random.choice(n_subvectors, n_centriods, replace = False)).to(weight.device)
-            # print("n_1", n_1)
-            # print("max", torch.max(n_1), "min", torch.min(n_1))
-            # print(X.shape)
-            centriods = weight_subvectors[n_1, :]
+            weight_subvectors = weight_use.reshape(-1,d)
+            n_subvectors = weight_subvectors.shape[0]
+            n_centriods = 2**(n_bits * d)
+            # print(n_centriods)
             
-            for i in range(n_iter):
+            if initialize_method == "grid":
+                grid_points = []
+                for i in range(d):
+                    grid_points.append(torch.linspace(torch.min(weight_subvectors[:,i]), torch.max(weight_subvectors[:,i]), n_bits).cpu().tolist())
+                print(len(grid_points))
+                centriods = itertools.product(*grid_points)
+                centriods = torch.tensor(list(centriods)).to(weight.device)
+                print(centriods.shape)
                 assignments = quantizer_utils.cluster_e_step(
                     weight_subvectors, centriods, importances)
-                # print(assignments)
-                # print(assignments.shape)
-                centriods = quantizer_utils.cluster_m_step(weight_subvectors, assignments, n_centriods, importances)
-                if i > 0:
-                    if torch.all(assignments == assignments_old):
-                        # print("breaking at iteration", i)
-                        break
-                    # print("n_change:", torch.sum(assignments != assignments_old))
-                assignments_old = assignments.clone()
-        
-        else:
-            raise ValueError("initialize_method must be either 'grid' or 'kmeans'")
+            
+            elif initialize_method == "kmeans":
+
+                n_1 = torch.from_numpy(np.random.choice(n_subvectors, n_centriods, replace = False)).to(weight.device)
+                # print("n_1", n_1)
+                # print("max", torch.max(n_1), "min", torch.min(n_1))
+                # print(X.shape)
+                centriods = weight_subvectors[n_1, :]
+                
+                for i in range(n_iter):
+                    assignments = quantizer_utils.cluster_e_step(
+                        weight_subvectors, centriods, importances)
+                    # print(assignments)
+                    # print(assignments.shape)
+                    centriods = quantizer_utils.cluster_m_step(weight_subvectors, assignments, n_centriods, importances)
+                    if i > 0:
+                        if torch.all(assignments == assignments_old):
+                            # print("breaking at iteration", i)
+                            break
+                        # print("n_change:", torch.sum(assignments != assignments_old))
+                    assignments_old = assignments.clone()
+            
+            else:
+                raise ValueError("initialize_method must be either 'grid' or 'kmeans'")
             
         return VectorQuantizerSparseUnstructured(assignments, centriods, weight.shape, 
                                mask, sparse_values,
@@ -308,19 +314,19 @@ if __name__ == "__main__":
     torch.random.manual_seed(0)
     torch.cuda.random.manual_seed(0)
     
-    device = torch.device("cpu")
+    device = torch.device("cuda:7")
     data = torch.load("test/weights_hessian.pt")
     W = data["weights"].to(device)
     hessian = data["hessian"].to(device)
     print(W.shape)
     
 
-    vq = VectorQuantizer.quantize(W, torch.eye(W.shape[0]).to(W.device)
-                                  , d = 4, n_bits = 2, n_iter = 100, initialize_method = "kmeans")
+    vq = VectorQuantizer.quantize(W, hessian
+                                  , d = 4, n_bits = 2, n_iter = 100, initialize_method = "grid")
     print(vq.get_n_bits()/vq.get_n_original_parameters())
     vq.set_additional_attributes_as_trainable()
     # sys.path.append(os.getcwd())
-    import src.utils.alignment.hessian_general_align as hessian_general_align
+    import src.alignment.hessian_general_align as hessian_general_align
     
     hessian_use = hessian/hessian.shape[0]
     # hessian_use = torch.eye(W.shape[0]).to(W.device)
@@ -333,7 +339,7 @@ if __name__ == "__main__":
                           patience = 100,
                           patience_scheduler= 1,
                           eps = 1e-4,
-                          lr = 1e-3,
+                          lr = 1e-1,
                           low_bound = 1e-6,
                           clip_grad = 1e-1,
                           discrete_update_every = 1,

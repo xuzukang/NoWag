@@ -6,305 +6,316 @@ import math
 import src.quantizer as quantizer
 import numpy as np
 import os
-import src.utils.alignment.low_rank_align as low_rank_align
+from typing import Tuple, Optional, Union, List
+from src.quantizers.quantizer_parent import QuantizerParent
+import src.utils.compress_parent as compress_parent
+import src.alignment.hessian_general_align as hessian_general_align
 
-
-def create_mask_helper(data:list,frac_top,d  =1):
+class LinearQuantized(compress_parent.CompressorParent):
+    """A class to pass a linear layer in and get a quantized version of it
+        Also servers as our parent class for the quantized linear layers 
     """
-    data: list of torch.tensor of shape (n)
-    percent_top: float, the percentage of the top values to keep
-    """
-    mask = torch.ones(data[0].shape, dtype = torch.bool, device = data[0].device)
+    def __init__(self, weight:torch.FloatTensor,
+                 bias:Optional[torch.FloatTensor] = None,
+                 add_bias:bool = False):
+        """quantized linear layer
 
-    datas_sorted = [torch.sort(data[i], descending = True)[0] for i in range(len(data))]
-    i = 0
-    big_i = 0
-    # print(mask.sum(), (100-percent_top)/100 * mask.numel())
-    # raise ValueError("The mask is not sparse enough")
-    while (mask.sum() > (1-frac_top) * mask.numel()) or (mask.sum()%d != 0):
-        # print(mask.sum())
-        mask &= data[i%len(data)] < datas_sorted[i][big_i]
-        i += 1
-        i = i % len(data)
-        if i == 0:
-            big_i += 1
-        # if i==0:
-        #     raise ValueError("The mask is not sparse enough")
-    # threshold = torch.quantile(data, 1-percent_top/100)
-    return mask
+        Args:
+            weight (torch.FloatTensor): the original weight matrix of shape (out_features, in_features)
+            bias (Optional[torch.FloatTensor], optional): the original bias vector of shape (out_features) or None.
+            add_bias (bool, optional): should we add a bias to the layer or not. Defaults to False.
+        """
+        
+        super(LinearQuantized, self).__init__()
+        self.out_features, self.in_features = weight.shape
+        self.original_weight = weight.clone()
+        self.original_parameters = self.in_features * self.out_features
 
+        if bias is not None:
+            self.bias = nn.Parameter(bias.clone(), requires_grad = True)
+            self.original_parameters += self.out_features
 
-def create_mask(weights:torch.Tensor,
-                H:torch.Tensor,
-                sparse_frac:float = 0,
-                sparse_criterion:list[str] = ["weight","hessian"],
-                dim:int = 0,
-                d:int = 1):
-    
-    tmp = []
-
-    for criterion in sparse_criterion:
-        if criterion == "weight":
-            tmp.append(torch.norm(weights, dim = dim))
-        elif criterion == "hessian":
-            if H is None:
-                print("Hessian is None, skipping")
-                continue
-            tmp.append(torch.norm(H, dim = dim))
         else:
-            raise ValueError(f"Criterion {criterion} not recognized")
-    assert len(tmp) > 0, "tmp is empty"
-    print(tmp)
-    print("sparse_frac = ", sparse_frac)
-    mask = create_mask_helper(tmp, sparse_frac, d)
-    return mask
+            if add_bias:
+                self.original_bias = nn.Parameter(torch.zeros(self.out_features), requires_grad = True)
+            else:
+                self.original_bias = None
 
-def construct_weights(module,weights,mask, row_norms, column_norms,
-                      module_kwargs = {}):
-
-    weights_reconstructed = torch.zeros_like(weights)
-    weights_reconstructed[mask] = (module(**module_kwargs) * row_norms.unsqueeze(0) * column_norms.unsqueeze(1)
-                                   ).flatten()
-    weights_reconstructed[~mask] = weights[~mask]
-    return weights_reconstructed
-
-
-def reconstruct_fn(A:torch.Tensor,
-                            B:torch.Tensor,
-                            sparse_1:torch.Tensor,
-                            sparse_2:torch.Tensor,
-                            weights_norms_rowwise:torch.Tensor,
-                            row_mask:torch.Tensor,
-                            column_mask:torch.Tensor,
-                            n_in:int,
-                            n_out:int):
-    weights_reconstructed = torch.zeros((n_out, n_in), device = A.device, dtype = A.dtype)
-    # print(torch.sum(row_mask), torch.sum(column_mask))
-    # print((A @ B) * weights_norms_rowwise.unsqueeze(0))
-    weights_reconstructed[row_mask.unsqueeze(1)*column_mask.unsqueeze(0)] = ((A @ B) * weights_norms_rowwise.unsqueeze(0)).flatten()
-    # print("reconstructed weights = ", weights_reconstructed)
-    weights_reconstructed[row_mask.unsqueeze(1) * (~column_mask).unsqueeze(0)] = sparse_1.flatten() 
-    weights_reconstructed[~row_mask] = sparse_2
-    # print("reconstructed weights = ", weights_reconstructed)
-    return weights_reconstructed
-        
-        
-
-class compressLinear(nn.Module):
-    
-    def __init__(self, W:torch.Tensor):
-        super().__init__()
-        
-        #assert that W is a square matrix 
-        # assert W.shape[0] == W.shape[1]
-        self.W = W.clone().requires_grad_(False)
-        self.n_original_params = W.numel()
-        self.n_out, self.n_in = W.shape
-        
-        self.low_ranked = False
         self.quantized = False
-        self.add_batch_ = False
-        self.use_precomputed = False
-        
-    def forward(self, x:torch.Tensor):
-        if self.low_ranked:
-            return self.A(self.B(x))
-        elif self.quantized:
-            self.compute_quantized()
-            return F.linear(x, self.W)
-        else:
-            self.add_batch(x)
-            return F.linear(x, self.W)
-        
-    def disable_grad(self):
-        for param in self.parameters():
-            param.requires_grad = False
-        
-        if self.quantized:
-            if not self.low_rank:
-                self.use_precomputed = True
-                self.register_buffer("precomputed", self.W())
-        
+        self.quantizer:QuantizerParent = None
+        self.log_hessian = False
 
-    def enable_grad(self):
-        for param in self.parameters():
-            param.requires_grad = True
-        
-        if self.quantized and not self.low_rank:
-            self.use_precomputed = False
-            del self.precomputed  
+    def enable_hessian_logging(self):
+        """enable hessian logging
+        """
+        self.log_hessian = True
+        self.hessian = torch.zeros(self.original_parameters, self.original_parameters, device=self.original_weight.device,
+                                dtype = torch.float32)
+        self.n_samples = 0
 
-    def compute_quantized(self):
-        if not self.quantized:
-            raise ValueError("The weights are not quantized")
-        if self.use_precomputed:
-            return self.precomputed
-        else:
-            return self.W()
-        
-    def add_batch(self, inp:torch.Tensor):
-        if not self.add_batch_:
-            return
-        if len(inp.shape) == 2:
-            inp = inp.unsqueeze(0)
-        tmp = inp.shape[0]
- 
-        if len(inp.shape) == 3:
-            inp = inp.reshape((-1, inp.shape[-1]))
+    def dump_hessian(self)->torch.FloatTensor:
+        """gives the hessian calculated and stops logging the inputs for the hessian
 
-        inp = inp.t()
-
-        if not hasattr(self, 'H_in'):
-            in_features = inp.shape[0]
-            self.H = torch.zeros((in_features, in_features), device = inp.device,
-                                    dtype = torch.float32)
-            self.nsamples = 0
-
-
-        self.H *= self.nsamples / (self.nsamples + tmp)
-        self.nsamples += tmp
-        inp = math.sqrt(2 / self.nsamples) * inp.to(torch.float32)
-        self.H += torch.clip(inp.matmul(inp.t())/self.H.shape[0], -1e5, 1e5)
-        
-            
+        Returns:
+            torch.FloatTensor: the hessian
+        """
+        hessian = self.hessian
+        self.log_hessian = False
+        del self.hessian
+        del self.n_samples
+        return hessian
     
-    def low_rank(self, 
-                low_rank:int = 196,
-                regulatization_lambda:float = 1e-3,
-                damping:float = 1e-3,
-                align_epochs:int = 100,
-                lr:float = 1e-3,
-                lr_multiplier:float = 1,
-                d:int = 1):
-        
-        low_rank_use = int(np.ceil(low_rank/d)*d)
-        print("using low rank = ", low_rank_use)
-        
-        original_dtype = self.W.dtype
-        W = self.W.clone().to(torch.float32)
-        if hasattr(self, 'H'):
-            H = self.H.clone().to(torch.float32)
-        else:
-            raise ValueError("The Hessian is not available")
+    def log_to_hessian_(self, x:torch.FloatTensor):
+        """log to the hessian
+
+        Args:
+            x (torch.FloatTensor): x is of shape (..., in_features)
+        """
+        x_flattened = x.reshape(-1, self.in_features)
+        n_new_samples = x_flattened.shape[0]
+        #multiply the hessian by:
+        self.hessian *= self.n_samples/(self.n_samples + n_new_samples)
+        #outer product of the flattened x
+        #first scale x_flattened
+        self.n_samples += n_new_samples
+        x_flattened = x_flattened * math.sqrt(2/(self.n_samples * self.in_features))
+        self.hessian += x_flattened.T @ x_flattened
+
+    def forward(self, x:torch.FloatTensor):
+        """forward pass of the linear layer"""
+        if self.log_hessian:
+            self.log_to_hessian_(x)
+        return F.linear(x, self.reconstruct(), self.original_bias)
 
         
-        U, S, V = torch.svd(W)
-        # print("S.shape = ", S.shape, "U.shape = ", U.shape, "V.shape = ", V.shape)
-        # print("low_rank = ", low_rank)
-        A = (U[:, :low_rank_use] @ torch.sqrt(torch.diag(S[:low_rank_use])))
-        B = (torch.sqrt(torch.diag(S[:low_rank_use])) @ V[:, :low_rank_use].T)
-
-        # @torch.enable_grad()
-        
-        #if the alignment epochs is greater than 0, align the low rank
-        if align_epochs > 0:
-            ids = torch.arange(W.shape[0], device = W.device)
-            #first ensure that the diagonal of the hessian is positive
-            H[ids, ids] = torch.clip(torch.diag(H), 1e-5)
-            H[ids, ids] += damping * torch.mean(torch.diag(H))
-            
-            A, B = low_rank_align.align_simple(W,A,B,lr,H,
-                                               regularization_lambda=regulatization_lambda,
-                                               epochs = align_epochs,
-                                                lr_multiplier=lr_multiplier, 
-                                                verbose = align_epochs//10)
-            
-            
-
-        # self.A = nn.Parameter(A.to(original_dtype))
-        # self.B = nn.Parameter(B.to(original_dtype))
-
-        self.A = compressLinear(A.to(original_dtype))
-        self.B = compressLinear(B.to(original_dtype))
-        # self.A.turn_on_batch_add()
-        # self.B.turn_on_batch_add()
-
-        del self.W
-        del W
-        del H
-        if hasattr(self, 'H'):
-
-            del self.H
-        
-        self.low_ranked = True
-        self.add_batch_ = False
-            
-    def quantize(self, **kwargs):
-
-        if self.low_ranked:
-            kwargs_use_A = kwargs.copy()
-            kwargs_use_A["debug_path"] = kwargs["debug_path"] + "_A"
-            self.A.quantize(**kwargs_use_A)
-            kwargs_use_B = kwargs.copy()
-            kwargs_use_B["debug_path"] = kwargs["debug_path"] + "_B"
-            self.B.quantize(**kwargs_use_B)
-
-        else:
-            W = self.W.clone()
-            H = self.H.clone()
-            if kwargs["debug"]:
-                os.makedirs(os.path.dirname(kwargs["debug_path"]), exist_ok = True)
-                torch.save({"W":W, "H":H}, kwargs["debug_path"] + ".pth")            
-            del self.W
-            self.W = quantizer.Quantize.quantize(W, H, **kwargs)
-
-            del W
-            del H
-            self.quantized = True
-            self.add_batch_ = False
-
-            del self.H
-
-    
+    def quantize(self, quantizer_class:QuantizerParent, **kwargs):
+        """quantize the weights"""
+        self.quantizer = quantizer_class.quantize(self.original_weight, self.hessian, **kwargs)
         self.quantized = True
-            
-        self.add_batch_ = False
-        
-    def turn_on_batch_add(self):
-        self.add_batch_ = True
-        
-    def turn_off_batch_add(self):
-        self.add_batch_ = False
-        
 
-    def clear_batches(self):
-        if hasattr(self, 'H'):
-
-            del self.H
-            del self.nsamples
-            
-    def __str__(self):  
-        if self.low_ranked:
-            return f"Low Rank Compressed Linear Layer with \n{self.A} and \n{self.B}"
-        elif self.quantized:
-            return f"Quantized Linear Layer with {self.n_in} inputs and {self.n_out} outputs"
+    def reconstruct(self)->torch.FloatTensor:
+        """reconstructs the weigth matrix from the quantized version"""
+        if self.quantized:
+            return self.quantizer()
         else:
-            return f"Linear Layer with {self.n_in} inputs and {self.n_out} outputs"
+            return self.original_weight
         
+    def align(self, 
+              val_hessian:Optional[torch.FloatTensor] = None,
+              lr:float = 1e-3,
+          lr_multiplier:float = 1, #decay the lr by this factor every time the val loss increases
+          n_iters:int = 100,
+          val_every:int = 1,
+          discrete_update_every:int = 1,
+          clip_grad:float = -1,
+          verbose:Union[bool, int] = 10,
+          low_bound:float = 1e-5,
+          patience:int = 10,
+          patience_scheduler:int = 2,
+          eps:float = 1e-5
+    ):
+        """aligns the compression module to the hessian of the training dataset
+
+        Args:
+            val_hessian (Optional[torch.FloatTensor], optional): the hessian of the validation dataset, if None, we don't use it. Defaults to None.
+            lr (float, optional): the learning rate for the optimizer. Defaults to 1e-3.
+            lr_multiplier (float, optional): multiply the learning rate by this factor every time the validation loss increases. Defaults to 1.
+            val_every (int, optional): validate the model every this number of iterations on the validation hessian. Defaults to 1.
+            discrete_update_every (int, optional): update the discrete variables every this number of iteration. Defaults to 1.
+            clip_grad (float, optional): clip the gradient norm to this value. Defaults to -1 in which case we don't clip the gradient.
+            verbose (bool, optional): print every this number of iterations. If False, we don't print anything. If True, we print at the end only. Defaults to False.
+            low_bound (float, optional): the lower bound for the error, below which we stop training. Defaults to 1e-5.
+            patience (int, optional): the patience for the early stop, if the loss has not improved by eps for this number of iterations, we stop training. Defaults to 10.
+            patience_scheduler (int, optional): the patience for the learning rate scheduler. Defaults to 2.
+            eps (float, optional): the minimum improvement in the loss to consider it as an improvement. Defaults to 1e-5.
+
+        """
+
+        hessian_general_align.align(compression_module = self,
+                                    original_weights = self.original_weight,
+                                    train_hessian = self.hessian,
+                                    val_hessian = val_hessian,
+                                    lr = lr,
+                                    lr_multiplier = lr_multiplier,
+                                    n_iters = n_iters,
+                                    val_every = val_every,
+                                    discrete_update_every = discrete_update_every,
+                                    clip_grad = clip_grad,
+                                    verbose = verbose,
+                                    low_bound = low_bound,
+                                    patience = patience,
+                                    patience_scheduler = patience_scheduler,
+                                    eps = eps)
+        
+    def update_discrete(self):
+        """updates the discrete values of the quantizer"""
+        # def recursive_discrete_update(module):
+        #     for children in module.children():
+        #         if hasattr(children, 'update_discrete'):
+        #             if isinstance(getattr(children, 'update_discrete'),callable):
+        #                 children.update_discrete()
+        #         else:
+        #             recursive_discrete_update(children) 
+                
+        # recursive_discrete_update(self)
+        if self.quantized:
+            self.quantizer.update_discrete()
+
+    def clean(self):
+        if self.quantized:
+            self.quantizer.clean()
+        if self.log_hessian:
+            del self.hessian
+            del self.n_samples
+            self.log_hessian = False
+
+    def get_n_bits(self):
+        if self.quantized:
+            return self.quantizer.get_n_bits()
+        else:
+            return self.original_parameters * 16
+    
+    def get_n_original_parameters(self):
+        return self.original_parameters
+    
+    
 
 
+
+class LowRankSparse(LinearQuantized):
+    def __init__(self, weight:torch.FloatTensor,
+                 bias:Optional[torch.FloatTensor] = None,
+                 add_bias:bool = False):
+        """A low rank sparse linear layer
+
+        Args:
+            weight (torch.FloatTensor): the original weight matrix of shape (out_features, in_features)
+            bias (Optional[torch.FloatTensor], optional): the original bias vector of shape (out_features) or None.
+            add_bias (bool, optional): should we add a bias to the layer or not. Defaults to False.
+        """
+        super(LowRankSparse, self).__init__(weight, bias, add_bias)
+        self.low_ranked = False
+        self.debug = False
+        
+    def low_rank(self, rank:int, sparse_frac:float):
+        """low rank the weight matrix
+
+        Args:
+            rank (int): the rank of the low rank approximation
+            sparse_frac (float): the fraction of the weight matrix to be sparse
+        """
+        self.rank = rank
+        self.sparse_frac = sparse_frac
+        self.low_ranked = True
+        
+        norm_0 = torch.norm(self.original_weight, p=2, dim=0)
+        norm_1 = torch.norm(self.original_weight, p=2, dim=1)
+        
+        threshold = torch.kthvalue(torch.cat([norm_0, norm_1]), int(self.sparse_frac * (self.in_features + self.out_features))).values
+        
+        mask_0 = norm_0 < threshold
+        mask_1 = norm_1 < threshold
+        self.n_non_sparse_0 = mask_0.sum().item()
+        self.n_non_sparse_1 = mask_1.sum().item()
+        
+        # self.register_buffer("mask", mask_0.unsqueeze(0) & mask_1.unsqueeze(1))
+        self.register_buffer("mask_0", mask_0)
+        self.register_buffer("mask_1", mask_1)
+        
+        self.sparse_values_1 = nn.Parameter(self.original_weight[~mask_1], requires_grad = True) #shape of (n_non_sparse_1, in_features)
+        self.sparse_values_0 = nn.Parameter(
+                                            (self.original_weight[mask_1.unsqueeze(1) & ~mask_0.unsqueeze(0)]
+                                                    ).reshape(self.n_non_sparse_0,
+                                                              self.in_features - self.n_non_sparse_1))
+                                #shape of (n_non_sparse_0, in_features - n_non_sparse_0)
+        
+        
+        non_sparse_weight = self.original_weight[mask_1][:, mask_0]
+        
+        u,s,v = torch.svd(non_sparse_weight)
+        
+        A = u[:,:rank] @ torch.sqrt(torch.diag(s[:rank]))
+        B = (v[:,:rank] @ torch.sqrt(torch.diag(s[:rank])))
+        
+        self.A = LinearQuantized(A,None, False)
+        self.B = LinearQuantized(B,None, False)
+        
+    def reconstruct(self):
+        
+        if self.low_ranked:
+            
+            non_sparse_weight = self.A.reconstruct() @ self.B.reconstruct().T
+            mask = self.mask_0.unsqueeze(0) & self.mask_1.unsqueeze(1)
+            return_weight = torch.empty(self.out_features, self.in_features, 
+                                        device = non_sparse_weight.device, dtype = non_sparse_weight.dtype)
+            return_weight[~mask] = self.sparse_weights
+            return_weight[mask] = non_sparse_weight.flatten()
+            return return_weight
+        else:
+            return self.original_weight
+        
+    def quantize(self, quantizer_class, **kwargs):
+        """quantize the weights"""
+        if self.low_ranked:
+            self.A.quantize(quantizer_class, **kwargs)
+            self.B.quantize(quantizer_class, **kwargs)
+        else:
+            raise ValueError("The module is not low ranked")
+        
+    def update_discrete(self):
+        if self.low_ranked:
+            self.A.update_discrete()
+            self.B.update_discrete()
+            
+    def forward(self, x:torch.FloatTensor):
+        if self.low_ranked:
+            x = x.reshape(-1, self.in_features)
+            y = torch.zeros(x.shape[0], self.out_features, device = x.device, dtype = x.dtype)
+            y[:,~self.mask_1] += F.linear(x, self.sparse_values_1)
+            y[:,self.mask_1] += self.B(self.A(x[:,self.mask_0])) + F.linear(x[:,~self.mask_0], self.sparse_values_0)
+            
+        else:
+            return super(LowRankSparse, self).forward(x)    
+        
+    
+    def enable_hessian_logging(self):
+        """enable hessian logging
+        """
+        self.log_hessian = True
+        self.hessian = torch.zeros(self.original_parameters, self.original_parameters, device=self.original_weight.device,
+                                dtype = torch.float32)
+        self.n_samples = 0
+        if self.low_ranked:
+            self.A.enable_hessian_logging()
+            self.B.enable_hessian_logging()
+
+    def dump_hessian(self)->List[torch.FloatTensor]:
+        """gives the hessian calculated and stops logging the inputs for the hessian
+
+        Returns:
+            torch.FloatTensor: the hessian
+        """
+        hessians = [self.hessian]
+        self.log_hessian = False
+        del self.hessian
+        del self.n_samples
+        if self.low_ranked:
+            hessians.append(self.A.dump_hessian())
+            hessians.append(self.B.dump_hessian())
+        return hessians
+    
+    def clean(self):
+        if self.low_ranked:
+            self.A.clean()
+            self.B.clean()
+        super(LowRankSparse, self).clean()
         
     def get_n_bits(self):
-        
-        # sum_bits = 8*(torch.sum(self.row_mask)+torch.sum(self.column_mask)) + 16 * self.weights_norms_rowwise.numel() + 16 * self.sparse_weights1.numel() + 16 * self.sparse_weights2.numel()
-        # print("A size: ", self.A.shape, "B size: ", self.B.shape)
-        # print("row mask size: ", self.row_mask.shape, "column mask size: ", self.column_mask.shape)
-        # print("weights_norms_rowwise size: ", self.weights_norms_rowwise.shape)
-        # print("sparse_weights1 size: ", self.sparse_weights1.shape, "sparse_weights2 size: ", self.sparse_weights2.shape)
-        # print("="*10)
-
-
-        if self.low_ranked:
-            A_bits, *_ = self.A.get_n_bits()
-            B_bits, *_ = self.B.get_n_bits()
-            sum_bits = A_bits + B_bits
-
-        elif self.quantized:
-            sum_bits = self.W.get_n_bits()
-        
-        else:
-            sum_bits = 16 * self.W.numel()
-        
-        return sum_bits, self.n_original_params
-        
+        return self.A.get_n_bits() + self.B.get_n_bits() + self.sparse_weights.numel() * 16 + 16 * (self.out_features + self.in_features - self.n_non_sparse_0 - self.n_non_sparse_1)
     
+    
+
+        
+
+
+
