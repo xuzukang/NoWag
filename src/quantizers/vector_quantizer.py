@@ -55,10 +55,41 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             
         return reconstructed_weight
     
-    def update_discrete(self):
+    @torch.no_grad()
+    def ema_update_importances(self, new_importances:torch.FloatTensor,
+                                 decay:float = 0.99):
+        """update the importances using exponential moving average
         
-        self.codes = quantizer_utils.cluster_e_step(
-                self.reference_weight, self.codebook, self.reference_importances)
+        reference_importances = decay * reference_importances + (1-decay) * new_importances
+
+        Args:
+            new_importances (torch.FloatTensor): the new importances, of shape (n_values/d, d)
+            decay (float, optional): _description_. Defaults to 0.99.
+        """
+        self.reference_importances = decay * self.reference_importances + (1-decay) * new_importances
+    
+    def get_importances(self):
+        return self.reference_importances
+    
+    def update_discrete(self):
+        with torch.no_grad():
+            reference_importances = self.reference_importances
+            # if self.norms_1 is not None or self.norms_0 is not None:
+            #     denormalize_matrix = torch.ones(self.reconstructed_shape, device = self.codebook.device, dtype = self.codebook.dtype)
+            #     if self.norms_1 is not None:
+            #         denormalize_matrix = denormalize_matrix * self.norms_1.unsqueeze(1)
+            #     if self.norms_0 is not None:
+            #         denormalize_matrix = denormalize_matrix * self.norms_0.unsqueeze(0)
+
+            #     reference_importances = reference_importances * denormalize_matrix.reshape(reference_importances.shape)**2
+            
+                
+            
+
+            self.codes = quantizer_utils.cluster_e_step(
+                    self.reference_weight, self.codebook, reference_importances)
+
+    # def get_reference_importances
     
     @staticmethod
     def quantize(weight:torch.FloatTensor,
@@ -81,9 +112,11 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             
             
         H_diag = torch.diag(hessian)
-        H_diag = H_diag.reshape(-1,d)
-        importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1, -1) * denormalize_matrix.reshape(denormalize_matrix.shape[0], -1, d) ** 0
+        # H_diag = H_diag.reshape(-1,d)
+        importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1)
                                                 ).reshape(-1, d)
+        importances_use = importances #* denormalize_matrix.reshape(importances.shape)**2
+
         
         weight_subvectors = weight_use.reshape(-1,d)
         n_subvectors = weight_subvectors.shape[0]
@@ -99,7 +132,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             centriods = torch.tensor(list(centriods)).to(weight.device)
             print(centriods.shape)
             assignments = quantizer_utils.cluster_e_step(
-                weight_subvectors, centriods, importances)
+                weight_subvectors, centriods, importances_use)
         
         elif initialize_method == "kmeans":
 
@@ -111,10 +144,10 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             
             for i in range(n_iter):
                 assignments = quantizer_utils.cluster_e_step(
-                    weight_subvectors, centriods, importances)
+                    weight_subvectors, centriods, importances_use)
                 # print(assignments)
                 # print(assignments.shape)
-                centriods = quantizer_utils.cluster_m_step(weight_subvectors, assignments, n_centriods, importances)
+                centriods = quantizer_utils.cluster_m_step(weight_subvectors, assignments, n_centriods, importances_use)
                 if i > 0:
                     if torch.all(assignments == assignments_old):
                         # print("breaking at iteration", i)
@@ -195,6 +228,9 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
         reconstructed_weight[~self.mask] = self.sparse_values
         return reconstructed_weight
     
+    def ema_update_importances(self, new_importances, decay = 0.99):
+        new_importances = new_importances * self.mask.reshape(new_importances.shape)
+        super().ema_update_importances(new_importances, decay)
         
     @staticmethod
     def quantize(weight:torch.FloatTensor,
@@ -226,8 +262,9 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
                 
             H_diag = torch.diag(hessian)
             H_diag = H_diag.reshape(-1,d)
-            importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1, -1) * denormalize_matrix.reshape(denormalize_matrix.shape[0], -1, d) ** 0
+            importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1, -1)
                                                     ).reshape(-1, d)
+            importances[~mask.reshape(-1,d)] = 0
             
             weight_subvectors = weight_use.reshape(-1,d)
             n_subvectors = weight_subvectors.shape[0]
@@ -315,12 +352,11 @@ if __name__ == "__main__":
     torch.random.manual_seed(0)
     torch.cuda.random.manual_seed(0)
     
-    device = torch.device("cuda:7")
+    device = torch.device("cuda:1")
     data = torch.load("test/weights_hessian.pt")
     W = data["weights"].to(device)
     hessian = data["hessian"].to(device)
     print(W.shape)
-    
 
     vq = VectorQuantizer.quantize(W, hessian
                                   , d = 4, n_bits = 2, n_iter = 100, initialize_method = "kmeans")
@@ -349,7 +385,7 @@ if __name__ == "__main__":
                           clip_grad = 1e-1,
                           discrete_update_every = 1,
                           lr_multiplier=0.9,
-                          verbose = 100)
+                          verbose = 10)
     print("norm_0", vq.norms_0)
     print("norm_1", vq.norms_1)
     print(vq().dtype)

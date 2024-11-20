@@ -171,6 +171,9 @@ def cross_entropy_loss(logits, target_logits):
     target_probs = F.softmax(target_logits, -1)
     return -torch.sum(target_probs * F.log_softmax(logits, -1), -1).mean()
 
+
+
+
 @torch.enable_grad()
 def finetune_end_to_end(model: modeling_llama.LlamaModel,
                         teacher: modeling_llama.LlamaModel,

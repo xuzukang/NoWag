@@ -33,7 +33,7 @@ def buffer_to_param(module:nn.Module, buffer_name:str):
 def update_discrete(module:nn.Module):
     for name, child in module.named_children():
         if hasattr(child, "update_discrete"):
-            if isinstance(getattr(child, "update_discrete"), callable):
+            if callable(getattr(child, "update_discrete")):
                 child.update_discrete()
         #otherwise look for its children
         update_discrete(child)

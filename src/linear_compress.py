@@ -9,6 +9,7 @@ from typing import Tuple, Optional, Union, List
 from src.quantizers.quantizer_parent import QuantizerParent
 import src.utils.compress_parent as compress_parent
 import src.alignment.hessian_general_align as hessian_general_align
+import src.quantizers.vector_quantizer as vector_quantizer
 
 class LinearQuantized(compress_parent.CompressorParent):
     """A class to pass a linear layer in and get a quantized version of it
@@ -42,12 +43,13 @@ class LinearQuantized(compress_parent.CompressorParent):
 
         self.quantized = False
         self.quantizer:QuantizerParent = None
-        self.log_hessian = False
+        self.log_hessian_flag = False
+        self.update_importance_flag = False
 
     def enable_hessian_logging(self):
         """enable hessian logging
         """
-        self.log_hessian = True
+        self.log_hessian_flag = True
         self.hessian = torch.zeros(self.in_features, self.in_features, device=self.original_weight.device,
                                 dtype = torch.float32)
         self.n_samples = 0
@@ -58,8 +60,8 @@ class LinearQuantized(compress_parent.CompressorParent):
         Returns:
             torch.FloatTensor: the hessian
         """
-        hessian = self.hessian
-        self.log_hessian = False
+        hessian = self.hessian.clone()
+        self.log_hessian_flag = False
         del self.hessian
         del self.n_samples
         return [hessian] #returning a list for consistency with the low rank sparse
@@ -71,19 +73,46 @@ class LinearQuantized(compress_parent.CompressorParent):
             x (torch.FloatTensor): x is of shape (..., in_features)
         """
         x_flattened = x.reshape(-1, self.in_features).to(torch.float32)
-        n_new_samples = x_flattened.shape[0]
+        n_new_samples = 1
         # print(n_new_samples)
         #multiply the hessian by:
+        # print(self.n_samples)
         self.hessian *= self.n_samples/(self.n_samples + n_new_samples)
         #outer product of the flattened x
         #first scale x_flattened
         self.n_samples += n_new_samples
         x_flattened = x_flattened * math.sqrt(2/(self.n_samples * self.in_features))
-        self.hessian += x_flattened.T @ x_flattened
+        self.hessian += (x_flattened.T @ x_flattened)
+        
+    def enable_importance_updates(self):
+        """enable the updates of the importances for the quantizer"""
+        #check that the quantizer has importances
+        if hasattr(self.quantizer, 'update_importances'):
+            self.update_importance_flag = True
+        else:
+            print("The quantizer does not have the method update_importances so ignoring the request")
+        
+    def update_importances(self, x:torch.FloatTensor, decay:float = 0.99):
+        """Exponential moving update of the importances,
+        the importances are just the norms of x along the all but the last dimension
+
+        Args:
+            x (torch.FloatTensor): the input to the layer of shape (..., in_features)
+            decay (float, optional): the decay factor for the exponential moving average. Defaults to 0.99.
+        """
+        self.quantizer:vector_quantizer.VectorQuantizer
+        x_reduced = x.reshape(-1, self.in_features)
+        
+        importances_non_expanded = torch.norm(x_reduced, p=2, dim=1)**2 * 2/self.in_features
+        #shape of n_inputs
+        self.quantizer.ema_update_importances(importances_non_expanded.unsqueeze(0).expand(self.out_features,
+                                                                                           -1
+                ).reshape(-1), decay)
+        
 
     def forward(self, x:torch.FloatTensor):
         """forward pass of the linear layer"""
-        if self.log_hessian:
+        if self.log_hessian_flag:
             self.log_to_hessian_(x)
         W = self.reconstruct()
         return F.linear(x, W, self.original_bias)
@@ -165,10 +194,10 @@ class LinearQuantized(compress_parent.CompressorParent):
     def clean(self):
         if self.quantized:
             self.quantizer.clean()
-        if self.log_hessian:
+        if self.log_hessian_flag:
             del self.hessian
             del self.n_samples
-            self.log_hessian = False
+            self.log_hessian_flag = False
 
     def get_n_bits(self):
         if self.quantized:
@@ -182,13 +211,13 @@ class LinearQuantized(compress_parent.CompressorParent):
     def set_additional_attributes_as_trainable(self):   
         for children in self.children():
             if hasattr(children, 'set_additional_attributes_as_trainable'):
-                if isinstance(getattr(children, 'set_additional_attributes_as_trainable'),callable):
-                    children.set_additional_attributes_as_trainable()'
+                if callable(getattr(children, 'set_additional_attributes_as_trainable')):
+                    children.set_additional_attributes_as_trainable()
 
     def set_additional_attributes_as_non_trainable(self):
         for children in self.children():
             if hasattr(children, 'set_additional_attributes_as_non_trainable'):
-                if isinstance(getattr(children, 'set_additional_attributes_as_non_trainable'),callable):
+                if callable(getattr(children, 'set_additional_attributes_as_non_trainable')):
                     children.set_additional_attributes_as_non_trainable()
         
     def get_additional_attributes(self):
@@ -309,7 +338,7 @@ class LowRankSparse(LinearQuantized):
             self.A.enable_hessian_logging()
             self.B.enable_hessian_logging()
         else:
-            self.log_hessian = True
+            self.log_hessian_flag = True
             self.hessian = torch.zeros(self.in_features, self.in_features, device=self.original_weight.device,
                                     dtype = torch.float32)
             self.n_samples = 0
@@ -326,7 +355,7 @@ class LowRankSparse(LinearQuantized):
             hessians.append(self.A.dump_hessian())
             hessians.append(self.B.dump_hessian())
         else:
-            self.log_hessian = False
+            self.log_hessian_flag = False
             del self.hessian
             del self.n_samples
         return hessians

@@ -282,7 +282,7 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
             train_hessians = {}
             for name in names:
                 train_hessians[name] = getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).dump_hessian()[0]
-                
+            # raise Exception("stop")
             if args.nsamples_val > 0:
                 print("val")
                 #turn back on the hessian logging
@@ -297,13 +297,15 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
                 for name in names:
                     val_hessians[name] = getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).dump_hessian()[0]
                     
-            #put the train hessians back in
+            # put the train hessians back in
             for name in names:
                 getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).hessian = train_hessians[name]
             
             #quantize
             for name in names:
-                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).quantize(
+                print(f"layer{i}: {name}")
+                new_layer = getattr(getattr(layer, name.split(".")[0]), name.split(".")[1])
+                new_layer.quantize(
                     vector_quantizer.VectorQuantizer,
                     d = args.subvector_dim,
                     n_bits = args.n_bits_per_value,
@@ -311,9 +313,11 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
                     initialize_method = args.initialize_method,
                     norm_order = args.norm_order,
                 )
+                new_layer.set_additional_attributes_as_trainable()
+                new_layer.to(torch.float32)
                 #align
                 # print("val_hessians", val_hessians) 
-                getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).align(
+                new_layer.align(
                     val_hessian = val_hessians[name] if args.nsamples_val > 0 else None,
                     lr = args.lr,
                     lr_multiplier = args.lr_multiple,
@@ -325,15 +329,18 @@ def llama_sequential(model, dataloader, dataloader_val, dev):
                     verbose = args.n_iters//10,
                     patience= 10**6,
                 )
-                    
+                del new_layer.hessian
+                total_bits += new_layer.get_n_bits()
+                total_params += new_layer.get_n_original_parameters()
+                # raise Exception("stop")
             if args.fine_tune_quip_like and l != len(sequential) - 1:
                 raise Exception("Not supported anymore")
                 
         if args.fine_tune or args.fine_tune_quip_like:
             #set everything to trainable
-            for sublists in sequential:
-                for name in sublists:
-                    getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).enable_grad()
+            # for sublists in sequential:
+            #     for name in sublists:
+            #         getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).enable_grad()
             print("Fine tuning ...")
             #switch to float16
             layer = finetune_fn(

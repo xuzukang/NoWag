@@ -56,12 +56,13 @@ def align(compression_module:compress_parent.CompressorParent,
     """
     
     #initialize the optimizer
+    # for name, param in compression_module.named_parameters():
+    #     print(name, param.requires_grad, param.shape, param.numel())
     optimizer = torch.optim.Adam(compression_module.parameters(), lr=lr)
     if lr_multiplier < 1:
         lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 
                                                                 patience = patience_scheduler, 
-                                                                factor = lr_multiplier,
-                                                                eps = eps)
+                                                                factor = lr_multiplier)
     else:
         lr_scheduler = dummy_lr_scheduler()
                                                               
@@ -73,7 +74,7 @@ def align(compression_module:compress_parent.CompressorParent,
     val_loss = None
     
     for i in range(n_iters):
-
+        optimizer.zero_grad()
         reconstructed_weights = compression_module.reconstruct()
         train_loss = loss(reconstructed_weights, original_weights, train_hessian)
         
@@ -111,21 +112,24 @@ def align(compression_module:compress_parent.CompressorParent,
                 print("early stopping")
                 break
 
-        optimizer.zero_grad()
         train_loss.backward()
         if clip_grad > 0:
             torch.nn.utils.clip_grad_norm_(compression_module.parameters(), clip_grad)
+
+        # for name, param in compression_module.named_parameters():
+        #     print(name, torch.any(~torch.isfinite(param.grad)))
         optimizer.step()
         if val_loss is not None:
             lr_scheduler.step(val_loss)
         else:
+            # print("no val loss")
             lr_scheduler.step(train_loss)
             
         if i%discrete_update_every == 0 and i != 0:
             compression_module.update_discrete()
         
         if verbose and i % verbose == 0:
-            print(f'iter {i}, train loss {train_loss.item()}, val loss {val_loss}')
+            print(f'iter {i}, train loss {train_loss.item()}, val loss {val_loss}, lr {optimizer.param_groups[0]["lr"]}')
             
     compression_module.load_state_dict(best_state_dict)
     print("best loss", best_loss)
