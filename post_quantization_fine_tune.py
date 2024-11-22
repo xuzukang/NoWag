@@ -12,9 +12,8 @@ import random
 import numpy as np
 import fine_tune as lora_fine_tune
 import src.finetune as finetune
-import src.finetune as finetune
+import src.utils.utils as utils
 import src.quantizers.vector_quantizer as vector_quantizer
-import src.utils.alignment.hessian_general_align as hessian_general_align
 from llama import *
 import transformers.models.llama.modeling_llama as llama
 import glob
@@ -39,7 +38,12 @@ import transformers
 #     return model
 
 @torch.no_grad()
-def swap_layers(model:llama.LlamaForCausalLM):
+def swap_layers(model:llama.LlamaForCausalLM,
+                quantizer_params:dict = {
+                    "d": 4,
+                    "n_bits": 2,
+                    "norm_order": [0,1]
+                }):
 
     layers = model.model.layers
 
@@ -51,15 +55,17 @@ def swap_layers(model:llama.LlamaForCausalLM):
             parent_module = getattr(layer, name.split(".")[0])
             module:nn.Linear= getattr(parent_module, name.split(".")[1])
 
-            vq = vector_quantizer.VectorQuantizer.blank_recreate(
-                module.weight,
-                d = 4,
-                n_bits = 2,
+            new_layer = linear_compress.LinearQuantized(module.weight,
+                                                        module.bias,
+                                                        args.add_bias)
+            new_layer.blank_recreate(
+                vector_quantizer.VectorQuantizer,
+                **quantizer_params
             )
-            new_layer = QuantizedLinear(vq,
-                                        module.bias,
-                                        True
-                                        )
+            del new_layer.original_weight
+
+
+
             delattr(parent_module, name.split(".")[1])
             setattr(parent_module, name.split(".")[1], new_layer)
     #clean the cuda cache
@@ -67,12 +73,33 @@ def swap_layers(model:llama.LlamaForCausalLM):
 
     return model
 
+# @torch.no_grad()
+# def update_direcete(module:nn.Module):
+#     for name, child in module.named_children():
+#         if isinstance(child, vector_quantizer.VectorQuantizer):
+#             child.update_discrete()
+#         update_direcete(child)
+
 @torch.no_grad()
-def update_direcete(module:nn.Module):
-    for name, child in module.named_children():
-        if isinstance(child, vector_quantizer.VectorQuantizer):
-            child.update_discrete()
-        update_direcete(child)
+def get_target_model_outputs(target_model:llama.LlamaForCausalLM, inputs:list[torch.LongTensor],
+                             device:str):
+    
+    with torch.no_grad():
+        target_model.eval()
+
+        target_outs = torch.empty(
+            len(inputs), target_model.seqlen, target_model.config.vocab_size,
+            device="cpu"
+        )
+
+        for i in tqdm.tqdm(range(len(inputs))):
+            teacher_out = target_model(inputs[i][0].to(device))[0]
+            # print(teacher_out.shape)
+            target_outs[i] = teacher_out.detach().cpu()
+        
+        return target_outs
+
+
 
 
 if __name__ == "__main__":
@@ -82,15 +109,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("model", type=str, help="Model name.")
-    parser.add_argument("model_path", type=str, help="Path to the model.")
-    parser.add_argument(
-        "--log_wandb", action="store_true", help="Whether to log to wandb."
-    )
+    parser.add_argument("model_path", type=str, help="Path to the quantized model.")
     parser.add_argument(
         "dataset",
         type=str,
         choices=["wikitext2", "ptb", "c4"],
         help="Where to extract calibration data from.",
+    )
+    parser.add_argument(
+        "--log_wandb", action="store_true", help="Whether to log to wandb."
     )
     parser.add_argument(
         "--seed", type=int, default=0, help="Seed for sampling the calibration data."
@@ -102,19 +129,53 @@ if __name__ == "__main__":
         "--nsamples", type=int, default=128, help="Number of calibration data samples."
     )
     parser.add_argument(
-        "--n_accumulation_steps", type=int, default=16, help="Number of accumulation steps."
-    )
-    parser.add_argument(
         "--nsamples_val",
         type=int,
         default=16,
         help="Number of validation data samples.",
     )
     parser.add_argument(
+        "--update_every_n_tokens",
+        type = int,
+        default = 4096,
+        help = "Update the model every n tokens."
+    )
+    parser.add_argument(
+        "--update_discrete",
+        action="store_true",
+        help="Update the discrete weights.",
+    )
+    parser.add_argument(
+        "--ema_decay", type=float, default=0.99, help="Exponential moving average decay."
+    )
+    parser.add_argument(
+        "--train_seqlen",
+        type=int,
+        default=4096,
+        help="Sequence length for training.",
+    )
+    parser.add_argument(
+        "--eval_seqlen",
+        type=int,
+        default=4096,
+        help="Sequence length for evaluation.",
+    )
+    parser.add_argument(
         "--finetune_epochs",
         type=int,
         default=1,
         help="Run this many passes over training data when doing finetuning; No finetuning if set to 0.",
+    )
+    parser.add_argument(
+        "--partition_size",
+        type=int,
+        default=  1,
+        help="Number of layers to put on the gpu at once.",
+    )
+    parser.add_argument(
+        "--add_bias",
+        action="store_true",
+        help="Add bias to the quantized layers.",
     )
     parser.add_argument(
         "--finetune_early_stop",
@@ -160,6 +221,102 @@ if __name__ == "__main__":
                    project = "post_training_quantization")
 
     model = get_llama(args.model)
+    dataloader, valloader, testloader = get_loaders(
+        args.dataset, nsamples_train=args.nsamples,
+        nsamples_val=args.nsamples_val,
+          seed=args.seed, model=args.model, seqlen=model.seqlen
+    )
+    
+    model.seqlen = args.train_seqlen
+
+    model.to(args.device)
+
+    training_targets = get_target_model_outputs(model, dataloader, args.device)
+    
+    if args.nsamples_val > 0:
+        val_targets = get_target_model_outputs(model, valloader, args.device)
+
+
+    print("traing targets", training_targets.shape)
+
+    training_inputs, attention_mask = finetune.get_embedded(dataloader,
+                                            model,
+                                            args.device)
+    print("training inputs", training_inputs.shape)
+
+    if args.nsamples_val > 0:
+        val_inputs, _ = finetune.get_embedded(valloader,
+                                           model,
+                                           args.device)
+        print("val inputs", val_inputs.shape)
+    
+
+    #swap the layers of the model
+    # model = swap_layers(model)
+    # print(model)
+
+    original_dtype = iter(model.parameters()).__next__().dtype
+    original_device = iter(model.parameters()).__next__().device
+    model = swap_layers(model)
+
+    #set the following parameters to not have a gradient computed
+    model.model.embed_tokens.weight.requires_grad = False
+    model.lm_head.weight.requires_grad = False
+
+    #for each bin in the model_path
+    for path in glob.glob(os.path.join(args.model_path, "*.bin")):
+        print("loading", path)
+        model.load_state_dict(torch.load(path), strict=False)
+    print("original dtype", original_dtype)
+    model = model.to(args.device).to(torch.float16)
+    training_inputs = training_inputs.to(torch.float16)
+    training_targets = training_targets.to(torch.float16)
+    if args.nsamples_val > 0:
+        val_inputs = val_inputs.to(torch.float16)
+        val_targets = val_targets.to(torch.float16)
+        
+    model.to("cpu")
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.finetune_lr,
+                                    betas=(args.finetune_adam_beta1, args.finetune_adam_beta2),
+                                    eps = 1e-4)
+    
+    if args.update_discrete:
+        utils.recursive_apply(model, "enable_importance_updates", 
+                              {"decay": args.ema_decay})
+    
+    use_cache = model.config.use_cache
+    model.config.use_cache = False
+    for epoch in range(args.finetune_epochs):
+        model.train()
+        # model.to(args.device)
+        finetune.finetune_end_to_end_partitioned(
+            model = model,
+            optimizer = optimizer,
+            train_inps = training_inputs,
+            train_outputs = training_targets,
+            attention_mask = attention_mask,
+            val_inps = val_inputs if args.nsamples_val > 0 else None,
+            val_outputs = val_targets if args.nsamples_val > 0 else None,
+            partition_size = args.partition_size,
+            update_every_n_tokens =  args.update_every_n_tokens,
+            log_wandb = args.log_wandb,
+            device = args.device,
+            discrete_update_fn = lambda model: utils.recursive_apply(model, "update_discrete", {}) if args.update_discrete else None
+        )
+        torch.cuda.empty_cache()
+
+        model.eval()
+        model.to(args.device)
+        llama_eval(model, testloader, args.device, args.dataset, args.log_wandb)
+    model.config.use_cache = use_cache
+    model.to(args.device)
+    raise NotImplementedError("This script is not yet implemented.")
+
+    
+
+
+
+
     target_model = get_llama(args.model)
 
     model.seqlen = 1024

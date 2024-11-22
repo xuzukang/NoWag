@@ -1,0 +1,55 @@
+wandb: Currently logged in as: m6481. Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.18.7 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.15.12
+wandb: Run data is saved locally in /data/lliu/huffman/wandb/run-20241122_010554-npfm2w4p
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run sandy-gorge-26
+wandb: ⭐️ View project at https://wandb.ai/m6481/post_training_quantization
+wandb: 🚀 View run at https://wandb.ai/m6481/post_training_quantization/runs/npfm2w4p
+/home/lliu/anaconda3/lib/python3.11/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.17s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.33it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.23it/s]
+Model loaded. LlamaForCausalLM(
+  (model): LlamaModel(
+    (embed_tokens): Embedding(32000, 4096)
+    (layers): ModuleList(
+      (0-31): 32 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+  )
+  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+)
+Loading tokenizer for meta-llama/Llama-2-7b-hf
+tensor([[ -100,  -100,  -100,  ...,  -100,  -100, 20918]])
+Traceback (most recent call last):
+  File "/data/lliu/huffman/post_quantization_fine_tune.py", line 224, in <module>
+    dataloader, valloader, testloader = get_loaders(
+                                        ^^^^^^^^^^^^
+  File "/data/lliu/huffman/datautils.py", line 121, in get_loaders
+    return get_wikitext2(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/lliu/huffman/datautils.py", line 47, in get_wikitext2
+    raise ValueError
+ValueError
+wandb: Waiting for W&B process to finish... (failed 1). Press Control-C to abort syncing.
+wandb: - 0.008 MB of 0.008 MB uploaded (0.000 MB deduped)wandb: \ 0.008 MB of 0.008 MB uploaded (0.000 MB deduped)wandb: | 0.008 MB of 0.008 MB uploaded (0.000 MB deduped)wandb: / 0.008 MB of 0.008 MB uploaded (0.000 MB deduped)wandb: - 0.008 MB of 0.008 MB uploaded (0.000 MB deduped)wandb: 🚀 View run sandy-gorge-26 at: https://wandb.ai/m6481/post_training_quantization/runs/npfm2w4p
+wandb: ️⚡ View job at https://wandb.ai/m6481/post_training_quantization/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjQ5NjA2NTU1Nw==/version_details/v5
+wandb: Synced 6 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20241122_010554-npfm2w4p/logs

@@ -84,11 +84,12 @@ class LinearQuantized(compress_parent.CompressorParent):
         x_flattened = x_flattened * math.sqrt(2/(self.n_samples * self.in_features))
         self.hessian += (x_flattened.T @ x_flattened)
         
-    def enable_importance_updates(self):
+    def enable_importance_updates(self,decay:float = 0.99):
         """enable the updates of the importances for the quantizer"""
         #check that the quantizer has importances
         if hasattr(self.quantizer, 'update_importances'):
             self.update_importance_flag = True
+            self.decay = decay
         else:
             print("The quantizer does not have the method update_importances so ignoring the request")
         
@@ -101,7 +102,7 @@ class LinearQuantized(compress_parent.CompressorParent):
             decay (float, optional): the decay factor for the exponential moving average. Defaults to 0.99.
         """
         self.quantizer:vector_quantizer.VectorQuantizer
-        x_reduced = x.reshape(-1, self.in_features)
+        x_reduced = x.reshape(-1, self.in_features).to(torch.float32)
         
         importances_non_expanded = torch.norm(x_reduced, p=2, dim=1)**2 * 2/self.in_features
         #shape of n_inputs
@@ -113,9 +114,14 @@ class LinearQuantized(compress_parent.CompressorParent):
     def forward(self, x:torch.FloatTensor):
         """forward pass of the linear layer"""
         if self.log_hessian_flag:
+            print("logging to hessian")
             self.log_to_hessian_(x)
-        W = self.reconstruct()
-        return F.linear(x, W, self.original_bias)
+        if self.update_importance_flag:
+            print("updating importances")
+            self.update_importances(x, self.decay)
+
+        # W = self.reconstruct()
+        return F.linear(x, self.reconstruct(), self.original_bias)
 
         
     def quantize(self, quantizer_class:QuantizerParent,**kwargs):
@@ -222,7 +228,18 @@ class LinearQuantized(compress_parent.CompressorParent):
         
     def get_additional_attributes(self):
         return self.quantizer.get_additional_attributes()
+    
 
+    def blank_recreate(self,quantizer_class:QuantizerParent, **kwargs):
+        """recreate the quantizer without any weights"""
+        self.quantizer = quantizer_class.blank_recreate(
+            self.original_weight,
+            **kwargs
+        )
+        self.quantized = True
+
+
+    
     
     
 

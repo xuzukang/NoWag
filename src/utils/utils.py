@@ -38,3 +38,19 @@ def update_discrete(module:nn.Module):
         #otherwise look for its children
         update_discrete(child)
     
+
+def recursive_apply(module:nn.Module, func_name:str, func_kwargs:dict = {}):
+    """recursively applies a function to a module and its children
+
+    Args:
+        module (nn.Module): the module to apply the function to
+        func (function): the function to apply
+
+    """
+    for name, child in module.named_children():
+        if hasattr(child, func_name):
+            if callable(getattr(child, func_name)):
+                getattr(child, func_name)(**func_kwargs)
+        #otherwise look for its children
+        else:
+            recursive_apply(child, func_name, func_kwargs)

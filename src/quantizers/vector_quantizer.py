@@ -188,7 +188,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             codebook = torch.zeros(2**(n_bits * d), d).to(weight.device)    
             codes = torch.zeros((weight.shape[0] * weight.shape[1])//d, dtype = torch.long).to(weight.device)
             blank_quantizer = VectorQuantizer(codes, codebook, weight.shape,
-                                                norm_1, norm_0, None, None)
+                                                norm_1, norm_0, weight_use.reshape(-1,d),
+                                                torch.zeros_like(weight_use).reshape(-1,d))
             blank_quantizer.clean()
         return blank_quantizer
     
@@ -338,8 +339,9 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
             
             blank_quantizer = VectorQuantizerSparseUnstructured(codes, codebook, weight.shape,
                                                 mask, sparse_values,
-                                                norm_1, norm_0, None, None)
-            blank_quantizer.clean()
+                                                norm_1, norm_0, 
+                                                weight_use.reshape(-1,d),
+                                                torch.zeros_like(weight_use).reshape(-1,d))
         return blank_quantizer
     
     

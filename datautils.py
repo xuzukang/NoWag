@@ -43,6 +43,8 @@ def get_wikitext2(nsamples_train,nsamples_val, seed, seqlen, model, tokenizer):
         inp = trainenc.input_ids[:, i:j]
         tar = inp.clone()
         tar[:, :-1] = -100
+        # print(tar)
+        # raise ValueError
         trainloader.append((inp, tar))
 
     valloader = []
