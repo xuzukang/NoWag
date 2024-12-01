@@ -388,7 +388,7 @@ def finetune_end_to_end_partitioned(
         train_outputs[i] = train_outputs[i].to("cpu")
 
     #check that the update_every_n_tokens is a multiple of the sequence length
-    assert model.seqlen % update_every_n_tokens == 0, "update_every_n_tokens must be a multiple of the sequence length"
+    # assert update_every_n_tokens% model.seqlen == 0, "update_every_n_tokens must be a multiple of the sequence length"
     
 
     total_loss = 0
@@ -446,7 +446,9 @@ def finetune_end_to_end(
         model: llama.LlamaForCausalLM,
         optimizer: torch.optim.Optimizer,
         train_tokens: List[torch.LongTensor],
+        train_soft_labels: List[torch.FloatTensor],
         val_tokens: Optional[List[torch.LongTensor]] = None,
+        val_soft_labels: Optional[List[torch.FloatTensor]] = None,
         discrete_update_fn: Optional[Callable] = None,
         update_every_n_tokens:int = 4096,
         log_wandb:bool = False,
@@ -455,14 +457,55 @@ def finetune_end_to_end(
     )->Tuple[float, Optional[float]]:
     """finetune the model for one epoch"""
         #move everything to cpu first
-    assert model.seqlen % update_every_n_tokens == 0, "update_every_n_tokens must be a multiple of the sequence length"
+    # assert model.seqlen % update_every_n_tokens == 0, "update_every_n_tokens must be a multiple of the sequence length"
     
 
     total_loss = 0
     n_tokens = 0
     for i in tqdm.tqdm(range(len(train_tokens)), disable = not use_tqdm):
-        n_tokens += train_inps[i].shape[0]
-        print("train inps.shape", train_inps[i].shape)
+        tokens = train_tokens[i][0].to(device)
+        n_tokens += tokens.shape[1]
+        # print("n_tokens", n_tokens, tokens.shape)
+
+        if train_soft_labels is not None:
+            labels = train_soft_labels[i].to(device) #soft labels from the teacher model
+            out = model(tokens)[0]
+            loss = cross_entropy_loss(out, labels)
+        else:
+            loss = model(tokens, labels = tokens)[0]
+        loss.backward()
+        total_loss += loss.item()
+        if log_wandb:
+            wandb.log({"train_loss": loss.item()})
+        if n_tokens >= update_every_n_tokens:
+            print("updating")
+            optimizer.step()
+            optimizer.zero_grad()
+            if discrete_update_fn is not None:
+                discrete_update_fn(model)
+            n_tokens = 0
+        
+    total_loss = total_loss/len(train_tokens) #* train_tokens[0][0].shape[0])
+    if val_tokens is not None:
+        print("Warning: validation is not implemented yet")
+    #     total_loss_val = 0
+    #     with torch.no_grad():
+    #         model.to(device)
+    #         for i in range(len(val_tokens)):
+    #             val_tokens = val_tokens[i][0].to(device)
+    #             val_out = model(val_tokens, labels = val_tokens)[0]
+    #             loss = val_out.item()
+    #             total_loss_val += loss
+    #         model.to("cpu") 
+    #     total_loss_val = total_loss_val/len(val_tokens)
+
+    #     if log_wandb:
+    #         wandb.log({"val_loss": total_loss_val, "train_loss_batch": total_loss})
+    #     return total_loss, total_loss_val
+    # else:
+    if log_wandb:
+        wandb.log({"train_loss_batch": total_loss})
+    return total_loss, None
     
     
     

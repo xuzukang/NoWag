@@ -5,9 +5,10 @@ import torch
 import random
 import torch.nn as nn
 from typing import List, Optional, Tuple, Union
-from vector_quantizer import *
+# from vector_quantizer import *
 from modelutils import *
-from quant import *
+import tqdm
+# from quant import *
 import random 
 import numpy as np
 import fine_tune as lora_fine_tune
@@ -15,6 +16,7 @@ import src.finetune as finetune
 import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.linear_compress as linear_compress
+import src.data as data
 import src.utils.utils as utils
 try:
     import wandb
@@ -30,76 +32,20 @@ def get_llama(model):
     torch.nn.init.kaiming_uniform_ = skip
     torch.nn.init.uniform_ = skip
     torch.nn.init.normal_ = skip
-    from transformers import LlamaForCausalLM
-    model = LlamaForCausalLM.from_pretrained(model, torch_dtype='auto')
-    model.seqlen = 4096
+    if "llama-3" not in model.lower():
+        from transformers import LlamaForCausalLM
+        model = LlamaForCausalLM.from_pretrained(model, torch_dtype='auto')
+    else:
+        import transformers
+        model = transformers.AutoModelForCausalLM.from_pretrained(model, 
+                                                     torch_dtype='auto',
+                                                    #  low_cpu_mem_usage=True,
+                                                     #attn_implementation='sdpa'
+        )
+    model.seqlen = 8192
     print("Model loaded.", model)
     return model
 
-class QuantizedLinear(nn.Module):
-    def __init__(self, quantizer:vector_quantizer.VectorQuantizer, bias: Optional[nn.Parameter],create_bias: bool = True):
-        super().__init__()
-        self.quantizer = quantizer
-        if bias is not None:
-            print("here: bias", bias)
-            self.bias = bias
-        else:
-            # print("not here")
-            if create_bias:
-                self.bias = nn.Parameter(torch.zeros(self.quantizer.n_out,
-                                                     dtype=self.quantizer.codebook.dtype,
-                                                    device=self.quantizer.codebook.device
-                                                 ), requires_grad=True)
-            else:
-                self.bias = None
-        self.use_checkpoint = False
-        self.grad_disabled = False
-        
-        
-        
-    def forward(self, input: torch.Tensor):
-        if self.grad_disabled:
-            # print(input.dtype, self.quantized_weight.dtype)
-            return F.linear(input, self.quantized_weight, self.bias)
-            
-        return F.linear(input, self.quantizer(), self.bias)
-    
-    def disable_grad(self):
-        for param in self.parameters():
-            param.requires_grad = False
-        
-        self.register_buffer("quantized_weight", self.quantizer())
-        self.grad_disabled = True
-        self.verbose = True
-            
-    def enable_grad(self):
-        for param in self.parameters():
-            param.requires_grad = True
-        
-        self.grad_disabled = False
-        self.verbose = False
-        del self.quantized_weight
-            
-    def get_n_bits(self):
-        n_bits = self.quantizer.get_n_bits()
-        if self.bias is not None:
-            n_bits += self.bias.numel() *16
-        return n_bits
-    
-
-
-def cast_to_dtype(module, dtype):   
-    #cast the quantized weights to the original dtype
-    for name, param in module.named_children():
-        if isinstance(param, QuantizedLinear):
-            print("casting to dtype", name, dtype)
-            print("current dtypes:", param.quantized_weight.dtype)
-            if param.bias is not None:
-                print(param.bias.dtype)
-            param.to(dtype = dtype)
-        else:
-            cast_to_dtype(param, dtype)
-    return module
 
 def finetune_fn(
     layer: nn.Module,
@@ -401,7 +347,8 @@ def llama_eval(model, testenc, dev,  dataset: str, log_wandb: bool = False):
 
     testenc = testenc.input_ids
     nsamples = testenc.numel() // model.seqlen
-
+    print("nsamples", nsamples)
+    print("testenc.numel()", testenc.numel())
     use_cache = model.config.use_cache
     model.config.use_cache = False
     layers = model.model.layers
@@ -436,6 +383,7 @@ def llama_eval(model, testenc, dev,  dataset: str, log_wandb: bool = False):
     layers[0] = layers[0].module
 
     layers[0] = layers[0].cpu()
+    print("inps", inps)
     model.model.embed_tokens = model.model.embed_tokens.cpu()
     torch.cuda.empty_cache()
 
@@ -465,20 +413,60 @@ def llama_eval(model, testenc, dev,  dataset: str, log_wandb: bool = False):
         if model.model.norm is not None:
             hidden_states = model.model.norm(hidden_states)
         lm_logits = model.lm_head(hidden_states)
+        # print(lm_logits)
         shift_logits = lm_logits[:, :-1, :].contiguous()
         shift_labels = testenc[:, (i * model.seqlen) : ((i + 1) * model.seqlen)][:, 1:]
+        # print(shift_labels)
+        # raise Exception("stop")
         loss_fct = nn.CrossEntropyLoss()
         loss = loss_fct(
             shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1)
         )
+        print("loss", loss)
         neg_log_likelihood = loss.float() * model.seqlen
         nlls.append(neg_log_likelihood)
+    print("model.seqlen", model.seqlen)
     ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
     print(f"Perplexity: {ppl.item():3f}")
     if log_wandb:
         wandb.log({f"{dataset}/perplexity": ppl.item()})
 
     model.config.use_cache = use_cache
+
+@torch.no_grad()
+def llama_eval_fast(model, 
+                    testenc, dev,  dataset: str, log_wandb: bool = False):
+
+    with torch.no_grad():
+        testenc = testenc.input_ids
+        nsamples = testenc.numel() // model.seqlen
+        
+        testenc = testenc[:,:nsamples * model.seqlen].to("cpu")
+
+        nlls = []
+        model_inital_device = next(model.parameters()).device
+        model.to(dev)
+
+        for i in tqdm.tqdm(range(0, nsamples * model.seqlen, model.seqlen)):
+            # print(model.seqlen,i)
+            batch = testenc[:,i:i + model.seqlen].to(dev)
+            # print("batch", batch.shape)
+            out = model(batch, labels=batch)
+            loss = out[0]
+            outputs = out[1]
+            # print(outputs)
+            # print(batch)
+
+            nlls.append(loss * model.seqlen)
+        
+        ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
+        print(f"Perplexity: {ppl.item():3f}")
+        if log_wandb:
+            wandb.log({f"{dataset}/perplexity": ppl.item()})
+        
+        model.to(model_inital_device)
+        return ppl.item()
+
 
 
 if __name__ == "__main__":
@@ -663,13 +651,13 @@ if __name__ == "__main__":
     model = get_llama(args.model)
     model.eval()
     print(model.seqlen)
+    #print the model parameter
+    print("model parameters")
+    for name, param in model.named_parameters():
+        print(name, param)
+        break
     # print("n samples val", args.nsamples_val)
     # raise Exception("stop")
-    dataloader, valloader, testloader = get_loaders(
-        args.dataset, nsamples_train=args.nsamples,
-        nsamples_val=args.nsamples_val,
-          seed=args.seed, model=args.model, seqlen=model.seqlen
-    )
 
     torch.manual_seed(args.seed)    
     torch.cuda.manual_seed(args.seed)
@@ -678,17 +666,22 @@ if __name__ == "__main__":
 
     
     if args.quantize:
+        dataloader, valloader, testloader = get_loaders(
+            args.dataset, nsamples_train=args.nsamples,
+            nsamples_val=args.nsamples_val,
+                seed=args.seed, model=args.model, seqlen=model.seqlen
+        )
         tick = time.time()
         n_params = sum(p.numel() for p in model.parameters())
         llama_sequential(model, dataloader, valloader, args.device)
         print("total time taken:", time.time() - tick)
 
-    for dataset in ["wikitext2"]: #, "ptb", "c4"]:
-        dataloader, valloader, testloader = get_loaders(
+    for dataset in ["wikitext2","c4"]: #, "ptb", "c4"]:
+        _,testloader = data.get_loaders(
             dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
         )
         print("Dataset:", dataset)
-        llama_eval(model, testloader, args.device, dataset, args.log_wandb)
+        llama_eval_fast(model, testloader, args.device, dataset, args.log_wandb)
 
     if len(args.save)>0:
         model.save_pretrained(args.save)

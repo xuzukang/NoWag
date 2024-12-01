@@ -37,7 +37,7 @@ class LinearQuantized(compress_parent.CompressorParent):
 
         else:
             if add_bias:
-                self.original_bias = nn.Parameter(torch.zeros(self.out_features), requires_grad = True).to(self.original_weight.device).to(self.original_weight.dtype) 
+                self.original_bias = nn.Parameter(torch.zeros(self.out_features), requires_grad = True)
             else:
                 self.original_bias = None
 
@@ -87,7 +87,7 @@ class LinearQuantized(compress_parent.CompressorParent):
     def enable_importance_updates(self,decay:float = 0.99):
         """enable the updates of the importances for the quantizer"""
         #check that the quantizer has importances
-        if hasattr(self.quantizer, 'update_importances'):
+        if hasattr(self.quantizer, 'ema_update_importances'):
             self.update_importance_flag = True
             self.decay = decay
         else:
@@ -102,22 +102,25 @@ class LinearQuantized(compress_parent.CompressorParent):
             decay (float, optional): the decay factor for the exponential moving average. Defaults to 0.99.
         """
         self.quantizer:vector_quantizer.VectorQuantizer
+        # print(x.shape)
         x_reduced = x.reshape(-1, self.in_features).to(torch.float32)
-        
-        importances_non_expanded = torch.norm(x_reduced, p=2, dim=1)**2 * 2/self.in_features
+        # print(x_reduced.shape)
+        hessian_diag = torch.norm(x_reduced, p=2, dim=0)**2 * 2/self.in_features
+        # print(importances_non_expanded.shape)
         #shape of n_inputs
-        self.quantizer.ema_update_importances(importances_non_expanded.unsqueeze(0).expand(self.out_features,
-                                                                                           -1
-                ).reshape(-1), decay)
+        # print(importances_non_expanded.unsqueeze(0).expand(self.out_features,
+        #                                                                                    -1
+        #         ).shape)
+        self.quantizer.ema_update_importances(hessian_diag, decay)
         
 
     def forward(self, x:torch.FloatTensor):
         """forward pass of the linear layer"""
         if self.log_hessian_flag:
-            print("logging to hessian")
+            # print("logging to hessian")
             self.log_to_hessian_(x)
         if self.update_importance_flag:
-            print("updating importances")
+            # print("updating importances")
             self.update_importances(x, self.decay)
 
         # W = self.reconstruct()

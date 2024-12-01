@@ -52,7 +52,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             reconstructed_weight = reconstructed_weight * self.norms_1.unsqueeze(1)
         if self.norms_0 is not None:
             reconstructed_weight = reconstructed_weight * self.norms_0.unsqueeze(0)
-            
+        
+        # print(self.reference_importances    )
         return reconstructed_weight
     
     @torch.no_grad()
@@ -66,7 +67,9 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             new_importances (torch.FloatTensor): the new importances, of shape (n_values/d, d)
             decay (float, optional): _description_. Defaults to 0.99.
         """
-        self.reference_importances = decay * self.reference_importances + (1-decay) * new_importances
+        # print("self.reference_importances", self.reference_importances.shape)
+        # print("new_importances", new_importances.shape)
+        self.reference_importances = decay * self.reference_importances + (1-decay) * new_importances.reshape(self.reference_importances.shape)
     
     def get_importances(self):
         return self.reference_importances
@@ -74,22 +77,28 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
     def update_discrete(self):
         with torch.no_grad():
             reference_importances = self.reference_importances
-            # if self.norms_1 is not None or self.norms_0 is not None:
-            #     denormalize_matrix = torch.ones(self.reconstructed_shape, device = self.codebook.device, dtype = self.codebook.dtype)
-            #     if self.norms_1 is not None:
-            #         denormalize_matrix = denormalize_matrix * self.norms_1.unsqueeze(1)
-            #     if self.norms_0 is not None:
-            #         denormalize_matrix = denormalize_matrix * self.norms_0.unsqueeze(0)
-
-            #     reference_importances = reference_importances * denormalize_matrix.reshape(reference_importances.shape)**2
-            
-                
             
 
             self.codes = quantizer_utils.cluster_e_step(
                     self.reference_weight, self.codebook, reference_importances)
 
     # def get_reference_importances
+
+    def process_old_importances(self):
+        """if we have loaded the importances in the old format, 
+        we will process it to the new format
+        """
+        if self.reference_importances is not None:
+            #old reference importances were of shape (n_out * n_in/d, d)
+            #where I simply repeated (n_in/d, d) n_out times
+            #the new reference importances are of shape (n_in/d, d)
+            if self.reference_importances.shape[0] == self.n_out * self.n_in//self.codebook.shape[1]:
+                self.reference_importances = self.reference_importances.reshape(self.n_out, -1, self.codebook.shape[1])[0]
+            else:
+                print("Reference importances are of shape", self.reference_importances.shape, "expected", (self.n_out, self.n_in//self.codebook.shape[1], self.codebook.shape[1]))
+                
+        else:
+            print("No reference importances found")
     
     @staticmethod
     def quantize(weight:torch.FloatTensor,
@@ -113,7 +122,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             
         H_diag = torch.diag(hessian)
         # H_diag = H_diag.reshape(-1,d)
-        importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1)
+        importances = (H_diag #.unsqueeze(0).expand(weight.shape[0], -1)
                                                 ).reshape(-1, d)
         importances_use = importances #* denormalize_matrix.reshape(importances.shape)**2
 
@@ -190,7 +199,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             blank_quantizer = VectorQuantizer(codes, codebook, weight.shape,
                                                 norm_1, norm_0, weight_use.reshape(-1,d),
                                                 torch.zeros_like(weight_use).reshape(-1,d))
-            blank_quantizer.clean()
+            # blank_quantizer.clean()
         return blank_quantizer
     
 

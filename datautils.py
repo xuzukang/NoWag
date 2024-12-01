@@ -13,16 +13,21 @@ def set_seed(seed):
 def get_tokenizer(model):
     print(f"Loading tokenizer for {model}")
     if "llama" in model.lower() and "llama-3" not in model.lower():
+        print("Using LlamaTokenizer")
         tokenizer = LlamaTokenizer.from_pretrained(model, use_fast=False)
-        # fix for transformer 4.28.0.dev0 compatibility
-        if tokenizer.bos_token_id != 1 or tokenizer.eos_token_id != 2:
-            try:
-                tokenizer.bos_token_id = 1
-                tokenizer.eos_token_id = 2
-            except AttributeError:
-                pass
     else:
-        tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
+        print("Using AutoTokenizer")
+        tokenizer = AutoTokenizer.from_pretrained(model)
+        tokenizer.pad_token_id = tokenizer.eos_token_id
+    
+    # fix for transformer 4.28.0.dev0 compatibility
+    if tokenizer.bos_token_id != 1 or tokenizer.eos_token_id != 2:
+        try:
+            tokenizer.bos_token_id = 1
+            tokenizer.eos_token_id = 2
+        except AttributeError:
+            pass
+
     return tokenizer
 
 def get_wikitext2(nsamples_train,nsamples_val, seed, seqlen, model, tokenizer):
@@ -35,6 +40,8 @@ def get_wikitext2(nsamples_train,nsamples_val, seed, seqlen, model, tokenizer):
     valenc = tokenizer(" ".join(valdata['text']), return_tensors='pt')
     testenc = tokenizer("\n\n".join(testdata['text']), return_tensors='pt')
 
+    print("testenc", testenc.input_ids)
+    print("min", testenc.input_ids.min(),"max", testenc.input_ids.max())
     random.seed(seed)
     trainloader = []
     for _ in range(nsamples_train):
@@ -67,7 +74,7 @@ def get_ptb(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer):
 
     random.seed(seed)
     trainloader = []
-    for _ in range(nsamples):
+    for _ in range(nsamples_train):
         i = random.randint(0, trainenc.input_ids.shape[1] - seqlen - 1)
         j = i + seqlen
         inp = trainenc.input_ids[:, i:j]
@@ -76,15 +83,7 @@ def get_ptb(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer):
         trainloader.append((inp, tar))
 
 
-    valloader = []
-    for _ in range(nsamples):
-        i = random.randint(0, trainenc.input_ids.shape[1] - seqlen - 1)
-        j = i + seqlen
-        inp = trainenc.input_ids[:, i:j]
-        tar = inp.clone()
-        tar[:, :-1] = -100
-        trainloader.append((inp, tar))    
-    return trainloader, testenc
+    return trainloader, None, testenc
 
 def get_c4(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer):
     traindata = load_dataset('allenai/c4', data_files={'train': 'en/c4-train.00000-of-01024.json.gz'}, split='train')
@@ -113,14 +112,14 @@ def get_c4(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer):
             self.input_ids = input_ids
     valenc = TokenizerWrapper(valenc)
 
-    return trainloader, valenc
+    return trainloader, None, valenc
 
 def get_loaders(name, nsamples_train=128, nsamples_val=16, seed=0, seqlen=2048, model=''):
     tokenizer = get_tokenizer(model)
     if 'wikitext2' in name:
         return get_wikitext2(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer)
-    else:
-        raise ValueError(f"Dataset {name} not implemented yet.")
+    # else:
+    #     raise ValueError(f"Dataset {name} not implemented yet.")
     if 'ptb' in name:
         return get_ptb(nsamples_train, nsamples_val, seed, seqlen, model, tokenizer)
     if 'c4' in name:

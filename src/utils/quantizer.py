@@ -33,27 +33,27 @@ def normalize(weight,norm_order:list[int] = [0,1]):
 
 @jit.script
 def cluster_e_step(X:torch.Tensor,centriods:torch.Tensor,
-                   weights:torch.Tensor,
-                     subblock_size:int = 1024):
+                   weights:torch.Tensor):
     
     """
     X: torch tensor of the weights, rearanged into a shape of (n, d)
     centriods: torch.tensor of the centriods, shape of (k, d)
-    weights: torch.tensor of shape (n,d)
+    weights: torch.tensor of shape (n',d) n' is a number that is divisible by subblock_size or 
+    can divide subblock_size
     """
 
     n = X.shape[0]
+    subblock_size = weights.shape[0]
     with torch.no_grad():
         assignments = torch.zeros(n, dtype = torch.int64, device = X.device)
         
         for i in range(0, n, subblock_size):
             X_block = X[i:i+subblock_size]
-            weights_block = weights[i:i+subblock_size]
             errors = (X_block.unsqueeze(-1) - centriods.T.unsqueeze(0))**2
             #shape of (n, d, k)
 
             #multiply by the diagonal
-            errors = errors * weights_block.unsqueeze(-1)
+            errors = errors * weights.unsqueeze(-1)
 
             #sum by the d
             errors = errors.sum(1)
@@ -78,9 +78,10 @@ def cluster_m_step(X:torch.Tensor, assignments:torch.Tensor, k:int, weights:torc
     centriods = torch.zeros((k,d), dtype = weights.dtype, device = weights.device)
     #shape of (k,d)
     for i in range(k):
-        assignment_X = X[assignments == i] #shape of (n_i,d)
-        assignments_weights = weights[assignments == i] #shape of (n_i,d)
-
+        idxs = torch.where(assignments == i)[0]
+        assignment_X = X[idxs] #shape of (n_i,d)
+        assignments_weights = weights[idxs % weights.shape[0]] #shape of (n_i,d)
+        # print(assignments_weights.shape, assignment_X.shape)
         centriods[i] = torch.sum(assignments_weights * assignment_X, dim = 0) / torch.sum(assignments_weights, dim = 0)
 
     return centriods
