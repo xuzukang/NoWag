@@ -6,34 +6,39 @@ from typing import Tuple, Optional, Union, List
 import src.utils.compress_parent as compress_parent
 import warnings
 
-def loss(reconstructed_weights, original_weights, 
-         hessian):
+
+def loss(reconstructed_weights, original_weights, hessian):
     diff = original_weights - reconstructed_weights
-    loss = torch.einsum('ij,jk,ik->', diff, hessian, diff)
+    loss = torch.einsum("ij,jk,ik->", diff, hessian, diff)
     return loss
+
 
 class dummy_lr_scheduler:
     def __init__(self):
         pass
+
     def step(self, x):
         pass
+
+
 @torch.enable_grad()
-def align(compression_module:compress_parent.CompressorParent,
-          original_weights:torch.FloatTensor,
-          train_hessian:torch.FloatTensor,
-          val_hessian:Optional[torch.FloatTensor] = None,
-          lr:float = 1e-3,
-          lr_multiplier:float = 1, #decay the lr by this factor every time the val loss increases
-          n_iters:int = 100,
-          val_every:int = 1,
-          discrete_update_every:int = 1,
-          clip_grad:float = -1,
-          verbose:Union[bool, int] = 10,
-          low_bound:float = 1e-5,
-          patience:int = 10,
-          patience_scheduler:int = 2,
-          eps:float = 1e-5,
-          )->compress_parent.CompressorParent:
+def align(
+    compression_module: compress_parent.CompressorParent,
+    original_weights: torch.FloatTensor,
+    train_hessian: torch.FloatTensor,
+    val_hessian: Optional[torch.FloatTensor] = None,
+    lr: float = 1e-3,
+    lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
+    n_iters: int = 100,
+    val_every: int = 1,
+    discrete_update_every: int = 1,
+    clip_grad: float = -1,
+    verbose: Union[bool, int] = 10,
+    low_bound: float = 1e-5,
+    patience: int = 10,
+    patience_scheduler: int = 2,
+    eps: float = 1e-5,
+) -> compress_parent.CompressorParent:
     """aligns the compression module to the hessian of the training dataset
 
     Args:
@@ -54,36 +59,35 @@ def align(compression_module:compress_parent.CompressorParent,
     Returns:
         compress_parent.CompressorParent: the aligned compression module
     """
-    
-    #initialize the optimizer
+
+    # initialize the optimizer
     # for name, param in compression_module.named_parameters():
     #     print(name, param.requires_grad, param.shape, param.numel())
     optimizer = torch.optim.Adam(compression_module.parameters(), lr=lr)
     if lr_multiplier < 1:
-        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 
-                                                                patience = patience_scheduler, 
-                                                                factor = lr_multiplier)
+        lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer, patience=patience_scheduler, factor=lr_multiplier
+        )
     else:
         lr_scheduler = dummy_lr_scheduler()
-                                                              
 
-    #initialize the best loss
-    best_loss = float('inf')
+    # initialize the best loss
+    best_loss = float("inf")
 
     patience_counter = 0
     val_loss = None
-    
+
     for i in range(n_iters):
         optimizer.zero_grad()
         reconstructed_weights = compression_module.reconstruct()
         train_loss = loss(reconstructed_weights, original_weights, train_hessian)
-        
+
         if i % val_every == 0 and val_hessian is not None:
             with torch.no_grad():
-            
                 val_reconstructed_weights = compression_module.reconstruct()
-                val_loss = loss(val_reconstructed_weights, original_weights, val_hessian).item()
-    
+                val_loss = loss(
+                    val_reconstructed_weights, original_weights, val_hessian
+                ).item()
 
             if val_loss < best_loss - eps and val_loss > low_bound:
                 best_loss = val_loss
@@ -93,12 +97,11 @@ def align(compression_module:compress_parent.CompressorParent,
                 patience_counter += 1
                 if patience_counter == patience:
                     break
-            
+
             if val_loss < low_bound:
                 print("early stopping")
                 break
 
-            
         if val_hessian is None:
             if train_loss < best_loss - eps and train_loss > low_bound:
                 best_loss = train_loss.item()
@@ -124,15 +127,15 @@ def align(compression_module:compress_parent.CompressorParent,
         else:
             # print("no val loss")
             lr_scheduler.step(train_loss)
-            
-        if i%discrete_update_every == 0 and i != 0:
+
+        if i % discrete_update_every == 0 and i != 0:
             compression_module.update_discrete()
-        
+
         if verbose and i % verbose == 0:
-            print(f'iter {i}, train loss {train_loss.item()}, val loss {val_loss}, lr {optimizer.param_groups[0]["lr"]}')
-            
+            print(
+                f'iter {i}, train loss {train_loss.item()}, val loss {val_loss}, lr {optimizer.param_groups[0]["lr"]}'
+            )
+
     compression_module.load_state_dict(best_state_dict)
     print("best loss", best_loss)
     return compression_module
-        
-    
