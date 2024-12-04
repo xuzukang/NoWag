@@ -3,3 +3,4 @@ test/*
 wandb/*
 models/*
 debug/*
+quantized_models/*

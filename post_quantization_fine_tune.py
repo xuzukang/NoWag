@@ -5,7 +5,7 @@ import torch
 torch.autograd.set_detect_anomaly(True)
 import random
 import torch.nn as nn
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union, Any
 import random
 import numpy as np
 import src.finetune as finetune
@@ -13,8 +13,9 @@ import src.utils.utils as utils
 import src.data as data
 import src.utils.model_utils as model_utils
 import src.quantizers.vector_quantizer as vector_quantizer
-from llama_quantize import *
 import transformers.models.llama.modeling_llama as llama
+from llama_quantize import *
+from perplexity_eval import  *
 import glob
 import os
 
@@ -26,65 +27,6 @@ except:
     has_wandb = False
 import transformers
 
-# def get_llama(model):
-#     import torch
-#     def skip(*args, **kwargs):
-#         pass
-#     torch.nn.init.kaiming_uniform_ = skip
-#     torch.nn.init.uniform_ = skip
-#     torch.nn.init.normal_ = skip
-#     from transformers import LlamaForCausalLM
-#     model = LlamaForCausalLM.from_pretrained(model, torch_dtype='auto')
-#     model.seqlen = 4096
-#     print("Model loaded.", model)
-#     return model
-
-
-@torch.no_grad()
-def swap_layers(
-    model: llama.LlamaForCausalLM,
-    quantizer_params: dict = {"d": 4, "n_bits": 2, "norm_order": [0, 1]},
-):
-    layers = model.model.layers
-
-    sublayer_names = [
-        "self_attn.k_proj",
-        "self_attn.v_proj",
-        "self_attn.q_proj",
-        "self_attn.o_proj",
-        "mlp.up_proj",
-        "mlp.gate_proj",
-        "mlp.down_proj",
-    ]
-
-    for i in range(len(layers)):
-        layer = layers[i]
-        for name in sublayer_names:
-            parent_module = getattr(layer, name.split(".")[0])
-            module: nn.Linear = getattr(parent_module, name.split(".")[1])
-
-            new_layer = linear_compress.LinearQuantized(
-                module.weight, module.bias, args.add_bias
-            )
-            new_layer.blank_recreate(
-                vector_quantizer.VectorQuantizer, **quantizer_params
-            )
-            del new_layer.original_weight
-
-            delattr(parent_module, name.split(".")[1])
-            setattr(parent_module, name.split(".")[1], new_layer)
-    # clean the cuda cache
-    torch.cuda.empty_cache()
-
-    return model
-
-
-# @torch.no_grad()
-# def update_direcete(module:nn.Module):
-#     for name, child in module.named_children():
-#         if isinstance(child, vector_quantizer.VectorQuantizer):
-#             child.update_discrete()
-#         update_direcete(child)
 
 
 @torch.no_grad()
@@ -107,21 +49,68 @@ def get_target_model_outputs(
             target_outs[i] = teacher_out.detach().cpu()
 
         return target_outs
+    
+
+def resplit_loader(existing_loader:List[Tuple[torch.LongTensor, Any]],
+                   new_seqlen:int,
+                   )->List[Tuple[torch.LongTensor, Any]]:
+    
+    #do it in place
+    prev_len = len(existing_loader)
+    for i in range(prev_len):
+        inp, tar = existing_loader.pop(0)
+        assert inp.shape[1] % new_seqlen == 0, f"The sequence length {inp.shape[1]} is not divisible by {new_seqlen}"
+        for j in range(0, inp.shape[1], new_seqlen):
+            existing_loader.append((inp[:, j:j+new_seqlen], None))
+    return existing_loader
+
+def save_model_as_checkpoints(model, save_path, model_path):
+    #create a new directory
+    os.makedirs(save_path, exist_ok=True)
+
+    #copy the params.yaml file from the model path over
+    os.system(f"cp {model_path}/params.yaml {save_path}/params.yaml")
+
+    
+    for layer in model.model.layers:
+        torch.save(layer.state_dict(), os.path.join(save_path, f"layer_{i}.pt"))
+    
+
 
 
 if __name__ == "__main__":
     import argparse
-    from datautils import *
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("model", type=str, help="Model name.")
-    parser.add_argument("model_path", type=str, help="Path to the quantized model.")
+    parser.add_argument("--quantized_model_path", type=str, help="Path to the quantized model.")
     parser.add_argument(
-        "dataset",
+        "--save_path", type=str, help="Path to save the finetuned model."
+    )
+    parser.add_argument(
+        "--eval_datasets",
         type=str,
+        nargs="+",
         choices=["wikitext2", "ptb", "c4"],
-        help="Where to extract calibration data from.",
+        help="Where to evaluate the model.",
+        default=["wikitext2", "c4"],
+    )
+    parser.add_argument(
+        "--eval_every_samples",
+        type=int,
+        default=-1,
+        help="Evaluate the model every n samples.",
+    )
+    parser.add_argument(
+        "--inference_batch_size",
+        type=int,
+        default=8,
+        help="Batch size for inference.",
+    )
+    parser.add_argument(
+        "--offload_activations",
+        action="store_true",
+        help="Offload activations to the cpu.",
     )
     parser.add_argument(
         "--log_wandb", action="store_true", help="Whether to log to wandb."
@@ -131,15 +120,6 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--device", type=str, default="cuda:0", help="Device to run on."
-    )
-    parser.add_argument(
-        "--nsamples", type=int, default=512, help="Number of calibration data samples."
-    )
-    parser.add_argument(
-        "--nsamples_val",
-        type=int,
-        default=16,
-        help="Number of validation data samples.",
     )
     parser.add_argument(
         "--update_every_n_tokens",
@@ -188,11 +168,6 @@ if __name__ == "__main__":
         help="Number of layers to put on the gpu at once.",
     )
     parser.add_argument(
-        "--add_bias",
-        action="store_true",
-        help="Add bias to the quantized layers.",
-    )
-    parser.add_argument(
         "--finetune_early_stop",
         type=int,
         default=5,
@@ -201,13 +176,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--finetune_lr",
         type=float,
-        default=1e-5,
+        default=1e-3,
         help="Finetuning learning rate",
-    )
-    parser.add_argument(
-        "--offload_activations",
-        action="store_true",
-        help="Offload activations to RAM to save GPU memory.",
     )
     parser.add_argument(
         "--finetune_adam_beta1",
@@ -218,7 +188,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--finetune_adam_beta2",
         type=float,
-        default=0.95,
+        default=0.999,
         help="Finetuning adam_beta2",
     )
     parser.add_argument("--finetune_keep_best", action="store_true")
@@ -234,20 +204,35 @@ if __name__ == "__main__":
         assert has_wandb, "wandb not installed try `pip install wandb`"
         wandb.init(config=args, project="post_training_quantization")
 
-    model = model_utils.get_llama(args.model)
-    model.seqlen = args.train_seqlen
-    dataloader, valloader, testloader = data.get_loaders(
-        args.dataset,
-        nsamples_train=args.nsamples,
-        nsamples_val=args.nsamples_val,
+
+    quantization_args = args_load.load(os.path.join(args.quantized_model_path, "args.yaml"))
+
+
+    model = model_utils.get_llama(quantization_args.model)
+
+    dataloader = data.get_loaders(
+        quantization_args.dataset,
+        # nsamples=128,
+        nsamples=quantization_args.nsamples_train + quantization_args.nsamples_val,
         seed=args.seed,
-        model=args.model,
-        seqlen=model.seqlen,
+        model=quantization_args.model,
+        seqlen=quantization_args.seqlen,
+        train_test="train",
     )
 
-    # model.seqlen = args.train_seqlen
+    if quantization_args.nsamples_val > 0:
+        indexs = np.random.permutation(len(dataloader))
+        train_idx, val_idx = indexs[quantization_args.nsamples_val :], indexs[: quantization_args.nsamples_val]
+        train_loader = [dataloader[i] for i in train_idx]
+        val_loader = [dataloader[i] for i in val_idx]
+        val_loader = resplit_loader(val_loader, args.train_seqlen)
+    else:
+        train_loader = dataloader
+        val_loader = None
 
-    # model.to(args.device)
+    train_loader = resplit_loader(train_loader, args.train_seqlen)
+    print("new train loader length", len(train_loader))
+    args.eval_every_samples = int(args.eval_every_samples * quantization_args.seqlen/args.train_seqlen) if args.eval_every_samples > 0 else -1
 
     if args.soft_labels:
         model.to(args.device)
@@ -257,39 +242,16 @@ if __name__ == "__main__":
     else:
         training_targets = None
 
-    # if args.nsamples_val > 0:
-    #     val_targets = get_target_model_outputs(model, valloader, args.device)
+    model, _ = load_model_from_checkpoints(args.quantized_model_path, model)
 
-    # print("traing targets", training_targets.shape)
-
-    # training_inputs, attention_mask = finetune.get_embedded(dataloader,
-    #                                         model,
-    #                                         args.device)
-    # print("training inputs", training_inputs.shape)
-
-    # if args.nsamples_val > 0:
-    #     val_inputs, _ = finetune.get_embedded(valloader,
-    #                                        model,
-    #                                        args.device)
-    #     print("val inputs", val_inputs.shape)
-
-    # swap the layers of the model
-    # model = swap_layers(model)
-    # print(model)
-
-    original_dtype = iter(model.parameters()).__next__().dtype
-    original_device = iter(model.parameters()).__next__().device
-    model = swap_layers(model)
+    model.seqlen = args.train_seqlen
+    model.to(args.device)
+    model.train()
 
     # set the following parameters to not have a gradient computed
     model.model.embed_tokens.weight.requires_grad = False
     model.lm_head.weight.requires_grad = False
 
-    # for each bin in the model_path
-    for path in glob.glob(os.path.join(args.model_path, "*.bin")):
-        print("loading", path)
-        model.load_state_dict(torch.load(path), strict=False)
-    print("original dtype", original_dtype)
     torch.cuda.empty_cache()
     free, total = torch.cuda.mem_get_info(int(args.device.split(":")[1]))
     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
@@ -309,10 +271,15 @@ if __name__ == "__main__":
 
         utils.recursive_apply(model, "process_old_importances", {})
     else:
-        utils.recursive_apply(model, "clean", {})
+        try:
+            utils.recursive_apply(model, "clean", {})
+        except:
+            pass
     model.to(args.device)
     free, total = torch.cuda.mem_get_info(int(args.device.split(":")[1]))
     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+    n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f"Number of trainable parameters: {n_params}")    
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=args.finetune_lr,
@@ -321,83 +288,47 @@ if __name__ == "__main__":
     )
 
     for epoch in range(args.finetune_epochs):
-        model.train()
-        # model.to(args.device)
-        model.seqlen = args.train_seqlen
-        use_cache = model.config.use_cache
-        model.config.use_cache = False
-        model.to(args.device)
-        finetune.finetune_end_to_end(
-            model=model,
-            optimizer=optimizer,
-            train_tokens=dataloader,
-            train_soft_labels=training_targets,
-            val_tokens=valloader if args.nsamples_val > 0 else None,
-            # partition_size = args.partition_size,
-            update_every_n_tokens=args.update_every_n_tokens,
-            log_wandb=args.log_wandb,
-            device=args.device,
-            discrete_update_fn=lambda model: utils.recursive_apply(
-                model, "update_discrete", {}
+
+        for i in range(0,len(train_loader), args.eval_every_samples if args.eval_every_samples > 0 else len(train_loader)):
+            model.train()
+            # model.to(args.device)
+            model.seqlen = args.train_seqlen
+            use_cache = model.config.use_cache
+            model.config.use_cache = False
+            model.to(args.device)
+            finetune.finetune_end_to_end(
+                model=model,
+                optimizer=optimizer,
+                train_tokens=train_loader[i:i+args.eval_every_samples],
+                train_soft_labels=training_targets[i:i+args.eval_every_samples] if args.soft_labels else None,
+                val_tokens=val_loader,
+                # partition_size = args.partition_size,
+                update_every_n_tokens=args.update_every_n_tokens,
+                log_wandb=args.log_wandb,
+                device=args.device,
+                discrete_update_fn=lambda model: utils.recursive_apply(
+                    model, "update_discrete", {}
+                )
+                if args.update_discrete
+                else None,
+                use_tqdm=True,
             )
-            if args.update_discrete
-            else None,
-        )
-        torch.cuda.empty_cache()
+            torch.cuda.empty_cache()
 
-        model.eval()
-        model.to(args.device)
-        model.seqlen = args.eval_seqlen
-        model.config.use_cache = use_cache
-        llama_eval(model, testloader, args.device, args.dataset, args.log_wandb)
-    # model.config.use_cache = use_cache
-    # model.to(args.device)
-    # # raise NotImplementedError("This script is not yet implemented.")
+            model.eval()
+            model.to(args.device)
+            model.seqlen = args.eval_seqlen
+            model.config.use_cache = use_cache
+            for dataset in args.eval_datasets:
 
-    # target_model = get_llama(args.model)
+                testloader = data.get_loaders(
+                    dataset, nsamples = 0, seqlen = args.eval_seqlen, model = quantization_args.model,
+                    train_test = "test")
+                
+                llama_eval(model, testloader, args.device, dataset, args.log_wandb,
+                           args.offload_activations, args.inference_batch_size)
 
-    # model.seqlen = 1024
-    # target_model.seqlen = 1024
-
-    # original_dtype = iter(model.parameters()).__next__().dtype
-    # original_device = iter(model.parameters()).__next__().device
-    # model = swap_layers(model)
-    # print(model)
-
-    # #set the following parameters to not have a gradient computed
-    # model.model.embed_tokens.weight.requires_grad = False
-    # model.lm_head.weight.requires_grad = False
-
-    # #for each bin in the model_path
-    # for path in glob.glob(os.path.join(args.model_path, "*.bin")):
-    #     model.load_state_dict(torch.load(path), strict=False)
-    # print("original dtype", original_dtype)
-    # model = model.to(args.device).to(torch.float16)
-    # target_model = target_model.to(args.device).to(torch.float16)
-    # print(model)
-    # print(model.config.pretraining_tp)
-    # dataloader, valloader, testloader = get_loaders(
-    #     args.dataset, nsamples_train=args.nsamples,
-    #     nsamples_val=args.nsamples_val,
-    #       seed=args.seed, model=args.model, seqlen=model.seqlen
-    # )
-
-    # if args.finetune_epochs > 0:
-    #     finetune.finetune_end_to_end(
-    #         model, target_model,
-    #         dataloader, args,
-    #         val_inps = None,
-    #         # discrete_update_fn = update_direcete,
-    #     )
-
-    # model.seqlen = 4096
-
-    # for dataset in ["wikitext2"]: #, "ptb", "c4"]:
-    #     dataloader, valloader, testloader = get_loaders(
-    #         dataset, seed=args.seed, model=args.model, seqlen=model.seqlen
-    #     )
-    #     print("Dataset:", dataset)
-    #     llama_eval(model, testloader, args.device, dataset, args.log_wandb)
-
-    # # if len(args.save)>0:
-    # #     model.save_pretrained(args.save)
+            
+            save_model_as_checkpoints(model, 
+                                    os.path.join(args.save_path, f"epoch_{epoch}_iter_{i}"),
+                                        args.quantized_model_path)

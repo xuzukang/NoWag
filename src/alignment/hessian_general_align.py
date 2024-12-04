@@ -76,12 +76,12 @@ def align(
 
     patience_counter = 0
     val_loss = None
-
+    print("val_hessian", val_hessian)
     for i in range(n_iters):
         optimizer.zero_grad()
         reconstructed_weights = compression_module.reconstruct()
         train_loss = loss(reconstructed_weights, original_weights, train_hessian)
-
+        # print(train_loss)
         if i % val_every == 0 and val_hessian is not None:
             with torch.no_grad():
                 val_reconstructed_weights = compression_module.reconstruct()
@@ -99,7 +99,7 @@ def align(
                     break
 
             if val_loss < low_bound:
-                print("early stopping")
+                print("early stopping low bound", low_bound, "val_loss",val_loss)
                 break
 
         if val_hessian is None:
@@ -112,7 +112,7 @@ def align(
                 if patience_counter == patience:
                     break
             if train_loss < low_bound:
-                print("early stopping")
+                print("early stopping low bound", low_bound, "train_loss",train_loss)
                 break
 
         train_loss.backward()

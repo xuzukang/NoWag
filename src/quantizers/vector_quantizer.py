@@ -133,8 +133,6 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
     ):
         weight_use = weight.clone()
         norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
-        print("norm_0", norm_0)
-        print("norm_1", norm_1)
         denormalize_matrix = torch.ones_like(weight_use)
         if norm_0 is not None:
             denormalize_matrix = denormalize_matrix * norm_0.unsqueeze(0)
@@ -252,7 +250,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                 weight_use.reshape(-1, d),
                 torch.zeros_like(weight_use).reshape(-1, d),
             )
-            # blank_quantizer.clean()
+            blank_quantizer.clean()
         return blank_quantizer
 
 

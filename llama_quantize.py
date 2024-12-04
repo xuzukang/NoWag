@@ -15,11 +15,13 @@ import numpy as np
 import src.finetune as finetune
 import src.finetune as finetune
 import os
+import yaml
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.linear_compress as linear_compress
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 import src.data as data
 import src.utils.utils as utils
+
 
 try:
     import wandb
@@ -70,6 +72,7 @@ def quantize(model, dataloader, dataloader_val, dev):
 
     model.model.embed_tokens = model.model.embed_tokens.to(dev)
     model.model.norm = model.model.norm.to(dev)
+    model.model.rotary_emb = model.model.rotary_emb.to(dev)
     layers[0] = layers[0].to(dev)
 
     dtype = next(iter(model.parameters())).dtype
@@ -81,7 +84,7 @@ def quantize(model, dataloader, dataloader_val, dev):
         device=dev if not args.offload_activations else "cpu"
     )
 
-    train_cache = {"i": 0, "attention_mask": None, "position_ids": None}
+    train_cache = {"i": 0, "kwargs": None}
 
     class Catcher(nn.Module):
         def __init__(self, module):
@@ -89,15 +92,16 @@ def quantize(model, dataloader, dataloader_val, dev):
             self.module = module
 
         def forward(self, inp, **kwargs):
+            # print(kwargs)
+            # raise Exception("stop")
             inps[train_cache["i"]] = inp if not args.offload_activations else inp.cpu()
             train_cache["i"] += 1
-            train_cache["attention_mask"] = kwargs["attention_mask"]
-            train_cache["position_ids"] = kwargs["position_ids"]
+            train_cache["kwargs"] = kwargs
             raise ValueError
 
     layers[0] = Catcher(layers[0])
     with torch.no_grad():
-        for batch in dataloader:
+        for batch in tqdm.tqdm(dataloader, desc="getting inputs", miniters=len(dataloader)//100):
             try:
                 model(batch[0].to(dev))
             except ValueError:
@@ -111,8 +115,7 @@ def quantize(model, dataloader, dataloader_val, dev):
             device=dev if not args.offload_activations else "cpu",
         )
 
-        val_cache = {"i": 0, "attention_mask": None, "position_ids": None}
-
+        val_cache = {"i": 0}
         class Catcher_val(nn.Module):
             def __init__(self, module):
                 super().__init__()
@@ -121,13 +124,12 @@ def quantize(model, dataloader, dataloader_val, dev):
             def forward(self, inp, **kwargs):
                 inps_val[val_cache["i"]] = inp if not args.offload_activations else inp.cpu()
                 val_cache["i"] += 1
-                val_cache["attention_mask"] = kwargs["attention_mask"]
-                val_cache["position_ids"] = kwargs["position_ids"]
                 raise ValueError
 
         layers[0] = Catcher_val(layers[0])
         with torch.no_grad():
-            for batch in dataloader_val:
+            for batch in tqdm.tqdm(dataloader_val, desc="getting val inputs", miniters=len(dataloader_val)//100):
+                # model(batch[0].to(dev))
                 try:
                     model(batch[0].to(dev))
                 except ValueError:
@@ -139,25 +141,20 @@ def quantize(model, dataloader, dataloader_val, dev):
     layers[0] = layers[0].cpu()
     model.model.embed_tokens = model.model.embed_tokens.cpu()
     model.model.norm = model.model.norm.cpu()
+    model.model.rotary_emb = model.model.rotary_emb.cpu()   
     torch.cuda.empty_cache()
 
     outs = torch.zeros_like(inps)
-    attention_mask = train_cache["attention_mask"]
-    position_ids = train_cache["position_ids"]
 
-    kwargs = {"attention_mask": attention_mask, "position_ids": position_ids}
+    kwargs = train_cache["kwargs"]
     free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
 
     for name in kwargs:
-        if kwargs[name] is not None:
+        if isinstance(kwargs[name], torch.Tensor):
             kwargs[name] = kwargs[name].to(dev)
-            if kwargs[name].dtype == torch.float16:
-                kwargs[name] = kwargs[name].to(dtype=torch.float16)
-            print(name, kwargs[name].shape, kwargs[name].device, kwargs[name].dtype)
+            # print(name, kwargs[name].device, kwargs[name].dtype, kwargs[name].shape)
 
-    print("position_ids", position_ids.shape)
-    print("attention_mask", attention_mask.shape)
 
     print("Ready.")
 
@@ -206,7 +203,10 @@ def quantize(model, dataloader, dataloader_val, dev):
             torch.cuda.empty_cache()
 
             # pass the inputs through the models:
-            inference_layer(layer, inps, outs, attention_mask=attention_mask, dev=dev, offload_activations=args.offload_activations)
+            inference_layer(layer, inps, outs, 
+                            layer_kwargs=kwargs, 
+                            dev=dev, offload_activations=args.offload_activations,
+                            batch_size=args.forward_pass_batch_size)
 
             # get the hessians
             train_hessians = {}
@@ -228,9 +228,10 @@ def quantize(model, dataloader, dataloader_val, dev):
                     layer,
                     inps_val,
                     val_outs,
-                    attention_mask=attention_mask,
+                    layer_kwargs=kwargs,
                     dev=dev,
                     offload_activations=args.offload_activations,
+                    batch_size=args.forward_pass_batch_size,
                 )
 
                 # get the hessians
@@ -275,7 +276,7 @@ def quantize(model, dataloader, dataloader_val, dev):
                     discrete_update_every=1,
                     clip_grad=args.clamp_gradients,
                     eps=1e-6,
-                    verbose=args.n_iters // 10,
+                    verbose=args.n_iters//10,
                     patience=10**6,
                 )
                 new_layer.clean()
@@ -306,17 +307,6 @@ def quantize(model, dataloader, dataloader_val, dev):
                 else None,
             )
 
-            # layer = layer.to(dtype=torch.float32)
-
-            # finetune_new.finetune_amp_eps_wrapper(
-            #     layer = layer,
-            #     train_inps = inps.to(dev).to(dtype = torch.float32),
-            #     train_outputs = outs.to(dev).to(dtype = torch.float32),
-            #     args = args,
-            #     layer_kwargs = kwargs,
-            #     early_stop_eps = 1e-6
-            # )
-            # free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
         print(
             "trying to convert back to original dtype, current dtype:", layer_dtype_orig
@@ -328,18 +318,19 @@ def quantize(model, dataloader, dataloader_val, dev):
         inference_layer(layer, 
                         inps, 
                         outs, 
-                        attention_mask=attention_mask, 
+                        layer_kwargs=kwargs, 
                         dev=dev, 
-                        offload_activations=args.offload_activations
-        )
+                        offload_activations=args.offload_activations,
+                        batch_size=args.forward_pass_batch_size)   
         if dataloader_val is not None:
             inference_layer(
                 layer,
                 inps_val,
                 val_outs,
-                attention_mask=attention_mask,
+                layer_kwargs=kwargs,
                 dev=dev,
                 offload_activations=args.offload_activations,
+                batch_size=args.forward_pass_batch_size,
             )
 
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
@@ -359,6 +350,7 @@ def quantize(model, dataloader, dataloader_val, dev):
         inps, outs = outs, inps
         # return
         # break
+        print("Done with layer", i, "total_time elapsed:", round(time.time() - tick), "estimated time left:", round((time.time() - tick) * (len(layers) - i - 1) / (i + 1)))
     model.config.use_cache = use_cache
 
     print("Total bits:", total_bits, "Total params:", total_params)
@@ -368,7 +360,6 @@ def quantize(model, dataloader, dataloader_val, dev):
 
 if __name__ == "__main__":
     import argparse
-    from datautils import *
 
     parser = argparse.ArgumentParser()
 
@@ -386,6 +377,9 @@ if __name__ == "__main__":
         "--device", type=str, default="cuda:0", help="Device to run on."
     )
     parser.add_argument(
+        "--seqlen", type=int, default=1024, help="Sequence length."
+    )
+    parser.add_argument(
         "--nsamples_train", type=int, default=128, help="Number of calibration data samples."
     )
     parser.add_argument(
@@ -393,6 +387,12 @@ if __name__ == "__main__":
         type=int,
         default=16,
         help="Number of samples to dedicate to validation.",
+    )
+    parser.add_argument(
+        "--forward_pass_batch_size",
+        type=int,
+        default=4,
+        help="Batch size for forward pass, parallel process these many sequences.",
     )
     parser.add_argument("--save_path", 
                         type=str, 
@@ -432,10 +432,6 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--clamp_gradients", type=float, default=0.1, help="Clamp gradients."
-    )
-
-    parser.add_argument(
-        "--quantize", action="store_true", help="Whether to quantize the model."
     )
     parser.add_argument(
         "--norm_order", type=int, nargs="+", default=[0, 1], help="Norm order."
@@ -514,20 +510,16 @@ if __name__ == "__main__":
         help="(finetuning only) Per-device and per-forward-pass batch size used to accumulate global --batch_size",
     )
     args = parser.parse_args()
-
     # init W&B logging
     if args.log_wandb:
         assert has_wandb, "wandb not installed try `pip install wandb`"
         wandb.init(config=args)
 
+    
+
     model = get_llama(args.model)
+    model.seqlen = args.seqlen
     model.eval()
-    print(model.seqlen)
-    # print the model parameter
-    print("model parameters")
-    for name, param in model.named_parameters():
-        print(name, param)
-        break
     # print("n samples val", args.nsamples_val)
     # raise Exception("stop")
 
@@ -538,10 +530,13 @@ if __name__ == "__main__":
     
     if args.save_path is not None:
         os.makedirs(args.save_path, exist_ok=True)
+        #save the args as a yaml file
+        with open(os.path.join(args.save_path, "args.yaml"), "w") as f:
+            yaml.dump(vars(args), f)
 
     dataloader = data.get_loaders(
         args.dataset,
-        nsamples_train=args.nsamples_train + args.nsamples_val,
+        nsamples=args.nsamples_train + args.nsamples_val,
         seed=args.seed,
         model=args.model,
         seqlen=model.seqlen,
@@ -549,9 +544,9 @@ if __name__ == "__main__":
     )
     tick = time.time()
     n_params = sum(p.numel() for p in model.parameters())
-    if args.n_samples_val is not None:
+    if args.nsamples_val > 0:
         indexs = np.random.permutation(len(dataloader))
-        train_idx, val_idx = indexs[args.n_samples_val :], indexs[: args.n_samples_val]
+        train_idx, val_idx = indexs[args.nsamples_val :], indexs[: args.nsamples_val]
         train_loader = [dataloader[i] for i in train_idx]
         val_loader = [dataloader[i] for i in val_idx]
     else:

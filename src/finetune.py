@@ -511,7 +511,7 @@ def finetune_end_to_end(
 
     total_loss = 0
     n_tokens = 0
-    for i in tqdm.tqdm(range(len(train_tokens)), disable=not use_tqdm):
+    for i in tqdm.tqdm(range(len(train_tokens)), disable=not use_tqdm, desc="Training", miniters=len(train_tokens) // 100):
         tokens = train_tokens[i][0].to(device)
         n_tokens += tokens.shape[1]
         # print("n_tokens", n_tokens, tokens.shape)
