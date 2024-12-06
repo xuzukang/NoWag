@@ -233,6 +233,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         return self.original_parameters
 
     def set_additional_attributes_as_trainable(self):
+        super(LinearQuantized, self).set_additional_attributes_as_trainable()
         for children in self.children():
             if hasattr(children, "set_additional_attributes_as_trainable"):
                 if callable(
@@ -241,6 +242,7 @@ class LinearQuantized(compress_parent.CompressorParent):
                     children.set_additional_attributes_as_trainable()
 
     def set_additional_attributes_as_non_trainable(self):
+        super(LinearQuantized, self).set_additional_attributes_as_non_trainable()
         for children in self.children():
             if hasattr(children, "set_additional_attributes_as_non_trainable"):
                 if callable(

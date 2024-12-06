@@ -17,5 +17,4 @@ python -u llama_quantize.py $MODEL_PATH pajama \
 python -u perplexity_eval.py \
 --checkpoint_path "$SAVE_PATH/128/quantized" \
 --datasets "wikitext2" "c4" \
---device cuda:6 \
---log_wandb
+--device cuda:6

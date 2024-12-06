@@ -69,15 +69,18 @@ def save_model_as_checkpoints(model, save_path, model_path):
     os.makedirs(save_path, exist_ok=True)
 
     #copy the params.yaml file from the model path over
-    os.system(f"cp {model_path}/params.yaml {save_path}/params.yaml")
+    os.system(f"cp {model_path}/args.yaml {save_path}/args.yaml")
 
     
-    for layer in model.model.layers:
+    for i,layer in enumerate(model.model.layers):
         torch.save(layer.state_dict(), os.path.join(save_path, f"layer_{i}.pt"))
     
 
-
-
+def add_optional_parameters(parser):
+    
+    parser.add_argument("--finetune_dataset", type=str, default = None, help = "Dataset to fine tune on, if not provided, the dataset used for quantization will be used.")
+    parser.add_argument("--finetune_nsamples_train", type=int, default = None, help = "Number of samples to fine tune on, if not provided, the entire dataset will be used.")
+    parser.add_argument("--finetune_nsamples_val", type=int, default = None, help = "Number of samples to validate on, if not provided, the entire dataset will be used.")
 if __name__ == "__main__":
     import argparse
 
@@ -192,6 +195,7 @@ if __name__ == "__main__":
         help="Finetuning adam_beta2",
     )
     parser.add_argument("--finetune_keep_best", action="store_true")
+    add_optional_parameters(parser)
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
@@ -211,9 +215,10 @@ if __name__ == "__main__":
     model = model_utils.get_llama(quantization_args.model)
 
     dataloader = data.get_loaders(
-        quantization_args.dataset,
+        quantization_args.dataset if args.finetune_dataset is None else args.finetune_dataset,
         # nsamples=128,
-        nsamples=quantization_args.nsamples_train + quantization_args.nsamples_val,
+        nsamples=(quantization_args.nsamples_train if args.finetune_nsamples_train is None else args.finetune_nsamples_train) +\
+            (quantization_args.nsamples_val if args.finetune_nsamples_val is None else args.finetune_nsamples_val),
         seed=args.seed,
         model=quantization_args.model,
         seqlen=quantization_args.seqlen,
@@ -250,7 +255,7 @@ if __name__ == "__main__":
 
     # set the following parameters to not have a gradient computed
     model.model.embed_tokens.weight.requires_grad = False
-    model.lm_head.weight.requires_grad = False
+    # model.lm_head.weight.requires_grad = False
 
     torch.cuda.empty_cache()
     free, total = torch.cuda.mem_get_info(int(args.device.split(":")[1]))

@@ -5,11 +5,13 @@ import copy
 from typing import Tuple, Optional, Union, List
 import src.utils.compress_parent as compress_parent
 import warnings
-
+import tqdm
 
 def loss(reconstructed_weights, original_weights, hessian):
     diff = original_weights - reconstructed_weights
     loss = torch.einsum("ij,jk,ik->", diff, hessian, diff)
+    # print("loss", loss)
+    # print("hessian", hessian)
     return loss
 
 
@@ -64,7 +66,9 @@ def align(
     # for name, param in compression_module.named_parameters():
     #     print(name, param.requires_grad, param.shape, param.numel())
     optimizer = torch.optim.Adam(compression_module.parameters(), lr=lr)
+    # print("lr_multiplier", lr_multiplier)
     if lr_multiplier < 1:
+        # print("reducing lr on plateau scheduler")
         lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
             optimizer, patience=patience_scheduler, factor=lr_multiplier
         )
@@ -76,7 +80,7 @@ def align(
 
     patience_counter = 0
     val_loss = None
-    print("val_hessian", val_hessian)
+    # print("val_hessian", val_hessian)
     for i in range(n_iters):
         optimizer.zero_grad()
         reconstructed_weights = compression_module.reconstruct()
@@ -133,7 +137,7 @@ def align(
 
         if verbose and i % verbose == 0:
             print(
-                f'iter {i}, train loss {train_loss.item()}, val loss {val_loss}, lr {optimizer.param_groups[0]["lr"]}'
+                f'iter {i}, train loss {train_loss.item()}, val loss {val_loss}, lr {round(optimizer.param_groups[0]["lr"], 6)}'
             )
 
     compression_module.load_state_dict(best_state_dict)
