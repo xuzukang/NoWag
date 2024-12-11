@@ -60,7 +60,7 @@ def inference_layer(layer:nn.Module,
     assert len(inps) == len(outs), "The number of inputs and outputs should be the same"
     # assert len(inps)%batch_size == 0, "The number of inputs should be divisible by the batch size"
     #check that the inps have the same 
-    print(inps.shape, "batch size", batch_size)
+    # print(inps.shape, "batch size", batch_size)
     for j in tqdm.tqdm(range(0, len(inps), batch_size), desc="Inference", miniters=len(inps)//100,
                           disable=disable_tqdm):
         # print(j, j+batch_size)

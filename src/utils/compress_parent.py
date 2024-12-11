@@ -16,7 +16,8 @@ class CompressorParent(nn.Module):
                 self.additional_active_attribute_names.append(name)
             else:
                 setattr(self, name, None)
-
+    def compress(self, **kwargs):
+        raise NotImplementedError
     def reconstruct(self):
         raise NotImplementedError
 

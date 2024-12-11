@@ -63,7 +63,7 @@ def finetune_fn(
 
 
 @torch.no_grad()
-def quantize(model, dataloader, dataloader_val, dev):
+def tensorize(model, dataloader, dataloader_val, dev):
     print("Starting...")
 
     use_cache = model.config.use_cache
@@ -214,6 +214,19 @@ def quantize(model, dataloader, dataloader_val, dev):
                 train_hessians[name] = getattr(
                     getattr(layer, name.split(".")[0]), name.split(".")[1]
                 ).dump_hessian()[0]
+
+            #some debug code remove later
+            weights = {}
+            for name in names:
+                weights[name] = getattr(
+                    getattr(layer, name.split(".")[0]), name.split(".")[1]
+                ).original_weight
+            
+            for name in names:
+                torch.save({"weight": weights[name], "hessian": train_hessians[name]}, f"layer_{i}_{name}.pt")
+            raise Exception("stop")
+
+
             # raise Exception("stop")
             if dataloader_val is not None:
                 print("val")
@@ -255,6 +268,7 @@ def quantize(model, dataloader, dataloader_val, dev):
                 )
                 new_layer.tensor_decompose(
                     N_qudits = args.N_qudits,
+                    fixed_qudits_shapes = args.fixed_qudits_shapes,
                     norm_order = args.norm_order,
                 )
                 new_layer.set_additional_attributes_as_trainable()
@@ -279,6 +293,7 @@ def quantize(model, dataloader, dataloader_val, dev):
                 new_layer.clean()
                 total_bits += new_layer.get_n_bits()
                 total_params += new_layer.get_n_original_parameters()
+                print("running bpv:", total_bits / total_params)
                 # raise Exception("stop")
             if args.fine_tune_quip_like and l != len(sequential) - 1:
                 raise Exception("Not supported anymore")
@@ -343,7 +358,7 @@ def quantize(model, dataloader, dataloader_val, dev):
         print("after cast to cpu")
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-
+        print("running bpv:", total_bits / total_params)
         inps, outs = outs, inps
         # return
         # break
@@ -406,6 +421,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--N_qudits", type=int, default=4, help="Number of qudits.")
+    parser.add_argument(
+        "--fixed_qudits_shapes", type=int, nargs="+", default=None, help="Fixed qudit shapes."  
+    )
     parser.add_argument(
         "--add_bias", action="store_true", help="Whether to add bias.")
     parser.add_argument(
@@ -548,5 +566,5 @@ if __name__ == "__main__":
     else:
         train_loader = dataloader
         val_loader = None
-    quantize(model, train_loader, val_loader, args.device)
+    tensorize(model, train_loader, val_loader, args.device)
     print("total time taken:", time.time() - tick)

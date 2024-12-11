@@ -1,0 +1,17 @@
+N_qudits: 3
+clip_grad: 0.1
+fixed_qudits_shapes:
+- 32
+low_bound: 1.0e-05
+lr: 0.01
+lr_multiplier: 0.3333333333333333
+n_iter: 2500
+n_iters_warmup_task: 1000
+norm_order:
+- 0
+- 1
+patience: 250
+patience_scheduler: 50
+seed: 0
+sparse_frac: 0.0
+verbose: 100

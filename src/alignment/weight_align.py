@@ -7,12 +7,8 @@ import src.utils.compress_parent as compress_parent
 import warnings
 import tqdm
 
-def loss(reconstructed_weights, original_weights, hessian):
-    diff = original_weights - reconstructed_weights
-    loss = torch.einsum("ij,jk,ik->", diff, hessian, diff)
-    # print("loss", loss)
-    # print("hessian", hessian)
-    return loss
+def loss(reconstructed_weights, original_weights):
+    return F.mse_loss(reconstructed_weights, original_weights)
 
 
 class dummy_lr_scheduler:
@@ -27,10 +23,8 @@ class dummy_lr_scheduler:
 def align(
     compression_module: compress_parent.CompressorParent,
     original_weights: torch.FloatTensor,
-    train_hessian: torch.FloatTensor,
-    val_hessian: Optional[torch.FloatTensor] = None,
     lr: float = 1e-3,
-    lr_norms: Optional[float] = None,    
+    lr_norms: Optional[float] = None,
     lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
     n_iters: int = 100,
     val_every: int = 1,
@@ -89,45 +83,25 @@ def align(
 
     patience_counter = 0
     val_loss = None
+    avg_weight = torch.mean(original_weights**2)
     # print("val_hessian", val_hessian)
     for i in range(n_iters):
         optimizer.zero_grad()
         reconstructed_weights = compression_module.reconstruct()
-        train_loss = loss(reconstructed_weights, original_weights, train_hessian)
+        train_loss = loss(reconstructed_weights, original_weights)
         # print(train_loss)
-        if i % val_every == 0 and val_hessian is not None:
-            with torch.no_grad():
-                val_reconstructed_weights = compression_module.reconstruct()
-                val_loss = loss(
-                    val_reconstructed_weights, original_weights, val_hessian
-                ).item()
-
-            if val_loss < best_loss - eps and val_loss > low_bound:
-                best_loss = val_loss
-                best_state_dict = copy.deepcopy(compression_module.state_dict())
-                patience_counter = 0
-            else:
-                patience_counter += 1
-                if patience_counter == patience:
-                    break
-
-            if val_loss < low_bound:
-                print("early stopping low bound", low_bound, "val_loss",val_loss)
+        
+        if train_loss < best_loss:
+            best_loss = train_loss.item()
+            best_state_dict = copy.deepcopy(compression_module.state_dict())
+            patience_counter = 0
+        else:
+            patience_counter += 1
+            if patience_counter == patience:
                 break
-
-        if val_hessian is None:
-            if train_loss < best_loss - eps and train_loss > low_bound:
-                best_loss = train_loss.item()
-                best_state_dict = copy.deepcopy(compression_module.state_dict())
-                patience_counter = 0
-            else:
-                patience_counter += 1
-                if patience_counter == patience:
-                    print("ran out of patience, patience used", patience)
-                    break
-            if train_loss < low_bound:
-                print("early stopping low bound", low_bound, "train_loss",train_loss)
-                break
+        if train_loss < low_bound:
+            print("early stopping low bound", low_bound, "train_loss", torch.sqrt(train_loss/avg_weight))
+            break
 
         train_loss.backward()
         if clip_grad > 0:
@@ -147,9 +121,9 @@ def align(
 
         if verbose and i % verbose == 0:
             print(
-                f'iter {i}/{n_iters}, train loss {train_loss.item()}, val loss {val_loss}, lr {round(optimizer.param_groups[0]["lr"], 6)}'
+                f'iter {i}, train loss {torch.sqrt(train_loss/avg_weight).item()}, lr {round(optimizer.param_groups[0]["lr"], 6)}'
             )
 
     compression_module.load_state_dict(best_state_dict)
-    print("hessian best loss", best_loss)
-    return compression_module, best_loss
+    print("best loss relative", torch.sqrt(best_loss/avg_weight).item(), "best loss absolute", best_loss)   
+    return compression_module, torch.sqrt(best_loss/avg_weight).item()

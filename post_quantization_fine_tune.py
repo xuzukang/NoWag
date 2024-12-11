@@ -31,14 +31,14 @@ import transformers
 
 @torch.no_grad()
 def get_target_model_outputs(
-    target_model: llama.LlamaForCausalLM, inputs: list[torch.LongTensor], device: str
+    target_model: llama.LlamaForCausalLM, inputs: list[torch.LongTensor], device: str, seqlen:int
 ):
     with torch.no_grad():
         target_model.eval()
 
         target_outs = torch.empty(
             len(inputs),
-            target_model.seqlen,
+            seqlen,
             target_model.config.vocab_size,
             device="cpu",
         )
@@ -241,12 +241,12 @@ if __name__ == "__main__":
 
     if args.soft_labels:
         model.to(args.device)
-        training_targets = get_target_model_outputs(model, dataloader, args.device)
+        training_targets = get_target_model_outputs(model, dataloader, args.device, args.train_seqlen)
         model.to("cpu")
         training_targets.to("cpu")
     else:
         training_targets = None
-
+    print("here")
     model, _ = load_model_from_checkpoints(args.quantized_model_path, model)
 
     model.seqlen = args.train_seqlen

@@ -6,7 +6,7 @@ import math
 import numpy as np
 import os
 import sys
-from typing import Tuple, Optional, Union, List
+from typing import Tuple, Optional, Union, List, Callable
 
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
@@ -14,6 +14,7 @@ if __name__ == "__main__":
 
 from src.quantizers.quantizer_parent import QuantizerParent
 import src.alignment.hessian_general_align as hessian_general_align
+import src.alignment.weight_align as weight_align
 import src.linear_compress as lc
 import src.utils.quantizer as quantizer_utils
 
@@ -21,11 +22,16 @@ import itertools
 import opt_einsum as oe
 from sympy import factorint
 import scipy as sp
+import cvxpy as cp
 
 def get_qudit_dimensions(d, N_qudits, fixed_qudit_dims:List[int] = []):
 
     #we assume that d is some power of 2 times 
-
+    assert len(fixed_qudit_dims) <= N_qudits
+    if len(fixed_qudit_dims) == N_qudits:
+        assert np.prod(fixed_qudit_dims) == d
+        return sorted(fixed_qudit_dims)
+    
     N_qudits_left = N_qudits - len(fixed_qudit_dims)
     assert d % np.prod(fixed_qudit_dims) == 0
     factors_raw = factorint(d//int(np.prod(fixed_qudit_dims)))
@@ -48,12 +54,16 @@ def get_qudit_dimensions(d, N_qudits, fixed_qudit_dims:List[int] = []):
             i2 -= 1
         i += 1
     # print(dimensions)
-    dimensions = fixed_qudit_dims + dimensions
+    dimensions = sorted(fixed_qudit_dims + dimensions)
     assert np.prod(dimensions) == d
-    print(dimensions)
+    # print(dimensions)
     return dimensions
 
-
+def n_pad(N, d):
+    if N % d == 0:
+        return 0
+    #find the number of padding needed to make N a multiple of d
+    return d - N % d
 
 def quanta_apply_einsum_expr(N):
     current_symbols_inds = list(range(N))
@@ -92,7 +102,7 @@ def initialize_gates(N,qubit_dimensions, layer_type, k_factor, W, device):
             new_gate = torch.randn(qubit_dimensions[dim1], qubit_dimensions[dim2], k_factor, qubit_dimensions[dim2]).to(device) * \
                 torch.mean(torch.abs(W))**(1/N)/(qubit_dimensions[dim1]*qubit_dimensions[dim2]*k_factor*qubit_dimensions[dim2])**0.25
         elif dim1 == -N and dim2 == -N + 1 and layer_type == "expand":
-            new_gate = torch.randn(k_factor, qubit_dimensions[dim2], qubit_dimensions[dim1], qubit_dimensions[dim1]).to(device) * \
+            new_gate = torch.randn(k_factor, qubit_dimensions[dim2], qubit_dimensions[dim1], qubit_dimensions[dim2]).to(device) * \
                 torch.mean(torch.abs(W))**(1/N)/(qubit_dimensions[dim1]*qubit_dimensions[dim2]*k_factor*qubit_dimensions[dim1])**0.25
         
         else:
@@ -104,14 +114,72 @@ def initialize_gates(N,qubit_dimensions, layer_type, k_factor, W, device):
         i -=1
     return gates
 
+
+def hardcoded_3_qubit_reconstruct(gates):
+    # gate_1 of shape i1,,i2,k1,k2
+    # gate_2 of shape k1,i3,j1,k3
+    # gate_3 of shape k2,k3,j2,j3
+
+    gate_3, gate_2, gate_1 = gates
+    i1, i2, k1, k2 = gate_1.shape
+    k1, i3, j1, k3 = gate_2.shape
+    k2, k3, j2, j3 = gate_3.shape
+
+    #multiply gate_2 and gate_3 along k_3
+    gate_23 = gate_2.reshape(k1 * i3 * j1, k3) @ cp.transpose(gate_3,(1,0,2,3)).reshape((k3, k2 * j2 * j3), order='C')
+    #shape k1*i3*j1, k2*j2*j3
+    gate_23 = cp.transpose(gate_23.reshape((k1, i3, j1, k2, j2, j3),order = 'C'),(0,3,1,2,4,5)) #shape (k1, k2, i3, j1, j2, j3)
+    gate_23 = gate_23.reshape((k1*k2, i3*j1*j2 * j3), order = 'C')
+    #multiply gate_1 and gate_23 along k_1*k_2
+    gate_123 = gate_1.reshape((i1*i2, k1*k2), order = 'C') @ gate_23
+    gate_123 = gate_123.reshape((i1, i2, i3, j1, j2, j3), order = 'C')
+    return gate_123
+
+
+
+
+def cvx_align_fn(gates:List[torch.FloatTensor],
+              reconstruction_expr:str,
+              reshape_fn:Callable[[torch.FloatTensor], torch.FloatTensor],
+              original_weight:torch.FloatTensor,
+              n_iters:int = 100):
+    
+    gates_np = [gate.detach().cpu().numpy() for gate in gates]
+    print([gate.shape for gate in gates_np])
+
+    for i in range(n_iters):
+        for j in range(len(gates)):
+            # gates_remaining = gates_np[:j] + gates_np[j+1:]
+
+            gate_parameter = cp.Variable(gates[j].shape)
+
+            print([type(g) for g in [gate_parameter if k == j else gate for k, gate in enumerate(gates_np)]])
+            objective = cp.Minimize(cp.sum_squares(original_weight - reshape_fn(hardcoded_3_qubit_reconstruct([gate_parameter if k == j else gate for k, gate in enumerate(gates_np)]), kwargs={"order":"C"})))
+            constraints = []
+
+            prob = cp.Problem(objective, constraints)
+            prob.solve(solver = cp.MOSEK, verbose=True)
+            gates_np[j] = gate_parameter.value
+            print(f"iter {i}, gate {j}, loss {prob.value/np.mean(original_weight**2)}")
+    return [torch.tensor(gate).to(gates[0].device) for gate in gates_np]
+
+
 class LinearTensorized(lc.LinearQuantized):
     tensorized:bool = False
     safe_forward:bool = True #if we do safe forward, then we will reconstruct the weight matrix before applying the forward pass
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # print("here")
 
+    def compress(self, **kwargs):
+        """Alias for tensor_decompose since that also just initializes them to random values"""
+        self.tensor_decompose(**kwargs)
+        
     def tensor_decompose(self, N_qudits:int,
                          fixed_qudits_shapes:List[int]=[],
-                         norm_order: List[int] = [0, 1]):
+                         norm_order: List[int] = [0, 1],
+                            **kwargs):
         """_summary_
 
         Args:
@@ -119,6 +187,7 @@ class LinearTensorized(lc.LinearQuantized):
             qudit_shapes (Optional[List[int]], optional): the shape of the qudits. Defaults to None.
             norm_order (List[int], optional): the order of the norms to use for normalization. Defaults to [0, 1].
         """
+        # print("weight shape", self.original_weight.shape)
         self.N_qudits = N_qudits
         self.N_gates = int(sp.special.comb(N_qudits, 2))
         norm_0, norm_1, weight_use = quantizer_utils.normalize(self.original_weight, norm_order)
@@ -128,31 +197,48 @@ class LinearTensorized(lc.LinearQuantized):
         if self.in_features > self.out_features:
 
             self.qudit_shapes = get_qudit_dimensions(self.out_features, N_qudits, fixed_qudits_shapes)
-            self.k_factor = int(self.in_features/np.prod(self.qudit_shapes[1:]))
-            assert self.in_features == np.prod(self.qudit_shapes[1:])*self.k_factor
+            self.pad_n = n_pad(self.in_features, np.prod(self.qudit_shapes[1:]))
+            print("paddding", self.pad_n)
+            self.k_factor = int((self.in_features+self.pad_n)/np.prod(self.qudit_shapes[1:]))
+            # assert self.in_features == np.prod(self.qudit_shapes[1:])*self.k_factor
             self.layer_type = "compress"
+
+            if self.pad_n > 0:
+                self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features, self.in_features + self.pad_n), **kwargs)[:,:-self.pad_n]
+
 
         elif self.in_features < self.out_features:
             self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
-            self.k_factor = int(self.out_features/np.prod(self.qudit_shapes[1:]))
-            assert self.out_features == np.prod(self.qudit_shapes[1:])*self.k_factor
+            self.pad_n = n_pad(self.out_features, np.prod(self.qudit_shapes[1:]))
+            print("paddding", self.pad_n)
+            self.k_factor = int((self.out_features + self.pad_n)/np.prod(self.qudit_shapes[1:]))
+            # print(self.k_factor)
+            # assert self.out_features == np.prod(self.qudit_shapes[1:])*self.k_factor
             self.layer_type = "expand"
+            if self.pad_n > 0:
+                self.reshape_fn = lambda x,kwargs={} : x.reshape((self.out_features + self.pad_n, self.in_features),**kwargs)[:-self.pad_n,:]
 
         else:
 
             self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
+            # print(self.qudit_shapes)
             self.layer_type = "square"
             self.k_factor = 1
+
+        if not hasattr(self, "reshape_fn"):
+            self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features, self.in_features), **kwargs)
 
         self.N_qudits = N_qudits
         self.gates = nn.ParameterList(
             [nn.Parameter(gate) for gate in 
             initialize_gates(N_qudits, self.qudit_shapes, self.layer_type, self.k_factor, weight_use, self.original_weight.device)]
         )
-        
+        # print([gate.shape for gate in self.gates])
+        # raise NotImplementedError("The rest of the tensor decompose is not implemented yet")
 
         self.reconstruct_expr = quanta_op_einsum_expr(N_qudits)
         self.apply_expr = quanta_apply_einsum_expr(N_qudits)
+
         self.tensorized = True
 
     def reconstruct(self)->torch.FloatTensor:
@@ -161,8 +247,10 @@ class LinearTensorized(lc.LinearQuantized):
             return self.original_weight
         
         #otherwise, use the reconstruct
-        reconstructed_weight = torch.einsum(self.reconstruct_expr, *self.gates).reshape(self.out_features, self.in_features)
-
+        # print(self.reconstruct_expr)
+        # print([gate.shape for gate in self.gates])
+        reconstructed_weight = self.reshape_fn(torch.einsum(self.reconstruct_expr, *self.gates))
+                    
         if self.norm_0 is not None:
             # print(self.norm_0.requires_grad)
             reconstructed_weight = reconstructed_weight * self.norm_0.unsqueeze(0)
@@ -176,8 +264,12 @@ class LinearTensorized(lc.LinearQuantized):
         self,
         val_hessian: Optional[torch.FloatTensor] = None,
         lr: float = 1e-3,
+        lr_norms: Optional[float] = None,
         lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
-        n_iters: int = 100,
+        lr_warmup: Optional[float] = None,
+        lr_norms_warmup: Optional[float] = None,
+        n_iter: int = 100,
+        n_iters_warmup_task: int = 0,
         val_every: int = 1,
         discrete_update_every: int = 1,
         clip_grad: float = -1,
@@ -186,6 +278,7 @@ class LinearTensorized(lc.LinearQuantized):
         patience: int = 10,
         patience_scheduler: int = 2,
         eps: float = 1e-5,
+        **kwargs
     ):
         
         """aligns the compression module to the hessian of the training dataset
@@ -204,15 +297,39 @@ class LinearTensorized(lc.LinearQuantized):
             eps (float, optional): the minimum improvement in the loss to consider it as an improvement. Defaults to 1e-5.
 
         """
+        
+        if not self.tensorized:
+            raise ValueError("The module is not tensorized, so we can't align it")
+        
+        if n_iters_warmup_task > 0:
+            weight_align.align(
+                compression_module=self,
+                original_weights=self.original_weight,
+                lr=lr if lr_warmup is None else lr_warmup,
+                lr_norms=lr_norms if lr_norms_warmup is None else lr_norms_warmup,
+                lr_multiplier=lr_multiplier,
+                n_iters=n_iters_warmup_task,
+                val_every=val_every,
+                discrete_update_every=discrete_update_every,
+                clip_grad=clip_grad,
+                verbose=verbose,
+                low_bound=low_bound,
+                patience=patience,
+                patience_scheduler=patience_scheduler,
+                eps=eps,
+            )
+        
+        
 
-        hessian_general_align.align(
+        _, best_loss = hessian_general_align.align(
             compression_module=self,
             original_weights=self.original_weight,
             train_hessian=self.hessian,
             val_hessian=val_hessian,
             lr=lr,
+            lr_norms=lr_norms,
             lr_multiplier=lr_multiplier,
-            n_iters=n_iters,
+            n_iters=n_iter,
             val_every=val_every,
             discrete_update_every=discrete_update_every,
             clip_grad=clip_grad,
@@ -222,6 +339,9 @@ class LinearTensorized(lc.LinearQuantized):
             patience_scheduler=patience_scheduler,
             eps=eps,
         )
+        return best_loss
+
+
 
     def forward(self, x: torch.FloatTensor) -> torch.FloatTensor:
         if self.log_hessian_flag:
@@ -258,6 +378,83 @@ class LinearTensorized(lc.LinearQuantized):
             n_bits += self.original_bias.numel()*16
 
         return n_bits
+    
+    
+def find_threshold(W, zero_out_top:float,eps=1e-6):
+    
+    threshold = torch.mean(W)
+    search_range = [0,torch.max(W)]
+    #perform binary search to find the threshold
+    for i in range(100):
+        mask = W > threshold
+        n_zeros = torch.sum(mask).item()
+        if n_zeros > int(zero_out_top*W.numel()) + 1:
+            search_range[0] = threshold
+            threshold_ = (search_range[0] + search_range[1])/2
+        elif n_zeros < int(zero_out_top*W.numel())-1:
+            search_range[1] = threshold
+            threshold_ = (search_range[0] + search_range[1])/2
+        
+        if abs(threshold-threshold_) < eps:
+            break
+        threshold = threshold_
+    return threshold
+
+
+
+class LinearTensorizedWithSparse(LinearTensorized):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sparse = True
+
+    def tensor_decompose(self, N_qudits:int,
+                         fixed_qudits_shapes:List[int]=[],
+                         norm_order: List[int] = [0, 1],
+                         sparse_frac:float = 0.01,
+                            **kwargs):
+        """_summary_
+
+        Args:
+            N_qudits (int): the number of qudits to decompose the tensor into
+            qudit_shapes (Optional[List[int]], optional): the shape of the qudits. Defaults to None.
+            norm_order (List[int], optional): the order of the norms to use for normalization. Defaults to [0, 1].
+            sparsity (float, optional): the sparsity of the gates. Defaults to 0.01.
+        """
+        # print("weight shape", self.original_weight.shape
+        super().tensor_decompose(N_qudits, fixed_qudits_shapes, norm_order)
+        
+        print("sparsity", sparse_frac)
+
+        threshold = find_threshold(torch.abs(self.original_weight), sparse_frac)
+        # print(threshold)
+        
+        mask = torch.abs(self.original_weight) > threshold
+        self.register_buffer("mask", mask)
+    
+        
+        self.sparse_weights = nn.Parameter(self.original_weight[self.mask])
+        print(self.sparse_weights.numel()/self.original_weight.numel())
+        
+    def reconstruct(self)->torch.FloatTensor:
+        reconstruct_weight = super().reconstruct()
+        reconstruct_weight[self.mask] = self.sparse_weights
+        return reconstruct_weight
+    
+    def get_n_bits(self):
+        nbits = super().get_n_bits()
+        
+        nse = torch.sum(self.mask)
+        nrows = self.out_features
+        n_indicies_bits = torch.ceil(torch.log2(max(nse, nrows)))
+        nbits += ((nrows * n_indicies_bits + (n_indicies_bits + 16)*nse)).item()
+        return nbits
+        
+        
+    
+            
+
+
+
 
 
 if __name__ == "__main__":
@@ -266,28 +463,53 @@ if __name__ == "__main__":
     torch.cuda.random.manual_seed(0)
 
     device = torch.device("cuda:1")
-    data = torch.load("test/weights_hessian.pt")
-    W = data["weights"].to(device)
-    hessian = data["hessian"].to(device)
+    data = torch.load("/data/lliu/huffman/layer_0_self_attn.q_proj.pt")
+    # data = torch.load("/data/lliu/huffman/layer_0_mlp.gate_proj.pt")
+    W = data["weight"].to(device).to(torch.float32)
+    # W = torch.load("test/remaining_W_error.pt").detach().to(device)
+    # print(W.shape)
+    # W = W[4096:4096*2,:]
+     
+    hessian = data["hessian"].to(device).to(torch.float32)
     print(W.shape)
+    print(hessian)
+    # W = torch.randn((11008,4096)).to(device)
 
     linear = LinearTensorized(W, bias=None)
-    linear.hessian = hessian/ hessian.shape[0]
+    linear.hessian = hessian#/ hessian.shape[0]
 
-    linear.tensor_decompose(3, fixed_qudits_shapes=[64])
+    linear.tensor_decompose(3, fixed_qudits_shapes=[64], norm_order=[0,1])
     linear.set_additional_attributes_as_trainable()
-    print(linear.get_n_bits()/16/linear.get_n_original_parameters()*100)
+    print(linear.qudit_shapes)
+    print([gate.shape for gate in linear.gates])
+    print(
+        f"remaining parameter fraction: {round(linear.get_n_bits()/16/linear.get_n_original_parameters()*100, 2)}% bpv: {linear.get_n_bits()/linear.get_n_original_parameters()}")
 
+    assert linear.reconstruct().shape == W.shape
     linear.align(
-        None,
         lr=1e-2,
+        lr_norms=None,
+        lr_warmup=1e-1,
+        lr_norms_warmup=None,
         n_iters=2500,
+        n_iters_warmup_task=0,
         lr_multiplier=1/3,
         clip_grad=1e-1,
         verbose=250,
         patience_scheduler=100,
         patience=-1
     )
+    # linear.align(
+    #     hessian_align=True,
+    #     lr=1e-2,
+    #     lr_norms=1e-2,
+    #     n_iters=2500,
+    #     lr_multiplier=1/3,
+    #     clip_grad=1e-1,
+    #     verbose=250,
+    #     patience_scheduler=100,
+    #     patience=-1
+    # )
 
 
 

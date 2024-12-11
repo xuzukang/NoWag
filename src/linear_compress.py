@@ -137,6 +137,10 @@ class LinearQuantized(compress_parent.CompressorParent):
         # W = self.reconstruct()
         return F.linear(x, self.reconstruct(), self.original_bias)
 
+    def compress(self, **kwargs):
+        """compress the weights"""
+        self.quantize(**kwargs)
+
     def quantize(self, quantizer_class: QuantizerParent, **kwargs):
         """quantize the weights"""
         self.quantizer = quantizer_class.quantize(
@@ -165,6 +169,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         patience: int = 10,
         patience_scheduler: int = 2,
         eps: float = 1e-5,
+        **kwargs,
     ):
         """aligns the compression module to the hessian of the training dataset
 
@@ -183,7 +188,7 @@ class LinearQuantized(compress_parent.CompressorParent):
 
         """
 
-        hessian_general_align.align(
+        _, best_loss = hessian_general_align.align(
             compression_module=self,
             original_weights=self.original_weight,
             train_hessian=self.hessian,
@@ -200,6 +205,7 @@ class LinearQuantized(compress_parent.CompressorParent):
             patience_scheduler=patience_scheduler,
             eps=eps,
         )
+        return best_loss
 
     def update_discrete(self):
         """updates the discrete values of the quantizer"""

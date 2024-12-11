@@ -84,7 +84,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
     def update_discrete(self):
         with torch.no_grad():
             reference_importances = self.reference_importances
-
+            # print("updating")
             self.codes = quantizer_utils.cluster_e_step(
                 self.reference_weight, self.codebook, reference_importances
             )
@@ -130,6 +130,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         n_iter: int = 100,
         initialize_method: Literal["grid", "kmeans"] = "kmeans",
         norm_order: list[int] = [0, 1],
+        **kwargs,
     ):
         weight_use = weight.clone()
         norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
@@ -150,7 +151,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
 
         weight_subvectors = weight_use.reshape(-1, d)
         n_subvectors = weight_subvectors.shape[0]
-        n_centriods = 2 ** (n_bits * d)
+        n_centriods = 2 ** (int(n_bits * d))
         print(n_centriods)
 
         if initialize_method == "grid":
@@ -237,7 +238,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                 weight_use, norm_order
             )
 
-            codebook = torch.zeros(2 ** (n_bits * d), d).to(weight.device)
+            codebook = torch.zeros(2 ** (int(n_bits * d)), d).to(weight.device)
             codes = torch.zeros(
                 (weight.shape[0] * weight.shape[1]) // d, dtype=torch.long
             ).to(weight.device)
@@ -343,8 +344,8 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
 
             weight_subvectors = weight_use.reshape(-1, d)
             n_subvectors = weight_subvectors.shape[0]
-            n_centriods = 2 ** (n_bits * d)
-            # print(n_centriods)
+            n_centriods = 2 ** (int(n_bits * d))
+            print("n_centriods", n_centriods)
 
             if initialize_method == "grid":
                 grid_points = []
@@ -458,13 +459,13 @@ if __name__ == "__main__":
     torch.cuda.random.manual_seed(0)
 
     device = torch.device("cuda:1")
-    data = torch.load("test/weights_hessian.pt")
-    W = data["weights"].to(device)
-    hessian = data["hessian"].to(device)
+    data = torch.load("/data/lliu/huffman/layer_0_mlp.gate_proj.pt")
+    W = data["weight"].to(device).to(torch.float32)
+    hessian = data["hessian"].to(device).to(torch.float32)
     print(W.shape)
 
     vq = VectorQuantizer.quantize(
-        W, hessian, d=4, n_bits=2, n_iter=100, initialize_method="kmeans"
+        W, hessian, d=8, n_bits=1, n_iter=100, initialize_method="kmeans"
     )
     print(vq.get_n_bits() / vq.get_n_original_parameters())
     vq.set_additional_attributes_as_trainable()
@@ -475,7 +476,7 @@ if __name__ == "__main__":
     # sys.path.append(os.getcwd())
     import src.alignment.hessian_general_align as hessian_general_align
 
-    hessian_use = hessian / hessian.shape[0]
+    hessian_use = hessian
     # hessian_use = torch.eye(W.shape[0]).to(W.device)
     hessian_general_align.align(
         vq,
@@ -485,14 +486,14 @@ if __name__ == "__main__":
         n_iters=100,
         val_every=-1,
         patience=100,
-        patience_scheduler=1,
+        patience_scheduler=5,
         eps=1e-4,
         lr=1e-3,
         low_bound=1e-6,
         clip_grad=1e-1,
         discrete_update_every=1,
-        lr_multiplier=0.9,
-        verbose=10,
+        lr_multiplier=1,
+        verbose=1,
     )
     print("norm_0", vq.norms_0)
     print("norm_1", vq.norms_1)
@@ -500,3 +501,6 @@ if __name__ == "__main__":
     vq.clean()
     vq.to(torch.float16)
     print(vq().dtype)
+    
+    remaining_W_error = W - vq()
+    torch.save( remaining_W_error,"test/remaining_W_error.pt")

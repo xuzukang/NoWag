@@ -4,3 +4,5 @@ wandb/*
 models/*
 debug/*
 quantized_models/*
+*.pt
+logs/parallel_compress/*

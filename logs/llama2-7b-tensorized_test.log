@@ -2909,3 +2909,462 @@ iter 250, train loss 1163.9141845703125, val loss None, lr 0.01
 iter 500, train loss 983.707275390625, val loss None, lr 0.01
 iter 750, train loss 982.137939453125, val loss None, lr 0.003333
 iter 1000, train loss 889.02978515625, val loss None, lr 0.001111
+iter 1250, train loss 878.1813354492188, val loss None, lr 0.001111
+iter 1500, train loss 869.2924194335938, val loss None, lr 0.001111
+iter 1750, train loss 860.9971923828125, val loss None, lr 0.00037
+iter 2000, train loss 856.2770385742188, val loss None, lr 0.00037
+iter 2250, train loss 853.000732421875, val loss None, lr 0.00037
+best loss 849.4716796875
+layer27: mlp.up_proj
+iter 0, train loss 36311.625, val loss None, lr 0.01
+iter 250, train loss 922.926025390625, val loss None, lr 0.01
+iter 500, train loss 842.8143310546875, val loss None, lr 0.01
+iter 750, train loss 822.5709228515625, val loss None, lr 0.01
+iter 1000, train loss 779.2158813476562, val loss None, lr 0.003333
+iter 1250, train loss 757.712158203125, val loss None, lr 0.001111
+iter 1500, train loss 752.469970703125, val loss None, lr 0.001111
+iter 1750, train loss 748.24755859375, val loss None, lr 0.001111
+iter 2000, train loss 744.4921875, val loss None, lr 0.00037
+iter 2250, train loss 741.3029174804688, val loss None, lr 0.00037
+best loss 739.1041259765625
+layer27: mlp.down_proj
+iter 0, train loss 1154.35009765625, val loss None, lr 0.01
+iter 250, train loss 33.62165832519531, val loss None, lr 0.01
+iter 500, train loss 28.606245040893555, val loss None, lr 0.01
+iter 750, train loss 26.071563720703125, val loss None, lr 0.01
+iter 1000, train loss 24.714691162109375, val loss None, lr 0.003333
+iter 1250, train loss 24.396255493164062, val loss None, lr 0.003333
+iter 1500, train loss 23.784404754638672, val loss None, lr 0.001111
+iter 1750, train loss 23.609066009521484, val loss None, lr 0.001111
+iter 2000, train loss 23.457134246826172, val loss None, lr 0.001111
+iter 2250, train loss 23.298891067504883, val loss None, lr 0.001111
+best loss 23.092924118041992
+13489 MiB free out of 48676 MiB total
+trying to convert back to original dtype, current dtype: torch.float16
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:06,  4.76it/s]Inference:   6%|▋         | 2/32 [00:00<00:06,  4.33it/s]Inference:   9%|▉         | 3/32 [00:00<00:06,  4.20it/s]Inference:  12%|█▎        | 4/32 [00:00<00:06,  4.12it/s]Inference:  16%|█▌        | 5/32 [00:01<00:06,  4.09it/s]Inference:  19%|█▉        | 6/32 [00:01<00:06,  4.07it/s]Inference:  22%|██▏       | 7/32 [00:01<00:06,  4.07it/s]Inference:  25%|██▌       | 8/32 [00:01<00:05,  4.07it/s]Inference:  28%|██▊       | 9/32 [00:02<00:05,  4.07it/s]Inference:  31%|███▏      | 10/32 [00:02<00:05,  4.06it/s]Inference:  34%|███▍      | 11/32 [00:02<00:05,  4.06it/s]Inference:  38%|███▊      | 12/32 [00:02<00:04,  4.04it/s]Inference:  41%|████      | 13/32 [00:03<00:04,  4.05it/s]Inference:  44%|████▍     | 14/32 [00:03<00:04,  4.04it/s]Inference:  47%|████▋     | 15/32 [00:03<00:04,  4.06it/s]Inference:  50%|█████     | 16/32 [00:03<00:03,  4.08it/s]Inference:  53%|█████▎    | 17/32 [00:04<00:03,  4.08it/s]Inference:  56%|█████▋    | 18/32 [00:04<00:03,  4.06it/s]Inference:  59%|█████▉    | 19/32 [00:04<00:03,  4.07it/s]Inference:  62%|██████▎   | 20/32 [00:04<00:02,  4.12it/s]Inference:  66%|██████▌   | 21/32 [00:05<00:02,  4.14it/s]Inference:  69%|██████▉   | 22/32 [00:05<00:02,  4.10it/s]Inference:  72%|███████▏  | 23/32 [00:05<00:02,  4.09it/s]Inference:  75%|███████▌  | 24/32 [00:05<00:01,  4.09it/s]Inference:  78%|███████▊  | 25/32 [00:06<00:01,  4.11it/s]Inference:  81%|████████▏ | 26/32 [00:06<00:01,  4.10it/s]Inference:  84%|████████▍ | 27/32 [00:06<00:01,  4.09it/s]Inference:  88%|████████▊ | 28/32 [00:06<00:00,  4.08it/s]Inference:  91%|█████████ | 29/32 [00:07<00:00,  4.08it/s]Inference:  94%|█████████▍| 30/32 [00:07<00:00,  4.07it/s]Inference:  97%|█████████▋| 31/32 [00:07<00:00,  4.07it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.06it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.09it/s]
+8249 MiB free out of 48676 MiB total
+Saved layer 27 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/no_finetune2/layer_27.pt
+after cast to cpu
+12265 MiB free out of 48676 MiB total
+Done with layer 27 total_time elapsed: 26431 estimated time left: 3776
+layer original dtype torch.float16
+sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=11008, out_features=4096, bias=False)
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.91it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.90it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.89it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.89it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.89it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.89it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.89it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.90it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.90it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.89it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.89it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.89it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.89it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.89it/s]Inference:  47%|████▋     | 15/32 [00:07<00:09,  1.89it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.90it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.89it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.89it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.89it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.89it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.89it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.89it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.90it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.89it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.89it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.88it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.89it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.89it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.89it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.89it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.89it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.90it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.89it/s]
+layer28: self_attn.q_proj
+iter 0, train loss 184619.265625, val loss None, lr 0.01
+iter 250, train loss 680.7969970703125, val loss None, lr 0.01
+iter 500, train loss 713.9197998046875, val loss None, lr 0.01
+iter 750, train loss 492.8272705078125, val loss None, lr 0.003333
+iter 1000, train loss 478.31317138671875, val loss None, lr 0.003333
+iter 1250, train loss 428.6089782714844, val loss None, lr 0.001111
+iter 1500, train loss 417.60235595703125, val loss None, lr 0.001111
+iter 1750, train loss 408.2976379394531, val loss None, lr 0.001111
+iter 2000, train loss 403.90618896484375, val loss None, lr 0.001111
+iter 2250, train loss 395.56439208984375, val loss None, lr 0.001111
+best loss 391.3973388671875
+layer28: self_attn.k_proj
+iter 0, train loss 225643.90625, val loss None, lr 0.01
+iter 250, train loss 827.7646484375, val loss None, lr 0.01
+iter 500, train loss 686.2822265625, val loss None, lr 0.01
+iter 750, train loss 556.4739990234375, val loss None, lr 0.003333
+iter 1000, train loss 460.5302429199219, val loss None, lr 0.003333
+iter 1250, train loss 427.58514404296875, val loss None, lr 0.001111
+iter 1500, train loss 426.12890625, val loss None, lr 0.001111
+iter 1750, train loss 413.411865234375, val loss None, lr 0.001111
+iter 2000, train loss 408.25421142578125, val loss None, lr 0.001111
+iter 2250, train loss 397.9775085449219, val loss None, lr 0.001111
+best loss 389.1253356933594
+layer28: self_attn.v_proj
+iter 0, train loss 13450.3935546875, val loss None, lr 0.01
+iter 250, train loss 340.20477294921875, val loss None, lr 0.01
+iter 500, train loss 307.267578125, val loss None, lr 0.01
+iter 750, train loss 331.8834533691406, val loss None, lr 0.01
+iter 1000, train loss 266.9203186035156, val loss None, lr 0.003333
+iter 1250, train loss 259.3229675292969, val loss None, lr 0.001111
+iter 1500, train loss 256.76312255859375, val loss None, lr 0.001111
+iter 1750, train loss 254.5782928466797, val loss None, lr 0.001111
+iter 2000, train loss 252.59707641601562, val loss None, lr 0.001111
+iter 2250, train loss 250.71414184570312, val loss None, lr 0.00037
+best loss 249.14100646972656
+layer28: self_attn.o_proj
+iter 0, train loss 20808.318359375, val loss None, lr 0.01
+iter 250, train loss 356.5656433105469, val loss None, lr 0.01
+iter 500, train loss 304.5155334472656, val loss None, lr 0.01
+iter 750, train loss 283.0574035644531, val loss None, lr 0.01
+iter 1000, train loss 257.3455810546875, val loss None, lr 0.003333
+iter 1250, train loss 239.044921875, val loss None, lr 0.001111
+iter 1500, train loss 234.08721923828125, val loss None, lr 0.001111
+iter 1750, train loss 230.9303436279297, val loss None, lr 0.001111
+iter 2000, train loss 229.1126708984375, val loss None, lr 0.001111
+iter 2250, train loss 227.1552734375, val loss None, lr 0.001111
+best loss 225.5062713623047
+layer28: mlp.gate_proj
+iter 0, train loss 70438.78125, val loss None, lr 0.01
+iter 250, train loss 1087.1961669921875, val loss None, lr 0.01
+iter 500, train loss 986.34765625, val loss None, lr 0.01
+iter 750, train loss 964.3624267578125, val loss None, lr 0.01
+iter 1000, train loss 866.9444580078125, val loss None, lr 0.003333
+iter 1250, train loss 842.4700927734375, val loss None, lr 0.001111
+iter 1500, train loss 834.1888427734375, val loss None, lr 0.001111
+iter 1750, train loss 828.0044555664062, val loss None, lr 0.001111
+iter 2000, train loss 822.2592163085938, val loss None, lr 0.001111
+iter 2250, train loss 815.0447998046875, val loss None, lr 0.00037
+best loss 811.6983032226562
+layer28: mlp.up_proj
+iter 0, train loss 57753.1484375, val loss None, lr 0.01
+iter 250, train loss 1025.556396484375, val loss None, lr 0.01
+iter 500, train loss 1044.14208984375, val loss None, lr 0.01
+iter 750, train loss 840.7853393554688, val loss None, lr 0.01
+iter 1000, train loss 879.3736572265625, val loss None, lr 0.01
+iter 1250, train loss 801.6812744140625, val loss None, lr 0.01
+iter 1500, train loss 750.8897094726562, val loss None, lr 0.001111
+iter 1750, train loss 742.1614990234375, val loss None, lr 0.001111
+iter 2000, train loss 736.4877319335938, val loss None, lr 0.001111
+iter 2250, train loss 732.6982421875, val loss None, lr 0.001111
+best loss 729.6494750976562
+layer28: mlp.down_proj
+iter 0, train loss 2191.420654296875, val loss None, lr 0.01
+iter 250, train loss 43.391483306884766, val loss None, lr 0.01
+iter 500, train loss 40.766319274902344, val loss None, lr 0.01
+iter 750, train loss 36.22517776489258, val loss None, lr 0.01
+iter 1000, train loss 35.56218719482422, val loss None, lr 0.01
+iter 1250, train loss 31.696950912475586, val loss None, lr 0.003333
+iter 1500, train loss 30.63698959350586, val loss None, lr 0.001111
+iter 1750, train loss 30.302715301513672, val loss None, lr 0.001111
+iter 2000, train loss 30.042041778564453, val loss None, lr 0.001111
+iter 2250, train loss 31.000511169433594, val loss None, lr 0.001111
+best loss 29.473697662353516
+12265 MiB free out of 48676 MiB total
+trying to convert back to original dtype, current dtype: torch.float16
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:06,  4.77it/s]Inference:   6%|▋         | 2/32 [00:00<00:06,  4.33it/s]Inference:   9%|▉         | 3/32 [00:00<00:06,  4.22it/s]Inference:  12%|█▎        | 4/32 [00:00<00:06,  4.15it/s]Inference:  16%|█▌        | 5/32 [00:01<00:06,  4.13it/s]Inference:  19%|█▉        | 6/32 [00:01<00:06,  4.10it/s]Inference:  22%|██▏       | 7/32 [00:01<00:06,  4.10it/s]Inference:  25%|██▌       | 8/32 [00:01<00:05,  4.09it/s]Inference:  28%|██▊       | 9/32 [00:02<00:05,  4.11it/s]Inference:  31%|███▏      | 10/32 [00:02<00:05,  4.12it/s]Inference:  34%|███▍      | 11/32 [00:02<00:05,  4.10it/s]Inference:  38%|███▊      | 12/32 [00:02<00:04,  4.09it/s]Inference:  41%|████      | 13/32 [00:03<00:04,  4.08it/s]Inference:  44%|████▍     | 14/32 [00:03<00:04,  4.07it/s]Inference:  47%|████▋     | 15/32 [00:03<00:04,  4.07it/s]Inference:  50%|█████     | 16/32 [00:03<00:03,  4.08it/s]Inference:  53%|█████▎    | 17/32 [00:04<00:03,  4.08it/s]Inference:  56%|█████▋    | 18/32 [00:04<00:03,  4.09it/s]Inference:  59%|█████▉    | 19/32 [00:04<00:03,  4.10it/s]Inference:  62%|██████▎   | 20/32 [00:04<00:02,  4.10it/s]Inference:  66%|██████▌   | 21/32 [00:05<00:02,  4.09it/s]Inference:  69%|██████▉   | 22/32 [00:05<00:02,  4.08it/s]Inference:  72%|███████▏  | 23/32 [00:05<00:02,  4.07it/s]Inference:  75%|███████▌  | 24/32 [00:05<00:01,  4.10it/s]Inference:  78%|███████▊  | 25/32 [00:06<00:01,  4.10it/s]Inference:  81%|████████▏ | 26/32 [00:06<00:01,  4.10it/s]Inference:  84%|████████▍ | 27/32 [00:06<00:01,  4.11it/s]Inference:  88%|████████▊ | 28/32 [00:06<00:00,  4.11it/s]Inference:  91%|█████████ | 29/32 [00:07<00:00,  4.10it/s]Inference:  94%|█████████▍| 30/32 [00:07<00:00,  4.08it/s]Inference:  97%|█████████▋| 31/32 [00:07<00:00,  4.09it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.09it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.10it/s]
+6961 MiB free out of 48676 MiB total
+Saved layer 28 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/no_finetune2/layer_28.pt
+after cast to cpu
+10977 MiB free out of 48676 MiB total
+Done with layer 28 total_time elapsed: 27315 estimated time left: 2826
+layer original dtype torch.float16
+sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=11008, out_features=4096, bias=False)
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.90it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.90it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.89it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.89it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.89it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.90it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.90it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.90it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.90it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.90it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.90it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.89it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.89it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.89it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.90it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.90it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.89it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.89it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.89it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.89it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.88it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.88it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.89it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.89it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.89it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.88it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.89it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.89it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.93it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.92it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.95it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.93it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.90it/s]
+layer29: self_attn.q_proj
+iter 0, train loss 160981.890625, val loss None, lr 0.01
+iter 250, train loss 631.5746459960938, val loss None, lr 0.01
+iter 500, train loss 761.275146484375, val loss None, lr 0.01
+iter 750, train loss 445.036376953125, val loss None, lr 0.01
+iter 1000, train loss 409.648193359375, val loss None, lr 0.003333
+iter 1250, train loss 365.9781799316406, val loss None, lr 0.003333
+iter 1500, train loss 342.93035888671875, val loss None, lr 0.001111
+iter 1750, train loss 328.07281494140625, val loss None, lr 0.00037
+iter 2000, train loss 321.93341064453125, val loss None, lr 0.00037
+iter 2250, train loss 316.25714111328125, val loss None, lr 0.00037
+best loss 312.07635498046875
+layer29: self_attn.k_proj
+iter 0, train loss 214833.3125, val loss None, lr 0.01
+iter 250, train loss 1160.673583984375, val loss None, lr 0.01
+iter 500, train loss 479.3263854980469, val loss None, lr 0.003333
+iter 750, train loss 461.5036315917969, val loss None, lr 0.003333
+iter 1000, train loss 389.7579345703125, val loss None, lr 0.001111
+iter 1250, train loss 369.3907165527344, val loss None, lr 0.001111
+iter 1500, train loss 358.2406311035156, val loss None, lr 0.001111
+iter 1750, train loss 354.2174072265625, val loss None, lr 0.001111
+iter 2000, train loss 348.943359375, val loss None, lr 0.001111
+iter 2250, train loss 334.7323303222656, val loss None, lr 0.001111
+best loss 328.53558349609375
+layer29: self_attn.v_proj
+iter 0, train loss 11919.8603515625, val loss None, lr 0.01
+iter 250, train loss 300.007568359375, val loss None, lr 0.01
+iter 500, train loss 264.0464782714844, val loss None, lr 0.01
+iter 750, train loss 263.41204833984375, val loss None, lr 0.01
+iter 1000, train loss 247.6470489501953, val loss None, lr 0.01
+iter 1250, train loss 224.55697631835938, val loss None, lr 0.003333
+iter 1500, train loss 226.737060546875, val loss None, lr 0.003333
+iter 1750, train loss 216.61737060546875, val loss None, lr 0.001111
+iter 2000, train loss 214.7980499267578, val loss None, lr 0.001111
+iter 2250, train loss 214.0692901611328, val loss None, lr 0.001111
+best loss 212.2652130126953
+layer29: self_attn.o_proj
+iter 0, train loss 19126.453125, val loss None, lr 0.01
+iter 250, train loss 335.196533203125, val loss None, lr 0.01
+iter 500, train loss 289.73760986328125, val loss None, lr 0.01
+iter 750, train loss 263.903564453125, val loss None, lr 0.01
+iter 1000, train loss 258.34228515625, val loss None, lr 0.01
+iter 1250, train loss 228.79762268066406, val loss None, lr 0.003333
+iter 1500, train loss 221.3409881591797, val loss None, lr 0.001111
+iter 1750, train loss 218.28839111328125, val loss None, lr 0.001111
+iter 2000, train loss 217.1541290283203, val loss None, lr 0.001111
+iter 2250, train loss 215.57940673828125, val loss None, lr 0.001111
+best loss 214.23304748535156
+layer29: mlp.gate_proj
+iter 0, train loss 80426.0625, val loss None, lr 0.01
+iter 250, train loss 1217.0167236328125, val loss None, lr 0.01
+iter 500, train loss 1047.2010498046875, val loss None, lr 0.003333
+iter 750, train loss 888.2127075195312, val loss None, lr 0.003333
+iter 1000, train loss 891.7241821289062, val loss None, lr 0.003333
+iter 1250, train loss 836.3330688476562, val loss None, lr 0.001111
+iter 1500, train loss 830.169677734375, val loss None, lr 0.001111
+iter 1750, train loss 825.0296630859375, val loss None, lr 0.001111
+iter 2000, train loss 817.2332153320312, val loss None, lr 0.00037
+iter 2250, train loss 814.0, val loss None, lr 0.00037
+best loss 810.3114013671875
+layer29: mlp.up_proj
+iter 0, train loss 79888.859375, val loss None, lr 0.01
+iter 250, train loss 987.9208374023438, val loss None, lr 0.01
+iter 500, train loss 885.7866821289062, val loss None, lr 0.01
+iter 750, train loss 901.7881469726562, val loss None, lr 0.01
+iter 1000, train loss 874.25, val loss None, lr 0.003333
+iter 1250, train loss 780.3167724609375, val loss None, lr 0.001111
+iter 1500, train loss 772.720458984375, val loss None, lr 0.001111
+iter 1750, train loss 765.7794189453125, val loss None, lr 0.00037
+iter 2000, train loss 761.2642822265625, val loss None, lr 0.00037
+iter 2250, train loss 758.3126220703125, val loss None, lr 0.00037
+best loss 755.9971923828125
+layer29: mlp.down_proj
+iter 0, train loss 4871.99072265625, val loss None, lr 0.01
+iter 250, train loss 74.26667022705078, val loss None, lr 0.01
+iter 500, train loss 57.084938049316406, val loss None, lr 0.01
+iter 750, train loss 50.53445816040039, val loss None, lr 0.003333
+iter 1000, train loss 45.37274932861328, val loss None, lr 0.001111
+iter 1250, train loss 44.67918395996094, val loss None, lr 0.001111
+iter 1500, train loss 43.3480110168457, val loss None, lr 0.001111
+iter 1750, train loss 42.77873229980469, val loss None, lr 0.001111
+iter 2000, train loss 42.25850296020508, val loss None, lr 0.001111
+iter 2250, train loss 41.77378845214844, val loss None, lr 0.001111
+best loss 40.978878021240234
+10977 MiB free out of 48676 MiB total
+trying to convert back to original dtype, current dtype: torch.float16
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:06,  4.97it/s]Inference:   6%|▋         | 2/32 [00:00<00:06,  4.49it/s]Inference:   9%|▉         | 3/32 [00:00<00:06,  4.37it/s]Inference:  12%|█▎        | 4/32 [00:00<00:06,  4.28it/s]Inference:  16%|█▌        | 5/32 [00:01<00:06,  4.26it/s]Inference:  19%|█▉        | 6/32 [00:01<00:06,  4.24it/s]Inference:  22%|██▏       | 7/32 [00:01<00:05,  4.27it/s]Inference:  25%|██▌       | 8/32 [00:01<00:05,  4.38it/s]Inference:  28%|██▊       | 9/32 [00:02<00:05,  4.37it/s]Inference:  31%|███▏      | 10/32 [00:02<00:05,  4.36it/s]Inference:  34%|███▍      | 11/32 [00:02<00:04,  4.36it/s]Inference:  38%|███▊      | 12/32 [00:02<00:04,  4.33it/s]Inference:  41%|████      | 13/32 [00:02<00:04,  4.32it/s]Inference:  44%|████▍     | 14/32 [00:03<00:04,  4.31it/s]Inference:  47%|████▋     | 15/32 [00:03<00:03,  4.33it/s]Inference:  50%|█████     | 16/32 [00:03<00:03,  4.31it/s]Inference:  53%|█████▎    | 17/32 [00:03<00:03,  4.32it/s]Inference:  56%|█████▋    | 18/32 [00:04<00:03,  4.28it/s]Inference:  59%|█████▉    | 19/32 [00:04<00:03,  4.33it/s]Inference:  62%|██████▎   | 20/32 [00:04<00:02,  4.32it/s]Inference:  66%|██████▌   | 21/32 [00:04<00:02,  4.32it/s]Inference:  69%|██████▉   | 22/32 [00:05<00:02,  4.30it/s]Inference:  72%|███████▏  | 23/32 [00:05<00:02,  4.29it/s]Inference:  75%|███████▌  | 24/32 [00:05<00:01,  4.29it/s]Inference:  78%|███████▊  | 25/32 [00:05<00:01,  4.34it/s]Inference:  81%|████████▏ | 26/32 [00:06<00:01,  4.30it/s]Inference:  84%|████████▍ | 27/32 [00:06<00:01,  4.28it/s]Inference:  88%|████████▊ | 28/32 [00:06<00:00,  4.24it/s]Inference:  91%|█████████ | 29/32 [00:06<00:00,  4.26it/s]Inference:  94%|█████████▍| 30/32 [00:06<00:00,  4.23it/s]Inference:  97%|█████████▋| 31/32 [00:07<00:00,  4.21it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.21it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.30it/s]
+5673 MiB free out of 48676 MiB total
+Saved layer 29 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/no_finetune2/layer_29.pt
+after cast to cpu
+9689 MiB free out of 48676 MiB total
+Done with layer 29 total_time elapsed: 28183 estimated time left: 1879
+layer original dtype torch.float16
+sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=11008, out_features=4096, bias=False)
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  1.97it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.98it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  1.95it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.95it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.96it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.96it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  1.95it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.95it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  1.94it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.95it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.95it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.95it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  1.96it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.96it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.96it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.96it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.97it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.97it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.96it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.95it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  1.95it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.95it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.95it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.95it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.97it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.96it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.98it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  2.00it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.02it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:00,  2.02it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.97it/s]
+layer30: self_attn.q_proj
+iter 0, train loss 167324.015625, val loss None, lr 0.01
+iter 250, train loss 620.3809814453125, val loss None, lr 0.01
+iter 500, train loss 651.777099609375, val loss None, lr 0.01
+iter 750, train loss 507.6156005859375, val loss None, lr 0.003333
+iter 1000, train loss 370.1829528808594, val loss None, lr 0.001111
+iter 1250, train loss 358.2190246582031, val loss None, lr 0.001111
+iter 1500, train loss 350.0604553222656, val loss None, lr 0.001111
+iter 1750, train loss 340.42852783203125, val loss None, lr 0.001111
+iter 2000, train loss 333.2553405761719, val loss None, lr 0.001111
+iter 2250, train loss 329.62152099609375, val loss None, lr 0.001111
+best loss 325.86114501953125
+layer30: self_attn.k_proj
+iter 0, train loss 201344.34375, val loss None, lr 0.01
+iter 250, train loss 735.3096923828125, val loss None, lr 0.01
+iter 500, train loss 508.9647216796875, val loss None, lr 0.003333
+iter 750, train loss 430.36090087890625, val loss None, lr 0.003333
+iter 1000, train loss 377.94061279296875, val loss None, lr 0.001111
+iter 1250, train loss 364.6212158203125, val loss None, lr 0.001111
+iter 1500, train loss 354.23016357421875, val loss None, lr 0.001111
+iter 1750, train loss 352.56134033203125, val loss None, lr 0.001111
+iter 2000, train loss 343.0924987792969, val loss None, lr 0.001111
+iter 2250, train loss 332.0541687011719, val loss None, lr 0.00037
+best loss 325.2571716308594
+layer30: self_attn.v_proj
+iter 0, train loss 15186.716796875, val loss None, lr 0.01
+iter 250, train loss 323.9556579589844, val loss None, lr 0.01
+iter 500, train loss 286.39306640625, val loss None, lr 0.01
+iter 750, train loss 259.66009521484375, val loss None, lr 0.003333
+iter 1000, train loss 248.89784240722656, val loss None, lr 0.003333
+iter 1250, train loss 243.5511474609375, val loss None, lr 0.003333
+iter 1500, train loss 231.7677459716797, val loss None, lr 0.001111
+iter 1750, train loss 229.28858947753906, val loss None, lr 0.001111
+iter 2000, train loss 227.11151123046875, val loss None, lr 0.001111
+iter 2250, train loss 225.56173706054688, val loss None, lr 0.001111
+best loss 224.051025390625
+layer30: self_attn.o_proj
+iter 0, train loss 29311.36328125, val loss None, lr 0.01
+iter 250, train loss 413.5089111328125, val loss None, lr 0.01
+iter 500, train loss 378.075439453125, val loss None, lr 0.01
+iter 750, train loss 303.2191467285156, val loss None, lr 0.003333
+iter 1000, train loss 288.0890808105469, val loss None, lr 0.003333
+iter 1250, train loss 267.6979064941406, val loss None, lr 0.001111
+iter 1500, train loss 263.39910888671875, val loss None, lr 0.001111
+iter 1750, train loss 259.8289794921875, val loss None, lr 0.001111
+iter 2000, train loss 257.2973937988281, val loss None, lr 0.001111
+iter 2250, train loss 254.51303100585938, val loss None, lr 0.001111
+best loss 252.0185546875
+layer30: mlp.gate_proj
+iter 0, train loss 115573.203125, val loss None, lr 0.01
+iter 250, train loss 1575.064453125, val loss None, lr 0.01
+iter 500, train loss 1021.8486328125, val loss None, lr 0.003333
+iter 750, train loss 921.7102661132812, val loss None, lr 0.003333
+iter 1000, train loss 886.10205078125, val loss None, lr 0.001111
+iter 1250, train loss 874.6395263671875, val loss None, lr 0.001111
+iter 1500, train loss 858.4342041015625, val loss None, lr 0.001111
+iter 1750, train loss 867.3927612304688, val loss None, lr 0.001111
+iter 2000, train loss 841.2252807617188, val loss None, lr 0.00037
+iter 2250, train loss 836.6734619140625, val loss None, lr 0.00037
+best loss 832.0406494140625
+layer30: mlp.up_proj
+iter 0, train loss 130293.859375, val loss None, lr 0.01
+iter 250, train loss 1434.086669921875, val loss None, lr 0.01
+iter 500, train loss 923.6028442382812, val loss None, lr 0.003333
+iter 750, train loss 871.1055908203125, val loss None, lr 0.003333
+iter 1000, train loss 866.3384399414062, val loss None, lr 0.003333
+iter 1250, train loss 815.0343017578125, val loss None, lr 0.001111
+iter 1500, train loss 796.3013305664062, val loss None, lr 0.001111
+iter 1750, train loss 786.1489868164062, val loss None, lr 0.00037
+iter 2000, train loss 779.7789916992188, val loss None, lr 0.00037
+iter 2250, train loss 773.6402587890625, val loss None, lr 0.00037
+best loss 769.09375
+layer30: mlp.down_proj
+iter 0, train loss 100785.921875, val loss None, lr 0.01
+iter 250, train loss 178.78016662597656, val loss None, lr 0.01
+iter 500, train loss 197.201171875, val loss None, lr 0.003333
+iter 750, train loss 95.55642700195312, val loss None, lr 0.001111
+iter 1000, train loss 86.66858673095703, val loss None, lr 0.001111
+iter 1250, train loss 91.51593017578125, val loss None, lr 0.001111
+iter 1500, train loss 79.48045349121094, val loss None, lr 0.00037
+iter 1750, train loss 77.52542877197266, val loss None, lr 0.00037
+iter 2000, train loss 76.59300231933594, val loss None, lr 0.00037
+iter 2250, train loss 74.70378112792969, val loss None, lr 0.00037
+best loss 73.0579605102539
+9689 MiB free out of 48676 MiB total
+trying to convert back to original dtype, current dtype: torch.float16
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:06,  4.97it/s]Inference:   6%|▋         | 2/32 [00:00<00:06,  4.81it/s]Inference:   9%|▉         | 3/32 [00:00<00:06,  4.72it/s]Inference:  12%|█▎        | 4/32 [00:00<00:05,  4.68it/s]Inference:  16%|█▌        | 5/32 [00:01<00:05,  4.57it/s]Inference:  19%|█▉        | 6/32 [00:01<00:05,  4.49it/s]Inference:  22%|██▏       | 7/32 [00:01<00:05,  4.44it/s]Inference:  25%|██▌       | 8/32 [00:01<00:05,  4.40it/s]Inference:  28%|██▊       | 9/32 [00:01<00:05,  4.37it/s]Inference:  31%|███▏      | 10/32 [00:02<00:05,  4.40it/s]Inference:  34%|███▍      | 11/32 [00:02<00:04,  4.39it/s]Inference:  38%|███▊      | 12/32 [00:02<00:04,  4.39it/s]Inference:  41%|████      | 13/32 [00:02<00:04,  4.43it/s]Inference:  44%|████▍     | 14/32 [00:03<00:03,  4.53it/s]Inference:  47%|████▋     | 15/32 [00:03<00:03,  4.64it/s]Inference:  50%|█████     | 16/32 [00:03<00:03,  4.69it/s]Inference:  53%|█████▎    | 17/32 [00:03<00:03,  4.68it/s]Inference:  56%|█████▋    | 18/32 [00:03<00:02,  4.76it/s]Inference:  59%|█████▉    | 19/32 [00:04<00:02,  4.77it/s]Inference:  62%|██████▎   | 20/32 [00:04<00:02,  4.70it/s]Inference:  66%|██████▌   | 21/32 [00:04<00:02,  4.68it/s]Inference:  69%|██████▉   | 22/32 [00:04<00:02,  4.68it/s]Inference:  72%|███████▏  | 23/32 [00:05<00:01,  4.63it/s]Inference:  75%|███████▌  | 24/32 [00:05<00:01,  4.63it/s]Inference:  78%|███████▊  | 25/32 [00:05<00:01,  4.63it/s]Inference:  81%|████████▏ | 26/32 [00:05<00:01,  4.60it/s]Inference:  84%|████████▍ | 27/32 [00:05<00:01,  4.60it/s]Inference:  88%|████████▊ | 28/32 [00:06<00:00,  4.62it/s]Inference:  91%|█████████ | 29/32 [00:06<00:00,  4.63it/s]Inference:  94%|█████████▍| 30/32 [00:06<00:00,  4.68it/s]Inference:  97%|█████████▋| 31/32 [00:06<00:00,  4.63it/s]Inference: 100%|██████████| 32/32 [00:06<00:00,  4.57it/s]Inference: 100%|██████████| 32/32 [00:06<00:00,  4.59it/s]
+4449 MiB free out of 48676 MiB total
+Saved layer 30 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/no_finetune2/layer_30.pt
+after cast to cpu
+8465 MiB free out of 48676 MiB total
+Done with layer 30 total_time elapsed: 29052 estimated time left: 937
+layer original dtype torch.float16
+sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=4096, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=4096, out_features=11008, bias=False)
+sublayer Linear(in_features=11008, out_features=4096, bias=False)
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.01it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.02it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.02it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.02it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.02it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.03it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.02it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.00it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  1.98it/s]Inference:  31%|███▏      | 10/32 [00:04<00:11,  1.98it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.99it/s]Inference:  38%|███▊      | 12/32 [00:05<00:10,  1.99it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.00it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.00it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.99it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.97it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.96it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.95it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.95it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.94it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  1.94it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.98it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.97it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.96it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.95it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.95it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.95it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.94it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.94it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.95it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.95it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.95it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.97it/s]
+layer31: self_attn.q_proj
+iter 0, train loss 132121.859375, val loss None, lr 0.01
+iter 250, train loss 673.4625244140625, val loss None, lr 0.01
+iter 500, train loss 313.1620788574219, val loss None, lr 0.003333
+iter 750, train loss 282.2243957519531, val loss None, lr 0.003333
+iter 1000, train loss 286.0324401855469, val loss None, lr 0.003333
+iter 1250, train loss 248.09341430664062, val loss None, lr 0.001111
+iter 1500, train loss 244.30279541015625, val loss None, lr 0.001111
+iter 1750, train loss 236.97152709960938, val loss None, lr 0.001111
+iter 2000, train loss 227.9205322265625, val loss None, lr 0.00037
+iter 2250, train loss 224.05552673339844, val loss None, lr 0.00037
+best loss 220.61575317382812
+layer31: self_attn.k_proj
+iter 0, train loss 154260.78125, val loss None, lr 0.01
+iter 250, train loss 667.3982543945312, val loss None, lr 0.01
+iter 500, train loss 332.4403076171875, val loss None, lr 0.003333
+iter 750, train loss 319.4957580566406, val loss None, lr 0.003333
+iter 1000, train loss 273.744873046875, val loss None, lr 0.001111
+iter 1250, train loss 261.8431701660156, val loss None, lr 0.001111
+iter 1500, train loss 254.56695556640625, val loss None, lr 0.001111
+iter 1750, train loss 248.66844177246094, val loss None, lr 0.001111
+iter 2000, train loss 245.50347900390625, val loss None, lr 0.00037
+iter 2250, train loss 233.26446533203125, val loss None, lr 0.00037
+best loss 228.73062133789062
+layer31: self_attn.v_proj
+iter 0, train loss 9113.279296875, val loss None, lr 0.01
+iter 250, train loss 200.34603881835938, val loss None, lr 0.01
+iter 500, train loss 152.8256378173828, val loss None, lr 0.01
+iter 750, train loss 132.58392333984375, val loss None, lr 0.003333
+iter 1000, train loss 125.0664291381836, val loss None, lr 0.003333
+iter 1250, train loss 121.35984802246094, val loss None, lr 0.001111
+iter 1500, train loss 119.03840637207031, val loss None, lr 0.001111
+iter 1750, train loss 117.58793640136719, val loss None, lr 0.00037
+iter 2000, train loss 116.26582336425781, val loss None, lr 0.00037
+iter 2250, train loss 115.47979736328125, val loss None, lr 0.00037
+best loss 114.69635772705078
+layer31: self_attn.o_proj
+iter 0, train loss 24105.935546875, val loss None, lr 0.01
+iter 250, train loss 274.32537841796875, val loss None, lr 0.01
+iter 500, train loss 175.89456176757812, val loss None, lr 0.003333
+iter 750, train loss 152.87762451171875, val loss None, lr 0.003333
+iter 1000, train loss 143.79098510742188, val loss None, lr 0.003333
+iter 1250, train loss 128.99627685546875, val loss None, lr 0.003333
+iter 1500, train loss 123.03706359863281, val loss None, lr 0.001111
+iter 1750, train loss 119.96381378173828, val loss None, lr 0.001111
+iter 2000, train loss 118.29258728027344, val loss None, lr 0.001111
+iter 2250, train loss 115.8364486694336, val loss None, lr 0.00037
+best loss 114.15692138671875
+layer31: mlp.gate_proj
+iter 0, train loss 208598.84375, val loss None, lr 0.01
+iter 250, train loss 1299.6619873046875, val loss None, lr 0.01
+iter 500, train loss 927.0447998046875, val loss None, lr 0.003333
+iter 750, train loss 913.793212890625, val loss None, lr 0.003333
+iter 1000, train loss 786.7076416015625, val loss None, lr 0.001111
+iter 1250, train loss 770.6451416015625, val loss None, lr 0.001111
+iter 1500, train loss 750.1036376953125, val loss None, lr 0.001111
+iter 1750, train loss 746.073974609375, val loss None, lr 0.001111
+iter 2000, train loss 737.739501953125, val loss None, lr 0.001111
+iter 2250, train loss 733.6478271484375, val loss None, lr 0.001111
+best loss 717.5128173828125
+layer31: mlp.up_proj
+iter 0, train loss 226727.40625, val loss None, lr 0.01
+iter 250, train loss 1144.9954833984375, val loss None, lr 0.01
+iter 500, train loss 910.36767578125, val loss None, lr 0.01
+iter 750, train loss 778.2243041992188, val loss None, lr 0.003333
+iter 1000, train loss 721.1741943359375, val loss None, lr 0.001111
+iter 1250, train loss 706.9947509765625, val loss None, lr 0.001111
+iter 1500, train loss 695.3341674804688, val loss None, lr 0.001111
+iter 1750, train loss 680.289794921875, val loss None, lr 0.001111
+iter 2000, train loss 673.10546875, val loss None, lr 0.00037
+iter 2250, train loss 666.8399658203125, val loss None, lr 0.00037
+best loss 662.1318969726562
+layer31: mlp.down_proj
+iter 0, train loss 1659221.75, val loss None, lr 0.01
+iter 250, train loss 8260.158203125, val loss None, lr 0.01
+iter 500, train loss 3189.503173828125, val loss None, lr 0.01
+iter 750, train loss 755.95751953125, val loss None, lr 0.003333
+iter 1000, train loss 932.827880859375, val loss None, lr 0.003333
+iter 1250, train loss 440.22650146484375, val loss None, lr 0.001111
+iter 1500, train loss 389.2264404296875, val loss None, lr 0.001111
+iter 1750, train loss 369.3267822265625, val loss None, lr 0.001111
+iter 2000, train loss 333.441162109375, val loss None, lr 0.00037
+iter 2250, train loss 325.0592346191406, val loss None, lr 0.00037
+best loss 309.76190185546875
+8465 MiB free out of 48676 MiB total
+trying to convert back to original dtype, current dtype: torch.float16
+torch.Size([128, 4096, 4096]) batch size 4
+Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:06,  4.69it/s]Inference:   6%|▋         | 2/32 [00:00<00:06,  4.40it/s]Inference:   9%|▉         | 3/32 [00:00<00:06,  4.34it/s]Inference:  12%|█▎        | 4/32 [00:00<00:06,  4.31it/s]Inference:  16%|█▌        | 5/32 [00:01<00:06,  4.29it/s]Inference:  19%|█▉        | 6/32 [00:01<00:06,  4.28it/s]Inference:  22%|██▏       | 7/32 [00:01<00:05,  4.28it/s]Inference:  25%|██▌       | 8/32 [00:01<00:05,  4.27it/s]Inference:  28%|██▊       | 9/32 [00:02<00:05,  4.27it/s]Inference:  31%|███▏      | 10/32 [00:02<00:05,  4.26it/s]Inference:  34%|███▍      | 11/32 [00:02<00:04,  4.26it/s]Inference:  38%|███▊      | 12/32 [00:02<00:04,  4.26it/s]Inference:  41%|████      | 13/32 [00:03<00:04,  4.25it/s]Inference:  44%|████▍     | 14/32 [00:03<00:04,  4.25it/s]Inference:  47%|████▋     | 15/32 [00:03<00:04,  4.24it/s]Inference:  50%|█████     | 16/32 [00:03<00:03,  4.23it/s]Inference:  53%|█████▎    | 17/32 [00:03<00:03,  4.23it/s]Inference:  56%|█████▋    | 18/32 [00:04<00:03,  4.22it/s]Inference:  59%|█████▉    | 19/32 [00:04<00:03,  4.22it/s]Inference:  62%|██████▎   | 20/32 [00:04<00:02,  4.22it/s]Inference:  66%|██████▌   | 21/32 [00:04<00:02,  4.21it/s]Inference:  69%|██████▉   | 22/32 [00:05<00:02,  4.22it/s]Inference:  72%|███████▏  | 23/32 [00:05<00:02,  4.22it/s]Inference:  75%|███████▌  | 24/32 [00:05<00:01,  4.22it/s]Inference:  78%|███████▊  | 25/32 [00:05<00:01,  4.22it/s]Inference:  81%|████████▏ | 26/32 [00:06<00:01,  4.22it/s]Inference:  84%|████████▍ | 27/32 [00:06<00:01,  4.22it/s]Inference:  88%|████████▊ | 28/32 [00:06<00:00,  4.21it/s]Inference:  91%|█████████ | 29/32 [00:06<00:00,  4.21it/s]Inference:  94%|█████████▍| 30/32 [00:07<00:00,  4.22it/s]Inference:  97%|█████████▋| 31/32 [00:07<00:00,  4.22it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.22it/s]Inference: 100%|██████████| 32/32 [00:07<00:00,  4.24it/s]
+3161 MiB free out of 48676 MiB total
+Saved layer 31 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/no_finetune2/layer_31.pt
+after cast to cpu
+7177 MiB free out of 48676 MiB total
+Done with layer 31 total_time elapsed: 29920 estimated time left: 0
+Total bits: 936247296 Total params: 6476005376
+average bits per value: 0.1445717292746114
+total time taken: 29920.61797475815
+/data/lliu/huffman/scripts/tensorize.bash: 14: e: not found

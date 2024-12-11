@@ -1,0 +1,14 @@
+n_bits: 1.75
+clip_grad: 0.1
+d: 4
+low_bound: 1.0e-05
+lr: 0.001
+lr_multiplier: 1
+n_iter: 100
+norm_order:
+- 0
+- 1
+patience: 20
+patience_scheduler: 50
+seed: 0
+verbose: 10

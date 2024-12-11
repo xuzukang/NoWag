@@ -17,6 +17,7 @@ import src.finetune as finetune
 import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.linear_compress as linear_compress
+import src.tensor_compress as tensor_compress
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 import src.data as data
 import src.utils.utils as utils
@@ -41,13 +42,15 @@ class args_load:
 
 def load_model_from_checkpoints(
                                 checkpoint_path: str,
-                                model:Optional[llama.LlamaForCausalLM] = None,
+                                compression_algorithm_fn: callable,
+                                model:llama.LlamaForCausalLM,
                                 ) -> Tuple[llama.LlamaForCausalLM, args_load]:
 
-    args = args_load(os.path.join(checkpoint_path, "args.yaml"))
-
-    if model is None:
-        model = get_llama(args.model)
+    # args = args_load(os.path.join(checkpoint_path, "args.yaml"))
+    # if not hasattr(args,"compression_type"):
+    #     #assume that the model is quantized
+    #     args.compression_type = "quantized"
+    
 
     layers = model.model.layers
     original_dtype = next(iter(model.parameters())).dtype
@@ -62,26 +65,59 @@ def load_model_from_checkpoints(
         "mlp.down_proj",
     ]
 
-    for i in range(len(layers)):
+    for i in tqdm.tqdm(range(len(layers))):
         layer = layers[i]
-        for name in sublayer_names:
+        for name in tqdm.tqdm(sublayer_names):
+            compression_algo_name = compression_algorithm_fn(name)
+            
+            args_path_use = checkpoint_path.replace("{compression_algo_name}", compression_algo_name)
+            args_path_use = os.path.join(args_path_use, f"layer_{i}/{name}_args.yaml")
+            
+            args = args_load(args_path_use)
+            
             parent_module = getattr(layer, name.split(".")[0])
             module: nn.Linear = getattr(parent_module, name.split(".")[1])
-
-            new_layer = linear_compress.LinearQuantized(
-                module.weight, module.bias, args.add_bias
-            )
-            new_layer.blank_recreate(
-                vector_quantizer.VectorQuantizer, d=args.subvector_dim,
-                    n_bits=args.n_bits_per_value,
-                    norm_order=args.norm_order,
-            )
+            if args.compression_type == "quantized":
+                new_layer = linear_compress.LinearQuantized(
+                    module.weight, module.bias, False
+                )
+                new_layer.blank_recreate(
+                    vector_quantizer.VectorQuantizer, d=args.d,
+                        n_bits=args.bpv,
+                        norm_order=args.norm_order,
+                )
+                # new_layer.clean()
+                new_layer.load_state_dict(torch.load(args_path_use.replace("_args.yaml", ".pt")), strict=False)
+            
+            elif args.compression_type == "tensorized":
+                if hasattr(args, "sparse_frac") and args.sparse_frac > 0:
+                    # print("sparse", args.sparse_frac)
+                    new_layer = tensor_compress.LinearTensorizedWithSparse(
+                        module.weight.to(torch.float32), module.bias, False
+                    )
+                    new_layer.blank_recreate(
+                        N_qudits = args.N_qudits,
+                        fixed_qudits_shapes = [] if not hasattr(args, "fixed_qudits_shapes") else args.fixed_qudits_shapes,
+                        norm_order = args.norm_order,
+                        sparsity = args.sparse_frac,
+                    )
+                else:
+                    new_layer = tensor_compress.LinearTensorized(
+                        module.weight.to(torch.float32), module.bias, False
+                    )
+                    new_layer.blank_recreate(
+                        N_qudits = args.N_qudits,
+                        fixed_qudits_shapes = [] if not hasattr(args, "fixed_qudits_shapes") else args.fixed_qudits_shapes,
+                        norm_order = args.norm_order,
+                    )
+                new_layer.clean()
+                new_layer.load_state_dict(torch.load(args_path_use.replace("_args.yaml", ".pt")))
+                
+                    
             del new_layer.original_weight
 
             delattr(parent_module, name.split(".")[1])
             setattr(parent_module, name.split(".")[1], new_layer)
-
-        layer.load_state_dict(torch.load(os.path.join(checkpoint_path, f"layer_{i}.pt")))
 
     model.to(original_dtype)
 
@@ -196,7 +232,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--base_model", type=str, help = "the base model, unnecessary if checkpoint_path is provided")
+    parser.add_argument("--base_model", type=str, help = "the base model")
     parser.add_argument("--checkpoint_path", type=str, default="")
     parser.add_argument("--datasets", type=str, nargs="+",
                         choices=["wikitext2", "c4", "ptb"],
@@ -211,14 +247,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.checkpoint_path == "":
-        model = get_llama(args.base_model)
-        model.seqlen = args.seqlen
-        model_name = args.base_model
-    else:
-        assert len(args.checkpoint_path) > 0, "checkpoint_path should be provided"
-        model, quantize_args = load_model_from_checkpoints(args.checkpoint_path, None)
-        model_name = quantize_args.model
+    model = get_llama(args.base_model)
+    model.seqlen = args.seqlen
+    model_name = args.base_model
+
+    assert len(args.checkpoint_path) > 0, "checkpoint_path should be provided"
+    model, quantize_args = load_model_from_checkpoints(args.checkpoint_path,
+                                                       lambda x: "quantize",
+                                                    #    lambda x: "tensor" if "self_attn" in x else "quantize",
+                                                       model)
 
     model.seqlen = args.seqlen
     model.eval()
