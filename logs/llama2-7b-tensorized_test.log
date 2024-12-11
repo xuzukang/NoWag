@@ -2908,3 +2908,4 @@ iter 0, train loss 64630.1171875, val loss None, lr 0.01
 iter 250, train loss 1163.9141845703125, val loss None, lr 0.01
 iter 500, train loss 983.707275390625, val loss None, lr 0.01
 iter 750, train loss 982.137939453125, val loss None, lr 0.003333
+iter 1000, train loss 889.02978515625, val loss None, lr 0.001111
