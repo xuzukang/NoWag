@@ -198,7 +198,7 @@ class LinearTensorized(lc.LinearQuantized):
 
             self.qudit_shapes = get_qudit_dimensions(self.out_features, N_qudits, fixed_qudits_shapes)
             self.pad_n = n_pad(self.in_features, np.prod(self.qudit_shapes[1:]))
-            print("paddding", self.pad_n)
+            # print("paddding", self.pad_n)
             self.k_factor = int((self.in_features+self.pad_n)/np.prod(self.qudit_shapes[1:]))
             # assert self.in_features == np.prod(self.qudit_shapes[1:])*self.k_factor
             self.layer_type = "compress"
@@ -210,7 +210,7 @@ class LinearTensorized(lc.LinearQuantized):
         elif self.in_features < self.out_features:
             self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
             self.pad_n = n_pad(self.out_features, np.prod(self.qudit_shapes[1:]))
-            print("paddding", self.pad_n)
+            # print("paddding", self.pad_n)
             self.k_factor = int((self.out_features + self.pad_n)/np.prod(self.qudit_shapes[1:]))
             # print(self.k_factor)
             # assert self.out_features == np.prod(self.qudit_shapes[1:])*self.k_factor
@@ -423,7 +423,7 @@ class LinearTensorizedWithSparse(LinearTensorized):
         # print("weight shape", self.original_weight.shape
         super().tensor_decompose(N_qudits, fixed_qudits_shapes, norm_order)
         
-        print("sparsity", sparse_frac)
+        # print("sparsity", sparse_frac)
 
         threshold = find_threshold(torch.abs(self.original_weight), sparse_frac)
         # print(threshold)
@@ -433,7 +433,7 @@ class LinearTensorizedWithSparse(LinearTensorized):
     
         
         self.sparse_weights = nn.Parameter(self.original_weight[self.mask])
-        print(self.sparse_weights.numel()/self.original_weight.numel())
+        # print(self.sparse_weights.numel()/self.original_weight.numel())
         
     def reconstruct(self)->torch.FloatTensor:
         reconstruct_weight = super().reconstruct()
@@ -449,6 +449,11 @@ class LinearTensorizedWithSparse(LinearTensorized):
         nbits += ((nrows * n_indicies_bits + (n_indicies_bits + 16)*nse)).item()
         return nbits
         
+    def load_state_dict(self, state_dict, strict = True, assign = False):
+        sparse_weights = state_dict["sparse_weights"]
+        if sparse_weights.shape != self.sparse_weights.shape:
+            self.sparse_weights = nn.Parameter(sparse_weights)
+        super().load_state_dict(state_dict, strict, assign)
         
     
             

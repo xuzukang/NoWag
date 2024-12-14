@@ -231,6 +231,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         d: int = 4,
         n_bits: int = 2,  # number of bits per weight
         norm_order: list[int] = [0, 1],
+        **kwargs,
     ):
         with torch.no_grad():
             weight_use = weight.clone()

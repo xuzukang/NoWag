@@ -18,6 +18,7 @@ import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.linear_compress as linear_compress
 import src.tensor_compress as tensor_compress
+import src.joint_compress as joint_compress
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 import src.data as data
 import src.utils.utils as utils
@@ -51,7 +52,9 @@ def load_model_from_checkpoints(
     #     #assume that the model is quantized
     #     args.compression_type = "quantized"
     
-
+    n_bits = 0
+    n_params = 0
+    
     layers = model.model.layers
     original_dtype = next(iter(model.parameters())).dtype
 
@@ -67,7 +70,7 @@ def load_model_from_checkpoints(
 
     for i in tqdm.tqdm(range(len(layers))):
         layer = layers[i]
-        for name in tqdm.tqdm(sublayer_names):
+        for name in tqdm.tqdm(sublayer_names, leave=False):
             compression_algo_name = compression_algorithm_fn(name)
             
             args_path_use = checkpoint_path.replace("{compression_algo_name}", compression_algo_name)
@@ -83,12 +86,25 @@ def load_model_from_checkpoints(
                 )
                 new_layer.blank_recreate(
                     vector_quantizer.VectorQuantizer, d=args.d,
-                        n_bits=args.bpv,
+                        n_bits=args.bpv if hasattr(args, "bpv") else args.n_bits,
                         norm_order=args.norm_order,
                 )
                 # new_layer.clean()
                 new_layer.load_state_dict(torch.load(args_path_use.replace("_args.yaml", ".pt")), strict=False)
-            
+            elif args.compression_type == "joint":
+                new_layer = joint_compress.JointCompressor(
+                    module.weight.to(torch.float32), module.bias, False
+                )
+                args.quantizer_kwargs["quantizer_class"] = vector_quantizer.VectorQuantizer
+                new_layer.blank_recreate(
+                    linear_compress.LinearQuantized,
+                    args.quantizer_kwargs,
+                    tensor_compress.LinearTensorizedWithSparse if args.tensorizer_kwargs["sparse_frac"] > 0 else tensor_compress.LinearTensorized,
+                    args.tensorizer_kwargs,
+                )
+                new_layer.clean()
+                new_layer.load_state_dict(torch.load(args_path_use.replace("_args.yaml", ".pt")), strict=False)
+                
             elif args.compression_type == "tensorized":
                 if hasattr(args, "sparse_frac") and args.sparse_frac > 0:
                     # print("sparse", args.sparse_frac)
@@ -116,9 +132,14 @@ def load_model_from_checkpoints(
                     
             del new_layer.original_weight
 
+            n_bits += new_layer.get_n_bits()
+            n_params += new_layer.get_n_original_parameters()
+            
             delattr(parent_module, name.split(".")[1])
             setattr(parent_module, name.split(".")[1], new_layer)
+            
 
+    print("bpv", n_bits / n_params)
     model.to(original_dtype)
 
     return model,args
@@ -250,12 +271,14 @@ if __name__ == "__main__":
     model = get_llama(args.base_model)
     model.seqlen = args.seqlen
     model_name = args.base_model
+    if args.checkpoint_path != "":
+        
 
-    assert len(args.checkpoint_path) > 0, "checkpoint_path should be provided"
-    model, quantize_args = load_model_from_checkpoints(args.checkpoint_path,
-                                                       lambda x: "quantize",
-                                                    #    lambda x: "tensor" if "self_attn" in x else "quantize",
-                                                       model)
+        model, quantize_args = load_model_from_checkpoints(args.checkpoint_path,
+                                                        #    lambda x: "joint2",
+                                                        lambda x: "joint2" if "mlp" in x else "quantize",
+                                                        # lambda x: "joint2" if "self_attn" in x else "quantize",
+                                                        model)
 
     model.seqlen = args.seqlen
     model.eval()

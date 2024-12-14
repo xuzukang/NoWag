@@ -50,10 +50,10 @@ def check_pid(pid):
     
 
 
-print("args.save_path", args.save_path)
-print(args.hessian_path + "/**/*.pt")
+# print("args.save_path", args.save_path)
+# print(args.hessian_path + "/**/*.pt")
 paths = glob.glob(args.hessian_path + "/**/*.pt", recursive = True)
-print("paths", paths)
+# print("paths", paths)
 
 DEVICES_DICT = {device: [] for device in args.devices}
 TOTAL_BITS = 0
@@ -115,6 +115,9 @@ def check_still_running(devices_dict)->list[str]:
 
 
 def make_command(load_path:str):
+    global TOTAL_BITS
+    global TOTAL_PARAMS
+    
     command = "python -u scripts/1layer_compress/"
     command_name = load_path[len(args.hessian_path)+1:]
     if "mlp" in load_path:
@@ -125,7 +128,7 @@ def make_command(load_path:str):
         elif args.mlp_compression_algorithm == "joint":
             kwargs_path = args.quantize_compress_kwargs_path
             command += "joint_compress.py"
-            save_path = os.path.join(args.save_path, "joint", command_name)
+            save_path = os.path.join(args.save_path, "joint2", command_name)
         else:
             kwargs_path = args.quantize_compress_kwargs_path
             command += "quantize_compress.py"
@@ -139,7 +142,7 @@ def make_command(load_path:str):
         elif args.self_attn_compression_algorithm == "joint":
             kwargs_path = args.quantize_compress_kwargs_path
             command += "joint_compress.py"
-            save_path = os.path.join(args.save_path, "joint", command_name)
+            save_path = os.path.join(args.save_path, "joint2", command_name)
         else:
             kwargs_path = args.quantize_compress_kwargs_path
             command += "quantize_compress.py"
@@ -147,8 +150,22 @@ def make_command(load_path:str):
     else:
         raise ValueError("mlp or self_attn not in load_path")
     # print("save_path", save_path)
-    if os.path.exists(save_path) and not args.overwrite:
-        print(f"{save_path} already exists")
+    log_path = os.path.join(args.log_dir, f"{command_name}.log")
+    if os.path.exists(save_path) and not args.overwrite and os.path.exists(log_path):
+        log_path = os.path.join(args.log_dir, f"{command_name}.log")
+        print("already done with ", command_name)
+        with open(log_path, "r") as f:
+            log = f.readlines()
+            for line in log:
+                if "best loss" in line:
+                    best_loss = float(line.split(" ")[-1])
+                if "n_params" in line:
+                    TOTAL_PARAMS += float(line.split(" ")[-1])
+                if "n_bits" in line:
+                    TOTAL_BITS += float(line.split(" ")[-1])
+            print("log_path", log_path)
+            # print(log)
+            print("best_loss", best_loss, "running bpv:", round(TOTAL_BITS/TOTAL_PARAMS, 6))
         BAR.update(1)
         return None, None
     command += f" --load_path {load_path} --save_path {save_path}"

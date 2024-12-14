@@ -52,6 +52,7 @@ class JointCompressor(LinearQuantized):
             self.quantization_compressor.align(**quantization_align_kwargs)
             with torch.no_grad():
                 W_remaining = self.original_weight.clone() - self.quantization_compressor.reconstruct()
+            torch.save(W_remaining,"test/W_remaining.pt")
             
             self.tensor_compressor:LinearTensorized = tensor_compression_algorithm(W_remaining)
             self.tensor_compressor.hessian = self.hessian
@@ -94,7 +95,14 @@ class JointCompressor(LinearQuantized):
         
         self.tensor_compressor = tensor_compression_algorithm(self.original_weight)
         self.tensor_compressor.blank_recreate(**tensor_compression_kwargs)
+        self.compressed = True
         
     
     def get_n_bits(self):
         return self.quantization_compressor.get_n_bits() + self.tensor_compressor.get_n_bits()
+    
+    def load_state_dict(self, state_dict, strict = True, assign = False):
+        quantizer_compressor_state_dict = {k.split("quantization_compressor.")[1]:v for k,v in state_dict.items() if "quantization_compressor" in k}
+        tensor_compressor_state_dict = {k.split("tensor_compressor.")[1]:v for k,v in state_dict.items() if "tensor_compressor" in k}
+        self.quantization_compressor.load_state_dict(quantizer_compressor_state_dict, strict = strict, assign = assign)
+        self.tensor_compressor.load_state_dict(tensor_compressor_state_dict, strict = strict, assign = assign)

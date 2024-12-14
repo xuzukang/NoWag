@@ -1,7 +1,7 @@
 N_qudits: 3
 clip_grad: 0.1
 fixed_qudits_shapes:
-- 32
+- 16
 low_bound: 1.0e-05
 lr: 0.01
 lr_multiplier: 0.3333333333333333
@@ -13,5 +13,5 @@ norm_order:
 patience: 250
 patience_scheduler: 50
 seed: 0
-sparse_frac: 0.0
+sparse_frac: 0.005
 verbose: 100
