@@ -83,7 +83,7 @@ class LinearQuantized(compress_parent.CompressorParent):
             x (torch.FloatTensor): x is of shape (..., in_features)
         """
         x_flattened = x.reshape(-1, self.in_features).to(torch.float32)
-        n_new_samples = 1
+        n_new_samples = x_flattened.shape[0]
         # print(n_new_samples)
         # multiply the hessian by:
         # print(self.n_samples)
@@ -91,7 +91,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         # outer product of the flattened x
         # first scale x_flattened
         self.n_samples += n_new_samples
-        x_flattened = x_flattened * math.sqrt(2 / (self.n_samples * self.in_features))
+        x_flattened = x_flattened * math.sqrt(2 / (self.n_samples))
         self.hessian += x_flattened.T @ x_flattened
 
     def enable_importance_updates(self, decay: float = 0.99):

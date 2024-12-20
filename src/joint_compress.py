@@ -39,11 +39,12 @@ class JointCompressor(LinearQuantized):
                  tensor_compression_algorithm,
                     tensor_compression_kwargs,
                     tensor_compression_align_kwargs,
-                    n_iters: int = 1):
+                    n_iters: int = 10):
         """compresses the weight matrix"""
         W_remaining = self.original_weight.clone()
         
         best_loss = float("inf")
+        prev_tensor_compress_state_dict = None
         for iter in range(n_iters):
             self.quantization_compressor:LinearQuantized = quantization_compression_algorithm(W_remaining)
             self.quantization_compressor.hessian = self.hessian
@@ -58,8 +59,10 @@ class JointCompressor(LinearQuantized):
             self.tensor_compressor.hessian = self.hessian
             self.tensor_compressor.tensor_decompose(**tensor_compression_kwargs)
             self.tensor_compressor.set_additional_attributes_as_trainable()
-            print(tensor_compression_align_kwargs)
+            if prev_tensor_compress_state_dict is not None:
+                self.tensor_compressor.load_state_dict(prev_tensor_compress_state_dict)
             loss = self.tensor_compressor.align(**tensor_compression_align_kwargs)
+            prev_tensor_compress_state_dict = self.tensor_compressor.state_dict()
             with torch.no_grad():
                 W_remaining = self.original_weight.clone() - self.tensor_compressor.reconstruct()
             if loss < best_loss:

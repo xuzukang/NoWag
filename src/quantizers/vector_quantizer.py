@@ -26,6 +26,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         norms_0: Optional[torch.FloatTensor] = None,
         reference_weight: Optional[torch.FloatTensor] = None,
         reference_importances: Optional[torch.LongTensor] = None,
+        cluster_ignore_norms: bool = True,
         additional_parameters: dict[str, torch.Tensor] = {},
     ):
         """Vector Quantizer without any sparse preservations
@@ -49,6 +50,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             self.register_buffer("reference_importances", reference_importances)
         else:
             self.reference_importances = None
+        self.cluster_ignore_norms = cluster_ignore_norms
 
     def forward(self):
         reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
@@ -85,8 +87,9 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         with torch.no_grad():
             reference_importances = self.reference_importances
             # print("updating")
-            self.codes = quantizer_utils.cluster_e_step(
-                self.reference_weight, self.codebook, reference_importances
+            self.codes = quantizer_utils.cluster_assignment_step(
+                self.reference_weight, self.codebook, reference_importances,
+                self.n_out, self.n_in,  self.norms_0 if self.cluster_ignore_norms else None, self.norms_1 if self.cluster_ignore_norms else None
             )
 
     # def get_reference_importances
@@ -130,23 +133,17 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         n_iter: int = 100,
         initialize_method: Literal["grid", "kmeans"] = "kmeans",
         norm_order: list[int] = [0, 1],
+        cluster_ignore_norms: bool = True,
         **kwargs,
     ):
         weight_use = weight.clone()
+        n_out, n_in = weight.shape
         norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
-        denormalize_matrix = torch.ones_like(weight_use)
-        if norm_0 is not None:
-            denormalize_matrix = denormalize_matrix * norm_0.unsqueeze(0)
-        if norm_1 is not None:
-            denormalize_matrix = denormalize_matrix * norm_1.unsqueeze(1)
-
+        
         H_diag = torch.diag(hessian)
         # H_diag = H_diag.reshape(-1,d)
         importances = (H_diag).reshape(  # .unsqueeze(0).expand(weight.shape[0], -1)
             -1, d
-        )
-        importances_use = (
-            importances  # * denormalize_matrix.reshape(importances.shape)**2
         )
 
         weight_subvectors = weight_use.reshape(-1, d)
@@ -170,8 +167,9 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             print(len(grid_points))
             centriods = torch.tensor(list(centriods)).to(weight.device)
             print(centriods.shape)
-            assignments = quantizer_utils.cluster_e_step(
-                weight_subvectors, centriods, importances_use
+            assignments = quantizer_utils.cluster_assignment_step(
+                weight_subvectors, centriods, importances,
+                n_out, n_in, norm_0, norm_1
             )
 
         elif initialize_method == "kmeans":
@@ -183,14 +181,19 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             # print(X.shape)
             centriods = weight_subvectors[n_1, :]
 
-            for i in range(n_iter):
-                assignments = quantizer_utils.cluster_e_step(
-                    weight_subvectors, centriods, importances_use
+            for i in tqdm.tqdm(range(n_iter)):
+                assignments = quantizer_utils.cluster_assignment_step(
+                    weight_subvectors, centriods, importances,
+                    n_out, n_in, norm_0 if not cluster_ignore_norms else None, norm_1 if not cluster_ignore_norms else None
+                    
                 )
                 # print(assignments)
                 # print(assignments.shape)
-                centriods = quantizer_utils.cluster_m_step(
-                    weight_subvectors, assignments, n_centriods, importances_use
+                centriods = quantizer_utils.cluster_update_step(
+                    weight_subvectors, assignments, importances,
+                    n_out, n_in, n_centriods, 
+                    norm_0 if not cluster_ignore_norms else None, norm_1 if not cluster_ignore_norms else None
+                    
                 )
                 if i > 0:
                     if torch.all(assignments == assignments_old):
@@ -210,6 +213,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             norm_0,
             weight_subvectors,
             importances,
+            cluster_ignore_norms=cluster_ignore_norms,
         )
 
     def get_n_bits(self):
@@ -328,14 +332,6 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
                 weight_use, norm_order
             )
 
-            denormalize_matrix = torch.ones_like(weight_use)
-            if norm_0 is not None:
-                denormalize_matrix = denormalize_matrix * norm_0.unsqueeze(0)
-            if norm_1 is not None:
-                denormalize_matrix = denormalize_matrix * norm_1.unsqueeze(1)
-
-            denormalize_matrix[~mask] = 0
-
             H_diag = torch.diag(hessian)
             H_diag = H_diag.reshape(-1, d)
             importances = (H_diag.unsqueeze(0).expand(weight.shape[0], -1, -1)).reshape(
@@ -383,7 +379,7 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
                     )
                     # print(assignments)
                     # print(assignments.shape)
-                    centriods = quantizer_utils.cluster_m_step(
+                    centriods = quantizer_utils.cluster_e_step(
                         weight_subvectors, assignments, n_centriods, importances
                     )
                     if i > 0:
@@ -460,13 +456,13 @@ if __name__ == "__main__":
     torch.cuda.random.manual_seed(0)
 
     device = torch.device("cuda:1")
-    data = torch.load("/data/lliu/huffman/layer_0_mlp.gate_proj.pt")
+    data = torch.load("/data/lliu/huffman/layer_0_mlp.up_proj.pt")
     W = data["weight"].to(device).to(torch.float32)
     hessian = data["hessian"].to(device).to(torch.float32)
     print(W.shape)
 
     vq = VectorQuantizer.quantize(
-        W, hessian, d=8, n_bits=1, n_iter=100, initialize_method="kmeans"
+        W, hessian, d=4, n_bits=2, n_iter=100, initialize_method="kmeans"
     )
     print(vq.get_n_bits() / vq.get_n_original_parameters())
     vq.set_additional_attributes_as_trainable()
@@ -487,13 +483,13 @@ if __name__ == "__main__":
         n_iters=100,
         val_every=-1,
         patience=100,
-        patience_scheduler=5,
+        patience_scheduler=10,
         eps=1e-4,
         lr=1e-3,
         low_bound=1e-6,
         clip_grad=1e-1,
-        discrete_update_every=1,
-        lr_multiplier=1,
+        discrete_update_every=100,
+        lr_multiplier=0.9,
         verbose=1,
     )
     print("norm_0", vq.norms_0)
