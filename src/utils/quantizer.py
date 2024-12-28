@@ -12,21 +12,100 @@ from typing import Tuple, Optional, Union, List
 def round_to_the_nearest(x, codebook):
     return torch.argmin(torch.abs(x.unsqueeze(0) - codebook.unsqueeze(1)), dim=0)
 
+class Normalizer(nn.Module):
+    pass 
 
-def normalize(weight, norm_order: list[int] = [0, 1]):
-    """normalize the input weight matrix
-    norm order dictates the order of the norm to use for normalization
-    expected to be returned as norms_0, norms_1
-    """
-    norms = [None, None]
-    weight_use = weight.clone()
-    for i in norm_order:
-        norm_temp = torch.norm(weight_use, dim=i)
-        # print(norm_temp)
-        norms[i] = norm_temp
-        weight_use = weight_use / norm_temp.unsqueeze(i)
+class Normalizer(nn.Module):
 
-    return norms[0], norms[1], weight_use
+    def __init__(self, 
+                 norms: List[Union[torch.Tensor|None]],
+                 zeros: List[Union[torch.Tensor|None]],
+                 norm_order: List[int] = [0, 1],
+                 ):
+        super(Normalizer, self).__init__()
+        self.norm_order = norm_order
+
+        self.norms = nn.ParameterList([nn.Parameter(norm) for norm in norms])
+        self.zeros = nn.ParameterList([nn.Parameter(zero) for zero in zeros])
+
+        
+
+    def denormalize(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
+        """denormalize the input weight matrix"""
+
+        #we have to do this in reverse
+        denormalized_weight = normalized_weight.clone()
+        for i in reversed(self.norm_order):
+            if self.norms[i] is not None and self.norms[i].numel() > 0:
+                denormalized_weight = denormalized_weight * self.norms[i].unsqueeze(i)
+            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
+                # print(self.zeros[i].shape)
+                denormalized_weight = denormalized_weight + self.zeros[i].unsqueeze(i)
+            
+        return denormalized_weight
+    
+    def normalize(self, weight:torch.FloatTensor)->torch.FloatTensor:
+        """normalize the input weight matrix"""
+        normalized_weight = weight.clone()
+        for i in self.norm_order:
+            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
+                normalized_weight = normalized_weight - self.zeros[i].unsqueeze(i)
+            if self.norms[i] is not None and self.norms[i].numel() > 0:
+                normalized_weight = normalized_weight / self.norms[i].unsqueeze(i)
+        
+        return normalized_weight
+    
+    @staticmethod
+    def normalize_init(weight:torch.FloatTensor, 
+                  norm_order:list[int],
+                  zero:list[bool],
+                  eps:float = 1e-5)->Tuple[Normalizer, torch.FloatTensor]:
+        
+        norms = [None] * len(weight.shape)
+        zeros = [None] * len(weight.shape)
+
+        for dim in norm_order:
+            if zero[dim]:
+                zeros[dim] = torch.mean(weight, dim=dim)
+                weight = weight - zeros[dim].unsqueeze(dim)
+            norms[dim] = torch.norm(weight, dim=dim) + eps
+            weight = weight / norms[dim].unsqueeze(dim)
+        
+        return Normalizer(norms, zeros, norm_order), weight
+    
+    def get_n_bits(self):
+        n_bits = 0
+        for norm in self.norms:
+            if norm is not None:
+                n_bits += norm.numel() * 16
+        for zero in self.zeros:
+            if zero is not None:
+                n_bits += zero.numel() * 16
+        return n_bits
+
+
+        
+
+
+
+# def normalize(weight, norm_order: list[int] = [0, 1]):
+#     """normalize the input weight matrix
+#     norm order dictates the order of the norm to use for normalization
+#     expected to be returned as norms_0, norms_1
+#     """
+#     norms = [None, None]
+#     # print(torch.max(torch.mean(weight, dim=0)/torch.mean(torch.abs(weight),dim=0)))
+#     # print(torch.max(torch.mean(weight, dim=1)/torch.mean(torch.abs(weight),dim=1)))
+#     weight_use = weight.clone()
+#     for i in norm_order:
+#         norm_temp = torch.norm(weight_use, dim=i)
+#         # print(norm_temp)
+#         norms[i] = norm_temp
+#         weight_use = weight_use / norm_temp.unsqueeze(i)
+
+#     return norms[0], norms[1], weight_use
+
+# def denormalize(normalized_weights, norms
 
 
 @jit.script
@@ -55,7 +134,8 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
     """
 
     n_combined, d = X_reshaped.shape
-    
+    # print("subblock_size", subblock_size, "d", d, "n_in", n_in)
+    # print(subblock_size*d // n_in)
     weights_use = torch.tile(weights, (subblock_size*d // n_in, 1)) #shape of (subblock_size, d)
     if norm_0 is not None:
         #de normalize the weights
@@ -77,6 +157,7 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
                     weights_rescaled[j*n_in//d:(j+1)*n_in//d] *= norm_1[i//n_in + j]**2
                 errors = errors * weights_rescaled.unsqueeze(-1)
             else:
+                # print(errors.shape, weights_use.shape)
                 errors = errors * weights_use.unsqueeze(-1)
 
             # sum by the d

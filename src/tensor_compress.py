@@ -6,7 +6,7 @@ import math
 import numpy as np
 import os
 import sys
-from typing import Tuple, Optional, Union, List, Callable
+from typing import Tuple, Optional, Union, List, Callable, Literal
 
 if __name__ == "__main__":
     sys.path.append(os.getcwd())
@@ -179,6 +179,7 @@ class LinearTensorized(lc.LinearQuantized):
     def tensor_decompose(self, N_qudits:int,
                          fixed_qudits_shapes:List[int]=[],
                          norm_order: List[int] = [0, 1],
+                         zeros:List[bool] = [False, False],
                             **kwargs):
         """_summary_
 
@@ -190,9 +191,8 @@ class LinearTensorized(lc.LinearQuantized):
         # print("weight shape", self.original_weight.shape)
         self.N_qudits = N_qudits
         self.N_gates = int(sp.special.comb(N_qudits, 2))
-        norm_0, norm_1, weight_use = quantizer_utils.normalize(self.original_weight, norm_order)
-
-        self.add_additional_attributes({"norm_0": norm_0, "norm_1": norm_1})
+        self.normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(self.original_weight, norm_order, zeros)
+        self.normalizer: quantizer_utils.Normalizer
 
         if self.in_features > self.out_features:
 
@@ -251,27 +251,18 @@ class LinearTensorized(lc.LinearQuantized):
         # print([gate.shape for gate in self.gates])
         reconstructed_weight = self.reshape_fn(torch.einsum(self.reconstruct_expr, *self.gates))
                     
-        if self.norm_0 is not None:
-            # print(self.norm_0.requires_grad)
-            reconstructed_weight = reconstructed_weight * self.norm_0.unsqueeze(0)
-        if self.norm_1 is not None:
-            # print(self.norm_1)
-            reconstructed_weight = reconstructed_weight * self.norm_1.unsqueeze(1)
-
-        return reconstructed_weight
+        return self.normalizer.denormalize(reconstructed_weight)
     
     def align(
         self,
         val_hessian: Optional[torch.FloatTensor] = None,
-        lr: float = 1e-3,
-        lr_norms: Optional[float] = None,
+        lr: Union[float, dict[str, float]] = 1e-3,
         lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
-        lr_warmup: Optional[float] = None,
-        lr_norms_warmup: Optional[float] = None,
-        n_iter: int = 100,
+        lr_warmup: Optional[Union[float, dict[str, float]]] = None,
+        n_iters: int = 100,
         n_iters_warmup_task: int = 0,
         val_every: int = 1,
-        discrete_update_every: int = 1,
+        discrete_update_every: int = -1,
         clip_grad: float = -1,
         verbose: Union[bool, int] = 10,
         low_bound: float = 1e-5,
@@ -306,7 +297,6 @@ class LinearTensorized(lc.LinearQuantized):
                 compression_module=self,
                 original_weights=self.original_weight,
                 lr=lr if lr_warmup is None else lr_warmup,
-                lr_norms=lr_norms if lr_norms_warmup is None else lr_norms_warmup,
                 lr_multiplier=lr_multiplier,
                 n_iters=n_iters_warmup_task,
                 val_every=val_every,
@@ -320,26 +310,27 @@ class LinearTensorized(lc.LinearQuantized):
             )
         
         
-
-        _, best_loss = hessian_general_align.align(
-            compression_module=self,
-            original_weights=self.original_weight,
-            train_hessian=self.hessian,
-            val_hessian=val_hessian,
-            lr=lr,
-            lr_norms=lr_norms,
-            lr_multiplier=lr_multiplier,
-            n_iters=n_iter,
-            val_every=val_every,
-            discrete_update_every=discrete_update_every,
-            clip_grad=clip_grad,
-            verbose=verbose,
-            low_bound=low_bound,
-            patience=patience,
-            patience_scheduler=patience_scheduler,
-            eps=eps,
-        )
-        return best_loss
+        if n_iters > 0:
+            _, best_loss = hessian_general_align.align(
+                compression_module=self,
+                original_weights=self.original_weight,
+                train_hessian=self.hessian,
+                val_hessian=val_hessian,
+                lr=lr,
+                lr_multiplier=lr_multiplier,
+                n_iters=n_iters,
+                val_every=val_every,
+                discrete_update_every=discrete_update_every,
+                clip_grad=clip_grad,
+                verbose=verbose,
+                low_bound=low_bound,
+                patience=patience,
+                patience_scheduler=patience_scheduler,
+                eps=eps,
+            )
+            return best_loss
+        else:
+            return 0
 
 
 
@@ -370,10 +361,8 @@ class LinearTensorized(lc.LinearQuantized):
         for gate in self.gates:
             n_bits += gate.numel()*16
         
-        if self.norm_0 is not None:
-            n_bits += self.norm_0.numel()*16
-        if self.norm_1 is not None:
-            n_bits += self.norm_1.numel()*16
+        n_bits += self.normalizer.get_n_bits()
+
         if self.original_bias is not None:
             n_bits += self.original_bias.numel()*16
 
@@ -381,24 +370,27 @@ class LinearTensorized(lc.LinearQuantized):
     
     
 def find_threshold(W, zero_out_top:float,eps=1e-6):
-    
-    threshold = torch.mean(W)
-    search_range = [0,torch.max(W)]
-    #perform binary search to find the threshold
-    for i in range(100):
-        mask = W > threshold
-        n_zeros = torch.sum(mask).item()
-        if n_zeros > int(zero_out_top*W.numel()) + 1:
-            search_range[0] = threshold
-            threshold_ = (search_range[0] + search_range[1])/2
-        elif n_zeros < int(zero_out_top*W.numel())-1:
-            search_range[1] = threshold
-            threshold_ = (search_range[0] + search_range[1])/2
-        
-        if abs(threshold-threshold_) < eps:
-            break
-        threshold = threshold_
+    W_flat = torch.sort(W.flatten())[0]
+    threshold = W_flat[int((1-zero_out_top)*W_flat.numel())]
     return threshold
+    
+    # threshold = torch.mean(W)
+    # search_range = [0,torch.max(W)]
+    # #perform binary search to find the threshold
+    # for i in range(100):
+    #     mask = W > threshold
+    #     n_zeros = torch.sum(mask).item()
+    #     if n_zeros > int(zero_out_top*W.numel()) + 1:
+    #         search_range[0] = threshold
+    #         threshold_ = (search_range[0] + search_range[1])/2
+    #     elif n_zeros < int(zero_out_top*W.numel())-1:
+    #         search_range[1] = threshold
+    #         threshold_ = (search_range[0] + search_range[1])/2
+        
+    #     if abs(threshold-threshold_) < eps:
+    #         break
+    #     threshold = threshold_
+    # return threshold
 
 
 
@@ -411,6 +403,7 @@ class LinearTensorizedWithSparse(LinearTensorized):
                          fixed_qudits_shapes:List[int]=[],
                          norm_order: List[int] = [0, 1],
                          sparse_frac:float = 0.01,
+                         sparse_method:Literal["unstructured", "structured_0_only", "structured_1_only", "structured_0_1"] = "unstructured",
                             **kwargs):
         """_summary_
 
@@ -424,36 +417,90 @@ class LinearTensorizedWithSparse(LinearTensorized):
         super().tensor_decompose(N_qudits, fixed_qudits_shapes, norm_order)
         
         # print("sparsity", sparse_frac)
+        self.sparse_method = sparse_method
+        if sparse_method == "unstructured":
+            #unstructured sparsity by just picking the top k% of the weights
+            threshold = find_threshold(torch.abs(self.original_weight), sparse_frac)
+        
+            mask = torch.abs(self.original_weight) > threshold
+            self.register_buffer("mask", mask)
+            self.sparse_weights = nn.Parameter(self.original_weight[self.mask])
 
-        threshold = find_threshold(torch.abs(self.original_weight), sparse_frac)
-        # print(threshold)
+        elif sparse_method == "structured_0_only":
+            #structured sparsity by only zeroing out the first gate
+            norms = torch.norm(self.original_weight, dim=0)
+            threshold = find_threshold(norms, sparse_frac)
+            
+            mask = norms > threshold
+            self.register_buffer("mask", mask)
         
-        mask = torch.abs(self.original_weight) > threshold
-        self.register_buffer("mask", mask)
-    
+            self.sparse_weights = nn.Parameter(self.original_weight[: , self.mask])
+        elif sparse_method == "structured_1_only":
+            #structured sparsity by only zeroing out the second gate
+            norms = torch.norm(self.original_weight, dim=1)
+            threshold = find_threshold(norms, sparse_frac)
+            
+            mask = norms > threshold
+            self.register_buffer("mask", mask)
         
-        self.sparse_weights = nn.Parameter(self.original_weight[self.mask])
+            self.sparse_weights = nn.Parameter(self.original_weight[self.mask , :])
+        
+        elif sparse_method == "structured_0_1":
+            norms_0 = torch.norm(self.original_weight, dim=0)
+            norms_1 = torch.norm(self.original_weight, dim=1)
+            threshold = find_threshold(torch.concatenate([norms_0, norms_1]), sparse_frac)
+
+            mask_0 = norms_0 > threshold
+            mask_1 = norms_1 > threshold
+            self.register_buffer("mask_0", mask_0)
+            self.register_buffer("mask_1", mask_1)
+
+            self.sparse_weights0 = nn.Parameter(self.original_weight[:, self.mask_0])
+            self.sparse_weights1 = nn.Parameter(self.original_weight[self.mask_1 , :])
+        else:
+            raise ValueError(f"Unrecognized sparse method {sparse_method}")
+
         # print(self.sparse_weights.numel()/self.original_weight.numel())
         
     def reconstruct(self)->torch.FloatTensor:
         reconstruct_weight = super().reconstruct()
-        reconstruct_weight[self.mask] = self.sparse_weights
+        if self.sparse_method == "unstructured":
+            reconstruct_weight[self.mask] = self.sparse_weights
+        elif self.sparse_method == "structured_0_only":
+            reconstruct_weight[:, self.mask] = self.sparse_weights
+        elif self.sparse_method == "structured_1_only":
+            reconstruct_weight[self.mask, : ] = self.sparse_weights
+        elif self.sparse_method == "structured_0_1":
+            reconstruct_weight[:,self.mask_0] = self.sparse_weights0
+            reconstruct_weight[self.mask_1, :] = self.sparse_weights1
+
         return reconstruct_weight
     
     def get_n_bits(self):
         nbits = super().get_n_bits()
         
-        nse = torch.sum(self.mask)
-        nrows = self.out_features
-        n_indicies_bits = torch.ceil(torch.log2(max(nse, nrows)))
-        nbits += ((nrows * n_indicies_bits + (n_indicies_bits + 16)*nse)).item()
+        if self.sparse_method == "unstructured":
+            nse = torch.sum(self.mask)
+            nrows = self.out_features
+            n_indicies_bits = torch.ceil(torch.log2(max(nse, nrows)))
+            nbits += ((nrows * n_indicies_bits + (n_indicies_bits + 16)*nse)).item()
+        elif self.sparse_method == "structured_0_only" or self.sparse_method == "structured_1_only":
+            n_indicies_bits = np.ceil(np.log2(len(self.mask)))
+            nbits += torch.sum(self.mask).item() * (n_indicies_bits) + self.sparse_weights.numel()*16
+        elif self.sparse_method == "structured_0_1":
+            n_indicies_bits = np.ceil(np.log2(len(self.mask_0)))
+            print(torch.sum(self.mask_0), n_indicies_bits)
+            nbits += torch.sum(self.mask_0).item() * (n_indicies_bits) + self.sparse_weights0.numel()*16
+            n_indicies_bits = np.ceil(np.log2(len(self.mask_1)))
+            print(torch.sum(self.mask_1), n_indicies_bits)
+            nbits += torch.sum(self.mask_1).item() * (n_indicies_bits) + self.sparse_weights1.numel()*16
         return nbits
         
-    def load_state_dict(self, state_dict, strict = True, assign = False):
-        sparse_weights = state_dict["sparse_weights"]
-        if sparse_weights.shape != self.sparse_weights.shape:
-            self.sparse_weights = nn.Parameter(sparse_weights)
-        super().load_state_dict(state_dict, strict, assign)
+    # def load_state_dict(self, state_dict, strict = True, assign = False):
+    #     sparse_weights = state_dict["sparse_weights"]
+    #     if sparse_weights.shape != self.sparse_weights.shape:
+    #         self.sparse_weights = nn.Parameter(sparse_weights)
+    #     super().load_state_dict(state_dict, strict, assign)
         
     
             

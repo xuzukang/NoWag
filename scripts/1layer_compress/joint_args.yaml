@@ -1,0 +1,50 @@
+seed: 0
+tensorize_kwargs:
+  N_qudits: 3
+  # fixed_qudits_shapes:
+  #   - 16
+  norm_order:
+    - 0
+    - 1
+  zeros:
+    - false
+    - false
+  sparse_frac: 0.0025
+  sparse_method: 'structured_0_1'
+quantizer_kwargs:
+  d: 4
+  n_bits: 1.75
+  cluster_ignore_norms: True
+  n_iters: 100
+  norm_order:
+  - 0
+  - 1
+  zero:
+  - False
+  - False
+
+warmup_kwargs:
+  clip_grad: 0.1
+  low_bound: 1.0e-05
+  lr: 0.01
+  lr_multiplier: 0.3333333333333333
+  n_iters: 1000
+  patience: 50
+  patience_scheduler: 50
+  verbose: 100
+
+alignment_method: 'joint'
+alignment_kwargs:
+  clip_grad: 0.1
+  low_bound: 0
+  lr: 
+    tensor : 0.01
+    quantization: 0.001
+  lr_multiplier: 0.3333
+  n_iters: 1000
+  patience: 100
+  patience_scheduler: 25
+  verbose: 10
+  discrete_update_every: -1
+
+

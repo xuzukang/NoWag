@@ -29,8 +29,7 @@ def align(
     original_weights: torch.FloatTensor,
     train_hessian: torch.FloatTensor,
     val_hessian: Optional[torch.FloatTensor] = None,
-    lr: float = 1e-3,
-    lr_norms: Optional[float] = None,    
+    lr: Union[float, dict[str, float]] = 1e-3,  
     lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
     n_iters: int = 100,
     val_every: int = 1,
@@ -66,15 +65,31 @@ def align(
     # initialize the optimizer
     # for name, param in compression_module.named_parameters():
     #     print(name, param.requires_grad, param.shape, param.numel())
+    print("n_iters", n_iters)
     params = []
-    for name, param in compression_module.named_parameters():
-        if param.requires_grad:
-            if "norm" in name and lr_norms is not None:
-                params.append({"params": param, "lr": lr_norms})
-            else:
+    if isinstance(lr, dict):
+        for name, param in compression_module.named_parameters():
+            print(name)
+            if param.requires_grad:
+                #search for the name or substring in the dictionary
+                found = False
+                for key in lr.keys():
+                    if key in name:
+                        params.append({"params": param, "lr": lr[key]})
+                        found = True
+                        break
+                if not found:
+                    params.append({"params": param, "lr": lr["default"]})
+        optimizer = torch.optim.Adam(params)
+        
+    else:
+        print("here")
+        for name, param in compression_module.named_parameters():
+            print(name)
+            if param.requires_grad:
                 params.append({"params": param})
                 
-    optimizer = torch.optim.Adam(params, lr=lr)
+        optimizer = torch.optim.Adam(params, lr=lr)
     # print("lr_multiplier", lr_multiplier)
     if lr_multiplier < 1:
         # print("reducing lr on plateau scheduler")
@@ -89,6 +104,7 @@ def align(
 
     patience_counter = 0
     val_loss = None
+    print("discrete_update_every", discrete_update_every)
     # print("val_hessian", val_hessian)
     for i in range(n_iters):
         optimizer.zero_grad()
@@ -142,7 +158,7 @@ def align(
             # print("no val loss")
             lr_scheduler.step(train_loss)
 
-        if i % discrete_update_every == 0 and i != 0:
+        if i % discrete_update_every == 0 and i != 0 and discrete_update_every > 0:
             compression_module.update_discrete()
 
         if verbose and i % verbose == 0:

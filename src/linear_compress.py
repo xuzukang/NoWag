@@ -33,11 +33,12 @@ class LinearQuantized(compress_parent.CompressorParent):
 
         super(LinearQuantized, self).__init__()
         self.out_features, self.in_features = weight.shape
-        self.original_weight = weight.clone()
+        self.original_weight = weight
+        # self.register_buffer("original_weight", weight)
         self.original_parameters = self.in_features * self.out_features
 
         if bias is not None:
-            self.bias = nn.Parameter(bias.clone(), requires_grad=True)
+            self.bias = nn.Parameter(bias, requires_grad=True)
             self.original_parameters += self.out_features
 
         else:

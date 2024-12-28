@@ -1,14 +1,22 @@
-n_bits: 1.75
-clip_grad: 0.1
-d: 4
-low_bound: 1.0e-05
-lr: 0.001
-lr_multiplier: 1
-n_iter: 100
-norm_order:
-- 0
-- 1
-patience: 20
-patience_scheduler: 50
+quantizer_kwargs:
+  d: 4
+  n_bits: 2
+  cluster_ignore_norms: True
+  n_iters: 100
+  norm_order:
+  - 0
+  - 1
+  zero:
+  - False
+  - False
+alignment_kwargs:
+  clip_grad: 0.1
+  low_bound: 1.0e-05
+  lr: 0.001
+  lr_multiplier: 0.3333
+  n_iters: 100
+  patience: 100
+  patience_scheduler: 50
+  verbose: 10
+  discrete_update_every: -1
 seed: 10
-verbose: 10

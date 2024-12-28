@@ -19,15 +19,22 @@ def get_llama(model: str):
     if "llama-3" not in model.lower():
         from transformers import LlamaForCausalLM
 
-        model = LlamaForCausalLM.from_pretrained(model, torch_dtype="auto")
+        # model = LlamaForCausalLM.from_pretrained(model, torch_dtype="auto")
+        import transformers
+        model = transformers.AutoModelForCausalLM.from_pretrained(
+            model,
+            torch_dtype="auto",
+             low_cpu_mem_usage=True,
+            attn_implementation='sdpa'
+        )
     else:
         import transformers
 
         model = transformers.AutoModelForCausalLM.from_pretrained(
             model,
             torch_dtype="auto",
-            #  low_cpu_mem_usage=True,
-            # attn_implementation='sdpa'
+             low_cpu_mem_usage=True,
+            attn_implementation='sdpa'
         )
     # model.seqlen = 8192
     print("Model loaded.", model)

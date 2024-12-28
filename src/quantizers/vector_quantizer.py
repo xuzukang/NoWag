@@ -22,8 +22,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         codes: torch.LongTensor,
         codebook: torch.FloatTensor,
         reconstructed_shape: Union[Tuple[int, int], torch.Size],
-        norms_1: Optional[torch.FloatTensor] = None,
-        norms_0: Optional[torch.FloatTensor] = None,
+        normalizer: quantizer_utils.Normalizer,
         reference_weight: Optional[torch.FloatTensor] = None,
         reference_importances: Optional[torch.LongTensor] = None,
         cluster_ignore_norms: bool = True,
@@ -44,20 +43,18 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             codebook,
             reconstructed_shape,
             reference_weight,
-            dict({"norms_1": norms_1, "norms_0": norms_0}, **additional_parameters),
-        )
+            additional_parameters)
+        
         if reference_importances is not None:
             self.register_buffer("reference_importances", reference_importances)
         else:
             self.reference_importances = None
         self.cluster_ignore_norms = cluster_ignore_norms
+        self.normalizer = normalizer
 
     def forward(self):
         reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
-        if self.norms_1 is not None:
-            reconstructed_weight = reconstructed_weight * self.norms_1.unsqueeze(1)
-        if self.norms_0 is not None:
-            reconstructed_weight = reconstructed_weight * self.norms_0.unsqueeze(0)
+        reconstructed_weight = self.normalizer.denormalize(reconstructed_weight)
 
         # print(self.reference_importances    )
         return reconstructed_weight
@@ -87,9 +84,11 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         with torch.no_grad():
             reference_importances = self.reference_importances
             # print("updating")
+            normalized_reference_weight = self.normalizer.normalize(self.reference_weight).reshape(-1, self.codebook.shape[1])
             self.codes = quantizer_utils.cluster_assignment_step(
-                self.reference_weight, self.codebook, reference_importances,
-                self.n_out, self.n_in,  self.norms_0 if self.cluster_ignore_norms else None, self.norms_1 if self.cluster_ignore_norms else None
+                normalized_reference_weight, self.codebook, reference_importances,
+                self.n_out, self.n_in,  self.normalizer.norms[0] if self.cluster_ignore_norms else None, self.normalizer.norms[1] if self.cluster_ignore_norms else None,
+                subblock_size = self.n_in//self.codebook.shape[1]
             )
 
     # def get_reference_importances
@@ -130,15 +129,18 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         hessian: torch.FloatTensor,
         d: int = 4,
         n_bits: int = 2,  # number of bits per weight
-        n_iter: int = 100,
+        n_iters: int = 100,
         initialize_method: Literal["grid", "kmeans"] = "kmeans",
         norm_order: list[int] = [0, 1],
+        zero: list[bool] = [True, True],
         cluster_ignore_norms: bool = True,
         **kwargs,
     ):
         weight_use = weight.clone()
         n_out, n_in = weight.shape
-        norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
+        normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
+        normalizer:quantizer_utils.Normalizer
+        # norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
         
         H_diag = torch.diag(hessian)
         # H_diag = H_diag.reshape(-1,d)
@@ -169,7 +171,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             print(centriods.shape)
             assignments = quantizer_utils.cluster_assignment_step(
                 weight_subvectors, centriods, importances,
-                n_out, n_in, norm_0, norm_1
+                n_out, n_in, normalizer.norms[0], normalizer.norms[1]
             )
 
         elif initialize_method == "kmeans":
@@ -181,10 +183,11 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             # print(X.shape)
             centriods = weight_subvectors[n_1, :]
 
-            for i in tqdm.tqdm(range(n_iter)):
+            for i in tqdm.tqdm(range(n_iters)):
                 assignments = quantizer_utils.cluster_assignment_step(
                     weight_subvectors, centriods, importances,
-                    n_out, n_in, norm_0 if not cluster_ignore_norms else None, norm_1 if not cluster_ignore_norms else None
+                    n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                    subblock_size = n_in//d
                     
                 )
                 # print(assignments)
@@ -192,8 +195,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                 centriods = quantizer_utils.cluster_update_step(
                     weight_subvectors, assignments, importances,
                     n_out, n_in, n_centriods, 
-                    norm_0 if not cluster_ignore_norms else None, norm_1 if not cluster_ignore_norms else None
-                    
+                    normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
                 )
                 if i > 0:
                     if torch.all(assignments == assignments_old):
@@ -209,9 +211,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             assignments,
             centriods,
             weight.shape,
-            norm_1,
-            norm_0,
-            weight_subvectors,
+            normalizer,
+            weight,
             importances,
             cluster_ignore_norms=cluster_ignore_norms,
         )
@@ -219,10 +220,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
     def get_n_bits(self):
         n_bits = super().get_n_bits()
         # sum the bits of the norms
-        if self.norms_0 is not None:
-            n_bits += self.norms_0.numel() * 16
-        if self.norms_1 is not None:
-            n_bits += self.norms_1.numel() * 16
+        n_bits += self.normalizer.get_n_bits()
         return n_bits
 
     def clean(self):

@@ -35,36 +35,6 @@ except:
     has_wandb = False
 
 
-def finetune_fn(
-    layer: nn.Module,
-    inps: torch.Tensor,
-    outs: torch.Tensor,
-    val_inps: Optional[torch.Tensor],
-    val_outs: Optional[torch.Tensor],
-    args,
-    discrete_update_fn,
-    kwargs: dict,
-    dev: str,
-):
-    layer.to(torch.float32)
-    finetune.finetune_amp(
-        layer=layer,
-        train_inps=inps.to(dev).to(dtype=torch.float32),
-        train_outputs=outs.to(dev).to(dtype=torch.float32),
-        val_inps=val_inps.to(dev).to(dtype=torch.float32)
-        if val_inps is not None
-        else None,
-        val_outputs=val_outs.to(dev).to(dtype=torch.float32)
-        if val_outs is not None
-        else None,
-        args=args,
-        layer_kwargs=kwargs,
-        early_stop_eps=1e-6,
-        discrete_update_fn=discrete_update_fn,
-    )
-    # layer.to(torch.float32)
-    return layer
-
 
 @torch.no_grad()
 def generate_hessians(model, dataloader, dataloader_val, dev):
@@ -154,11 +124,23 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
     free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
 
+
+    # raise Exception("stop")
+
     for name in kwargs:
         if isinstance(kwargs[name], torch.Tensor):
             kwargs[name] = kwargs[name].to(dev)
             # print(name, kwargs[name].device, kwargs[name].dtype, kwargs[name].shape)
 
+    import gc
+    # data_ptrs = []   
+    # for obj in gc.get_objects():
+    #     try:
+    #         if torch.is_tensor(obj) or (hasattr(obj, 'data') and torch.is_tensor(obj.data)):
+    #             if obj.device == dev:
+    #                 data_ptrs.append(obj.data_ptr())
+    #     except:
+    #         pass
 
     print("Ready.")
 
@@ -175,11 +157,30 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
 
         full = find_layers(layer)
 
-
         sequential = [list(full.keys())]
-        print("sequential", sequential)
 
         for l, names in enumerate(sequential):
+            # if all([os.path.exists(os.path.join(args.save_path, f"layer_{i}/{name}.pt")) for name in names]):
+            #     print("skipping layer", i)
+            #     inference_layer(layer, inps, outs, 
+            #                 layer_kwargs=kwargs, 
+            #                 dev=dev, offload_activations=args.offload_activations,
+            #                 batch_size=args.forward_pass_batch_size)
+                
+            #     if dataloader_val is not None:
+                    
+            #         inference_layer(
+            #             layer,
+            #             inps_val,
+            #             val_outs,
+            #             layer_kwargs=kwargs,
+            #             dev=dev,
+            #             offload_activations=args.offload_activations,
+            #             batch_size=args.forward_pass_batch_size,
+            #         )
+            #     continue
+            
+            
             for name in names:
                 parent_module = getattr(layer, name.split(".")[0])
                 sublayer: nn.Linear = getattr(parent_module, name.split(".")[1])
@@ -244,21 +245,65 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
                 }
                 if dataloader_val is not None:
                     data["val_hessian"] = val_hessians[name]
+                    del val_hessians[name]
                 
                 save_path = os.path.join(args.save_path, f"layer_{i}/{name}.pt")
                 os.makedirs(os.path.dirname(save_path), exist_ok=True)
                 torch.save(data, save_path)
-                        
+                
+                train_hessians[name] = None
+                if dataloader_val is not None:
+                    val_hessians[name] = None
+                    del val_hessians[name]
+                
+                data["hessian"] = None
+                data["val_hessian"] = None
+                data["weight"] = None
+                del data
+                del train_hessians[name]
+                torch.cuda.empty_cache()
 
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
         
-        layers[i] = layer.to(torch.device("cpu"))
+        # for obj in gc.get_objects():
+        #     try:
+        #         if torch.is_tensor(obj) or (hasattr(obj, 'data') and torch.is_tensor(obj.data)):
+        #             if obj.data_ptr() not in data_ptrs:
+        #                 print(type(obj), obj.shape)
+        #             # print(type(obj), obj.shape)
+        #     except:
+        #         pass
+
+        # layers[i] = layer.to(torch.device("cpu"))
+        layer.to(torch.device("cpu"))
+        for name in names:
+            # print(name)
+            del utils.recursive_find(layer, name).original_weight
+            del utils.recursive_find(layer, name).original_bias
         del layer
         torch.cuda.empty_cache()
-        print("after cast to cpu")
+        
+        
+        print("after cleaning up", i)
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+
+        # print(torch.cuda.memory_summary(device=args.device, abbreviated=False))
+
+        # import gc
+        # for obj in gc.get_objects():
+        #     try:
+        #         if torch.is_tensor(obj) or (hasattr(obj, 'data') and torch.is_tensor(obj.data)):
+        #             if obj.device == dev:
+        #                 print(type(obj), obj.shape)
+        #             # if obj.data_ptr() not in data_ptrs:
+        #             #     print(type(obj), obj.shape)
+        #             # print(type(obj), obj.shape)
+        #     except:
+        #         pass
+
+        # raise Exception("stop")
 
         inps, outs = outs, inps
         # return
@@ -326,6 +371,7 @@ if __name__ == "__main__":
     model = get_llama(args.model)
     model.seqlen = args.seqlen
     model.eval()
+    model.to("cpu")
     # print("n samples val", args.nsamples_val)
     # raise Exception("stop")
 
