@@ -22,7 +22,7 @@ import itertools
 import opt_einsum as oe
 from sympy import factorint
 import scipy as sp
-import cvxpy as cp
+# import cvxpy as cp
 
 def get_qudit_dimensions(d, N_qudits, fixed_qudit_dims:List[int] = []):
 
@@ -114,54 +114,6 @@ def initialize_gates(N,qubit_dimensions, layer_type, k_factor, W, device):
         i -=1
     return gates
 
-
-def hardcoded_3_qubit_reconstruct(gates):
-    # gate_1 of shape i1,,i2,k1,k2
-    # gate_2 of shape k1,i3,j1,k3
-    # gate_3 of shape k2,k3,j2,j3
-
-    gate_3, gate_2, gate_1 = gates
-    i1, i2, k1, k2 = gate_1.shape
-    k1, i3, j1, k3 = gate_2.shape
-    k2, k3, j2, j3 = gate_3.shape
-
-    #multiply gate_2 and gate_3 along k_3
-    gate_23 = gate_2.reshape(k1 * i3 * j1, k3) @ cp.transpose(gate_3,(1,0,2,3)).reshape((k3, k2 * j2 * j3), order='C')
-    #shape k1*i3*j1, k2*j2*j3
-    gate_23 = cp.transpose(gate_23.reshape((k1, i3, j1, k2, j2, j3),order = 'C'),(0,3,1,2,4,5)) #shape (k1, k2, i3, j1, j2, j3)
-    gate_23 = gate_23.reshape((k1*k2, i3*j1*j2 * j3), order = 'C')
-    #multiply gate_1 and gate_23 along k_1*k_2
-    gate_123 = gate_1.reshape((i1*i2, k1*k2), order = 'C') @ gate_23
-    gate_123 = gate_123.reshape((i1, i2, i3, j1, j2, j3), order = 'C')
-    return gate_123
-
-
-
-
-def cvx_align_fn(gates:List[torch.FloatTensor],
-              reconstruction_expr:str,
-              reshape_fn:Callable[[torch.FloatTensor], torch.FloatTensor],
-              original_weight:torch.FloatTensor,
-              n_iters:int = 100):
-    
-    gates_np = [gate.detach().cpu().numpy() for gate in gates]
-    print([gate.shape for gate in gates_np])
-
-    for i in range(n_iters):
-        for j in range(len(gates)):
-            # gates_remaining = gates_np[:j] + gates_np[j+1:]
-
-            gate_parameter = cp.Variable(gates[j].shape)
-
-            print([type(g) for g in [gate_parameter if k == j else gate for k, gate in enumerate(gates_np)]])
-            objective = cp.Minimize(cp.sum_squares(original_weight - reshape_fn(hardcoded_3_qubit_reconstruct([gate_parameter if k == j else gate for k, gate in enumerate(gates_np)]), kwargs={"order":"C"})))
-            constraints = []
-
-            prob = cp.Problem(objective, constraints)
-            prob.solve(solver = cp.MOSEK, verbose=True)
-            gates_np[j] = gate_parameter.value
-            print(f"iter {i}, gate {j}, loss {prob.value/np.mean(original_weight**2)}")
-    return [torch.tensor(gate).to(gates[0].device) for gate in gates_np]
 
 
 class LinearTensorized(lc.LinearQuantized):

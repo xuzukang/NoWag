@@ -41,7 +41,7 @@ alignment_kwargs:
     tensor : 0.01
     quantization: 0.001
   lr_multiplier: 0.3333
-  n_iters: 1000
+  n_iters: 250
   patience: 100
   patience_scheduler: 25
   verbose: 10
