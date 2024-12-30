@@ -35,7 +35,7 @@ parser.add_argument("--use_already_done", action = "store_true", help = "if prov
 parser.add_argument("--use_wandb", action = "store_true", help = "if provided will use wandb")
 parser.add_argument("--wandb_project", type = str, default = "compression")
 args = parser.parse_args()
-
+print(args)
     
 if args.use_wandb:
     import wandb
@@ -58,8 +58,11 @@ if args.use_wandb:
     args.save_path = os.path.join(args.save_path, wandb.run.name)
 else:
     #count the number of runs done
-    n_runs = glob.glob(args.save_path + "/*")
+    n_runs = glob.glob(args.save_path.replace("{model_name}", args.models_to_compress[0]
+                                              ) + "/*")
     run_name = f"run_{len(n_runs)}"
+    print("run_name", run_name)
+    # raise ValueError("stop here")
     args.save_path = os.path.join(args.save_path, f"run_{len(n_runs)}")
 
 
@@ -129,8 +132,9 @@ def read_log(log_path:str):
                     if "n_bits" in line:
                         TOTAL_BITS += float(line.split(" ")[-1])
     print("best_loss", best_loss, "running bpv:", round(TOTAL_BITS/TOTAL_PARAMS, 6))
+    if args.use_wandb:
+        wandb.log({"best_loss": best_loss})
     BAR.update(1)
-    COMMANDS_FINISHED += 1
     return True
     # except:
     #     print("error reading log")
@@ -146,9 +150,10 @@ def check_still_running(devices_dict)->list[str]:
         if check_pid(pid):
             # print(f"{device} is still running")
             pass
-        elif command_name == "eval":
+        elif "eval" in command_name:
             print("eval is done")
             DEVICES_OPEN.append(device)
+            COMMANDS_FINISHED += 1
         else:
             print(f"{command_name} is done")
             read_log(log_path)
@@ -156,9 +161,24 @@ def check_still_running(devices_dict)->list[str]:
                 DONE_SAVE_PATHS[log_path_map[log_path]] = {}
             DONE_SAVE_PATHS[log_path_map[log_path]][command_name] = log_path.replace("compressed.log", "compressed.pt")
             DEVICES_OPEN.append(device)
+            COMMANDS_FINISHED += 1
     return DEVICES_OPEN
 
-
+def check_dict(dict_reference, dict_to_check):
+    # print()
+    for key in dict_reference.keys():
+        if key not in dict_to_check.keys():
+            return False
+        elif isinstance(dict_reference[key], dict):
+            if not check_dict(dict_reference[key], dict_to_check[key]):
+                return False
+        elif dict_reference[key] != dict_to_check[key]:
+            return False
+        # else:
+        #     print("key", key)
+        #     print("dict_reference[key]", dict_reference[key])
+        #     print("dict_to_check[key]", dict_to_check[key])
+    return True
 
 def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
     global TOTAL_BITS
@@ -166,7 +186,7 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
     
     command = "python -u scripts/1layer_compress/"
     command_name = load_path.split("/")[-2] +  "/" + load_path.split("/")[-1][:load_path.split("/")[-1].rfind(".")]
-    print("command_name", command_name)
+    # print("command_name", command_name)
 
     if "mlp" in load_path:
         compression_algorithm = args.mlp_compression_algorithm
@@ -190,27 +210,41 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
 
     if args.use_already_done:
         #we check over the past logs to see if the command has already been run
-        for path in glob.glob(save_path.replace(run_name, "*").repalce("compressed.pt", "compressed_args.yaml")):
+        for path in glob.glob(save_path.replace(run_name, "*").replace("compressed.pt", "compressed_args.yaml")):
+            print("path", path)
             other_args = yaml.load(open(path, "r"), Loader = yaml.FullLoader)
             yaml_args = yaml.load(open(yaml_path, "r"), Loader = yaml.FullLoader)
-
+            print("yaml_args", yaml_args)
+            print("other_args", other_args)
             #check if all the keys in yaml_args are in other_args
             #we do not check the otherway because other_args may have more keys that we add in the compression script
-            is_same = True
-            for key in yaml_args.keys():
-                if key not in other_args.keys():
-                    is_same = False
-                    break
-                if yaml_args[key] != other_args[key]:
-                    is_same = False
-                    break
+            try:
+                is_same = check_dict(yaml_args, other_args)
+            except:
+                is_same = False
+            print("is_same", is_same)
+            # for key in yaml_args.keys():
+            #     if key not in other_args.keys():
+            #         print("key not in other_args", key)
+            #         is_same = False
+            #         break
+            #     if yaml_args[key] != other_args[key]:
+            #         print("key not the same", key)
+            #         print("yaml_args[key]", yaml_args[key])
+            #         print("other_args[key]", other_args[key])
+            #         is_same = False
+            #         break
             if is_same:
                 print("already done with ", command_name)
+                print("loading from", path.replace("compressed_args.yaml", "compressed.pt"))
                 if read_log(path.replace("compressed_args.yaml", "compressed.log")):
-                    return None, None,  log_path
+                    print("already done with ", command_name)
+                    # raise ValueError("stop here")
+                    return None, command_name,  path.replace("compressed_args.yaml", "compressed.log")
                 else:
                     print("could not read log, rerunning")
-                    break
+            # raise ValueError("stop here")
+        # raise ValueError("stop here")
     return command, command_name, log_path
 
 
@@ -228,12 +262,16 @@ for path in paths:
         log_paths.append(log_path)
         log_path_map[log_path] = inverse_path_map[path]
     else:
+        # print(inverse_path_map[path])
         if inverse_path_map[path] not in DONE_SAVE_PATHS:
             DONE_SAVE_PATHS[inverse_path_map[path]] = {}
         DONE_SAVE_PATHS[inverse_path_map[path]][command_name] = log_path.replace("compressed.log", "compressed.pt")
+        # print(DONE_SAVE_PATHS)
+        # raise ValueError("stop here")
 n_commands = len(commands)
 print("n_commands", n_commands)
-print("sample command", commands[0])
+if n_commands > 0:
+    print("sample command", commands[0])
     # raise ValueError("stop here")
 
 # print("commands", commands[2])
@@ -242,9 +280,9 @@ print("sample command", commands[0])
 #run the first len(args.devices) commands
 
 DEVICES_OPEN = args.devices.copy()
+done_keys = []
 
-
-for i in range(len(args.devices)):
+for i in range(min(len(args.devices), len(commands))):
     command = commands.pop(0)
     command_name = command_names.pop(0)
     log_path = log_paths.pop(0)
@@ -262,22 +300,68 @@ while COMMANDS_FINISHED < n_commands:
             log_path = log_paths.pop(0)
             run_command(command, device, log_path, command_name)
     
+    done_keys = []
     for key in DONE_SAVE_PATHS.keys():
+        print(key)
         if len(DONE_SAVE_PATHS[key]) == len(path_map[key]):
             print(f"done with {key}")
             print("done with", DONE_SAVE_PATHS[key])
             #save the save paths to a folder
-            chekpoint_list_path = os.path.join(args.save_path.replace("{model_name}", key), "checkpoints.yaml")
-            os.makedirs(os.path.dirname(chekpoint_list_path), exist_ok = True)
-            yaml.dump(DONE_SAVE_PATHS[key], open(chekpoint_list_path, "w"))
+            checkpoint_list_path = os.path.join(args.save_path.replace("{model_name}", key), "checkpoints.yaml")
+            print(checkpoint_list_path)
+            os.makedirs(os.path.dirname(checkpoint_list_path), exist_ok = True)
+            yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
+            done_keys.append(key)
+
+            perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+            if args.use_wandb:
+                perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
+            print("perplexity_inference_command:\n", perplexity_inference_command)
+            commands.insert(0, perplexity_inference_command)
+            command_names.insert(0, "ppl_eval")
+            log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
+            n_commands += 1
+    for key in done_keys:
+        del DONE_SAVE_PATHS[key]
 
 
-            # perplexity_inference_command = f"python -u scripts/1layer_compress/perplexity_inference.py --model_name {key} --seqlen {seqlen_map[key]} --chekpoint_list_path {chekpoint_list_path}"
+            # perplexity_inference_command = f"python -u scripts/1layer_compress/perplexity_inference.py --model_name {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
             # if args.use_wandb:
             #     perplexity_inference_command += f" --use_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
 
+print(DONE_SAVE_PATHS)
+n_commands = 0
+COMMANDS_FINISHED = 0
+for key in DONE_SAVE_PATHS.keys():
+    print(key)
+    if len(DONE_SAVE_PATHS[key]) == len(path_map[key]):
+        print(f"done with {key}")
+        print("done with", DONE_SAVE_PATHS[key])
+        #save the save paths to a folder
+        checkpoint_list_path = os.path.join(args.save_path.replace("{model_name}", key), "checkpoints.yaml")
+        print(checkpoint_list_path)
+        os.makedirs(os.path.dirname(checkpoint_list_path), exist_ok = True)
+        yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
+        done_keys.append(key)
 
+        perplexity_inference_command = f"python -u scripts/1layer_compress/perplexity_inference.py --model_name {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+        if args.use_wandb:
+            perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
+        print("perplexity_inference_command:\n", perplexity_inference_command)
+        commands.insert(0, perplexity_inference_command)
+        command_names.insert(0, "ppl_eval")
+        log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
+        n_commands += 1
 
+while COMMANDS_FINISHED < n_commands:
+    time.sleep(10)
+    DEVICES_OPEN = check_still_running(DEVICES_DICT)
+    if len(commands) > 0:
+        for device in DEVICES_OPEN:
+            command = commands.pop(0)
+            command_name = command_names.pop(0)
+            log_path = log_paths.pop(0)
+            run_command(command, device, log_path, command_name)
 
     
 print("done")

@@ -19,6 +19,7 @@ class QuantizerParent(compress_parent.CompressorParent):
         self.register_buffer("codes", codes)
         self.codebook = nn.Parameter(codebook)
         self.reconstructed_shape = reconstructed_shape
+        # print("reference_weight", reference_weight)
         self.register_buffer("reference_weight", reference_weight)
         self.n_out, self.n_in = self.reconstructed_shape
 
@@ -48,7 +49,8 @@ class QuantizerParent(compress_parent.CompressorParent):
         return torch.prod(torch.tensor(self.reconstructed_shape)).item()
 
     def clean(self):
-        delattr(self, "reference_weight")
+        if hasattr(self, "reference_weight"):
+            delattr(self, "reference_weight")
 
     @staticmethod
     def blank_recreate(**kwargs):

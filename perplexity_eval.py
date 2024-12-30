@@ -1,3 +1,6 @@
+import os
+print("pid", os.getpid())
+
 CUDA_LAUNCH_BLOCKING = 1
 import time
 
@@ -12,9 +15,6 @@ import tqdm
 # from quant import *
 import random
 import numpy as np
-import os
-import src.finetune as finetune
-import src.finetune as finetune
 import src.quantizers.vector_quantizer as vector_quantizer
 import src.linear_compress as linear_compress
 import src.tensor_compress as tensor_compress
@@ -97,7 +97,7 @@ def load_model_from_checkpoints(
                     vector_quantizer.VectorQuantizer, **checkpoint_args["quantizer_kwargs"]
                 )
             if compression_type == "tensorized":
-                tensorized_kwargs = checkpoint_args["tensorizer_kwargs"]
+                tensorized_kwargs = checkpoint_args["tensorize_kwargs"]
                 if tensorized_kwargs["sparse_frac"] > 0:
                     new_layer = tensor_compress.LinearTensorizedWithSparse(
                         module.weight, module.bias, add_bias
@@ -107,7 +107,7 @@ def load_model_from_checkpoints(
                         module.weight, module.bias, add_bias
                     )
                 new_layer.blank_recreate(
-                    **checkpoint_args["tensorizer_kwargs"]
+                    **checkpoint_args["tensorize_kwargs"]
                 )
             elif compression_type == "joint":
                 new_layer = joint_compress.JointCompressor(
@@ -116,8 +116,8 @@ def load_model_from_checkpoints(
                 checkpoint_args["quantizer_kwargs"]["quantizer_class"] = vector_quantizer.VectorQuantizer
                 new_layer.blank_recreate(
                     linear_compress.LinearQuantized, checkpoint_args["quantizer_kwargs"],
-                    tensor_compress.LinearTensorizedWithSparse if checkpoint_args["tensorizer_kwargs"]["sparse_frac"] > 0 else tensor_compress.LinearTensorized,
-                    checkpoint_args["tensorizer_kwargs"],
+                    tensor_compress.LinearTensorizedWithSparse if checkpoint_args["tensorize_kwargs"]["sparse_frac"] > 0 else tensor_compress.LinearTensorized,
+                    checkpoint_args["tensorize_kwargs"],
                 )
             
             new_layer.clean()
@@ -202,8 +202,6 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
     for i in tqdm.tqdm(range(len(layers))):
         # print(i)
         layer = layers[i].to(dev)
-        if batch_size is None:
-
         outs = inference_layer(layer, inps, outs, kwargs, dev, offload_activations, batch_size,
                                disable_tqdm=True)
         layers[i] = layer.cpu()
@@ -272,9 +270,10 @@ if __name__ == "__main__":
     model = get_llama(args.base_model)
     model.seqlen = args.seqlen
     model_name = args.base_model
-    if args.checkpoint_list_path != "":
+    if args.checkpoint_list_path:
         
-        checkpoints = yaml.load(args.checkpoint_list_path, Loader=yaml.FullLoader)
+        checkpoints = yaml.load(open(args.checkpoint_list_path,"r"), Loader=yaml.FullLoader)
+        print(checkpoints)
         model = load_model_from_checkpoints(checkpoints,
                                                         # lambda x: "joint2" if "self_attn" in x else "quantize",
                                                         model)

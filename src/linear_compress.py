@@ -265,6 +265,9 @@ class LinearQuantized(compress_parent.CompressorParent):
         self.quantizer = quantizer_class.blank_recreate(self.original_weight, **kwargs)
         self.quantized = True
 
+    # def load_state_dict(self, state_dict, strict = True, assign = False):
+    #     return super().load_state_dict(state_dict, strict, assign)
+
 
 class LowRankSparse(LinearQuantized):
     def __init__(

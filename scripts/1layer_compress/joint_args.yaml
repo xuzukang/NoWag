@@ -2,6 +2,7 @@ seed: 0
 tensorize_kwargs:
   N_qudits: 3
   # fixed_qudits_shapes:
+  #   - 64
   #   - 16
   norm_order:
     - 0
@@ -9,8 +10,9 @@ tensorize_kwargs:
   zeros:
     - false
     - false
-  sparse_frac: 0.0025
+  sparse_frac: 0.0
   sparse_method: 'structured_0_1'
+  pad_method: 'pad_smaller'
 quantizer_kwargs:
   d: 4
   n_bits: 1.75
@@ -23,15 +25,15 @@ quantizer_kwargs:
   - False
   - False
 
-warmup_kwargs:
-  clip_grad: 0.1
-  low_bound: 1.0e-05
-  lr: 0.01
-  lr_multiplier: 0.3333333333333333
-  n_iters: 1000
-  patience: 50
-  patience_scheduler: 50
-  verbose: 100
+# warmup_kwargs:
+#   clip_grad: 0.1
+#   low_bound: 1.0e-05
+#   lr: 0.001
+#   lr_multiplier: 0.3333333333333333
+#   n_iters: 100
+#   patience: 100
+#   patience_scheduler: 50
+#   verbose: 10
 
 alignment_method: 'joint'
 alignment_kwargs:

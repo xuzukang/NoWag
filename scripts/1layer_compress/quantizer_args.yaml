@@ -19,4 +19,4 @@ alignment_kwargs:
   patience_scheduler: 50
   verbose: 10
   discrete_update_every: -1
-seed: 10
+seed: 1234

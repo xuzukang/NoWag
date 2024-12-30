@@ -22,7 +22,7 @@ import yaml
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--load_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians/pajama/128/layer_0/mlp.gate_proj.pt")
+parser.add_argument("--load_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/pajama/128/layer_0/mlp.up_proj.pt")
 parser.add_argument("--save_path", type=str, default=None)
 parser.add_argument("--device", type = str, default = "cuda:0",
                     help = "device to use for training")

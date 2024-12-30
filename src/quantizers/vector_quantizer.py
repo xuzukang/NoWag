@@ -233,13 +233,13 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         d: int = 4,
         n_bits: int = 2,  # number of bits per weight
         norm_order: list[int] = [0, 1],
+        zero: list[bool] = [True, True],
+        cluster_ignore_norms: bool = True,
         **kwargs,
     ):
         with torch.no_grad():
             weight_use = weight.clone()
-            norm_0, norm_1, weight_use = quantizer_utils.normalize(
-                weight_use, norm_order
-            )
+            normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
 
             codebook = torch.zeros(2 ** (int(n_bits * d)), d).to(weight.device)
             codes = torch.zeros(
@@ -249,13 +249,23 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                 codes,
                 codebook,
                 weight.shape,
-                norm_1,
-                norm_0,
-                weight_use.reshape(-1, d),
-                torch.zeros_like(weight_use).reshape(-1, d),
+                normalizer,
+                weight_use,
+                torch.zeros_like(weight_use[0,:]).reshape(-1, d),
+                cluster_ignore_norms=cluster_ignore_norms,
             )
-            blank_quantizer.clean()
+            # blank_quantizer.clean()
         return blank_quantizer
+    
+    def load_state_dict(self, state_dict, strict = True, assign = False):
+        print("here,loading state dict")
+        if "reference_importances" in state_dict:
+            self.reference_importances = state_dict["reference_importances"]
+            del state_dict["reference_importances"]
+        if "reference_weight" in state_dict:
+            self.cluster_ignore_norms = state_dict["reference_weight"]
+            del state_dict["reference_weight"]
+        return super().load_state_dict(state_dict, strict, assign)
 
 
 class VectorQuantizerSparseUnstructured(VectorQuantizer):
@@ -442,7 +452,7 @@ class VectorQuantizerSparseUnstructured(VectorQuantizer):
                 sparse_values,
                 norm_1,
                 norm_0,
-                weight_use.reshape(-1, d),
+                weight.clone,
                 torch.zeros_like(weight_use).reshape(-1, d),
             )
         return blank_quantizer
