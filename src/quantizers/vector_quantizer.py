@@ -224,6 +224,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         return n_bits
 
     def clean(self):
+        # print("cleaning vector quantizer")
         super().clean()
         delattr(self, "reference_importances")
 

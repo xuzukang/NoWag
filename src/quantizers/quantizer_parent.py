@@ -49,6 +49,7 @@ class QuantizerParent(compress_parent.CompressorParent):
         return torch.prod(torch.tensor(self.reconstructed_shape)).item()
 
     def clean(self):
+        # print("here")
         if hasattr(self, "reference_weight"):
             delattr(self, "reference_weight")
 

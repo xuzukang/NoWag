@@ -45,6 +45,7 @@ def load_model_from_checkpoints(
                                 checkpoints:dict[str:str],
                                 model:llama.LlamaForCausalLM,
                                 add_bias:bool = False,
+                                args = None
                                 ) -> llama.LlamaForCausalLM:
     """
     Load a model from a checkpoint of each individual layer.
@@ -68,9 +69,9 @@ def load_model_from_checkpoints(
     original_dtype = next(iter(model.parameters())).dtype
 
     sublayer_names = [
+        "self_attn.q_proj",
         "self_attn.k_proj",
         "self_attn.v_proj",
-        "self_attn.q_proj",
         "self_attn.o_proj",
         "mlp.up_proj",
         "mlp.gate_proj",
@@ -119,15 +120,29 @@ def load_model_from_checkpoints(
                     tensor_compress.LinearTensorizedWithSparse if checkpoint_args["tensorize_kwargs"]["sparse_frac"] > 0 else tensor_compress.LinearTensorized,
                     checkpoint_args["tensorize_kwargs"],
                 )
-            
+                new_layer.tensor_compressor.safe_forward = False
+                # print(new_layer.tensor_compressor.gates[0]) 
+            # print(new_layer.original_weight)           
             new_layer.clean()
-            del new_layer.original_weight
             new_layer.load_state_dict(torch.load(checkpoint_path), strict=False)
+            new_layer.to(torch.float32)
+            # print("new_layer.quantization_compressor.reconstruct()", new_layer.quantization_compressor.reconstruct())
+            # for i,gate in enumerate(new_layer.tensor_compressor.gates):
+            #     print(f"gate {i}", gate)
+            # print("new_layer.tensor_compressor.reconstruct()", new_layer.tensor_compressor.reconstruct())
+            # print("new_layer.reconstruct()", new_layer.reconstruct())
+            # raise Exception("stop")
+            # print(new_layer.tensor_compressor.gates[0])  
+            # raise Exception("stop")
             n_bits += new_layer.get_n_bits()
             n_params += new_layer.get_n_original_parameters()
+            # for name, param in new_layer.named_parameters():
+            #     if param.requires_grad:
+            #         print(name, param.shape, param.numel())
+            # raise Exception("stop")
             delattr(parent_module, name.split(".")[1])
             setattr(parent_module, name.split(".")[1], new_layer)
-            
+        # break    
 
     print("bpv", n_bits / n_params)
     if args.log_wandb:
@@ -142,7 +157,8 @@ def load_model_from_checkpoints(
 
 @torch.no_grad()
 def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
-               offload_activations: bool = False, batch_size: int = 8):
+               offload_activations: bool = False, batch_size: int = 8,
+               base_model: str = "llama"):
     print("Evaluating ...")
 
     testenc = testenc.input_ids
@@ -208,6 +224,7 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
         del layer
         torch.cuda.empty_cache()
         inps, outs = outs, inps
+        # break
 
     if model.model.norm is not None:
         model.model.norm = model.model.norm.to(dev)
@@ -235,7 +252,7 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
     ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
     print(f"Perplexity: {ppl.item():3f}")
     if log_wandb:
-        wandb.log({f"{args.base_model}/{dataset}/perplexity": ppl.item()})
+        wandb.log({f"{base_model}/{dataset}/perplexity": ppl.item()})
 
     model.config.use_cache = use_cache
 
@@ -290,7 +307,8 @@ if __name__ == "__main__":
             train_test = "test")
         
         llama_eval(model, testloader, args.device, dataset, args.log_wandb,
-                     args.offload_activations, args.batch_size)
+                     args.offload_activations, args.batch_size,
+                     base_model = args.base_model)
 
     
 

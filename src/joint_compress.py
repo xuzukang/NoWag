@@ -272,5 +272,12 @@ class JointCompressor(LinearQuantized):
     def load_state_dict(self, state_dict, strict = True, assign = False):
         quantizer_compressor_state_dict = {k.split("quantization_compressor.")[1]:v for k,v in state_dict.items() if "quantization_compressor" in k}
         tensor_compressor_state_dict = {k.split("tensor_compressor.")[1]:v for k,v in state_dict.items() if "tensor_compressor" in k}
+        # print("tensor_compressor_state_dict", tensor_compressor_state_dict.keys())
         self.quantization_compressor.load_state_dict(quantizer_compressor_state_dict, strict = strict, assign = assign)
         self.tensor_compressor.load_state_dict(tensor_compressor_state_dict, strict = strict, assign = assign)
+
+    def clean(self):
+        """clean the compressors"""
+        super(JointCompressor, self).clean()
+        self.quantization_compressor.clean()
+        self.tensor_compressor.clean()

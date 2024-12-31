@@ -225,6 +225,7 @@ class LinearQuantized(compress_parent.CompressorParent):
     def clean(self):
         if self.quantized:
             self.quantizer.clean()
+        del self.original_weight
         if self.log_hessian_flag:
             del self.hessian
             del self.n_samples

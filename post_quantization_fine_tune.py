@@ -64,31 +64,49 @@ def resplit_loader(existing_loader:List[Tuple[torch.LongTensor, Any]],
             existing_loader.append((inp[:, j:j+new_seqlen], None))
     return existing_loader
 
-def save_model_as_checkpoints(model, save_path, model_path):
+def save_model_as_checkpoints(model, save_path_, checkpoints_dict):
     #create a new directory
-    os.makedirs(save_path, exist_ok=True)
+    os.makedirs(save_path_, exist_ok=True)
 
     #copy the params.yaml file from the model path over
-    os.system(f"cp {model_path}/args.yaml {save_path}/args.yaml")
+    # os.system(f"cp {model_path}/args.yaml {save_path}/args.yaml")
 
-    
+    sublayer_names = [
+        "self_attn.q_proj",
+        "self_attn.k_proj",
+        "self_attn.v_proj",
+        "self_attn.o_proj",
+        "mlp.up_proj",
+        "mlp.gate_proj",
+        "mlp.down_proj",
+    ]
+
     for i,layer in enumerate(model.model.layers):
-        torch.save(layer.state_dict(), os.path.join(save_path, f"layer_{i}.pt"))
+        for sublayer_name in sublayer_names:
+            sublayer = getattr(getattr(layer, sublayer_name.split(".")[0]), sublayer_name.split(".")[1])
+            save_path = os.path.join(save_path_, f"layer_{i}", sublayer_name, "compressed.pt")
+            args_path = save_path.replace("compressed.pt", "compressed_args.yaml")
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            print(f"Saving {sublayer_name} to {save_path}")
+            os.system(f'cp {checkpoints_dict[f"layer_{i}/{sublayer_name}"].replace("compressed.pt", "compressed_args.yaml")} {args_path}')
+            torch.save(sublayer.state_dict(), save_path)
+        # torch.save(layer.state_dict(), os.path.join(save_path, f"layer_{i}.pt"))
     
 
 def add_optional_parameters(parser):
     
-    parser.add_argument("--finetune_dataset", type=str, default = None, help = "Dataset to fine tune on, if not provided, the dataset used for quantization will be used.")
-    parser.add_argument("--finetune_nsamples_train", type=int, default = None, help = "Number of samples to fine tune on, if not provided, the entire dataset will be used.")
-    parser.add_argument("--finetune_nsamples_val", type=int, default = None, help = "Number of samples to validate on, if not provided, the entire dataset will be used.")
+    parser.add_argument("--finetune_dataset", type=str, default = "pajama", help = "Dataset to fine tune on, if not provided, the dataset used for quantization will be used.")
+    parser.add_argument("--finetune_nsamples_train", type=int, default = 256, help = "Number of samples to fine tune on, if not provided, the entire dataset will be used.")
+    parser.add_argument("--finetune_nsamples_val", type=int, default = 0, help = "Number of samples to validate on, if not provided, the entire dataset will be used.")
+
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--quantized_model_path", type=str, help="Path to the quantized model.")
+    parser.add_argument("--checkpoint_list_path", type=str, help="Path to the quantized model.")
     parser.add_argument(
-        "--save_path", type=str, help="Path to save the finetuned model."
+        "--save_folder", type=str, help="Path to save the finetuned model."
     )
     parser.add_argument(
         "--eval_datasets",
@@ -136,15 +154,15 @@ if __name__ == "__main__":
         help="Update the discrete weights.",
     )
     parser.add_argument(
-        "--soft_labels",
-        action="store_true",
-        help="Use soft labels for training.",
-    )
-    parser.add_argument(
         "--ema_decay",
         type=float,
         default=0.99,
         help="Exponential moving average decay.",
+    )
+    parser.add_argument(
+        "--soft_labels",
+        action="store_true",
+        help="Use soft labels for training.",
     )
     parser.add_argument(
         "--train_seqlen",
@@ -194,6 +212,21 @@ if __name__ == "__main__":
         default=0.999,
         help="Finetuning adam_beta2",
     )
+    parser.add_argument(
+        "--embedding_grad",
+        action="store_true",
+        help="Whether to train the embedding layer.",
+    )
+    parser.add_argument(
+        "--final_mlp_grad",
+        action="store_true",
+        help="Whether to train the final mlp layer.",
+    )
+    parser.add_argument(
+        "--add_bias",
+        action="store_true",
+        help="Whether to add bias to each layer.",
+    )
     parser.add_argument("--finetune_keep_best", action="store_true")
     add_optional_parameters(parser)
     args = parser.parse_args()
@@ -204,30 +237,56 @@ if __name__ == "__main__":
     np.random.seed(args.seed)
 
     # init W&B logging
+
+    #expect the checkpoints path to be of type:
+    #/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/wandering-leaf-43/checkpoints.yaml
+    
+    splitted_path = args.checkpoint_list_path.split("/")
+    model_name = ""
+    run_name = ""
+    add = False
+    for i in range(len(splitted_path)):
+        if splitted_path[i] == "compressed":
+            add = False
+        if add:
+            model_name += splitted_path[i] + "/"
+        if splitted_path[i] == "models":
+            add = True
+        if splitted_path[i] == "compressed":
+            run_name = splitted_path[i+1]
+            break
+    model_name = model_name[:-1]
+    print("model_name", model_name)
+
     if args.log_wandb:
         assert has_wandb, "wandb not installed try `pip install wandb`"
-        wandb.init(config=args, project="post_training_quantization")
+        wandb.init(config=args, project="post_training_compression_training",
+                     name = run_name)
+
+    save_path = args.checkpoint_list_path.replace("compressed", "finetuned")
+    #remove the last part of the path
+    save_path = save_path[:save_path.rfind("/")]
+    print("save_path", save_path)
+
+    # quantization_args = args_load.load(os.path.join(args.quantized_model_path, "args.yaml"))
 
 
-    quantization_args = args_load.load(os.path.join(args.quantized_model_path, "args.yaml"))
-
-
-    model = model_utils.get_llama(quantization_args.model)
+    model = model_utils.get_llama(model_name)
+    # model_name = 
 
     dataloader = data.get_loaders(
-        quantization_args.dataset if args.finetune_dataset is None else args.finetune_dataset,
+        args.finetune_dataset,
         # nsamples=128,
-        nsamples=(quantization_args.nsamples_train if args.finetune_nsamples_train is None else args.finetune_nsamples_train) +\
-            (quantization_args.nsamples_val if args.finetune_nsamples_val is None else args.finetune_nsamples_val),
+        nsamples=args.finetune_nsamples_train + (0 if args.finetune_nsamples_val is None else args.finetune_nsamples_val),
         seed=args.seed,
-        model=quantization_args.model,
-        seqlen=quantization_args.seqlen,
+        model=model_name,
+        seqlen=args.eval_seqlen,
         train_test="train",
     )
 
-    if quantization_args.nsamples_val > 0:
+    if args.finetune_nsamples_val > 0:
         indexs = np.random.permutation(len(dataloader))
-        train_idx, val_idx = indexs[quantization_args.nsamples_val :], indexs[: quantization_args.nsamples_val]
+        train_idx, val_idx = indexs[args.finetune_nsamples_val:], indexs[: args.finetune_nsamples_val]
         train_loader = [dataloader[i] for i in train_idx]
         val_loader = [dataloader[i] for i in val_idx]
         val_loader = resplit_loader(val_loader, args.train_seqlen)
@@ -237,7 +296,7 @@ if __name__ == "__main__":
 
     train_loader = resplit_loader(train_loader, args.train_seqlen)
     print("new train loader length", len(train_loader))
-    args.eval_every_samples = int(args.eval_every_samples * quantization_args.seqlen/args.train_seqlen) if args.eval_every_samples > 0 else -1
+    args.eval_every_samples = int(args.eval_every_samples * args.eval_seqlen/args.train_seqlen) if args.eval_every_samples > 0 else -1
 
     if args.soft_labels:
         model.to(args.device)
@@ -247,7 +306,11 @@ if __name__ == "__main__":
     else:
         training_targets = None
     print("here")
-    model, _ = load_model_from_checkpoints(args.quantized_model_path, model)
+    
+    checkpoints_dict = yaml.load(open(args.checkpoint_list_path, "r"), Loader = yaml.FullLoader)
+    model = load_model_from_checkpoints(checkpoints_dict, model, add_bias=args.add_bias, 
+                                           args = args)
+    #save a new version of the checkpoint dict
 
     model.seqlen = args.train_seqlen
     model.to(args.device)
@@ -255,7 +318,7 @@ if __name__ == "__main__":
 
     # set the following parameters to not have a gradient computed
     model.model.embed_tokens.weight.requires_grad = False
-    # model.lm_head.weight.requires_grad = False
+    model.lm_head.weight.requires_grad = False
 
     torch.cuda.empty_cache()
     free, total = torch.cuda.mem_get_info(int(args.device.split(":")[1]))
@@ -284,13 +347,19 @@ if __name__ == "__main__":
     free, total = torch.cuda.mem_get_info(int(args.device.split(":")[1]))
     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f"Number of trainable parameters: {n_params}")    
+    # for name, param in model.named_parameters():
+    #     if param.requires_grad:
+    #         print(name, param.shape, param.numel())
+    print(f"Number of trainable parameters: {f'{n_params:,}'}")    
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=args.finetune_lr,
         betas=(args.finetune_adam_beta1, args.finetune_adam_beta2),
         eps=1e-4,
     )
+
+    # if args.log_wandb:
+    #     wandb.watch(model, log_freq = 1)
 
     for epoch in range(args.finetune_epochs):
 
@@ -327,13 +396,19 @@ if __name__ == "__main__":
             for dataset in args.eval_datasets:
 
                 testloader = data.get_loaders(
-                    dataset, nsamples = 0, seqlen = args.eval_seqlen, model = quantization_args.model,
+                    dataset, nsamples = 0, seqlen = args.eval_seqlen, model = model_name,
                     train_test = "test")
                 
                 llama_eval(model, testloader, args.device, dataset, args.log_wandb,
-                           args.offload_activations, args.inference_batch_size)
+                           args.offload_activations, args.inference_batch_size,
+                           base_model = model_name)
 
             
-            save_model_as_checkpoints(model, 
-                                    os.path.join(args.save_path, f"epoch_{epoch}_iter_{i}"),
-                                        args.quantized_model_path)
+            save_model_as_checkpoints(model,
+                                      save_path,
+                                        checkpoints_dict)
+            
+            new_checkpoints_dict = {}
+            for key in checkpoints_dict:
+                new_checkpoints_dict[key] = checkpoints_dict[key].replace("compressed", "finetuned")
+            yaml.dump(new_checkpoints_dict, open(args.checkpoint_list_path.replace("compressed", "finetuned"), "w"))

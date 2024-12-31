@@ -104,15 +104,15 @@ def initialize_gates(N,qubit_dimensions, layer_type, k, W, device):
     i = len(qubit_dimensions)
     for (dim2,dim1, ) in itertools.combinations(range(-1, -N-1, -1), 2):
         if dim1 == -N and dim2 == -1 and layer_type == "compress":
-            new_gate = torch.randn(qubit_dimensions[dim1], qubit_dimensions[dim2], k, qubit_dimensions[dim2]).to(device) * \
-                torch.mean(torch.abs(W))**(1/N)/(qubit_dimensions[dim1]*qubit_dimensions[dim2]*k*qubit_dimensions[dim2])**0.25
+            new_gate = torch.randn(qubit_dimensions[dim1], qubit_dimensions[dim2], k, qubit_dimensions[dim2]).to(device) #* \
+                #torch.mean(torch.abs(W))**(1/N)/(qubit_dimensions[dim1]*qubit_dimensions[dim2]*k*qubit_dimensions[dim2])**0.25
         elif dim1 == -N and dim2 == -N + 1 and layer_type == "expand":
-            new_gate = torch.randn(k, qubit_dimensions[dim2], qubit_dimensions[dim1], qubit_dimensions[dim2]).to(device) * \
-                torch.mean(torch.abs(W))**(1/N)/(qubit_dimensions[dim1]*qubit_dimensions[dim2]*k*qubit_dimensions[dim1])**0.25
+            new_gate = torch.randn(k, qubit_dimensions[dim2], qubit_dimensions[dim1], qubit_dimensions[dim2]).to(device) #* \
+                #torch.mean(torch.abs(W))**(1/N)/(qubit_dimensions[dim1]*qubit_dimensions[dim2]*k*qubit_dimensions[dim1])**0.25
         
         else:
-            new_gate = torch.randn(qubit_dimensions[dim1], qubit_dimensions[dim2], qubit_dimensions[dim1], qubit_dimensions[dim2]).to(device) * \
-                    torch.mean(torch.abs(W))**(1/N)/np.sqrt(qubit_dimensions[dim1]*qubit_dimensions[dim2])
+            new_gate = torch.randn(qubit_dimensions[dim1], qubit_dimensions[dim2], qubit_dimensions[dim1], qubit_dimensions[dim2]).to(device) #* \
+                    #torch.mean(torch.abs(W))**(1/N)/np.sqrt(qubit_dimensions[dim1]*qubit_dimensions[dim2])
             # print(torch.mean(torch.abs(W))**(1/N)/np.sqrt(qubit_dimensions[dim1]*qubit_dimensions[dim2]))
         gates.append(new_gate)
         # print(f"gate {i} {new_gate.shape}, {dim1}, {dim2}")
@@ -156,29 +156,32 @@ class LinearTensorized(lc.LinearQuantized):
 
             if pad_method == "pad_smaller":
                 self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
-                print("self.out_features", self.out_features, "self.in_features", self.in_features) 
-                print("self.qudit_shapes", self.qudit_shapes)
+                # print("self.out_features", self.out_features, "self.in_features", self.in_features) 
+                # print("self.qudit_shapes", self.qudit_shapes)
                 self.pad_n = n_pad(self.out_features, np.prod(self.qudit_shapes[1:]))
-                print("paddding", self.pad_n)
+                # print("paddding", self.pad_n)
                 self.k = int((self.out_features+self.pad_n)/np.prod(self.qudit_shapes[1:]))
+                self.input_reshape_shape = self.qudit_shapes
                 if self.pad_n > 0:
                     self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features + self.pad_n, self.in_features), **kwargs)[:-self.pad_n,:]
-                self.layer_type = "compress"
+                self.layer_type = "expand"
             elif pad_method == "pad_larger":
                 self.qudit_shapes = get_qudit_dimensions(self.out_features, N_qudits, fixed_qudits_shapes)
                 self.pad_n = n_pad(self.in_features, np.prod(self.qudit_shapes[1:]))
-                print("paddding", self.pad_n)
+                # print("paddding", self.pad_n)
                 self.k = int((self.in_features + self.pad_n)/np.prod(self.qudit_shapes[1:]))
+                self.input_reshape_shape = [self.k] + self.qudit_shapes[1:]
                 if self.pad_n > 0:
                     self.reshape_fn = lambda x,kwargs={} : x.reshape((self.out_features, self.in_features + self.pad_n),**kwargs)[:,:-self.pad_n]
-                self.layer_type = "expand"
+                self.layer_type = "compress"
             else:
                 self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
                 self.pad_n = self.in_features - self.out_features
-                print("paddding", self.pad_n)
+                # print("paddding", self.pad_n)
                 self.k = self.qudit_shapes[0]
+                self.input_reshape_shape = self.qudit_shapes
                 self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features + self.pad_n, self.in_features), **kwargs)[:-self.pad_n,:]
-                self.layer_type = "square"
+                self.layer_type = "expand"
             # # assert self.in_features == np.prod(self.qudit_shapes[1:])*self.k
             # self.layer_type = "compress"
 
@@ -187,38 +190,43 @@ class LinearTensorized(lc.LinearQuantized):
         elif self.in_features < self.out_features:
             if pad_method == "pad_larger":
                 self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
-                print("self.qudit_shapes", self.qudit_shapes)
+                # print("self.qudit_shapes", self.qudit_shapes)
                 self.pad_n = n_pad(self.out_features, np.prod(self.qudit_shapes[1:]))
-                print("paddding", self.pad_n)
+                # print("paddding", self.pad_n)
                 self.k = int((self.out_features+self.pad_n)/np.prod(self.qudit_shapes[1:]))
+                self.input_reshape_shape = self.qudit_shapes
                 if self.pad_n > 0:
                     self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features + self.pad_n, self.in_features), **kwargs)[:-self.pad_n,:]
-                self.layer_type = "compress"
+                self.layer_type = "expand"
             elif pad_method == "pad_smaller":
                 self.qudit_shapes = get_qudit_dimensions(self.out_features, N_qudits, fixed_qudits_shapes)
                 self.pad_n = n_pad(self.in_features, np.prod(self.qudit_shapes[1:]))
-                print("paddding", self.pad_n)
+                # print("paddding", self.pad_n)
                 self.k = int((self.in_features + self.pad_n)/np.prod(self.qudit_shapes[1:]))
+                self.input_reshape_shape = [self.k] + self.qudit_shapes[1:]
                 if self.pad_n > 0:
                     self.reshape_fn = lambda x,kwargs={} : x.reshape((self.out_features, self.in_features + self.pad_n),**kwargs)[:,:-self.pad_n]
-                self.layer_type = "expand"
+                self.layer_type = "compress"
             else:
                 self.qudit_shapes = get_qudit_dimensions(self.out_features, N_qudits, fixed_qudits_shapes)
                 self.pad_n = self.out_features - self.in_features
                 print("self.pad_n", self.pad_n)
                 print("self.out_features", self.out_features, "self.in_features", self.in_features)
                 self.k = self.qudit_shapes[0]
+                self.input_reshape_shape = [self.k] + self.qudit_shapes[1:]
                 self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features, self.in_features + self.pad_n), **kwargs)[:,:-self.pad_n]
-                self.layer_type = "square"
+                self.layer_type = "compress"
             # print(self.k)
             # assert self.out_features == np.prod(self.qudit_shapes[1:])*self.k
 
         else:
 
             self.qudit_shapes = get_qudit_dimensions(self.in_features, N_qudits, fixed_qudits_shapes)
+            self.input_reshape_shape = self.qudit_shapes
             # print(self.qudit_shapes)
             self.layer_type = "square"
             self.k = self.qudit_shapes[0]
+            self.pad_n = 0
 
         if not hasattr(self, "reshape_fn"):
             self.reshape_fn = lambda x, kwargs={} : x.reshape((self.out_features, self.in_features), **kwargs)
@@ -234,7 +242,7 @@ class LinearTensorized(lc.LinearQuantized):
 
         self.reconstruct_expr = quanta_op_einsum_expr(N_qudits)
         self.apply_expr = quanta_apply_einsum_expr(N_qudits)
-        print("apply expr", self.apply_expr)
+        # print("apply expr", self.apply_expr)
         self.tensorized = True
 
     def reconstruct(self)->torch.FloatTensor:
@@ -245,8 +253,13 @@ class LinearTensorized(lc.LinearQuantized):
         #otherwise, use the reconstruct
         # print(self.reconstruct_expr)
         # print([gate.shape for gate in self.gates])
+        # print(torch.min(torch.einsum(self.reconstruct_expr, *self.gates)))  
+        # print(torch.max(torch.einsum(self.reconstruct_expr, *self.gates)))
+        # print(self.reconstruct_expr)
+        # print()
+        # print(torch.einsum(self.reconstruct_expr, *self.gates).shape)
         reconstructed_weight = self.reshape_fn(torch.einsum(self.reconstruct_expr, *self.gates))
-                    
+        # print(reconstructed_weight)
         return self.normalizer.denormalize(reconstructed_weight)
     
     def align(
@@ -345,7 +358,28 @@ class LinearTensorized(lc.LinearQuantized):
         
         else:
             #otherwise, we use the tensorized forward pass
-            x_reshaped = x.reshape()
+            #multiply x by norm_0
+            # print("x", x.shape)
+            if self.normalizer.norms[0] is not None:
+                x = x*self.normalizer.norms[0]
+            if self.pad_n > 0 and self.layer_type == "expand":
+                x = F.pad(x, (0, self.pad_n))
+            # print("padded and normalized x", x.shape)
+            x_reshaped = (x).reshape(list(x.shape[:-1]) + self.input_reshape_shape)
+            # print("x_reshaped", x_reshaped.shape)
+            # print("gates shapes", [gate.shape for gate in self.gates])
+            # print("apply expr", self.apply_expr)    
+            # print("rec", self.reconstruct_expr)
+            # print("reconstructed_shape", self.reconstruct().shape)
+            y = torch.einsum(self.apply_expr, x_reshaped, *self.gates)
+            y = y.reshape(list(x.shape[:-1]) + [self.out_features])
+            if self.pad_n > 0 and self.layer_type == "compress":
+                y = y[:,:-self.pad_n]
+            if self.normalizer.norms[1] is not None:
+                y *= self.normalizer.norms[1]
+            # print("y", y.shape)
+            return y
+
 
     def blank_recreate(self, **kwargs):
         """Alias for tensor_decompose since that also just initializes them to random values"""
@@ -365,6 +399,11 @@ class LinearTensorized(lc.LinearQuantized):
             n_bits += self.original_bias.numel()*16
 
         return n_bits
+    
+    def load_state_dict(self, state_dict, strict = True, assign = False):
+        out = super().load_state_dict(state_dict, strict, assign)
+        # print("self.gates[0][0,0,0]", self.gates[0][0,0,0])
+        return out
     
     
 def find_threshold(W, zero_out_top:float,eps=1e-6):
@@ -504,6 +543,9 @@ class LinearTensorizedWithSparse(LinearTensorized):
             self.sparse_weights0 = nn.Parameter(state_dict["sparse_weights0"])
             self.sparse_weights1 = nn.Parameter(state_dict["sparse_weights1"])
         super().load_state_dict(state_dict, strict, assign)
+    
+    def forward(self,x):
+        raise NotImplementedError("The forward pass for sparse tensorized layers is not implemented yet")
         
     
             

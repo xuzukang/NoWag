@@ -329,7 +329,7 @@ while COMMANDS_FINISHED < n_commands:
             # if args.use_wandb:
             #     perplexity_inference_command += f" --use_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
 
-print(DONE_SAVE_PATHS)
+print(DONE_SAVE_PATHS.keys())
 n_commands = 0
 COMMANDS_FINISHED = 0
 for key in DONE_SAVE_PATHS.keys():
@@ -344,7 +344,7 @@ for key in DONE_SAVE_PATHS.keys():
         yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
         done_keys.append(key)
 
-        perplexity_inference_command = f"python -u scripts/1layer_compress/perplexity_inference.py --model_name {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+        perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
         if args.use_wandb:
             perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
         print("perplexity_inference_command:\n", perplexity_inference_command)
@@ -363,7 +363,9 @@ while COMMANDS_FINISHED < n_commands:
             log_path = log_paths.pop(0)
             run_command(command, device, log_path, command_name)
 
-    
+if args.use_wandb:
+    print("wandb run_id", wandb.run.id)
+    print("wandb_project", args.wandb_project)
 print("done")
     
             
