@@ -311,8 +311,8 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
         print("Done with layer", i, "total_time elapsed:", round(time.time() - tick), "estimated time left:", round((time.time() - tick) * (len(layers) - i - 1) / (i + 1)))
     model.config.use_cache = use_cache
 
-    print("Total bits:", total_bits, "Total params:", total_params)
-    print("average bits per value:", total_bits / total_params)
+    # print("Total bits:", total_bits, "Total params:", total_params)
+    # print("average bits per value:", total_bits / total_params)
 
 
 

@@ -1,11 +1,11 @@
 python -u post_quantization_fine_tune.py \
---checkpoint_list_path="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/wandering-leaf-43/checkpoints.yaml" \
+--checkpoint_list_path="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/amber-serenity-59/checkpoints.yaml" \
 --device=cuda:1 \
 --log_wandb \
---finetune_epochs=1 \
---train_seqlen=512 \
+--finetune_epochs=10 \
+--train_seqlen=1024 \
 --finetune_lr=1e-5 \
---eval_every_samples=4 \
+--eval_every_samples=16 \
 --update_every_n_tokens=4096 \
 --finetune_nsamples_train=128 \
 --finetune_nsamples_val=0 \

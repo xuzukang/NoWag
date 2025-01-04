@@ -27,6 +27,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         reference_importances: Optional[torch.LongTensor] = None,
         cluster_ignore_norms: bool = True,
         additional_parameters: dict[str, torch.Tensor] = {},
+        pad = 0,
     ):
         """Vector Quantizer without any sparse preservations
 
@@ -51,10 +52,13 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             self.reference_importances = None
         self.cluster_ignore_norms = cluster_ignore_norms
         self.normalizer = normalizer
+        self.pad = pad
 
     def forward(self):
         reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
         reconstructed_weight = self.normalizer.denormalize(reconstructed_weight)
+        if self.pad > 0:
+            reconstructed_weight = reconstructed_weight[:,:-self.pad]
 
         # print(self.reference_importances    )
         return reconstructed_weight
@@ -123,8 +127,9 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         else:
             print("No reference importances found")
 
+
     @staticmethod
-    def quantize(
+    def quantize_(
         weight: torch.FloatTensor,
         hessian: torch.FloatTensor,
         d: int = 4,
@@ -136,8 +141,21 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         cluster_ignore_norms: bool = True,
         **kwargs,
     ):
-        weight_use = weight.clone()
+        #if d is not able to divided n_in we pad
         n_out, n_in = weight.shape
+        if n_in % d != 0:
+            pad = d - (n_in % d)
+            weight_pad = F.pad(weight, (0, pad), value = torch.mean(weight).item())
+            print("hessian", hessian.shape)
+            hessian = F.pad(hessian, (0, pad, 0, pad))
+            print("padding", pad)
+            print("hesian", hessian.shape)
+            n_in += pad
+        else:
+            pad = 0
+            weight_pad = weight
+        weight_use = weight_pad.clone()
+
         normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
         normalizer:quantizer_utils.Normalizer
         # norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
@@ -160,7 +178,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                     torch.linspace(
                         torch.min(weight_subvectors[:, i]),
                         torch.max(weight_subvectors[:, i]),
-                        2**n_bits,
+                        2 ** int(n_bits) if i != d-1 else 2 ** (int(n_bits*d)-(d-1)*int(n_bits)),
                     )
                     .cpu()
                     .tolist()
@@ -168,11 +186,13 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             centriods = itertools.product(*grid_points)
             print(len(grid_points))
             centriods = torch.tensor(list(centriods)).to(weight.device)
-            print(centriods.shape)
+            print("centriods.shape", centriods.shape)
             assignments = quantizer_utils.cluster_assignment_step(
                 weight_subvectors, centriods, importances,
-                n_out, n_in, normalizer.norms[0], normalizer.norms[1]
+                n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                    subblock_size = n_in//d
             )
+            print(assignments.shape)
 
         elif initialize_method == "kmeans":
             n_1 = torch.from_numpy(
@@ -207,14 +227,33 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         else:
             raise ValueError("initialize_method must be either 'grid' or 'kmeans'")
 
+        return assignments, centriods, (n_out, n_in), normalizer, weight_pad, importances, cluster_ignore_norms, pad, hessian
+    
+    @staticmethod
+    def quantize(
+        weight: torch.FloatTensor,
+        hessian: torch.FloatTensor,
+        d: int = 4,
+        n_bits: int = 2,  # number of bits per weight
+        n_iters: int = 100,
+        initialize_method: Literal["grid", "kmeans"] = "kmeans",
+        norm_order: list[int] = [0, 1],
+        zero: list[bool] = [True, True],
+        cluster_ignore_norms: bool = True,
+        **kwargs,
+    ):
+        assignments, centriods, (n_out, n_in), normalizer, weight_pad, importances, cluster_ignore_norms, pad, hessian = VectorQuantizer.quantize_(
+            weight, hessian, d, n_bits, n_iters, initialize_method, norm_order, zero, cluster_ignore_norms, **kwargs)
+
         return VectorQuantizer(
             assignments,
             centriods,
-            weight.shape,
+            (n_out, n_in),
             normalizer,
-            weight,
+            weight_pad,
             importances,
             cluster_ignore_norms=cluster_ignore_norms,
+            pad = pad
         )
 
     def get_n_bits(self):
@@ -239,21 +278,30 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         **kwargs,
     ):
         with torch.no_grad():
-            weight_use = weight.clone()
+            n_out, n_in = weight.shape
+            if n_in % d != 0:
+                pad = d - (n_in % d)
+                weight_pad = F.pad(weight, (0, pad), value = torch.mean(weight).item())
+                n_in += pad
+            else:
+                pad = 0
+                weight_pad = weight
+            weight_use = weight_pad.clone()
             normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
 
             codebook = torch.zeros(2 ** (int(n_bits * d)), d).to(weight.device)
             codes = torch.zeros(
-                (weight.shape[0] * weight.shape[1]) // d, dtype=torch.long
+                (weight_use.shape[0] * weight_use.shape[1]) // d, dtype=torch.long
             ).to(weight.device)
             blank_quantizer = VectorQuantizer(
                 codes,
                 codebook,
-                weight.shape,
+                (n_out, n_in),
                 normalizer,
                 weight_use,
                 torch.zeros_like(weight_use[0,:]).reshape(-1, d),
                 cluster_ignore_norms=cluster_ignore_norms,
+                pad = pad
             )
             # blank_quantizer.clean()
         return blank_quantizer

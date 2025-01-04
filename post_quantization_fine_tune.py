@@ -241,6 +241,7 @@ if __name__ == "__main__":
     #expect the checkpoints path to be of type:
     #/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/wandering-leaf-43/checkpoints.yaml
     
+    load_dir = os.path.dirname(args.checkpoint_list_path)
     splitted_path = args.checkpoint_list_path.split("/")
     model_name = ""
     run_name = ""
@@ -258,20 +259,29 @@ if __name__ == "__main__":
     model_name = model_name[:-1]
     print("model_name", model_name)
 
-    if args.log_wandb:
-        assert has_wandb, "wandb not installed try `pip install wandb`"
-        wandb.init(config=args, project="post_training_compression_training",
-                     name = run_name)
 
     save_path = args.checkpoint_list_path.replace("compressed", "finetuned")
     #remove the last part of the path
     save_path = save_path[:save_path.rfind("/")]
     print("save_path", save_path)
+    os.makedirs(save_path, exist_ok=True)
+
+    #count the number of files in the directory
+    n_prev_runs = len(glob.glob(os.path.join(save_path, "*")))
+    run_name = f"{run_name}-{n_prev_runs}"
+    print("run_name", run_name)
+    save_path = os.path.join(save_path, run_name)
+
+    if args.log_wandb:
+        assert has_wandb, "wandb not installed try `pip install wandb`"
+        wandb.init(config=args, project="post_training_compression_training",
+                     name = run_name)
 
     # quantization_args = args_load.load(os.path.join(args.quantized_model_path, "args.yaml"))
 
 
     model = model_utils.get_llama(model_name)
+    args.base_model = model_name
     # model_name = 
 
     dataloader = data.get_loaders(
@@ -410,5 +420,5 @@ if __name__ == "__main__":
             
             new_checkpoints_dict = {}
             for key in checkpoints_dict:
-                new_checkpoints_dict[key] = checkpoints_dict[key].replace("compressed", "finetuned")
-            yaml.dump(new_checkpoints_dict, open(args.checkpoint_list_path.replace("compressed", "finetuned"), "w"))
+                new_checkpoints_dict[key] = checkpoints_dict[key].replace(load_dir, save_path)
+            yaml.dump(new_checkpoints_dict, open(args.checkpoint_list_path.replace(load_dir, save_path), "w"))

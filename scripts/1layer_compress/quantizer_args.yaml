@@ -1,22 +1,24 @@
 quantizer_kwargs:
-  d: 4
+  d: 6
   n_bits: 2
   cluster_ignore_norms: True
-  n_iters: 100
+  n_iters: 10
   norm_order:
   - 0
   - 1
   zero:
   - False
   - False
+  initialize_method: 'kmeans'
 alignment_kwargs:
   clip_grad: 0.1
+  discrete_update_every: 100
   low_bound: 1.0e-05
   lr: 0.001
-  lr_multiplier: 0.3333
-  n_iters: 100
-  patience: 100
-  patience_scheduler: 50
+  lr_multiplier: 0.9
+  n_iters: 1000
+  patience: 500
+  patience_scheduler: 1
   verbose: 10
-  discrete_update_every: -1
-seed: 1234
+seed: 0
+quantizer_type: '1st_order'

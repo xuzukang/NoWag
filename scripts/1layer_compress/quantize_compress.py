@@ -16,6 +16,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath
 
 import src.linear_compress as lc
 import src.quantizers.vector_quantizer as vq
+import src.quantizers.vq2 as vq2
 
 import argparse
 
@@ -23,7 +24,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--load_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/pajama/128/layer_0/self_attn.q_proj.pt")
 parser.add_argument("--save_path", type=str, default="/data/lliu/huffman/test/save_self_attn.q_proj.pt")
-parser.add_argument("--device", type = str, default = "cuda:7",
+parser.add_argument("--device", type = str, default = "cuda:2",
                     help = "device to use for training")
 parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml")
 # parser.add_argument("--d", type = int, default = 4,
@@ -72,7 +73,7 @@ compression_module = lc.LinearQuantized(
 compression_module.hessian = data["hessian"].to(args.device).to(torch.float32)
 
 compression_module.quantize(
-    vq.VectorQuantizer,
+    vq2.VectorQuantizer_1st_order if kwargs["quantizer_type"] == "1st_order" else vq.VectorQuantizer,
     **kwargs["quantizer_kwargs"]
 )
 print(compression_module.quantizer.normalizer.zeros[0])

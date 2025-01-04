@@ -4,8 +4,12 @@
 # export MODEL_PATH=meta-llama/Llama-2-70b-hf
 # export MODEL_PATH=meta-llama/Llama-2-13b-hf
 export MODEL_PATH=meta-llama/Llama-2-7b-hf
+
+MODELS = ("meta-llama/Llama-2-7b-hf" "meta-llama/Llama-2-13b-hf" "meta-llama/Llama-2-70b-hf" "meta-llama/Meta-Llama-3-8B" "meta-llama/Meta-Llama-3-70B")
+DEVICES = ("cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
 export SAVE_PATH="./models/$MODEL_PATH/hessians_new"
-export n_samples=128
+export n_samples=2048
+
 
 echo "Generating hessians for $MODEL_PATH with $n_samples samples"
 if [[ $MODEL_PATH == *"Llama-3"* ]]; then
@@ -16,11 +20,11 @@ else
     echo "Using Llama-2 so setting seqlen to 4096"
 fi
 
-python -u scripts/generate_hessians.py $MODEL_PATH wikitext2 \
+python -u scripts/generate_hessians.py $MODEL_PATH pajama \
 --seqlen $SEQLEN \
---device cuda:7 \
+--device cuda:2 \
 --nsamples_train $n_samples \
 --nsamples_val 0 \
---save_path "$SAVE_PATH/wikitext2/$n_samples" \
+--save_path "$SAVE_PATH/pajama/$n_samples" \
 --offload_activations
 

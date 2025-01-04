@@ -16,6 +16,7 @@ import tqdm
 import random
 import numpy as np
 import src.quantizers.vector_quantizer as vector_quantizer
+import src.quantizers.vq2 as vector_quantizer_2
 import src.linear_compress as linear_compress
 import src.tensor_compress as tensor_compress
 import src.joint_compress as joint_compress
@@ -84,7 +85,7 @@ def load_model_from_checkpoints(
             parent_module = getattr(layer, name.split(".")[0])
             module = getattr(parent_module, name.split(".")[1])
 
-            sublayer_full_name = f"layer_{i}/{name}"
+            sublayer_full_name = f"{args.base_model}/layer_{i}/{name}"
             if sublayer_full_name not in checkpoints:
                 raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
             checkpoint_path = checkpoints[sublayer_full_name]
@@ -95,7 +96,8 @@ def load_model_from_checkpoints(
                     module.weight, module.bias, add_bias
                 )
                 new_layer.blank_recreate(
-                    vector_quantizer.VectorQuantizer, **checkpoint_args["quantizer_kwargs"]
+                    vector_quantizer_2.VectorQuantizer_1st_order if checkpoint_args.get("quantizer_type") == "1st_order" else vector_quantizer.VectorQuantizer
+                    , **checkpoint_args["quantizer_kwargs"]
                 )
             if compression_type == "tensorized":
                 tensorized_kwargs = checkpoint_args["tensorize_kwargs"]
@@ -146,7 +148,7 @@ def load_model_from_checkpoints(
 
     print("bpv", n_bits / n_params)
     if args.log_wandb:
-        wandb.log({"bpv": n_bits / n_params})
+        wandb.log({f"{args.base_model}/bpv": n_bits / n_params})
     model.to(original_dtype)
 
     return model
@@ -252,7 +254,7 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
     ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
     print(f"Perplexity: {ppl.item():3f}")
     if log_wandb:
-        wandb.log({f"{base_model}/{dataset}/perplexity": ppl.item()})
+        wandb.log({f"/perplexity/{base_model}/{dataset}": ppl.item()})
 
     model.config.use_cache = use_cache
 
@@ -293,7 +295,8 @@ if __name__ == "__main__":
         print(checkpoints)
         model = load_model_from_checkpoints(checkpoints,
                                                         # lambda x: "joint2" if "self_attn" in x else "quantize",
-                                                        model)
+                                                        model,
+                                                        args = args)
 
     model.seqlen = args.seqlen
     model.eval()

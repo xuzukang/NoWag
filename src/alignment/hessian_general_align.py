@@ -23,53 +23,11 @@ class dummy_lr_scheduler:
         pass
 
 
-@torch.enable_grad()
-def align(
-    compression_module: compress_parent.CompressorParent,
-    original_weights: torch.FloatTensor,
-    train_hessian: torch.FloatTensor,
-    val_hessian: Optional[torch.FloatTensor] = None,
-    lr: Union[float, dict[str, float]] = 1e-3,  
-    lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
-    n_iters: int = 100,
-    val_every: int = 1,
-    discrete_update_every: int = 1,
-    clip_grad: float = -1,
-    verbose: Union[bool, int] = 10,
-    low_bound: float = 1e-5,
-    patience: int = 10,
-    patience_scheduler: int = 2,
-    eps: float = 1e-5,
-) -> compress_parent.CompressorParent:
-    """aligns the compression module to the hessian of the training dataset
-
-    Args:
-        compression_module (compress_parent.CompressorParent): the compression module we want to aling
-        original_weights (torch.FloatTensor): the original weights of the model
-        train_hessian (torch.FloatTensor): the hessian of the training dataset
-        val_hessian (Optional[torch.FloatTensor], optional): the hessian of the validation dataset, if None, we don't use it. Defaults to None.
-        lr (float, optional): the learning rate for the optimizer. Defaults to 1e-3.
-        lr_multiplier (float, optional): multiply the learning rate by this factor every time the validation loss increases. Defaults to 1.
-        val_every (int, optional): validate the model every this number of iterations on the validation hessian. Defaults to 1.
-        discrete_update_every (int, optional): update the discrete variables every this number of iteration. Defaults to 1.
-        clip_grad (float, optional): clip the gradient norm to this value. Defaults to -1 in which case we don't clip the gradient.
-        verbose (bool, optional): print every this number of iterations. If False, we don't print anything. If True, we print at the end only. Defaults to False.
-        low_bound (float, optional): the lower bound for the error, below which we stop training. Defaults to 1e-5.
-        patience (int, optional): the patience for the early stop, if the loss has not improved by eps for this number of iterations, we stop training. Defaults to 10.
-        patience_scheduler (int, optional): the patience for the learning rate scheduler. Defaults to 2.
-        eps (float, optional): the minimum improvement in the loss to consider it as an improvement. Defaults to 1e-5.
-    Returns:
-        compress_parent.CompressorParent: the aligned compression module
-    """
-
-    # initialize the optimizer
-    # for name, param in compression_module.named_parameters():
-    #     print(name, param.requires_grad, param.shape, param.numel())
-    print("n_iters", n_iters)
+def initialize_optimizer(compression_module, lr, lr_multiplier, patience_scheduler):
     params = []
     if isinstance(lr, dict):
         for name, param in compression_module.named_parameters():
-            print(name)
+            # print(name)
             if param.requires_grad:
                 #search for the name or substring in the dictionary
                 found = False
@@ -98,6 +56,55 @@ def align(
         )
     else:
         lr_scheduler = dummy_lr_scheduler()
+    
+    return optimizer, lr_scheduler
+
+
+@torch.enable_grad()
+def align(
+    compression_module: compress_parent.CompressorParent,
+    original_weights: torch.FloatTensor,
+    train_hessian: torch.FloatTensor,
+    val_hessian: Optional[torch.FloatTensor] = None,
+    lr: Union[float, dict[str, float]] = 1e-3, 
+    optimizer = None, 
+    lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
+    n_iters: int = 100,
+    val_every: int = 1,
+    discrete_update_every: int = 1,
+    clip_grad: float = -1,
+    verbose: Union[bool, int] = 10,
+    low_bound: float = 1e-5,
+    patience: int = 10,
+    patience_scheduler: int = 2,
+    eps: float = 1e-5,
+    discrete_update_kwargs: Optional[dict] = {},
+) -> compress_parent.CompressorParent:
+    """aligns the compression module to the hessian of the training dataset
+
+    Args:
+        compression_module (compress_parent.CompressorParent): the compression module we want to aling
+        original_weights (torch.FloatTensor): the original weights of the model
+        train_hessian (torch.FloatTensor): the hessian of the training dataset
+        val_hessian (Optional[torch.FloatTensor], optional): the hessian of the validation dataset, if None, we don't use it. Defaults to None.
+        lr (float, optional): the learning rate for the optimizer. Defaults to 1e-3.
+        lr_multiplier (float, optional): multiply the learning rate by this factor every time the validation loss increases. Defaults to 1.
+        val_every (int, optional): validate the model every this number of iterations on the validation hessian. Defaults to 1.
+        discrete_update_every (int, optional): update the discrete variables every this number of iteration. Defaults to 1.
+        clip_grad (float, optional): clip the gradient norm to this value. Defaults to -1 in which case we don't clip the gradient.
+        verbose (bool, optional): print every this number of iterations. If False, we don't print anything. If True, we print at the end only. Defaults to False.
+        low_bound (float, optional): the lower bound for the error, below which we stop training. Defaults to 1e-5.
+        patience (int, optional): the patience for the early stop, if the loss has not improved by eps for this number of iterations, we stop training. Defaults to 10.
+        patience_scheduler (int, optional): the patience for the learning rate scheduler. Defaults to 2.
+        eps (float, optional): the minimum improvement in the loss to consider it as an improvement. Defaults to 1e-5.
+    Returns:
+        compress_parent.CompressorParent: the aligned compression module
+    """
+
+    # initialize the optimizer
+    # for name, param in compression_module.named_parameters():
+    #     print(name, param.requires_grad, param.shape, param.numel())
+    optimizer, lr_scheduler = initialize_optimizer(compression_module, lr, lr_multiplier, patience_scheduler)
 
     # initialize the best loss
     best_loss = float("inf")
@@ -159,7 +166,26 @@ def align(
             lr_scheduler.step(train_loss)
 
         if i % discrete_update_every == 0 and i != 0 and discrete_update_every > 0:
-            compression_module.update_discrete()
+            # with torch.no_grad():
+            #     optimizer.zero_grad()
+            #     reconstructed_weights = compression_module.reconstruct()
+            #     loss_pre_discrete = loss(reconstructed_weights, original_weights, train_hessian)
+            #     # print("loss before discrete update", train_loss)
+            #load the best state dict
+            compression_module.load_state_dict(best_state_dict)
+            n_updated = compression_module.update_discrete(**discrete_update_kwargs)
+            if n_updated == 0:
+                print("no discrete variables updated, breaking")
+                break
+            # optimizer.zero_grad()
+            optimizer, lr_scheduler = initialize_optimizer(compression_module, lr, lr_multiplier, patience_scheduler)
+            # with torch.no_grad():
+            #     reconstructed_weights = compression_module.reconstruct()
+            #     loss_post_discrete = loss(reconstructed_weights, original_weights, train_hessian)
+            
+            # assert loss_post_discrete < loss_pre_discrete, f"loss_post_discrete {loss_post_discrete} loss_pre_discrete {loss_pre_discrete}"
+            
+            # raise NotImplementedError
 
         if verbose and i % verbose == 0:
             print(

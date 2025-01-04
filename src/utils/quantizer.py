@@ -43,6 +43,32 @@ class Normalizer(nn.Module):
                 denormalized_weight = denormalized_weight + self.zeros[i].unsqueeze(i)
             
         return denormalized_weight
+
+    def denormalize_codebook(self, normalized_codebook:torch.FloatTensor, subblock:list[list[int]])->torch.FloatTensor:
+        """denormalize the input codebook
+
+        Args:
+            normalized_codebook (torch.FloatTensor): tensor of shape (1, d, n_codes)
+            subblock (list[list[int]]): list of the sublock dimensions of shape 
+            [[i_start, i_end], [j_start, j_end], ...]
+
+        Returns:
+            torch.FloatTensor: _description_
+        """
+        denormalized_subblock = normalized_codebook.clone()
+        # print(normalized_codebook.shape)
+        # print("subblock", subblock)
+        subblock = subblock[::-1]
+        for i in reversed(self.norm_order):
+            # print("i", i)
+            idx_start, idx_end = subblock[i]
+            # print("idx_start, idx_end", idx_start, idx_end)
+            if self.norms[i] is not None and self.norms[i].numel() > 0:
+                denormalized_subblock = denormalized_subblock * self.norms[i][idx_start:idx_end].unsqueeze(i).unsqueeze(-1)
+            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
+                denormalized_subblock = denormalized_subblock + self.zeros[i][idx_start:idx_end].unsqueeze(i).unsqueeze(-1)
+            
+        return denormalized_subblock
     
     def normalize(self, weight:torch.FloatTensor)->torch.FloatTensor:
         """normalize the input weight matrix"""

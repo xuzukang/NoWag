@@ -26,22 +26,36 @@ parser.add_argument("--mlp_compression_algorithm",
                     type = str, choices=["tensor", "quantize", "joint"],
                     default = "quantize",
                     help = "algorithm to use for mlp compression")
-parser.add_argument("--devices", type = str, nargs = "+", default = ["cuda:5", "cuda:6", "cuda:2", "cuda:3", "cuda:4","cuda:7"],
+parser.add_argument("--devices", type = str, nargs = "+", default = ["cuda:5", "cuda:6", "cuda:4","cuda:7"],
                     help = "list of devices to run the compression on if not provided will use all devices")
 parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml")
 parser.add_argument("--self_attn_yaml_path", type = str, default = None)
 parser.add_argument("--mlp_yaml_path", type = str, default = None)
 parser.add_argument("--use_already_done", action = "store_true", help = "if provided will overwrite the save path")
 parser.add_argument("--use_wandb", action = "store_true", help = "if provided will use wandb")
+parser.add_argument("--resume_wandb", action = "store_true", help = "if provided will resume the wandb run")
+parser.add_argument("--wandb_id", type = str, default = None)
 parser.add_argument("--wandb_project", type = str, default = "compression")
 args = parser.parse_args()
 print(args)
     
 if args.use_wandb:
     import wandb
-    wandb.init(project = args.wandb_project)
-    config = vars(args)
+    if not args.resume_wandb:
+        wandb.init(project = args.wandb_project)
+        #append the run_name to the save_path
+        run_name = wandb.run.name
+        args.save_path = os.path.join(args.save_path, wandb.run.name)
+    else:
+        wandb.init(project = args.wandb_project, id = args.wandb_id, resume = "allow")
+        #append the run_name to the save_path
+        run_name = "RESUME_IGNORED"
+        args.save_path = os.path.join(args.save_path, wandb.run.name)
+        args.use_already_done = True
     
+
+    config = vars(args)
+        
     if args.self_attn_yaml_path is not None:
         config["self_attn_args"] = yaml.load(open(args.self_attn_yaml_path, "r"), Loader = yaml.FullLoader)
     else:
@@ -51,11 +65,9 @@ if args.use_wandb:
     else:
         config["mlp_args"] = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
 
-    wandb.config.update(config)
+    # config["args"] = vars(args)
+    wandb.config.update(config, allow_val_change = True)
 
-    #append the run_name to the save_path
-    run_name = wandb.run.name
-    args.save_path = os.path.join(args.save_path, wandb.run.name)
 else:
     #count the number of runs done
     n_runs = glob.glob(args.save_path.replace("{model_name}", args.models_to_compress[0]
@@ -91,7 +103,7 @@ BAR = tqdm.tqdm(total = len(paths))
 
 def check_pid(pid):        
     """ Check For the existence of a unix pid. """
-    print("checking pid", pid, psutil.pid_exists(pid))
+    # print("checking pid", pid, psutil.pid_exists(pid))
     return psutil.pid_exists(pid)
 
 def run_command(command:str, device:str,
@@ -101,7 +113,7 @@ def run_command(command:str, device:str,
     
     os.makedirs(os.path.dirname(log_path), exist_ok = True)
     os.system(f"nohup {command} --device {device} > {log_path} 2>&1 &")
-    print(f"nohup {command} --device {device} > {log_path} 2>&1 &")
+    print(f"running: nohup {command} --device {device} > {log_path} 2>&1 &")
     
     time.sleep(5)
     #read the log path to get the pid
@@ -116,26 +128,29 @@ def run_command(command:str, device:str,
     
     DEVICES_DICT[device] = [pid, log_path, command_name]
 
-def read_log(log_path:str):
+def read_log(log_path:str,wandb_log_prefix:str = "")->bool:
     global TOTAL_BITS
     global TOTAL_PARAMS
     global COMMANDS_FINISHED
-
-    print("reading log", log_path)
-    with open(log_path, "r") as f:
-                log = f.readlines()
-                for line in log:
-                    if "best loss" in line:
-                        best_loss = float(line.split(" ")[-1])
-                    if "n_params" in line:
-                        TOTAL_PARAMS += float(line.split(" ")[-1])
-                    if "n_bits" in line:
-                        TOTAL_BITS += float(line.split(" ")[-1])
-    print("best_loss", best_loss, "running bpv:", round(TOTAL_BITS/TOTAL_PARAMS, 6))
-    if args.use_wandb:
-        wandb.log({"best_loss": best_loss})
-    BAR.update(1)
-    return True
+    try:
+        print("reading log", log_path)
+        with open(log_path, "r") as f:
+                    log = f.readlines()
+                    for line in log:
+                        if "best loss" in line:
+                            best_loss = float(line.split(" ")[-1])
+                        if "n_params" in line:
+                            TOTAL_PARAMS += float(line.split(" ")[-1])
+                        if "n_bits" in line:
+                            TOTAL_BITS += float(line.split(" ")[-1])
+        print("best_loss", best_loss, "running bpv:", round(TOTAL_BITS/TOTAL_PARAMS, 6))
+        if args.use_wandb:
+            wandb.log({f"{wandb_log_prefix}best_loss": best_loss})
+        BAR.update(1)
+        return True
+    except UnboundLocalError:
+        print("could not find best loss")
+        return False
     # except:
     #     print("error reading log")
     #     return False
@@ -146,7 +161,11 @@ def check_still_running(devices_dict)->list[str]:
     global COMMANDS_FINISHED
     
     DEVICES_OPEN = []
-    for device, (pid, log_path, command_name) in devices_dict.items():
+    for device, out in devices_dict.items():
+        if len(out) == 0:
+            DEVICES_OPEN.append(device)
+            continue
+        (pid, log_path, command_name) = out
         if check_pid(pid):
             # print(f"{device} is still running")
             pass
@@ -154,14 +173,17 @@ def check_still_running(devices_dict)->list[str]:
             print("eval is done")
             DEVICES_OPEN.append(device)
             COMMANDS_FINISHED += 1
+            devices_dict[device] = []
         else:
             print(f"{command_name} is done")
-            read_log(log_path)
+            read_log(log_path, wandb_log_prefix = command_name +"/")
             if log_path_map[log_path] not in DONE_SAVE_PATHS:
                 DONE_SAVE_PATHS[log_path_map[log_path]] = {}
             DONE_SAVE_PATHS[log_path_map[log_path]][command_name] = log_path.replace("compressed.log", "compressed.pt")
             DEVICES_OPEN.append(device)
             COMMANDS_FINISHED += 1
+            print("COMMANDS_FINISHED", COMMANDS_FINISHED, "n_commands", n_commands)
+            devices_dict[device] = []
     return DEVICES_OPEN
 
 def check_dict(dict_reference, dict_to_check):
@@ -185,7 +207,7 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
     global TOTAL_PARAMS
     
     command = "python -u scripts/1layer_compress/"
-    command_name = load_path.split("/")[-2] +  "/" + load_path.split("/")[-1][:load_path.split("/")[-1].rfind(".")]
+    command_name = model_name + "/" + load_path.split("/")[-2] +  "/" + load_path.split("/")[-1][:load_path.split("/")[-1].rfind(".")]
     # print("command_name", command_name)
 
     if "mlp" in load_path:
@@ -237,7 +259,7 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
             if is_same:
                 print("already done with ", command_name)
                 print("loading from", path.replace("compressed_args.yaml", "compressed.pt"))
-                if read_log(path.replace("compressed_args.yaml", "compressed.log")):
+                if read_log(path.replace("compressed_args.yaml", "compressed.log"), wandb_log_prefix = command_name + "/"):
                     print("already done with ", command_name)
                     # raise ValueError("stop here")
                     return None, command_name,  path.replace("compressed_args.yaml", "compressed.log")
@@ -293,16 +315,16 @@ while COMMANDS_FINISHED < n_commands:
     
     time.sleep(10)
     DEVICES_OPEN = check_still_running(DEVICES_DICT)
-    if len(commands) > 0:
-        for device in DEVICES_OPEN:
+    for device in DEVICES_OPEN:
+        if len(commands) > 0:
             command = commands.pop(0)
             command_name = command_names.pop(0)
             log_path = log_paths.pop(0)
             run_command(command, device, log_path, command_name)
-    
+        
     done_keys = []
     for key in DONE_SAVE_PATHS.keys():
-        print(key)
+        # print(key)
         if len(DONE_SAVE_PATHS[key]) == len(path_map[key]):
             print(f"done with {key}")
             print("done with", DONE_SAVE_PATHS[key])
@@ -334,6 +356,8 @@ n_commands = 0
 COMMANDS_FINISHED = 0
 for key in DONE_SAVE_PATHS.keys():
     print(key)
+    print("len(DONE_SAVE_PATHS[key])", len(DONE_SAVE_PATHS[key]))
+    print("len(path_map[key])", len(path_map[key]))
     if len(DONE_SAVE_PATHS[key]) == len(path_map[key]):
         print(f"done with {key}")
         print("done with", DONE_SAVE_PATHS[key])
@@ -352,6 +376,8 @@ for key in DONE_SAVE_PATHS.keys():
         command_names.insert(0, "ppl_eval")
         log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
         n_commands += 1
+    else:
+        print("not done with", key)
 
 while COMMANDS_FINISHED < n_commands:
     time.sleep(10)
