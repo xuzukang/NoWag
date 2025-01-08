@@ -96,6 +96,8 @@ class Normalizer(nn.Module):
                 weight = weight - zeros[dim].unsqueeze(dim)
             norms[dim] = torch.norm(weight, dim=dim) + eps
             weight = weight / norms[dim].unsqueeze(dim)
+            assert torch.all(torch.isfinite(weight))
+            assert torch.all(torch.isfinite(norms[dim]))
         
         return Normalizer(norms, zeros, norm_order), weight
     
@@ -132,7 +134,38 @@ class Normalizer(nn.Module):
 #     return norms[0], norms[1], weight_use
 
 # def denormalize(normalized_weights, norms
+class QuickStopException(Exception):
+    pass
 
+
+def find_optimal_subblock_size(X_reshaped: torch.Tensor, 
+                   centriods: torch.Tensor, 
+                   weights: torch.Tensor,
+                   n_out: int, 
+                   n_in: int,
+                   norm_0: torch.Tensor = torch.empty(0), 
+                   norm_1: torch.Tensor = torch.empty(0)):
+
+    d = centriods.shape[1]
+
+    subblock_base_size = n_in//d
+
+    subblock_multiple_range = [1,n_out]
+
+    while subblock_multiple_range[1] - subblock_multiple_range[0] > 1:
+        print("subblock_multiple_range", subblock_multiple_range)
+        subblock_size = (subblock_multiple_range[0] + subblock_multiple_range[1]) // 2
+        try:
+            cluster_assignment_step(X_reshaped, centriods, weights, n_out, n_in, norm_0, norm_1, subblock_size*subblock_base_size, True)
+            subblock_multiple_range[0] = subblock_size
+        except RuntimeError:
+            subblock_multiple_range[1] = subblock_size
+        torch.cuda.empty_cache()
+    print("subblock_multiple_range", subblock_multiple_range)
+
+    free, total = torch.cuda.mem_get_info(int(str(X_reshaped.device).split(":")[1]))
+    print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+    return subblock_multiple_range[0]*subblock_base_size
 
 @jit.script
 def cluster_assignment_step(X_reshaped: torch.Tensor, 
@@ -140,9 +173,10 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
                    weights: torch.Tensor,
                    n_out: int, 
                    n_in: int,
-                   norm_0: Optional[torch.Tensor] = None, 
-                   norm_1: Optional[torch.Tensor] = None,
-                   subblock_size: int = 1024)->torch.LongTensor:
+                   norm_0: torch.Tensor = torch.empty(0), 
+                   norm_1: torch.Tensor = torch.empty(0),
+                   subblock_size: int = 1024,
+                   quick_stop:bool = False)->torch.LongTensor:
     """
     vector (length d) weighted k-means algorithm to cluser X which is of shape (n_out, n_in) into len(centriods) clusters
     Assignment step
@@ -163,11 +197,14 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
     # print("subblock_size", subblock_size, "d", d, "n_in", n_in)
     # print(subblock_size*d // n_in)
     weights_use = torch.tile(weights, (subblock_size*d // n_in, 1)) #shape of (subblock_size, d)
-    if norm_0 is not None:
+    # print("norm_0", norm_0, "norm_1", norm_1)
+    # print(norm_0)
+    if norm_0.numel() > 0:
         #de normalize the weights
         # print(weights_use.shape, norm_0.shape)
         weights_use = weights_use * (norm_0.reshape(-1, d).tile((subblock_size*d // n_in,1)))**2
     
+    ignore_norm_1 = norm_1.numel() == 0
     with torch.no_grad():
         assignments = torch.zeros(n_combined, dtype=torch.int64, device=X_reshaped.device)
 
@@ -175,8 +212,7 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
             X_block = X_reshaped[i : i + subblock_size]
             errors = (X_block.unsqueeze(-1) - centriods.T.unsqueeze(0)) ** 2
             # shape of (subblock size, d, k)
-            
-            if norm_1 is not None:
+            if not ignore_norm_1:
                 weights_rescaled = weights_use.clone()
                 for j in range(subblock_size*d//n_in):
                     # print("weights_rescaled[j*n_in//d:(j+1)*n_in//d].numel()",weights_rescaled[j*n_in//d:(j+1)*n_in//d].numel())
@@ -193,6 +229,8 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
             assignments_block = errors.argmin(-1)
             # print(assignments_block[0,10])
             assignments[i : i + subblock_size] = assignments_block
+            # if quick_stop:
+            #     return assignments
     return assignments
 
 
@@ -204,8 +242,8 @@ def cluster_update_step(
     n_out: int, 
     n_in: int,
     k: int,
-    norm_0: Optional[torch.Tensor] = None, 
-    norm_1: Optional[torch.Tensor] = None
+    norm_0: torch.Tensor = torch.empty(0), 
+    norm_1: torch.Tensor = torch.empty(0),
 )->torch.FloatTensor:
     """
     vector (length d) weighted k-means algorithm to cluser X which is of shape (n_out, n_in) into len(centriods) clusters
@@ -226,23 +264,25 @@ def cluster_update_step(
     returns: torch.tensor of the new centriods, shape of (k, d)
     
     """
-    n, d = weights.shape
+    with torch.no_grad():
+        n, d = weights.shape
 
-    # compute the new centriods
-    centriods = torch.zeros((k, d), dtype=weights.dtype, device=weights.device)
-    if norm_0 is not None:
-        weights = weights * norm_0.reshape(-1, d)**2
-    # shape of (k,d)
-    for i in range(k):
-        idxs = torch.where(assignments == i)[0]
-        assignment_X = X_reshaped[idxs]  # shape of (n_i,d)
-        assignments_weights = weights[idxs % weights.shape[0]]  # shape of (n_i,d)
-        if norm_1 is not None:
-            assignments_weights *= (norm_1[idxs // n_in]**2).unsqueeze(-1)    
-            
-        # print(assignments_weights.shape, assignment_X.shape)
-        centriods[i] = torch.sum(assignments_weights * assignment_X, dim=0) / torch.sum(
-            assignments_weights, dim=0
-        )
+        # compute the new centriods
+        centriods = torch.zeros((k, d), dtype=weights.dtype, device=weights.device)
+        if norm_0.numel() > 0:
+            weights = weights * norm_0.reshape(-1, d)**2
+        # shape of (k,d)
+        ignore_norm_1 = norm_1.numel() == 0 
+        for i in range(k):
+            idxs = torch.where(assignments == i)[0]
+            assignment_X = X_reshaped[idxs]  # shape of (n_i,d)
+            assignments_weights = weights[idxs % weights.shape[0]]  # shape of (n_i,d)
+            if not ignore_norm_1:
+                assignments_weights *= (norm_1[idxs // n_in]**2).unsqueeze(-1)    
+                
+            # print(assignments_weights.shape, assignment_X.shape)
+            centriods[i] = torch.sum(assignments_weights * assignment_X, dim=0) / torch.sum(
+                assignments_weights, dim=0
+            )
 
-    return centriods
+        return centriods

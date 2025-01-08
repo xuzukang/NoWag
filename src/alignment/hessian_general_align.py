@@ -41,9 +41,9 @@ def initialize_optimizer(compression_module, lr, lr_multiplier, patience_schedul
         optimizer = torch.optim.Adam(params)
         
     else:
-        print("here")
+        # print("here")
         for name, param in compression_module.named_parameters():
-            print(name)
+            # print(name)
             if param.requires_grad:
                 params.append({"params": param})
                 
@@ -72,6 +72,7 @@ def align(
     n_iters: int = 100,
     val_every: int = 1,
     discrete_update_every: int = 1,
+    reinitialize_optimizer: bool = True,
     clip_grad: float = -1,
     verbose: Union[bool, int] = 10,
     low_bound: float = 1e-5,
@@ -140,14 +141,16 @@ def align(
 
         if val_hessian is None:
             if train_loss < best_loss - eps and train_loss > low_bound:
-                best_loss = train_loss.item()
-                best_state_dict = copy.deepcopy(compression_module.state_dict())
                 patience_counter = 0
             else:
                 patience_counter += 1
-                if patience_counter == patience:
+                # print("increasing patience counter", patience_counter, "patience", patience)
+                if patience_counter >= patience:
                     print("ran out of patience, patience used", patience)
                     break
+            if train_loss < best_loss and train_loss > low_bound:
+                best_loss = train_loss.item()
+                best_state_dict = copy.deepcopy(compression_module.state_dict())
             if train_loss < low_bound:
                 print("early stopping low bound", low_bound, "train_loss",train_loss)
                 break
@@ -177,8 +180,9 @@ def align(
             if n_updated == 0:
                 print("no discrete variables updated, breaking")
                 break
-            # optimizer.zero_grad()
-            optimizer, lr_scheduler = initialize_optimizer(compression_module, lr, lr_multiplier, patience_scheduler)
+            # optimizer.zero_grad() 
+            if reinitialize_optimizer:
+                optimizer, lr_scheduler = initialize_optimizer(compression_module, lr, lr_multiplier, patience_scheduler)
             # with torch.no_grad():
             #     reconstructed_weights = compression_module.reconstruct()
             #     loss_post_discrete = loss(reconstructed_weights, original_weights, train_hessian)

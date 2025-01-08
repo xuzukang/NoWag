@@ -16,6 +16,9 @@ import src.utils.utils as utils
 import src.quantizers.vector_quantizer as vq_original
 
 
+class QuickStopException(Exception):
+    pass
+
 class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
 
     def __init__(
@@ -43,7 +46,7 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             additional_parameters=additional_parameters,
             pad = pad
         )
-        self.register_buffer("hessian", hessian)
+        # self.register_buffer("hessian", hessian)
         self.n_parallel = n_parallel
 
     def forward(self, leave_padding:bool = False):
@@ -58,23 +61,75 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
             reconstructed_weight = self.normalizer.denormalize(reconstructed_weight)
             return reconstructed_weight
+        
+    def pad_hessian(self, hessian:torch.Tensor):
+        if hessian.shape[0] != self.reconstructed_shape[1]:
+            #pad the hessian
+            pad = self.reconstructed_shape[1] - hessian.shape[0]
+            hessian = F.pad(hessian, (0, pad, 0, pad))
+        return hessian
+    
+    def determine_optimal_n_parallel(self, hessian:torch.Tensor):
+        """determines the optimal n_parallel through binary search
 
-    def update_discrete(self):
+        Args:
+            hessian (torch.Tensor): the hessian, of shape (n_in,n_in)
+            n_parallel_range (List[int]): the range of n_parallel values to search over
+        """
+        n_parallel_range = [0, self.reconstructed_shape[0]]
+        print("initial n_parallel_range", n_parallel_range)
+        while n_parallel_range[1] - n_parallel_range[0] > 1:
+            n_parallel = (n_parallel_range[1] + n_parallel_range[0]) // 2
+            try:
+                self.update_discrete(hessian, n_parallel, True)
+            except QuickStopException:
+                n_parallel_range[0] = n_parallel
+            #if we run out of memory, we reduce the n_parallel
+            except RuntimeError:
+                n_parallel_range[1] = n_parallel
+        
+        for n_parallel in n_parallel_range:
+            # self.update_discrete(hessian, n_parallel, True)
+            try:
+                self.update_discrete(hessian, n_parallel, True)
+            except QuickStopException:
+                n_parallel_works = n_parallel
+                continue
+            except RuntimeError:
+                break
+        print("n_parallel", n_parallel_works)
+        # raise ValueError
+        return n_parallel_works
+
+    def update_discrete(self,hessian:torch.Tensor, n_parallel:int = -1, quick_check:bool = False):
         """updates the discrete codes, ignoring the influnece of one quantization on
         another
 
         Args:
             hessian (torch.Tensor): the hessian, of shape (n_in,n_in)
             n_parallel (int, optional): the number of rows to process in parallel, default is 1. Defaults to 1.
+            quick_check (bool, optional): if True, we only check the first iteration,
+            used to find the optimal n_parallel. Defaults to False.
         """
+        if hessian.shape[0] != self.reconstructed_shape[1]:
+            hessian = self.pad_hessian(hessian)
+            
+        if n_parallel == -1:
+            n_parallel = self.determine_optimal_n_parallel(hessian, [1, self.reconstructed_shape[0]])
+            # raise ValueError
+            # self.update_discrete(hessian, n_parallel, False)
+        
+        # if hessian.shape[0] != self.reconstructed_shape[1]:
+        #     #pad the hessian
+        #     pad = self.reconstructed_shape[1] - hessian.shape[0]
+        #     hessian = F.pad(hessian, (0, pad, 0, pad))
+        
         with torch.no_grad():
-            hessian = self.hessian
-            n_parallel = self.n_parallel
             #get the current reconstruction of the quantized weights
             reconstructed_weights = self(True)
-            print("self.reference_weight", self.reference_weight.shape)
+
             errors = self.reference_weight - reconstructed_weights
-            print(errors.shape)
+
             errors_old = errors.clone()
             n_out, n_in = self.reconstructed_shape
             d = self.codebook.shape[1] #the subvector size
@@ -108,6 +163,8 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
                     new_codes[i:i+n_parallel,j//d] = distance.argmin(-1)
 
                     errors[i:i+n_parallel, j:j+d] = difference[torch.arange(n_parallel_use),:,new_codes[i:i+n_parallel,j//d]]
+                    if quick_check:
+                        raise QuickStopException
                     # new_losses = torch.einsum("ij,jk,ik->i", errors, hessian, errors)
                     # print("minimum distance", torch.min(distance))
                     # print("i", i, "j", j)
@@ -220,7 +277,6 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
         norm_order: list[int] = [0, 1],
         zero: list[bool] = [True, True],
         cluster_ignore_norms: bool = True,
-        n_parallel:int = 4096,
         **kwargs,
     ):
         
@@ -236,8 +292,6 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             importances,
             cluster_ignore_norms=cluster_ignore_norms,
             pad = pad,
-            hessian = hessian,
-            n_parallel = n_parallel
 
         )
     

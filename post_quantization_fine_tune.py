@@ -64,7 +64,7 @@ def resplit_loader(existing_loader:List[Tuple[torch.LongTensor, Any]],
             existing_loader.append((inp[:, j:j+new_seqlen], None))
     return existing_loader
 
-def save_model_as_checkpoints(model, save_path_, checkpoints_dict):
+def save_model_as_checkpoints(model, save_path_, checkpoints_dict, base_model):
     #create a new directory
     os.makedirs(save_path_, exist_ok=True)
 
@@ -84,11 +84,11 @@ def save_model_as_checkpoints(model, save_path_, checkpoints_dict):
     for i,layer in enumerate(model.model.layers):
         for sublayer_name in sublayer_names:
             sublayer = getattr(getattr(layer, sublayer_name.split(".")[0]), sublayer_name.split(".")[1])
-            save_path = os.path.join(save_path_, f"layer_{i}", sublayer_name, "compressed.pt")
+            save_path = os.path.join(save_path_, base_model ,f"layer_{i}", sublayer_name, "compressed.pt")
             args_path = save_path.replace("compressed.pt", "compressed_args.yaml")
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             print(f"Saving {sublayer_name} to {save_path}")
-            os.system(f'cp {checkpoints_dict[f"layer_{i}/{sublayer_name}"].replace("compressed.pt", "compressed_args.yaml")} {args_path}')
+            os.system(f'cp {checkpoints_dict[f"{base_model}/layer_{i}/{sublayer_name}"].replace("compressed.pt", "compressed_args.yaml")} {args_path}')
             torch.save(sublayer.state_dict(), save_path)
         # torch.save(layer.state_dict(), os.path.join(save_path, f"layer_{i}.pt"))
     
@@ -292,6 +292,7 @@ if __name__ == "__main__":
         model=model_name,
         seqlen=args.eval_seqlen,
         train_test="train",
+        
     )
 
     if args.finetune_nsamples_val > 0:
@@ -416,7 +417,8 @@ if __name__ == "__main__":
             
             save_model_as_checkpoints(model,
                                       save_path,
-                                        checkpoints_dict)
+                                        checkpoints_dict,
+                                        base_model = model_name)
             
             new_checkpoints_dict = {}
             for key in checkpoints_dict:

@@ -155,6 +155,11 @@ class LinearQuantized(compress_parent.CompressorParent):
             return self.quantizer()
         else:
             return self.original_weight
+        
+    def get_reconstruction_error(self) -> torch.FloatTensor:
+        """returns the reconstruction error"""
+        with torch.no_grad():
+            return hessian_general_align.loss(self.reconstruct(), self.original_weight, self.hessian)
 
     def align(
         self,
@@ -164,12 +169,14 @@ class LinearQuantized(compress_parent.CompressorParent):
         n_iters: int = 100,
         val_every: int = 1,
         discrete_update_every: int = 1,
+        reinitialize_optimizer: bool = True,
         clip_grad: float = -1,
         verbose: Union[bool, int] = 10,
         low_bound: float = 1e-5,
         patience: int = 10,
         patience_scheduler: int = 2,
         eps: float = 1e-5,
+        discrete_update_kwargs: Optional[dict] = {},
         **kwargs,
     ):
         """aligns the compression module to the hessian of the training dataset
@@ -199,16 +206,18 @@ class LinearQuantized(compress_parent.CompressorParent):
             n_iters=n_iters,
             val_every=val_every,
             discrete_update_every=discrete_update_every,
+            reinitialize_optimizer=reinitialize_optimizer,
             clip_grad=clip_grad,
             verbose=verbose,
             low_bound=low_bound,
             patience=patience,
             patience_scheduler=patience_scheduler,
             eps=eps,
+            discrete_update_kwargs=discrete_update_kwargs,
         )
         return best_loss
 
-    def update_discrete(self):
+    def update_discrete(self, **kwargs):
         """updates the discrete values of the quantizer"""
         # def recursive_discrete_update(module):
         #     for children in module.children():
@@ -219,8 +228,9 @@ class LinearQuantized(compress_parent.CompressorParent):
         #             recursive_discrete_update(children)
 
         # recursive_discrete_update(self)
+        # print("kwargs", kwargs)
         if self.quantized:
-            self.quantizer.update_discrete()
+            return self.quantizer.update_discrete(**kwargs)
 
     def clean(self):
         if self.quantized:

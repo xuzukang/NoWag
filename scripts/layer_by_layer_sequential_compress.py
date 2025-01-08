@@ -25,7 +25,7 @@ import src.linear_compress as linear_compress
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 import src.data as data
 import src.utils.utils as utils
-
+from perplexity_eval import load_model_from_checkpoints, load_layer_from_checkpoint
 
 try:
     import wandb
@@ -37,7 +37,8 @@ except:
 
 
 @torch.no_grad()
-def generate_hessians(model, dataloader, dataloader_val, dev):
+def compress_model(model, dataloader, dev,
+                   checkpoint_yaml_path: str):
     print("Starting...")
 
     use_cache = model.config.use_cache
@@ -51,7 +52,7 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
 
     dtype = next(iter(model.parameters())).dtype
     inps = torch.zeros(
-        (args.nsamples_train,
+        (sum(args.nsamples),
          model.seqlen, 
          model.config.hidden_size), 
         dtype=dtype, 
@@ -81,36 +82,6 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
             except ValueError:
                 pass
     layers[0] = layers[0].module
-
-    if dataloader_val is not None:
-        inps_val = torch.zeros(
-            (args.nsamples_val, model.seqlen, model.config.hidden_size),
-            dtype=dtype,
-            device=dev if not args.offload_activations else "cpu",
-        )
-
-        val_cache = {"i": 0}
-        class Catcher_val(nn.Module):
-            def __init__(self, module):
-                super().__init__()
-                self.module = module
-
-            def forward(self, inp, **kwargs):
-                inps_val[val_cache["i"]] = inp if not args.offload_activations else inp.cpu()
-                val_cache["i"] += 1
-                raise ValueError
-
-        layers[0] = Catcher_val(layers[0])
-        with torch.no_grad():
-            for batch in tqdm.tqdm(dataloader_val, desc="getting val inputs", miniters=len(dataloader_val)//100):
-                # model(batch[0].to(dev))
-                try:
-                    model(batch[0].to(dev))
-                except ValueError:
-                    pass
-        val_outs = torch.zeros_like(inps_val)
-
-        layers[0] = layers[0].module
 
     layers[0] = layers[0].cpu()
     model.model.embed_tokens = model.model.embed_tokens.cpu()
@@ -154,10 +125,18 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
         print("layer original dtype", layer_dtype_orig)
         #     if i > 0:
         #         return
+        if not args.true_sequentail:
+            full = find_layers(layer)
 
-        full = find_layers(layer)
-
-        sequential = [list(full.keys())]
+            sequential = [list(full.keys())]
+        else:
+            #this is hardcoded for laziness
+            sequential = [
+                ["self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj"],
+                ["self_attn.o_proj"],
+                ["mlp.gate_proj", "mlp.up_proj"],
+                ["mlp.down_proj"]
+            ]    
 
         for l, names in enumerate(sequential):
             # if all([os.path.exists(os.path.join(args.save_path, f"layer_{i}/{name}.pt")) for name in names]):
@@ -199,83 +178,93 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
             # garbage collect
             torch.cuda.empty_cache()
 
+            #do a pass to get the hessians for each partition
+            i_start = 0
+            train_hessians: dict[str: List[torch.Tensor]] = {name: [] for name in names}
+            for partition in args.nsamples:
+                for name in names:
+                    getattr(getattr(layer, name.split(".")[0]), name.split(".")[1]).enable_hessian_logging()
+                inference_layer(layer, inps[i_start: i_start + partition], outs[i_start: i_start + partition],
+                                layer_kwargs=kwargs,
+                                dev=dev, offload_activations=args.offload_activations,
+                                batch_size=args.forward_pass_batch_size)
+                for name in names:
+                    train_hessians[name].append(
+                        getattr(
+                            getattr(layer, name.split(".")[0]), name.split(".")[1]
+                        ).dump_hessian()[0]
+                    )
+                i_start += partition
+            
+            #for each partition and each name, save the hessian
+            save_paths = {name: [] for name in names}
+            for partition in range(len(args.nsamples)):
+                for name in names:
+                    save_path = os.path.join(args.temp_path, f"partition_{partition}/layer_{i}/{name}.pt")
+                    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                    torch.save({"hessian": train_hessians[name][partition]}, save_path)
+                    save_paths[name].append(save_path)
+            
+
+            
+            #use our layer_by_layer_parallel_compress code to compress this layer
+            
+            parallel_compress_command = "python scripts/layer_by_layer_parallel_compress.py"
+            parallel_compress_command += f" --model_to_compress {args.model} --hessian_path {os.path.join(args.temp_path, f'partition_0/')} --weights_path {args.weights_path} --save_path {args.save_path}"
+
+            parallel_compress_command += " --devices"
+            for device in args.devices[1:]:
+                parallel_compress_command += f" {device}"
+            
+            if len(args.n_samples) > 1:
+                parallel_compress_command += f" --discrete_update_hessian_path {os.path.join(args.temp_path, f'partition_1/')}"
+                if len(args.n_samples) > 2:
+                    print("warning: only 2 partitions supported the additional partitions will be ignored")
+            if args.use_wandb:
+                parallel_compress_command += f" --use_wandb --resume_wandb --wandb_id {wandb.run.id} --wandb_project {wandb.run.project} --no_config_update"
+            
+            print("running command", parallel_compress_command)
+            os.system(parallel_compress_command)
+
+
+            #load the checkpoints.yaml and put it back in the model 
+
+            checkpoint_dict_full = yaml.load(checkpoint_yaml_path, Loader=yaml.FullLoader)
+            checkpoint_dict_use = {}
+            for checkpoint_name, checkpoint_path in checkpoint_dict_full.items():
+                for name in names:
+                    if f"layer_{i}/{name}" in checkpoint_name:
+                        checkpoint_dict_use[checkpoint_name] = checkpoint_path
+
+            layer, layer_n_bits, layer_n_params = load_layer_from_checkpoint(checkpoint_dict_use,
+                                                                             layer,
+                                                                             i,
+
+                                                    add_bias = False,
+                                                    base_model=args.model,
+                                                    key_no_exist_handling="ignore")
+        
+            layer = model.model.layers[i]
+
+
             # pass the inputs through the models:
-            inference_layer(layer, inps, outs, 
+            outs = inference_layer(layer, inps, outs, 
                             layer_kwargs=kwargs, 
                             dev=dev, offload_activations=args.offload_activations,
                             batch_size=args.forward_pass_batch_size)
+            
+            total_bits += layer_n_bits
+            total_params += layer_n_params
 
-            # get the hessians
-            train_hessians = {}
+            #delete the hessians
             for name in names:
-                train_hessians[name] = getattr(
-                    getattr(layer, name.split(".")[0]), name.split(".")[1]
-                ).dump_hessian()[0]
-            # raise Exception("stop")
-            if dataloader_val is not None:
-                print("val")
-                # turn back on the hessian logging
-                for name in names:
-                    getattr(
-                        getattr(layer, name.split(".")[0]), name.split(".")[1]
-                    ).enable_hessian_logging()
+                for partition in range(len(args.nsamples)):
+                    os.remove(save_paths[name][partition])
 
-                # pass the inputs through the models:
-                inference_layer(
-                    layer,
-                    inps_val,
-                    val_outs,
-                    layer_kwargs=kwargs,
-                    dev=dev,
-                    offload_activations=args.offload_activations,
-                    batch_size=args.forward_pass_batch_size,
-                )
-
-                # get the hessians
-                val_hessians = {}
-                for name in names:
-                    val_hessians[name] = getattr(
-                        getattr(layer, name.split(".")[0]), name.split(".")[1]
-                    ).dump_hessian()[0]
-
-            # put the train hessians back in
-            for name in names:
-                data = {"hessian": train_hessians[name],
-                        # "weight": getattr(getattr(layer, name.split(".")[0]), name.split(".")[-1]).original_weight,
-                }
-                if dataloader_val is not None:
-                    data["val_hessian"] = val_hessians[name]
-                    del val_hessians[name]
-                
-                save_path = os.path.join(args.save_path, f"layer_{i}/{name}.pt")
-                os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                torch.save(data, save_path)
-                
-                train_hessians[name] = None
-                if dataloader_val is not None:
-                    val_hessians[name] = None
-                    del val_hessians[name]
-                
-                data["hessian"] = None
-                data["val_hessian"] = None
-                # data["weight"] = None
-                del data
-                del train_hessians[name]
-                torch.cuda.empty_cache()
 
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
         
-        # for obj in gc.get_objects():
-        #     try:
-        #         if torch.is_tensor(obj) or (hasattr(obj, 'data') and torch.is_tensor(obj.data)):
-        #             if obj.data_ptr() not in data_ptrs:
-        #                 print(type(obj), obj.shape)
-        #             # print(type(obj), obj.shape)
-        #     except:
-        #         pass
-
-        # layers[i] = layer.to(torch.device("cpu"))
         layer.to(torch.device("cpu"))
         for name in names:
             # print(name)
@@ -332,19 +321,16 @@ if __name__ == "__main__":
         "--seed", type=int, default=0, help="Seed for sampling the calibration data."
     )
     parser.add_argument(
-        "--device", type=str, default="cuda:0", help="Device to run on."
+        "--devices", type=str, default=["cuda:0"], help="Device to run on.",
+        nargs = "+"
+
     )
     parser.add_argument(
         "--seqlen", type=int, default=1024, help="Sequence length."
     )
     parser.add_argument(
-        "--nsamples_train", type=int, default=128, help="Number of calibration data samples."
-    )
-    parser.add_argument(
-        "--nsamples_val",
-        type=int,
-        default=16,
-        help="Number of samples to dedicate to validation.",
+        "--nsamples", type=int, default=[128], help="Number of calibration data samples, can add more to create partitions for a seperate hessian for discrete updates to reduce overfitting.",
+        nargs = "+"
     )
     parser.add_argument(
         "--forward_pass_batch_size",
@@ -362,9 +348,55 @@ if __name__ == "__main__":
         action="store_true",
         help="Offload activations to CPU to save memory.",
     )
+    
+    parser.add_argument(
+        "--compression_yaml_params_path",
+        type=str,
+        default=None,
+        help="Path to the compression yaml file.",
+    )
+    parser.add_argument(
+        "--true_sequentail",
+    )
+    parser.add_argument(
+        "--use_wandb",
+        action="store_true",
+        help="Use wandb for logging.",
+    )
+    parser.add_argument(
+        "--temp_path",
+        type=str,
+        default="temp/compression",
+        help="Path to save temporary files.",
+    )
+    parser.add_argument("--weights_path", type = str, default = "/data/lliu/huffman/models/{model_name}/original_weights",)
+    parser.add_argument("--save_path", type = str, default = "/data/lliu/huffman/models/{model_name}/compressed",
+                        help = "path to save the compressed models")
+    parser.add_argument()
     args = parser.parse_args()
     # init W&B logging
 
+    args.base_model = args.model
+
+    if args.use_wandb:
+        wandb.init(project="layer_by_layer_compress", reinit=True)
+        config = vars(args)
+        config["compression_args"] = yaml.load(open(args.compression_yaml_params_path, "r"), Loader = yaml.FullLoader)
+        wandb.config.update(args)
+        run_name = wandb.run.name
+    else:
+        run_name = "test"
+        
+
+    
+    #move the compression_yaml_params to the temp
+    #add the run name to the temp path
+    args.temp_path = os.path.join(args.temp_path, run_name)
+    os.makedirs(args.temp_path, exist_ok=True)
+    yaml.dump(yaml.load(open(args.compression_yaml_params_path, "r"), Loader = yaml.FullLoader), open(os.path.join(args.temp_path, "compression_params.yaml"), "w"))
+
+    args.compression_yaml_params_path = os.path.join(args.temp_path, "compression_params.yaml")
+    #this way we can modify the compression yaml params without changing the params for the next run
 
     
 
@@ -397,6 +429,7 @@ if __name__ == "__main__":
     tick = time.time()
     n_params = sum(p.numel() for p in model.parameters())
     if args.nsamples_val > 0:
+        raise Exception("validation no longer supported")
         indexs = np.random.permutation(len(dataloader))
         train_idx, val_idx = indexs[args.nsamples_val :], indexs[: args.nsamples_val]
         train_loader = [dataloader[i] for i in train_idx]
@@ -404,5 +437,5 @@ if __name__ == "__main__":
     else:
         train_loader = dataloader
         val_loader = None
-    generate_hessians(model, train_loader, val_loader, args.device)
+    compress_model(model, train_loader, val_loader, args.devices[0], args.compression_yaml_params_path)
     print("total time taken:", time.time() - tick)

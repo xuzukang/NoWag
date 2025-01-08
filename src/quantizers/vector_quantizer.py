@@ -189,7 +189,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             print("centriods.shape", centriods.shape)
             assignments = quantizer_utils.cluster_assignment_step(
                 weight_subvectors, centriods, importances,
-                n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
                     subblock_size = n_in//d
             )
             print(assignments.shape)
@@ -206,7 +206,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             for i in tqdm.tqdm(range(n_iters)):
                 assignments = quantizer_utils.cluster_assignment_step(
                     weight_subvectors, centriods, importances,
-                    n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                    n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
                     subblock_size = n_in//d
                     
                 )

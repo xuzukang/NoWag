@@ -16,6 +16,8 @@ parser.add_argument("--seqlens", type = int, nargs = "+", default = [4096],
 parser.add_argument("--batch_size", type = int, default = 1,)
 parser.add_argument("--hessian_path", type = str, default = "/data/lliu/huffman/models/{model_name}/hessians_new/pajama/128/",
                     help = "path to the hessians")
+parser.add_argument("--discrete_update_hessian_path", type = str, default = None)
+parser.add_argument("--weights_path", type = str, default = "/data/lliu/huffman/models/{model_name}/original_weights",)
 parser.add_argument("--save_path", type = str, default = "/data/lliu/huffman/models/{model_name}/compressed",
                     help = "path to save the compressed models")
 parser.add_argument("--self_attn_compression_algorithm", type = str, 
@@ -36,46 +38,74 @@ parser.add_argument("--use_wandb", action = "store_true", help = "if provided wi
 parser.add_argument("--resume_wandb", action = "store_true", help = "if provided will resume the wandb run")
 parser.add_argument("--wandb_id", type = str, default = None)
 parser.add_argument("--wandb_project", type = str, default = "compression")
+parser.add_argument("--run_name", type = str, default = None)
+parser.add_argument("--no_config_update", action = "store_true", help = "if provided will not update the wandb config")
+parser.add_argument("--ppl_eval", action = "store_true", help = "if provided will run perplexity eval")
 args = parser.parse_args()
 print(args)
+
+temp_yaml_path = "tmp/"
+
+
     
 if args.use_wandb:
     import wandb
     if not args.resume_wandb:
-        wandb.init(project = args.wandb_project)
+        wandb.init(project = args.wandb_project,
+                   name = args.run_name)
         #append the run_name to the save_path
         run_name = wandb.run.name
         args.save_path = os.path.join(args.save_path, wandb.run.name)
+        temp_yaml_path = os.path.join(temp_yaml_path, wandb.run.name)
     else:
-        wandb.init(project = args.wandb_project, id = args.wandb_id, resume = "allow")
+        wandb.init(project = args.wandb_project, id = args.wandb_id, resume = "allow",
+                   name = args.run_name)
         #append the run_name to the save_path
         run_name = "RESUME_IGNORED"
         args.save_path = os.path.join(args.save_path, wandb.run.name)
         args.use_already_done = True
+        temp_yaml_path = os.path.join(temp_yaml_path, wandb.run.name)
     
+    if not args.no_config_update:
+        config = vars(args)
+            
+        if args.self_attn_yaml_path is not None:
+            config["self_attn_args"] = yaml.load(open(args.self_attn_yaml_path, "r"), Loader = yaml.FullLoader)
+        else:
+            config["self_attn_args"] = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
+        if args.mlp_yaml_path is not None:
+            config["mlp_args"] = yaml.load(open(args.mlp_yaml_path, "r"), Loader = yaml.FullLoader)
+        else:
+            config["mlp_args"] = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
 
-    config = vars(args)
-        
-    if args.self_attn_yaml_path is not None:
-        config["self_attn_args"] = yaml.load(open(args.self_attn_yaml_path, "r"), Loader = yaml.FullLoader)
-    else:
-        config["self_attn_args"] = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
-    if args.mlp_yaml_path is not None:
-        config["mlp_args"] = yaml.load(open(args.mlp_yaml_path, "r"), Loader = yaml.FullLoader)
-    else:
-        config["mlp_args"] = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
-
-    # config["args"] = vars(args)
-    wandb.config.update(config, allow_val_change = True)
+        # config["args"] = vars(args)
+        wandb.config.update(config, allow_val_change = True)
 
 else:
     #count the number of runs done
-    n_runs = glob.glob(args.save_path.replace("{model_name}", args.models_to_compress[0]
-                                              ) + "/*")
-    run_name = f"run_{len(n_runs)}"
-    print("run_name", run_name)
+    if args.run_name is None:
+        n_runs = glob.glob(args.save_path.replace("{model_name}", args.models_to_compress[0]
+                                                ) + "/*")
+        run_name = f"run_{len(n_runs)}"
+        print("run_name", run_name)
+
+    else:
+        run_name = args.run_name
     # raise ValueError("stop here")
-    args.save_path = os.path.join(args.save_path, f"run_{len(n_runs)}")
+    args.save_path = os.path.join(args.save_path,  run_name)
+    temp_yaml_path = os.path.join(temp_yaml_path, run_name)
+    
+os.makedirs(temp_yaml_path, exist_ok = True)
+if args.yaml_path is not None:
+    yaml.dump(yaml.load(open(args.yaml_path, "r"), Loader=yaml.FullLoader), open(os.path.join(temp_yaml_path, "yaml.yaml"), "w"))
+    args.yaml_path = os.path.join(temp_yaml_path, "yaml.yaml")
+if args.self_attn_yaml_path is not None:
+    yaml.dump(yaml.load(open(args.self_attn_yaml_path, "r"), Loader = yaml.FullLoader), open(os.path.join(temp_yaml_path, "self_attn.yaml"), "w"))
+    args.self_attn_yaml_path = os.path.join(temp_yaml_path, "self_attn.yaml")
+if args.mlp_yaml_path is not None:
+    yaml.dump(yaml.load(open(args.mlp_yaml_path, "r"), Loader = yaml.FullLoader), open(os.path.join(temp_yaml_path, "mlp.yaml"), "w"))
+    args.mlp_yaml_path = os.path.join(temp_yaml_path, "mlp.yaml")
+
 
 
 # print("args.save_path", args.save_path)
@@ -137,7 +167,7 @@ def read_log(log_path:str,wandb_log_prefix:str = "")->bool:
         with open(log_path, "r") as f:
                     log = f.readlines()
                     for line in log:
-                        if "best loss" in line:
+                        if "best_loss" in line:
                             best_loss = float(line.split(" ")[-1])
                         if "n_params" in line:
                             TOTAL_PARAMS += float(line.split(" ")[-1])
@@ -227,8 +257,12 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
 
     save_path = os.path.join(args.save_path.replace("{model_name}", model_name), command_name, "compressed.pt")
 
-    command += f" --load_path {load_path} --save_path {save_path} --yaml_path {yaml_path}"
+    command += f" --hessian_path {load_path} --save_path {save_path} --yaml_path {yaml_path} --weights_path {args.weights_path.replace('{model_name}', model_name)}"
     log_path = save_path.replace(".pt", ".log")
+    
+    if args.discrete_update_hessian_path is not None:
+        discrete_update_hessian_path  = args.discrete_update_hessian_path.replace("{model_name}", model_name)
+        command += f" --discrete_update_hessian_path {discrete_update_hessian_path}"
 
     if args.use_already_done:
         #we check over the past logs to see if the command has already been run
@@ -313,7 +347,7 @@ for i in range(min(len(args.devices), len(commands))):
     
 while COMMANDS_FINISHED < n_commands:
     
-    time.sleep(10)
+    time.sleep(1)
     DEVICES_OPEN = check_still_running(DEVICES_DICT)
     for device in DEVICES_OPEN:
         if len(commands) > 0:
@@ -332,17 +366,25 @@ while COMMANDS_FINISHED < n_commands:
             checkpoint_list_path = os.path.join(args.save_path.replace("{model_name}", key), "checkpoints.yaml")
             print(checkpoint_list_path)
             os.makedirs(os.path.dirname(checkpoint_list_path), exist_ok = True)
-            yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
+            #if the yaml already exists load it and update it
+            if os.path.exists(checkpoint_list_path):
+                prev_checkpoint_list = yaml.load(open(checkpoint_list_path, "r"), Loader = yaml.FullLoader)
+                for k,v in DONE_SAVE_PATHS[key].items():
+                    prev_checkpoint_list[k] = v
+                yaml.dump(prev_checkpoint_list, open(checkpoint_list_path, "w"))
+            else:
+                yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
             done_keys.append(key)
 
-            perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
-            if args.use_wandb:
-                perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
-            print("perplexity_inference_command:\n", perplexity_inference_command)
-            commands.insert(0, perplexity_inference_command)
-            command_names.insert(0, "ppl_eval")
-            log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
-            n_commands += 1
+            if args.ppl_eval:
+                perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+                if args.use_wandb:
+                    perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
+                print("perplexity_inference_command:\n", perplexity_inference_command)
+                commands.insert(0, perplexity_inference_command)
+                command_names.insert(0, "ppl_eval")
+                log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
+                n_commands += 1
     for key in done_keys:
         del DONE_SAVE_PATHS[key]
 
@@ -365,17 +407,24 @@ for key in DONE_SAVE_PATHS.keys():
         checkpoint_list_path = os.path.join(args.save_path.replace("{model_name}", key), "checkpoints.yaml")
         print(checkpoint_list_path)
         os.makedirs(os.path.dirname(checkpoint_list_path), exist_ok = True)
-        yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
+        if os.path.exists(checkpoint_list_path):
+            prev_checkpoint_list = yaml.load(open(checkpoint_list_path, "r"), Loader = yaml.FullLoader)
+            for k,v in DONE_SAVE_PATHS[key].items():
+                prev_checkpoint_list[k] = v
+            yaml.dump(prev_checkpoint_list, open(checkpoint_list_path, "w"))
+        else:
+            yaml.dump(DONE_SAVE_PATHS[key], open(checkpoint_list_path, "w"))
         done_keys.append(key)
-
-        perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
-        if args.use_wandb:
-            perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
-        print("perplexity_inference_command:\n", perplexity_inference_command)
-        commands.insert(0, perplexity_inference_command)
-        command_names.insert(0, "ppl_eval")
-        log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
-        n_commands += 1
+        
+        if args.ppl_eval:
+            perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+            if args.use_wandb:
+                perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
+            print("perplexity_inference_command:\n", perplexity_inference_command)
+            commands.insert(0, perplexity_inference_command)
+            command_names.insert(0, "ppl_eval")
+            log_paths.insert(0, os.path.join(args.save_path.replace("{model_name}", key), "ppl_eval.log"))
+            n_commands += 1
     else:
         print("not done with", key)
 

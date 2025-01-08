@@ -7,6 +7,7 @@ import torch
 from datasets import load_dataset
 from torch import nn
 from tqdm import trange
+import tqdm
 
 
 def set_seed(seed):
@@ -36,7 +37,7 @@ def get_wikitext2(nsamples, seed, seqlen, model, train_test: str = "train"):
 
     random.seed(seed)
     trainloader = []
-    for _ in range(nsamples):
+    for _ in tqdm.tqdm(range(nsamples)):
         i = random.randint(0, enc.input_ids.shape[1] - seqlen - 1)
         j = i + seqlen
         inp = enc.input_ids[:, i:j]
@@ -60,7 +61,7 @@ def get_red_pajama(nsamples, seqlen, model, train_test: str = "train"):
     trainloader = []
     import random
 
-    for _ in range(nsamples):
+    for _ in tqdm.tqdm(range(nsamples)):
         while True:
             i = random.randint(0, len(traindata) - 1)
             trainenc = tokenizer(traindata[i]["text"], return_tensors="pt")

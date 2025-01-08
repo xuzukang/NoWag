@@ -26,7 +26,7 @@ parser.add_argument("--hessian_path", type=str, default="/data/lliu/huffman/mode
 parser.add_argument("--weights_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights")
 parser.add_argument("--save_path", type=str, default="/data/lliu/huffman/test/save_self_attn.q_proj.pt")
 parser.add_argument("--discrete_update_hessian_path", type=str, default=None)
-parser.add_argument("--device", type = str, default = "cuda:2",
+parser.add_argument("--device", type = str, default = "cuda:7",
                     help = "device to use for training")
 parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml")
 # parser.add_argument("--d", type = int, default = 4,
@@ -81,11 +81,12 @@ compression_module.quantize(
     vq2.VectorQuantizer_1st_order if kwargs.get("quantizer_type", "original") == "1st_order" else vq.VectorQuantizer,
     **kwargs["quantizer_kwargs"]
 )
-print(compression_module.get_reconstruction_error().item())
+
 if kwargs.get("quantizer_type", "original") == "1st_order":
     # compression_module.quantizer:vq2.VectorQuantizer_1st_order
     if args.discrete_update_hessian_path is not None:
         discrete_hessian = torch.load(os.path.join(args.discrete_update_hessian_path,args.hessian_path.split("/")[-2], args.hessian_path.split("/")[-1]))["hessian"].to(args.device).to(torch.float32)
+        assert not torch.allclose(discrete_hessian, compression_module.hessian)
         if kwargs.get("quantizer_type", "original") == "1st_order":
             discrete_hessian = compression_module.quantizer.pad_hessian(discrete_hessian)
     else:
@@ -94,13 +95,11 @@ if kwargs.get("quantizer_type", "original") == "1st_order":
         
 
     discrete_update_kwargs={"hessian":discrete_hessian, "n_parallel": kwargs["quantizer_kwargs"].get("n_parallel", -1)}
-    # if discrete_update_kwargs["n_parallel"] == -1:
-    #     discrete_update_kwargs["n_parallel"] = compression_module.quantizer.determine_optimal_n_parallel(discrete_hessian)
+    if discrete_update_kwargs["n_parallel"] == -1:
+        discrete_update_kwargs["n_parallel"] = compression_module.quantizer.determine_optimal_n_parallel(discrete_hessian)
     #do a discrete update out of the box
-    # compression_module.update_discrete(**discrete_update_kwargs)
-    print(compression_module.get_reconstruction_error().item())
-else:
-    discrete_update_kwargs = {}
+    compression_module.update_discrete(**discrete_update_kwargs)
+
 #get the initial loss
 
 if "alignment_kwargs" in kwargs:
@@ -141,6 +140,23 @@ with open(args_save_path, "w") as f:
     #add a arg that these are quantized weights
     kwargs["compression_type"] = "quantized"
     yaml.dump(kwargs, f)
+
+
+#testing part
+#load the state dict
+#load the checkpoint kwargs
+checkpoint_args = yaml.load(open(args_save_path, "r"), Loader = yaml.FullLoader)
+compression_module_new = lc.LinearQuantized(
+    weight.to(args.device).to(torch.float32), None, False
+)
+compression_module_new.blank_recreate(
+                    vq2.VectorQuantizer_1st_order if checkpoint_args.get("quantizer_type","not") == "1st_order" else vq.VectorQuantizer
+                    , **checkpoint_args["quantizer_kwargs"])
+
+compression_module_new.load_state_dict(torch.load(args.save_path))
+
+assert torch.allclose(compression_module_new.reconstruct(), compression_module.reconstruct())
+print("passed the reconstruction test")
     
 
 
