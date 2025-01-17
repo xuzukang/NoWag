@@ -49,7 +49,10 @@ def load_layer_from_checkpoint(
                                 layer_idx:int,
                                 add_bias:bool = False,
                                 base_model:str = "llama",
-                                key_no_exist_handling:Literal["raise","ignore","warn"] = "raise"):
+                                key_no_exist_handling:Literal["raise","ignore","warn"] = "raise",
+                                quantizer_type:str = "",
+                                clean:bool = True,
+                                device:str = "cpu"):
     
     sublayer_names = [
         "self_attn.q_proj",
@@ -69,14 +72,16 @@ def load_layer_from_checkpoint(
             
         sublayer_full_name = f"{base_model}/layer_{layer_idx}/{name}"
         if sublayer_full_name not in checkpoints:
-            if key_no_exist_handling == "raise":
-                raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
-            elif key_no_exist_handling == "ignore":
-                continue
-            elif key_no_exist_handling == "warn":
-                print(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
-                continue
-            # raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
+            sublayer_full_name = f"layer_{layer_idx}/{name}" #try an abbreviated version I used before
+            if sublayer_full_name not in checkpoints:
+                if key_no_exist_handling == "raise":
+                    raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
+                elif key_no_exist_handling == "ignore":
+                    continue
+                elif key_no_exist_handling == "warn":
+                    print(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
+                    continue
+                # raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
         checkpoint_path = checkpoints[sublayer_full_name]
         checkpoint_args = yaml.load(open(checkpoint_path.replace(".pt", "_args.yaml"),"r"), Loader=yaml.FullLoader)
         compression_type = checkpoint_args["compression_type"]
@@ -90,10 +95,20 @@ def load_layer_from_checkpoint(
             new_layer = linear_compress.LinearQuantized(
                 module.weight, module.bias, add_bias
             )
-            new_layer.blank_recreate(
-                vector_quantizer_2.VectorQuantizer_1st_order if checkpoint_args.get("quantizer_type","not") == "1st_order" else vector_quantizer.VectorQuantizer
-                , **checkpoint_args["quantizer_kwargs"]
-            )
+            
+            if checkpoint_args.get("quantizer_type","not") == "1st_order" or quantizer_type == "1st_order":
+                new_layer.blank_recreate(
+                    vector_quantizer_2.VectorQuantizer_1st_order
+                    , **checkpoint_args["quantizer_kwargs"]
+                )
+                # print("using 1st order")
+                # assert(isinstance(new_layer.quantizer, vector_quantizer_2.VectorQuantizer_1st_order))
+            else:
+                new_layer.blank_recreate(
+                    vector_quantizer.VectorQuantizer
+                    , **checkpoint_args["quantizer_kwargs"]
+                )
+
         if compression_type == "tensorized":
             tensorized_kwargs = checkpoint_args["tensorize_kwargs"]
             if tensorized_kwargs["sparse_frac"] > 0:
@@ -119,9 +134,11 @@ def load_layer_from_checkpoint(
             )
             new_layer.tensor_compressor.safe_forward = False
             # print(new_layer.tensor_compressor.gates[0]) 
-        # print(new_layer.original_weight)           
-        new_layer.clean()
-        new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False), strict=False)
+        # print(new_layer.original_weight) 
+        if clean:          
+            new_layer.clean()
+        new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device)
+                                             ), strict=False)
         new_layer.to(torch.float32)
             # print("new_layer.quantization_compressor.
         delattr(parent_module, name.split(".")[1])
@@ -134,11 +151,15 @@ def load_layer_from_checkpoint(
 
 def load_model_from_checkpoints(
                                 checkpoints:dict[str:str],
+                                base_model:str,
                                 model:llama.LlamaForCausalLM,
                                 add_bias:bool = False,
-                                args = None,
                                 key_no_exist_handling:Literal["raise","ignore","warn"] = "raise",
-                                disable_tqdm:bool = False
+                                disable_tqdm:bool = False,
+                                log_wandb:bool = False,
+                                quantizer_type:str = "",
+                                clean:bool = True,
+                                device:str = "cpu"
                                 ) -> llama.LlamaForCausalLM:
     """
     Load a model from a checkpoint of each individual layer.
@@ -171,10 +192,13 @@ def load_model_from_checkpoints(
         "mlp.down_proj",
     ]
 
-    for i in tqdm.tqdm(range(len(layers)), desc="Loading checkpoints"):
+    for i in tqdm.tqdm(range(len(layers)), desc="Loading checkpoints",disable=disable_tqdm):
         layer = layers[i]
         layer, layer_n_bits, layer_n_params = load_layer_from_checkpoint(
-            checkpoints, layer, i, add_bias, args.base_model, key_no_exist_handling
+            checkpoints, layer, i, add_bias, base_model, key_no_exist_handling,
+            quantizer_type = quantizer_type,
+            clean = clean,
+            device = device 
         )
         n_bits += layer_n_bits
         n_params += layer_n_params
@@ -259,8 +283,8 @@ def load_model_from_checkpoints(
         # # break    
 
     # print("bpv", n_bits / n_params)
-    if args.log_wandb:
-        wandb.log({f"{args.base_model}/bpv": n_bits / n_params})
+    if log_wandb:
+        wandb.log({f"{base_model}/bpv": n_bits / n_params})
     model.to(original_dtype)
 
     return model
@@ -331,7 +355,7 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
         if isinstance(kwargs[name], torch.Tensor):
             kwargs[name] = kwargs[name].to(dev)
 
-    for i in range(len(layers)):
+    for i in tqdm.tqdm(range(len(layers)), desc="Inference", disable=disable_tqdm):
         # print(i)
         layer = layers[i].to(dev)
         outs = inference_layer(layer, inps, outs, kwargs, dev, offload_activations, batch_size,
@@ -368,6 +392,7 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
     ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
     print(f"Perplexity: {ppl.item():3f}")
     if log_wandb:
+        print({f"/perplexity/{base_model}/{dataset}": ppl.item()})
         wandb.log({f"/perplexity/{base_model}/{dataset}": ppl.item()})
     # if results_log_path is not None:
     #     #assume that it is a yaml file
@@ -394,7 +419,7 @@ if __name__ == "__main__":
     parser.add_argument("--wandb_project", type=str, default="llama")
     parser.add_argument("--wandb_id", type=str, default=None,
                         help = "the wandb id so we can resume the run to link it with the compression run")
-    parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--device", type=str, default="cuda:7")
     parser.add_argument("--seqlen", type=int, default=4096)
     parser.add_argument("--offload_activations", action="store_true")
     parser.add_argument("--batch_size", type=int, default=1, 
@@ -414,9 +439,11 @@ if __name__ == "__main__":
         checkpoints = yaml.load(open(args.checkpoint_list_path,"r"), Loader=yaml.FullLoader)
         # print(checkpoints)
         model = load_model_from_checkpoints(checkpoints,
+                                            args.base_model,
                                                         # lambda x: "joint2" if "self_attn" in x else "quantize",
                                                         model,
-                                                        args = args)
+                                            log_wandb=args.log_wandb,
+                                            device = args.device)
 
     model.seqlen = args.seqlen
     model.eval()

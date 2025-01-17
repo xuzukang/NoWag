@@ -55,16 +55,16 @@ if args.use_wandb:
                    name = args.run_name)
         #append the run_name to the save_path
         run_name = wandb.run.name
-        args.save_path = os.path.join(args.save_path, wandb.run.name)
-        temp_yaml_path = os.path.join(temp_yaml_path, wandb.run.name)
+        args.save_path = os.path.join(args.save_path, wandb.run.name.split("-")[-1])
+        temp_yaml_path = os.path.join(temp_yaml_path, wandb.run.name.split("-")[-1])
     else:
         wandb.init(project = args.wandb_project, id = args.wandb_id, resume = "allow",
                    name = args.run_name)
         #append the run_name to the save_path
         run_name = "RESUME_IGNORED"
-        args.save_path = os.path.join(args.save_path, wandb.run.name)
+        args.save_path = os.path.join(args.save_path, wandb.run.name.split("-")[-1])
         args.use_already_done = True
-        temp_yaml_path = os.path.join(temp_yaml_path, wandb.run.name)
+        temp_yaml_path = os.path.join(temp_yaml_path, wandb.run.name.split("-")[-1])
     
     if not args.no_config_update:
         config = vars(args)
@@ -79,6 +79,10 @@ if args.use_wandb:
             config["mlp_args"] = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
 
         # config["args"] = vars(args)
+        for model_name in args.models_to_compress:
+            save_path = args.save_path.replace("{model_name}", model_name)
+            os.makedirs(save_path, exist_ok = True)
+            yaml.dump(config, open(os.path.join(save_path, "overall_config.yaml"), "w"))
         wandb.config.update(config, allow_val_change = True)
 
 else:
@@ -169,6 +173,9 @@ def read_log(log_path:str,wandb_log_prefix:str = "")->bool:
                     for line in log:
                         if "best_loss" in line:
                             best_loss = float(line.split(" ")[-1])
+                            if best_loss <= 1e-5:
+                                print("best_loss less than 1e-5")
+                                return False
                         if "n_params" in line:
                             TOTAL_PARAMS += float(line.split(" ")[-1])
                         if "n_bits" in line:
@@ -377,7 +384,7 @@ while COMMANDS_FINISHED < n_commands:
             done_keys.append(key)
 
             if args.ppl_eval:
-                perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+                perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path} --seqlen {seqlen_map[key]}"
                 if args.use_wandb:
                     perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
                 print("perplexity_inference_command:\n", perplexity_inference_command)
@@ -417,7 +424,7 @@ for key in DONE_SAVE_PATHS.keys():
         done_keys.append(key)
         
         if args.ppl_eval:
-            perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path}"
+            perplexity_inference_command = f"python -u perplexity_eval.py --base_model {key} --seqlen {seqlen_map[key]} --checkpoint_list_path {checkpoint_list_path} --seqlen {seqlen_map[key]}"
             if args.use_wandb:
                 perplexity_inference_command += f" --log_wandb --wandb_project {args.wandb_project} --wandb_id {wandb.run.id}"
             print("perplexity_inference_command:\n", perplexity_inference_command)

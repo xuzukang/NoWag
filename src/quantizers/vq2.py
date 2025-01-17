@@ -32,8 +32,6 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
         cluster_ignore_norms: bool = True,
         additional_parameters: dict[str, torch.Tensor] = {},
         pad = 0,
-        hessian: Optional[torch.Tensor] = None,
-        n_parallel:int = 1,
     ):
         super(VectorQuantizer_1st_order, self).__init__(
             codes,
@@ -46,8 +44,6 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             additional_parameters=additional_parameters,
             pad = pad
         )
-        # self.register_buffer("hessian", hessian)
-        self.n_parallel = n_parallel
 
     def forward(self, leave_padding:bool = False):
         """returns the quantized weights
@@ -55,6 +51,10 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
         Args:
             leave_padding (bool, optional): if True, we return the weight with the padding included. Defaults to False.
         """
+        try:
+            return self.precomputed_weight
+        except AttributeError:
+            pass
         if not leave_padding:
             return super().forward()
         else:
@@ -77,7 +77,7 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             n_parallel_range (List[int]): the range of n_parallel values to search over
         """
         n_parallel_range = [0, self.reconstructed_shape[0]]
-        print("initial n_parallel_range", n_parallel_range)
+        # print("initial n_parallel_range", n_parallel_range)
         while n_parallel_range[1] - n_parallel_range[0] > 1:
             n_parallel = (n_parallel_range[1] + n_parallel_range[0]) // 2
             try:
@@ -97,11 +97,14 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
                 continue
             except RuntimeError:
                 break
-        print("n_parallel", n_parallel_works)
+        # print("n_parallel", n_parallel_works)
         # raise ValueError
         return n_parallel_works
 
-    def update_discrete(self,hessian:torch.Tensor, n_parallel:int = -1, quick_check:bool = False):
+    # @jit.script
+    def update_discrete(self,hessian:torch.Tensor, n_parallel:int = -1, quick_check:bool = False,
+                        temp:float = -1,
+                        threshold:Optional[float] = None):
         """updates the discrete codes, ignoring the influnece of one quantization on
         another
 
@@ -115,7 +118,7 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             hessian = self.pad_hessian(hessian)
             
         if n_parallel == -1:
-            n_parallel = self.determine_optimal_n_parallel(hessian, [1, self.reconstructed_shape[0]])
+            n_parallel = self.determine_optimal_n_parallel(hessian)
             # raise ValueError
             # self.update_discrete(hessian, n_parallel, False)
         
@@ -128,7 +131,7 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             #get the current reconstruction of the quantized weights
             reconstructed_weights = self(True)
 
-            errors = self.reference_weight - reconstructed_weights
+            errors = self.reference_weight - reconstructed_weights #shape of (n_out, n_in)
 
             errors_old = errors.clone()
             n_out, n_in = self.reconstructed_shape
@@ -139,11 +142,15 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             old_codes = self.codes.reshape(n_out, n_in//d)
             prev_losses = torch.einsum("ij,jk,ik->i", errors, hessian, errors)
             #for each block of n_parallel rows
-            for j in tqdm.tqdm(range(0,n_in, d),leave = False):
+            J = list(range(0,n_in, d))
+            #shuffle
+            np.random.shuffle(J)
+            for j in tqdm.tqdm(J):
                 precompute_non_block = torch.einsum("ij,jk->ik",errors[:,:j],hessian[:j,j:j+d])*2 + torch.einsum("ij,jk->ik",errors[:,j+d:],hessian[j+d:,j:j+d])*2 
                 hessian_blocked_out  = hessian[:,j:j+d].clone()
                 hessian_blocked_out[j:j+d,j:j+d] = 0
                 hessian_block = hessian[j:j+d,j:j+d] 
+                row_by_row_h_loss = torch.einsum("ij,jk,ik->i", errors, hessian, errors)
                 for i in range(0,n_out,n_parallel):
                     #get the block 
 
@@ -160,8 +167,34 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
                     distance_ = torch.einsum("ijk,jl,ilk->ik",difference,hessian_block,difference) #shape of (n_parallel, n_codes)
                     distance = distance_ + torch.sum(precompute_non_block[i:i+n_parallel].unsqueeze(-1) * difference, dim = 1) #shape of (n_parallel, n_codes)
                     #get the new codes
-                    new_codes[i:i+n_parallel,j//d] = distance.argmin(-1)
-
+                    if temp < 0:
+                        if threshold is not None:
+                            ids = torch.argmin(distance, dim = -1)
+                            best = distance[torch.arange(n_parallel_use),ids]
+                            prev = distance[torch.arange(n_parallel_use),old_codes[i:i+n_parallel,j//d]]
+                            frac = (prev - best)
+                        # print("greedy_update")
+                        # print("minimum distance", torch.min(distance, dim = -1))
+                        new_codes[i:i+n_parallel,j//d] = distance.argmin(-1)
+                        # raise QuickStopException
+                        
+                    #otherwise stochastically sample the new codes
+                    else:
+                        ids = torch.argmin(distance, dim = -1)
+                        # print("frac_changes_before", torch.sum(ids != old_codes[i:i+n_parallel,j//d]).item() / n_parallel_use)
+                        # best = distance[torch.arange(n_parallel_use),ids]
+                        # prev = distance[torch.arange(n_parallel_use),old_codes[i:i+n_parallel,j//d]]
+                        # print((prev - best))
+                        # probs = 1-torch.exp(-(prev - best)/temp)
+                        # probs = 1 - torch.exp(-temp *(prev - best)/(row_by_row_h_loss[i:i+n_parallel]))
+                        p = torch.rand(n_parallel_use, device = distance.device)
+                        # print("probs", probs, "mean:", torch.mean(probs))
+                        # print("p", p)
+                        mask = p < temp
+                        # print("frac_change:", torch.sum(mask).item() / n_parallel)
+                        ids[~mask] = old_codes[i:i+n_parallel,j//d][~mask]
+                        new_codes[i:i+n_parallel,j//d] = ids
+                        # raise QuickStopException
                     errors[i:i+n_parallel, j:j+d] = difference[torch.arange(n_parallel_use),:,new_codes[i:i+n_parallel,j//d]]
                     if quick_check:
                         raise QuickStopException
@@ -263,6 +296,7 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
             # input("continue?")
             self.codes = new_codes.reshape(-1)
             # assert torch.allclose(self.reference_weight - self(True), errors), "error"
+            print("relative change", n_different / self.codes.numel())
             return n_different
             # raise ValueError
 
@@ -299,7 +333,48 @@ class VectorQuantizer_1st_order(vq_original.VectorQuantizer):
         super().clean()
         if hasattr(self, "hessian"):
             delattr(self, "hessian")
+
+    def precompute_weight(self):
+        self.precomputed_weight = self.forward()
     
+    @staticmethod
+    def blank_recreate(
+        weight: torch.FloatTensor,
+        d: int = 4,
+        n_bits: int = 2,  # number of bits per weight
+        norm_order: list[int] = [0, 1],
+        zero: list[bool] = [True, True],
+        cluster_ignore_norms: bool = True,
+        **kwargs,
+    ):
+        with torch.no_grad():
+            n_out, n_in = weight.shape
+            if n_in % d != 0:
+                pad = d - (n_in % d)
+                weight_pad = F.pad(weight, (0, pad), value = torch.mean(weight).item())
+                n_in += pad
+            else:
+                pad = 0
+                weight_pad = weight
+            weight_use = weight_pad.clone()
+            normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
+
+            codebook = torch.zeros(2 ** (int(n_bits * d)), d).to(weight.device)
+            codes = torch.zeros(
+                (weight_use.shape[0] * weight_use.shape[1]) // d, dtype=torch.long
+            ).to(weight.device)
+            blank_quantizer = VectorQuantizer_1st_order(
+                codes,
+                codebook,
+                (n_out, n_in),
+                normalizer,
+                weight_use,
+                torch.zeros_like(weight_use[0,:]).reshape(-1, d),
+                cluster_ignore_norms=cluster_ignore_norms,
+                pad = pad
+            )
+            # blank_quantizer.clean()
+        return blank_quantizer
 
 
 if __name__ == "__main__":

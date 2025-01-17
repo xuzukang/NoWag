@@ -227,6 +227,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Whether to add bias to each layer.",
     )
+    parser.add_argument(
+        "--amp_finetuning",
+        action = "store_true",  
+        help = "Whether to use automatic mixed precision for finetuning."
+    )
     parser.add_argument("--finetune_keep_best", action="store_true")
     add_optional_parameters(parser)
     args = parser.parse_args()
@@ -319,8 +324,10 @@ if __name__ == "__main__":
     print("here")
     
     checkpoints_dict = yaml.load(open(args.checkpoint_list_path, "r"), Loader = yaml.FullLoader)
-    model = load_model_from_checkpoints(checkpoints_dict, model, add_bias=args.add_bias, 
-                                           args = args)
+    model = load_model_from_checkpoints(checkpoints_dict, 
+                                        model_name,
+                                        model, 
+                                        add_bias=args.add_bias)
     #save a new version of the checkpoint dict
 
     model.seqlen = args.train_seqlen
@@ -381,23 +388,43 @@ if __name__ == "__main__":
             use_cache = model.config.use_cache
             model.config.use_cache = False
             model.to(args.device)
-            finetune.finetune_end_to_end(
-                model=model,
-                optimizer=optimizer,
-                train_tokens=train_loader[i:i+args.eval_every_samples],
-                train_soft_labels=training_targets[i:i+args.eval_every_samples] if args.soft_labels else None,
-                val_tokens=val_loader,
-                # partition_size = args.partition_size,
-                update_every_n_tokens=args.update_every_n_tokens,
-                log_wandb=args.log_wandb,
-                device=args.device,
-                discrete_update_fn=lambda model: utils.recursive_apply(
-                    model, "update_discrete", {}
+            if args.amp_finetuning:
+                finetune.finetune_end_to_end_amp(
+                    model=model,
+                    optimizer=optimizer,
+                    train_tokens=train_loader[i:i+args.eval_every_samples],
+                    train_soft_labels=training_targets[i:i+args.eval_every_samples] if args.soft_labels else None,
+                    val_tokens=val_loader,
+                    # partition_size = args.partition_size,
+                    update_every_n_tokens=args.update_every_n_tokens,
+                    log_wandb=args.log_wandb,
+                    device=args.device,
+                    discrete_update_fn=lambda model: utils.recursive_apply(
+                        model, "update_discrete", {}
+                    )
+                    if args.update_discrete
+                    else None,
+                    use_tqdm=True,
                 )
-                if args.update_discrete
-                else None,
-                use_tqdm=True,
-            )
+            else:
+
+                finetune.finetune_end_to_end(
+                        model=model,
+                        optimizer=optimizer,
+                        train_tokens=train_loader[i:i+args.eval_every_samples],
+                        train_soft_labels=training_targets[i:i+args.eval_every_samples] if args.soft_labels else None,
+                        val_tokens=val_loader,
+                        # partition_size = args.partition_size,
+                        update_every_n_tokens=args.update_every_n_tokens,
+                        log_wandb=args.log_wandb,
+                        device=args.device,
+                        discrete_update_fn=lambda model: utils.recursive_apply(
+                            model, "update_discrete", {}
+                        )
+                        if args.update_discrete
+                        else None,
+                        use_tqdm=True,
+                    )
             torch.cuda.empty_cache()
 
             model.eval()

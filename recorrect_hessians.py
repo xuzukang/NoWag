@@ -7,7 +7,7 @@ import tqdm
 parser = argparse.ArgumentParser(description='Recorrect Hessians')
 parser.add_argument("--prefix", type=str, help="prefix for the paths",
                     default = "/data/lliu/huffman/models")
-parser.add_argument("--models", type = str, nargs='+', default = ["meta-llama/Llama-2-13b-hf","meta-llama/Llama-2-70b-hf"], help = "models to recorrect")
+parser.add_argument("--models", type = str, nargs='+', default = ["meta-llama/Meta-Llama-3-8B","meta-llama/Meta-Llama-3-70B"], help = "models to recorrect")
 parser.add_argument('--hessians_suffixes', type=str, help='suffixes of the path to hessians',
                     nargs='+',
                     default = ["hessians_new/pajama/128","hessians_new/pajama/2048"])

@@ -5,9 +5,10 @@
 # export MODEL_PATH=meta-llama/Llama-2-70b-hf
 # export MODEL_PATH=meta-llama/Llama-2-13b-hf
 # export MODEL_PATH=meta-llama/Llama-2-7b-hf
-export n_samples=128
-export seed=42
-MODELS=("meta-llama/Llama-2-13b-hf")
+export n_samples=256
+export seed=0
+dataset="c4"
+MODELS=("meta-llama/Llama-2-7b-hf")
 
 for MODEL_PATH in "${MODELS[@]}"; do
     export SAVE_PATH="./models/$MODEL_PATH/hessians_new/seed_$seed"
@@ -22,13 +23,13 @@ for MODEL_PATH in "${MODELS[@]}"; do
         echo "Using Llama-2 so setting seqlen to 4096"
     fi
 
-    python -u scripts/generate_hessians.py $MODEL_PATH pajama \
+    python -u scripts/generate_hessians.py $MODEL_PATH $dataset \
     --seqlen $SEQLEN \
-    --device cuda:5 \
+    --device cuda:1 \
     --nsamples_train $n_samples \
     --nsamples_val 0 \
-    --save_path "$SAVE_PATH/pajama/$n_samples" \
-    --seed $seed \
-    # --offload_activations \
-    --forward_pass_batch_size 16
+    --save_path "$SAVE_PATH/$dataset/$n_samples" \
+    --seed $seed 
+    # \
+    # --offload_activations --forward_pass_batch_size 8
 done

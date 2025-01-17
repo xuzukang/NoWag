@@ -6,6 +6,7 @@ from typing import Tuple, Optional, Union, List
 import src.utils.compress_parent as compress_parent
 import warnings
 import tqdm
+import wandb    
 
 def loss(reconstructed_weights, original_weights, hessian):
     diff = original_weights - reconstructed_weights
@@ -41,7 +42,7 @@ def initialize_optimizer(compression_module, lr, lr_multiplier, patience_schedul
         optimizer = torch.optim.Adam(params)
         
     else:
-        # print("here")
+        print("here")
         for name, param in compression_module.named_parameters():
             # print(name)
             if param.requires_grad:
@@ -80,6 +81,8 @@ def align(
     patience_scheduler: int = 2,
     eps: float = 1e-5,
     discrete_update_kwargs: Optional[dict] = {},
+    n_discrete_updates: int = 1,
+    log_wandb: bool = False,
 ) -> compress_parent.CompressorParent:
     """aligns the compression module to the hessian of the training dataset
 
@@ -109,6 +112,7 @@ def align(
 
     # initialize the best loss
     best_loss = float("inf")
+    best_state_dict = copy.deepcopy(compression_module.state_dict())
 
     patience_counter = 0
     val_loss = None
@@ -151,6 +155,7 @@ def align(
             if train_loss < best_loss and train_loss > low_bound:
                 best_loss = train_loss.item()
                 best_state_dict = copy.deepcopy(compression_module.state_dict())
+                best_state_dict_idx = i
             if train_loss < low_bound:
                 print("early stopping low bound", low_bound, "train_loss",train_loss)
                 break
@@ -175,11 +180,34 @@ def align(
             #     loss_pre_discrete = loss(reconstructed_weights, original_weights, train_hessian)
             #     # print("loss before discrete update", train_loss)
             #load the best state dict
+            # if (best_state_dict_idx - 1)%discrete_update_every == 0:
+            #     print("checking")
+            #     #check that it is the same as the post discrete state dict
+            #     for key in post_discrete_state_dict.keys():
+            #         assert torch.all(post_discrete_state_dict[key] == best_state_dict[key]), f"key {key} post_discrete_state_dict[key] {post_discrete_state_dict[key]} best_state_dict[key] {best_state_dict[key]}"
+    
             compression_module.load_state_dict(best_state_dict)
-            n_updated = compression_module.update_discrete(**discrete_update_kwargs)
-            if n_updated == 0:
-                print("no discrete variables updated, breaking")
-                break
+            print("loading best state dict")
+            print("loss before discrete update", compression_module.get_reconstruction_error().item())
+            for i in range(n_discrete_updates):
+                n_updated = compression_module.update_discrete(**discrete_update_kwargs)
+                if n_updated == 0:
+                    print("no discrete variables updated, breaking")
+                    break
+            #otherwise, we have to continue until we get a non-zero update
+            with torch.no_grad():
+                post_discrete_loss = loss(reconstructed_weights, original_weights, train_hessian if val_hessian is None else val_hessian)
+                if post_discrete_loss < best_loss:
+                    best_loss = post_discrete_loss
+                    best_state_dict = copy.deepcopy(compression_module.state_dict())
+                    best_state_dict_idx = i
+                    print("updating best state dict")
+                print("loss after discrete update", post_discrete_loss)
+            # raise NotImplementedError
+
+            # if n_updated == 0:
+            #     print("no discrete variables updated, breaking")
+            #     break
             # optimizer.zero_grad() 
             if reinitialize_optimizer:
                 optimizer, lr_scheduler = initialize_optimizer(compression_module, lr, lr_multiplier, patience_scheduler)
@@ -193,8 +221,10 @@ def align(
 
         if verbose and i % verbose == 0:
             print(
-                f'iter {i}/{n_iters}, train loss {train_loss.item()}, val loss {val_loss}, lr {round(optimizer.param_groups[0]["lr"], 6)}'
+                f'iter {i}/{n_iters}, train loss {train_loss.item()}, val loss {val_loss}, lr {round(optimizer.param_groups[0]["lr"], 6)} best_state_dict_idx {best_state_dict_idx}'
             )
+        if log_wandb:
+            wandb.log({"train_loss": train_loss.item(), "lr": optimizer.param_groups[0]["lr"]})
 
     compression_module.load_state_dict(best_state_dict)
     print("hessian best loss", best_loss)

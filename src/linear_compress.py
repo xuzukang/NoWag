@@ -34,11 +34,12 @@ class LinearQuantized(compress_parent.CompressorParent):
         super(LinearQuantized, self).__init__()
         self.out_features, self.in_features = weight.shape
         self.original_weight = weight
+        # print("original weight", self.original_weight[0])
         # self.register_buffer("original_weight", weight)
         self.original_parameters = self.in_features * self.out_features
 
         if bias is not None:
-            self.bias = nn.Parameter(bias, requires_grad=True)
+            self.original_bias = nn.Parameter(bias, requires_grad=True)
             self.original_parameters += self.out_features
 
         else:
@@ -144,6 +145,7 @@ class LinearQuantized(compress_parent.CompressorParent):
 
     def quantize(self, quantizer_class: QuantizerParent, **kwargs):
         """quantize the weights"""
+        # print(kwargs)
         self.quantizer = quantizer_class.quantize(
             self.original_weight, self.hessian, **kwargs
         )
@@ -195,7 +197,7 @@ class LinearQuantized(compress_parent.CompressorParent):
             eps (float, optional): the minimum improvement in the loss to consider it as an improvement. Defaults to 1e-5.
 
         """
-
+        print(reinitialize_optimizer)
         _, best_loss = hessian_general_align.align(
             compression_module=self,
             original_weights=self.original_weight,
@@ -214,6 +216,7 @@ class LinearQuantized(compress_parent.CompressorParent):
             patience_scheduler=patience_scheduler,
             eps=eps,
             discrete_update_kwargs=discrete_update_kwargs,
+            **kwargs,
         )
         return best_loss
 

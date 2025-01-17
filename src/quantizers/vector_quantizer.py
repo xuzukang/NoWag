@@ -7,6 +7,7 @@ import itertools
 import torch.jit as jit
 import os
 import sys
+import time
 from typing import Tuple, Optional, Union, List, Callable, Literal
 
 if __name__ == "__main__":
@@ -139,96 +140,173 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         norm_order: list[int] = [0, 1],
         zero: list[bool] = [True, True],
         cluster_ignore_norms: bool = True,
+        minibatch_size:float = 1, #fraction of the weight matrix to use for the quantization
+        time_clustering:bool = False,
         **kwargs,
     ):
-        #if d is not able to divided n_in we pad
-        n_out, n_in = weight.shape
-        if n_in % d != 0:
-            pad = d - (n_in % d)
-            weight_pad = F.pad(weight, (0, pad), value = torch.mean(weight).item())
-            print("hessian", hessian.shape)
-            hessian = F.pad(hessian, (0, pad, 0, pad))
-            print("padding", pad)
-            print("hesian", hessian.shape)
-            n_in += pad
-        else:
-            pad = 0
-            weight_pad = weight
-        weight_use = weight_pad.clone()
-
-        normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
-        normalizer:quantizer_utils.Normalizer
-        # norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
-        
-        H_diag = torch.diag(hessian)
-        # H_diag = H_diag.reshape(-1,d)
-        importances = (H_diag).reshape(  # .unsqueeze(0).expand(weight.shape[0], -1)
-            -1, d
-        )
-
-        weight_subvectors = weight_use.reshape(-1, d)
-        n_subvectors = weight_subvectors.shape[0]
-        n_centriods = 2 ** (int(n_bits * d))
-        print(n_centriods)
-
-        if initialize_method == "grid":
-            grid_points = []
-            for i in range(d):
-                grid_points.append(
-                    torch.linspace(
-                        torch.min(weight_subvectors[:, i]),
-                        torch.max(weight_subvectors[:, i]),
-                        2 ** int(n_bits) if i != d-1 else 2 ** (int(n_bits*d)-(d-1)*int(n_bits)),
-                    )
-                    .cpu()
-                    .tolist()
-                )
-            centriods = itertools.product(*grid_points)
-            print(len(grid_points))
-            centriods = torch.tensor(list(centriods)).to(weight.device)
-            print("centriods.shape", centriods.shape)
-            assignments = quantizer_utils.cluster_assignment_step(
-                weight_subvectors, centriods, importances,
-                n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
-                    subblock_size = n_in//d
+        # print("weight", weight[0])
+        with torch.no_grad():
+            #if d is not able to divided n_in we pad
+            n_out, n_in = weight.shape
+            if n_in % d != 0:
+                pad = d - (n_in % d)
+                weight_pad = F.pad(weight, (0, pad), value = torch.mean(weight).item())
+                print("hessian", hessian.shape)
+                hessian = F.pad(hessian, (0, pad, 0, pad))
+                print("padding", pad)
+                print("hesian", hessian.shape)
+                n_in += pad
+            else:
+                pad = 0
+                weight_pad = weight
+            weight_use = weight_pad.clone()
+            print(zero)
+            normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
+            normalizer:quantizer_utils.Normalizer
+            # norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
+            
+            H_diag = torch.diag(hessian)
+            # H_diag = H_diag.reshape(-1,d)
+            importances = (H_diag).reshape(  # .unsqueeze(0).expand(weight.shape[0], -1)
+                -1, d
             )
-            print(assignments.shape)
 
-        elif initialize_method == "kmeans":
-            n_1 = torch.from_numpy(
-                np.random.choice(n_subvectors, n_centriods, replace=False)
-            ).to(weight.device)
-            # print("n_1", n_1)
-            # print("max", torch.max(n_1), "min", torch.min(n_1))
-            # print(X.shape)
-            centriods = weight_subvectors[n_1, :]
+            weight_subvectors = weight_use.reshape(-1, d)
+            n_subvectors = weight_subvectors.shape[0]
+            n_centriods = 2 ** (int(n_bits * d))
+            print(n_centriods)
+            if time_clustering:
+                total_time_start = time.time()
+                time_spent_assign = 0
+                time_spent_update = 0
+            
 
-            for i in tqdm.tqdm(range(n_iters)):
+            if initialize_method == "grid":
+                grid_points = []
+                for i in range(d):
+                    grid_points.append(
+                        torch.linspace(
+                            torch.min(weight_subvectors[:, i]),
+                            torch.max(weight_subvectors[:, i]),
+                            2 ** int(n_bits) if i != d-1 else 2 ** (int(n_bits*d)-(d-1)*int(n_bits)),
+                        )
+                        .cpu()
+                        .tolist()
+                    )
+                centriods = itertools.product(*grid_points)
+                # print(len(grid_points))
+                centriods = torch.tensor(list(centriods)).to(weight.device)
+                # print("centriods.shape", centriods.shape)
                 assignments = quantizer_utils.cluster_assignment_step(
                     weight_subvectors, centriods, importances,
                     n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
-                    subblock_size = n_in//d
+                        subblock_size = n_in//d
+                )
+                print(assignments.shape)
+            elif initialize_method == "random":
+                n_1 = torch.from_numpy(
+                    np.random.choice(n_subvectors, n_centriods, replace=False)
+                ).to(weight.device)
+                centriods = weight_subvectors[n_1, :]
+                assignments = torch.randint(0, n_centriods, (n_subvectors,)).to(weight.device)
+            elif initialize_method == "kmeans":
+                n_1 = torch.from_numpy(
+                    np.random.choice(n_subvectors, n_centriods, replace=False)
+                ).to(weight.device)
+                # print("n_1", n_1)
+                # print("n_1", n_1)
+                # print("max", torch.max(n_1), "min", torch.min(n_1))
+                # print(X.shape)
+                # print("weight_subvectors", weight_subvectors[0])
+                centriods = weight_subvectors[n_1, :]
+                # print("centriods", centriods)
+                # raise ValueError("stop")
+                if minibatch_size < 1:
+                    idxs = torch.randperm(n_subvectors)[:int(n_subvectors * minibatch_size)].to(weight.device)
+                for i in tqdm.tqdm(range(n_iters)):
+                    if minibatch_size < 1:
+                        # minibatch_size = int(n_subvectors * minibatch_size)
+                        if kwargs.get("random_minibatch", False):
+                            idxs = torch.randperm(n_subvectors)[:int(n_subvectors * minibatch_size)].to(weight.device)
+                        
+                        if time_clustering:
+                            start = time.time()
+                            
+                        assignments = quantizer_utils.cluster_assignment_step_with_minibatch(
+                            weight_subvectors, centriods, idxs,
+                            importances,
+                            n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
+                            subblock_size = n_in//d
+                            
+                        )
+                        if time_clustering:
+                            print("assignment time", time.time()-start)
+                            time_spent_assign += time.time()-start
+                            start = time.time()
+                        # print(assignments)
+                        # print(assignments.shape)
+                        
+                        centriods = quantizer_utils.cluster_update_step_with_minibatch(
+                            weight_subvectors, centriods,assignments, idxs, importances,
+                            n_out, n_in, n_centriods, 
+                            normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                        )
+                        
+                    else:
+                        print("here")
                     
-                )
-                # print(assignments)
-                # print(assignments.shape)
-                centriods = quantizer_utils.cluster_update_step(
-                    weight_subvectors, assignments, importances,
-                    n_out, n_in, n_centriods, 
-                    normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
-                )
-                if i > 0:
-                    if torch.all(assignments == assignments_old):
-                        # print("breaking at iteration", i)
-                        break
-                    # print("n_change:", torch.sum(assignments != assignments_old))
-                assignments_old = assignments.clone()
+                        if time_clustering:
+                            start = time.time()
+                            
+                        assignments = quantizer_utils.cluster_assignment_step(
+                            weight_subvectors, centriods, importances,
+                            n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
+                            subblock_size = n_in//d
+                            
+                        )
+                        if time_clustering:
+                            print("assignment time", time.time()-start)
+                            time_spent_assign += time.time()-start
+                            start = time.time()
+                        # print(assignments)
+                        # print(assignments.shape)
+                        
+                        centriods = quantizer_utils.cluster_update_step(
+                            weight_subvectors, centriods,assignments, importances,
+                            n_out, n_in, n_centriods, 
+                            normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                        )
+                        #get the counts of the assignments
+                        # unique, counts = torch.unique(assignments, return_counts=True)
+                        # counts = counts[torch.argsort(unique)]
+                        if time_clustering:
+                            print("update time", time.time()-start)
+                            time_spent_update += time.time()-start
+                        # print("counts", counts)
+                        # raise ValueError("stop")
+                        if i > 0:
+                            if torch.all(assignments == assignments_old):
+                                # print("breaking at iteration", i)
+                                break
+                            # print("n_change:", torch.sum(assignments != assignments_old))
+                        assignments_old = assignments.clone()
+                
+                if minibatch_size < 1:
+                    assignments = quantizer_utils.cluster_assignment_step(
+                        weight_subvectors, centriods, importances,
+                        n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
+                        subblock_size = n_in//d
+                    )
 
-        else:
-            raise ValueError("initialize_method must be either 'grid' or 'kmeans'")
+            else:
+                raise ValueError("initialize_method must be either 'grid' or 'kmeans'")
 
-        return assignments, centriods, (n_out, n_in), normalizer, weight_pad, importances, cluster_ignore_norms, pad, hessian
-    
+            if time_clustering:
+                print("total time", time.time()-total_time_start)
+                print("time spent assigning", time_spent_assign, "fraction", time_spent_assign/(time_spent_assign+time_spent_update))
+                print("time spent updating", time_spent_update, "fraction", time_spent_update/(time_spent_assign+time_spent_update))
+            return assignments, centriods, (n_out, n_in), normalizer, weight_pad, importances, cluster_ignore_norms, pad, hessian
+        
     @staticmethod
     def quantize(
         weight: torch.FloatTensor,

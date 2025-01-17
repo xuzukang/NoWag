@@ -221,276 +221,6 @@ def cross_entropy_loss(logits, target_logits):
     return -torch.sum(target_probs * F.log_softmax(logits, -1), -1).mean()
 
 
-def partition_wise_forwards_and_backwards(
-    model: llama.LlamaForCausalLM,
-    inps: torch.FloatTensor,
-    targets: torch.FloatTensor,
-    attention_mask: torch.BoolTensor,
-    loss_fn: Callable[[torch.FloatTensor, torch.FloatTensor], torch.FloatTensor],
-    partition_size: int,
-    device: str,
-) -> None:
-    """Partition the model into chunks of size partition_size layers to
-    avoid running out of memory, and perform the forward and backward pass
-
-    currently does not support amp, nor fine tuning the embed tokens
-
-    Args:
-        model (llama.LlamaForCausalLM): the model to train
-        inps (torch.LongTensor): the input hidden states of shape (seq_len, hidden_size)
-        target (torch.FloatTensor): the outputs of the teacher model of shape (seq_len, vocab_size)
-        loss_fn (Callable[[torch.FloatTensor, torch.FloatTensor], torch.FloatTensor]): the loss function to use
-        partition_size (int): the number of layers to run at once
-        device (str): the device to run the model on
-
-    Returns:
-        None: None
-    """
-
-    # first pass should be through the
-
-    use_cache = model.config.use_cache
-    model.config.use_cache = False
-    layers = model.model.layers
-
-    partition_inputs: list[torch.FloatTensor] = [inps]
-    partition_outputs: list[torch.FloatTensor] = []
-
-    for i in range(0, len(layers), partition_size):
-        print("i", i)
-        for j in range(i, min(i + partition_size, len(layers))):
-            layers[j].to(device)
-
-        tmp = partition_inputs[-1].to(device)
-        for j in range(i, min(i + partition_size, len(layers))):
-            # print(tmp.shape)
-            print("j", j)
-            tmp = layers[j](tmp.unsqueeze(0), attention_mask=attention_mask)[0][0]
-            # print("post layer",tmp.shape)
-
-        partition_outputs.append(tmp.to("cpu"))
-        partition_inputs.append(
-            tmp.detach().clone().to("cpu").requires_grad_(True).to("cpu")
-        )
-        for j in range(i, min(i + partition_size, len(layers))):
-            layers[j].to("cpu")
-        del tmp
-
-        torch.cuda.empty_cache()
-        free, total = torch.cuda.mem_get_info(int(device.split(":")[1]))
-        print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-
-        for obj in gc.get_objects():
-            try:
-                if torch.is_tensor(obj) or (
-                    hasattr(obj, "data") and torch.is_tensor(obj.data)
-                ):
-                    if obj.device == torch.device(device):
-                        print(type(obj), obj.size(), obj.device)
-            except:
-                pass
-
-    hidden_states = partition_inputs[-1].to(device)
-    if model.model.norm is not None:
-        model.model.norm = model.model.norm.to(device)
-        lm_head_input = model.model.norm(hidden_states)
-    else:
-        lm_head_input = hidden_states
-    model.lm_head = model.lm_head.to(device)
-
-    logits = model.lm_head(lm_head_input)
-
-    loss = loss_fn(logits, targets.to(device))
-    loss.backward()
-
-    temp_grad = hidden_states.grad.clone()
-
-    # dump all to cpu
-    model.lm_head = model.lm_head.to("cpu")
-    if model.model.norm is not None:
-        model.model.norm = model.model.norm.to("cpu")
-    hidden_states = hidden_states.to("cpu")
-    logits = logits.to("cpu")
-    targets = targets.to("cpu")
-    loss = loss.item()
-    torch.cuda.empty_cache()
-
-    # flip
-    layers = layers[::-1]
-    partition_inputs = partition_inputs[::-1]
-    partition_outputs = partition_outputs[::-1]
-    i_ = 0
-    for i in range(0, len(layers), partition_size):
-        # move this partition to the device
-        for j in range(i, min(i + partition_size, len(layers))):
-            layers[j].to(device)
-        tmp_outputs = partition_outputs[i_].to(device)
-        tmp_inputs = partition_inputs[i_].to(device)
-        # from the partition outputs backpropagate the gradients using the temp_grad
-        tmp_outputs.backward(temp_grad)
-
-        temp_grad = tmp_inputs.grad.clone()
-
-        # move back to cpu
-        for j in range(i, min(i + partition_size, len(layers))):
-            layers[j].to("cpu")
-
-        tmp_outputs = tmp_outputs.to("cpu")
-        tmp_inputs = tmp_inputs.to("cpu")
-
-        torch.cuda.empty_cache()
-        i_ += 1
-
-
-@torch.no_grad()
-def get_embedded(
-    train_inps,
-    model: llama.LlamaForCausalLM,
-    device: str,
-    dtype: torch.dtype = torch.float32,
-):
-    # calculate the embeded hidden inputs
-    inps = torch.zeros(
-        (len(train_inps), model.seqlen, model.config.hidden_size),
-        device=device,
-        dtype=dtype,
-    )
-
-    cache = {"i": 0, "attention_mask": None}
-
-    class Catcher(nn.Module):
-        def __init__(self, module):
-            super().__init__()
-            self.module = module
-
-        def forward(self, inp, **kwargs):
-            inps[cache["i"]] = inp
-            cache["i"] += 1
-            cache["attention_mask"] = kwargs["attention_mask"]
-            raise ValueError
-
-    with torch.no_grad():
-        model.model.embed_tokens = model.model.embed_tokens.to(device)
-        model.model.layers[0] = model.model.layers[0].to(device)
-        model.model.layers[0] = Catcher(model.model.layers[0])
-        for i in range(len(train_inps)):
-            try:
-                model(train_inps[i][0].to(device))
-            except ValueError:
-                pass
-        model.model.layers[0] = model.model.layers[0].module
-
-        model.model.layers[0] = model.model.layers[0].cpu()
-        model.model.embed_tokens = model.model.embed_tokens.cpu()
-        inps = inps.cpu()
-        torch.cuda.empty_cache()
-
-    attention_mask = cache["attention_mask"]
-    return inps, attention_mask
-
-
-@torch.enable_grad()
-def finetune_end_to_end_partitioned(
-    model: llama.LlamaForCausalLM,
-    optimizer: torch.optim.Optimizer,
-    train_inps: torch.FloatTensor,
-    train_outputs: torch.FloatTensor,
-    attention_mask: torch.BoolTensor,
-    val_inps: Optional[List[torch.FloatTensor]] = None,
-    val_outputs: Optional[List[torch.FloatTensor]] = None,
-    discrete_update_fn: Optional[Callable] = None,
-    update_every_n_tokens: int = 4096,
-    log_wandb: bool = False,
-    partition_size: int = 4,
-    device: str = "cuda:0",
-    use_tqdm: bool = True,
-) -> Tuple[float, Optional[float]]:
-    """finetune the model for one epoch using partitioned training to avoid running out of memory
-
-    Args:
-        model (llama.LlamaForCausalLM): the model to use
-        train_inps (List[torch.LongTensor]): the training inputs, of shape (n_samples, seq_len, hidden_size)
-        train_outputs (List[torch.FloatTensor]): the output logits of the teacher model of shape (n_samples, seq_len, vocab_size)
-        val_inps (Optional[List[torch.LongTensor]], optional): the validation inputs, of shape (n_samples_val, seq_len, hidden size). Defaults to None.
-        val_outputs (Optional[List[torch.FloatTensor]], optional): the validation outputs, of shape (n_samples_val, seq_len, vocab_size). Defaults to None.
-        discrete_update_fn (Optional[Callable], optional): the function to call to update the discrete aspects of the compression/quantization strategy, if none then not called. Defaults to None.
-        n_epochs (int, optional): the number of epochs to train for. Defaults to 5.
-        update_every_n_tokens (int, optional): accumulate the gradients for this many number of tokens and then update, must be a multiple of the sequence length. Defaults to 4096.
-        log_wandb (bool, optional): whether to log to wandb. Defaults to False.
-        partition_size (int, optional): the size of the partition to compute on GPU. Defaults to 4.
-        device (str, optional): the device to do the training on. Defaults to "cuda:0".
-        dtype (torch.dtype, optional): the dtype to use for the model. Defaults to torch.float16.
-        lr (float, optional): Adam learning rate. Defaults to 1e-4.
-        adam_eps (float, optional): the epsilon for adam, if we are doing fp16 training, as usual, then we typically will need to increase this for numerical stability. Defaults to 1e-4.
-        return_best (bool, optional): whether to return the last (return_best = False) or the weights for the best model (return_best = True) best is defined by val loss if val_inps is not None otherise the training loss. Defaults to True.
-
-    Raises:
-        NANError: _description_
-
-    Returns:
-        llama.LlamaForCausalLM: the trained model
-    """
-
-    # move everything to cpu first
-    model.to("cpu")
-    for i in range(len(train_inps)):
-        train_inps[i] = train_inps[i].to("cpu")
-        train_outputs[i] = train_outputs[i].to("cpu")
-
-    # check that the update_every_n_tokens is a multiple of the sequence length
-    # assert update_every_n_tokens% model.seqlen == 0, "update_every_n_tokens must be a multiple of the sequence length"
-
-    total_loss = 0
-    n_tokens = 0
-    print("train_inps", train_inps.shape)
-    print("attention_mask", attention_mask.shape)
-    for i in tqdm.tqdm(range(len(train_inps)), disable=not use_tqdm):
-        n_tokens += train_inps[i].shape[0]
-        print("train inps.shape", train_inps[i].shape)
-        loss = partition_wise_forwards_and_backwards(
-            model,
-            train_inps[i],
-            train_outputs[i],
-            attention_mask=attention_mask,
-            loss_fn=cross_entropy_loss,
-            partition_size=partition_size,
-            device=device,
-        )
-
-        total_loss += loss
-        if log_wandb:
-            wandb.log({"train_loss": loss})
-        if n_tokens >= update_every_n_tokens:
-            optimizer.step()
-            optimizer.zero_grad()
-            if discrete_update_fn is not None:
-                discrete_update_fn(model)
-            n_tokens = 0
-
-    total_loss = total_loss / (len(train_inps) * train_inps.shape[1])
-    if val_inps is not None:
-        total_loss_val = 0
-        with torch.no_grad():
-            model.to(device)
-            for i in range(len(val_inps)):
-                val_inp = val_inps[i][0].to(device)
-                val_out = val_outputs[i][0].to(device)
-                output_logits = model(val_inp)[0]
-                loss = cross_entropy_loss(output_logits, val_out).item()
-                total_loss_val += loss
-            model.to("cpu")
-        total_loss_val = total_loss_val / (len(val_inps) * val_inps.shape[1])
-
-        if log_wandb:
-            wandb.log({"val_loss": total_loss_val, "train_loss_batch": total_loss})
-        return total_loss, total_loss_val
-
-    if log_wandb:
-        wandb.log({"train_loss_batch": total_loss})
-
-    return total_loss, None
-
-
 @torch.enable_grad()
 def finetune_end_to_end(
     model: llama.LlamaForCausalLM,
@@ -539,24 +269,65 @@ def finetune_end_to_end(
     total_loss = total_loss / len(train_tokens)  # * train_tokens[0][0].shape[0])
     if val_tokens is not None:
         print("Warning: validation is not implemented yet")
-    #     total_loss_val = 0
-    #     with torch.no_grad():
-    #         model.to(device)
-    #         for i in range(len(val_tokens)):
-    #             val_tokens = val_tokens[i][0].to(device)
-    #             val_out = model(val_tokens, labels = val_tokens)[0]
-    #             loss = val_out.item()
-    #             total_loss_val += loss
-    #         model.to("cpu")
-    #     total_loss_val = total_loss_val/len(val_tokens)
-
-    #     if log_wandb:
-    #         wandb.log({"val_loss": total_loss_val, "train_loss_batch": total_loss})
-    #     return total_loss, total_loss_val
-    # else:
     if log_wandb:
         wandb.log({"train_loss_batch": total_loss})
     return total_loss, None
+
+
+@torch.enable_grad()
+def finetune_end_to_end_amp(
+    model: llama.LlamaForCausalLM,
+    optimizer: torch.optim.Optimizer,
+    train_tokens: List[torch.LongTensor],
+    train_soft_labels: List[torch.FloatTensor],
+    val_tokens: Optional[List[torch.LongTensor]] = None,
+    val_soft_labels: Optional[List[torch.FloatTensor]] = None,
+    discrete_update_fn: Optional[Callable] = None,
+    update_every_n_tokens: int = 4096,
+    log_wandb: bool = False,
+    device: str = "cuda:0",
+    use_tqdm: bool = True,
+) -> Tuple[float, Optional[float]]:
+    """finetune the model for one epoch"""
+    # move everything to cpu first
+    # assert model.seqlen % update_every_n_tokens == 0, "update_every_n_tokens must be a multiple of the sequence length"
+
+    total_loss = 0
+    n_tokens = 0
+    scaler = amp.GradScaler()
+    n_accumulation_steps = update_every_n_tokens//(train_tokens[0][0].shape[1])
+    for i in tqdm.tqdm(range(len(train_tokens)), disable=not use_tqdm, desc="Training", miniters=len(train_tokens) // 100):
+        tokens = train_tokens[i][0].to(device)
+        n_tokens += tokens.shape[1]
+        # print("n_tokens", n_tokens, tokens.shape)
+        with amp.autocast():
+            if train_soft_labels is not None:
+                labels = train_soft_labels[i].to(
+                    device
+                )  # soft labels from the teacher model
+                out = model(tokens)[0]
+                loss = cross_entropy_loss(out, labels)
+            else:
+                loss = model(tokens, labels=tokens)[0]
+        scaler.scale(loss/n_accumulation_steps).backward()
+        # loss.backward()
+        total_loss += loss.item()
+        if log_wandb:
+            wandb.log({"train_loss": loss.item()})
+        if n_tokens >= update_every_n_tokens:
+            scaler.step(optimizer)
+            scaler.update()
+            optimizer.zero_grad()
+            if discrete_update_fn is not None:
+                discrete_update_fn(model)
+
+    total_loss = total_loss / len(train_tokens)  # * train_tokens[0][0].shape[0])
+    if val_tokens is not None:
+        print("Warning: validation is not implemented yet")
+    if log_wandb:
+        wandb.log({"train_loss_batch": total_loss})
+    return total_loss, None
+
 
 
 # @torch.enable_grad()
