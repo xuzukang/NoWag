@@ -153,10 +153,20 @@ class LinearQuantized(compress_parent.CompressorParent):
 
     def reconstruct(self) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the quantized version"""
+        if hasattr(self, "cached_reconstruct"):
+            # print("returning cached")
+            return self.cached_reconstruct
         if self.quantized:
             return self.quantizer()
         else:
             return self.original_weight
+
+    def cache_reconstruct(self):
+        # print("caching")
+        self.register_buffer("cached_reconstruct", self.reconstruct())
+        
+    def delete_cache_reconstruct(self):
+        del self.cached_reconstruct
         
     def get_reconstruction_error(self) -> torch.FloatTensor:
         """returns the reconstruction error"""

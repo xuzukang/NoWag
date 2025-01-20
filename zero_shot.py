@@ -1,26 +1,31 @@
 import lm_eval
 from lm_eval import evaluator, tasks
-from lm_eval.models.huggingface import HFLM
+from src.utils.lm_eval_adaptor import LMEvalAdaptor
 import argparse
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 from transformers import AutoTokenizer
+from perplexity_eval import load_model_from_checkpoints
 import random
 import torch
+import yaml
+import os
+import json
+
 torch.set_grad_enabled(False)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--base_model", type=str, help = "the hf base model to use",
                     default = "meta-llama/Llama-2-7b-hf")
-parser.add_argument("--quantized_weight_path", type=str, help = "the path to the quantized weight")
+parser.add_argument("--quantized_weight_yaml", type=str, help = "the path to the quantized weight")
 parser.add_argument("--seed", type=int, default=0)
 parser.add_argument("--device", type=str, help = "the device to run the compression on", default = "cuda:0")
 parser.add_argument('--batch_size', type=int, default=1, help='batch size')
 parser.add_argument("--tasks", type=str, nargs = "+", default = 
                     [
-                      # "winogrande",
-                      # "piqa", 
-                      # "hellaswag",
-                      # "arc_easy", 
+                      "winogrande",
+                      "piqa", 
+                      "hellaswag",
+                      "arc_easy", 
                       "arc_challenge"
                       ])
 parser.add_argument("--output_path", default=None, type=str)
@@ -29,30 +34,42 @@ parser.add_argument('--limit', type=int, default=None)
 parser.add_argument('--apply_chat_template', action='store_true')
 parser.add_argument('--fewshot_as_multiturn', action='store_true')
 parser.add_argument("--log_wandb", action="store_true", help = "log to wandb")
+parser.add_argument("--save",
+                    help="Save the results to the specified path",
+                    action="store_true")
 
 args = parser.parse_args()
-
+torch.set_grad_enabled(False)
 random.seed(args.seed)
 torch.random.manual_seed(args.seed)
 
 model = get_llama(args.base_model)
 model = model.to(args.device)
 
+if args.quantized_weight_yaml is not None:
+  checkpoints_paths = yaml.load(open(args.quantized_weight_yaml, "r"), Loader=yaml.FullLoader)
+  model = load_model_from_checkpoints(checkpoints = checkpoints_paths,
+                                      base_model = args.base_model,
+                                      model = model,
+                                      device = None,
+                                      cache_reconstruct=True)
+  
 tokenizer = AutoTokenizer.from_pretrained(args.base_model)
 tokenizer.pad_token = tokenizer.eos_token
 
 
-lm_eval_model = HFLM(model,
-                         tokenizer=tokenizer,
-                         batch_size=args.batch_size)
+lm_eval_model = LMEvalAdaptor(
+  args.base_model,
+  model, tokenizer, batch_size=args.batch_size)
+                              
 
 results = evaluator.simple_evaluate(
     model=lm_eval_model,
     tasks=args.tasks,
-    limit=args.limit,
+    batch_size=args.batch_size,
+    no_cache=True,
     num_fewshot=args.num_fewshot,
-    apply_chat_template=args.apply_chat_template,
-    fewshot_as_multiturn=args.fewshot_as_multiturn)
+)
 
 
 # #still have not implemented the loading a quantized weight
@@ -71,10 +88,18 @@ results = evaluator.simple_evaluate(
 #     num_fewshot=0,
 #     task_manager=task_manager
 # )
+if args.save:
+  if args.output_path is None:
+    args.output_path = os.path.dirname(args.quantized_weight_yaml) + "/results.json"
+  os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
+  results["config"]["model"] = args.base_model + " " + args.quantized_weight_yaml
+  with open(args.output_path, "w") as f:
+    json.dump(results, f, indent=2)
+# if args.output_path is not None:
+#         os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
+#         # otherwise cannot save
+#         results["config"]["model"] = args.hf_path
+#         with open(args.output_path, "w") as f:
+#             json.dump(results, f, indent=2)
 
-for key in results['results']:
-        print(key)
-        print()
-        print(results['results'][key])
-        print()
-        print()
+print(evaluator.make_table(results))

@@ -52,7 +52,8 @@ def load_layer_from_checkpoint(
                                 key_no_exist_handling:Literal["raise","ignore","warn"] = "raise",
                                 quantizer_type:str = "",
                                 clean:bool = True,
-                                device:str = "cpu"):
+                                device:str = "cpu",
+                                cache_reconstruct:bool = False):
     
     sublayer_names = [
         "self_attn.q_proj",
@@ -68,6 +69,10 @@ def load_layer_from_checkpoint(
     for name in tqdm.tqdm(sublayer_names, leave=True, disable=True):
         parent_module = getattr(layer, name.split(".")[0])
         module = getattr(parent_module, name.split(".")[1])
+        if device is None:
+            device = next(module.parameters()).device
+            
+        original_dtype = next(iter(module.parameters())).dtype
 
             
         sublayer_full_name = f"{base_model}/layer_{layer_idx}/{name}"
@@ -139,7 +144,10 @@ def load_layer_from_checkpoint(
             new_layer.clean()
         new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device)
                                              ), strict=False)
-        new_layer.to(torch.float32)
+        
+        if cache_reconstruct:
+            new_layer.cache_reconstruct()
+        new_layer.to(original_dtype)
             # print("new_layer.quantization_compressor.
         delattr(parent_module, name.split(".")[1])
         setattr(parent_module, name.split(".")[1], new_layer)
@@ -159,7 +167,9 @@ def load_model_from_checkpoints(
                                 log_wandb:bool = False,
                                 quantizer_type:str = "",
                                 clean:bool = True,
-                                device:str = "cpu"
+                                device:str = "cpu",
+                                cache_reconstruct:bool = False
+                                
                                 ) -> llama.LlamaForCausalLM:
     """
     Load a model from a checkpoint of each individual layer.
@@ -198,7 +208,8 @@ def load_model_from_checkpoints(
             checkpoints, layer, i, add_bias, base_model, key_no_exist_handling,
             quantizer_type = quantizer_type,
             clean = clean,
-            device = device 
+            device = device,
+            cache_reconstruct = cache_reconstruct
         )
         n_bits += layer_n_bits
         n_params += layer_n_params

@@ -16,6 +16,7 @@ python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
  --yaml_path "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml" \
  --use_wandb \
  --wandb_project "compression_no_finetune" \
+ --resume_wandb --wandb_id lcoshwdl \
  --ppl_eval
 # python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
 #  --models_to_compress "meta-llama/Llama-2-13b-hf" --seqlens 4096 \

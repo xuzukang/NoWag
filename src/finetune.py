@@ -4,7 +4,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.cuda.amp as amp
+import torch.amp as amp
 import transformers.models.llama.modeling_llama as llama
 import argparse
 import tqdm
@@ -294,13 +294,16 @@ def finetune_end_to_end_amp(
 
     total_loss = 0
     n_tokens = 0
-    scaler = amp.GradScaler()
+    scaler = amp.GradScaler(enabled=True)
     n_accumulation_steps = update_every_n_tokens//(train_tokens[0][0].shape[1])
+    model.float()
     for i in tqdm.tqdm(range(len(train_tokens)), disable=not use_tqdm, desc="Training", miniters=len(train_tokens) // 100):
         tokens = train_tokens[i][0].to(device)
         n_tokens += tokens.shape[1]
         # print("n_tokens", n_tokens, tokens.shape)
-        with amp.autocast():
+        with torch.autocast(dtype=torch.float16,
+                            enabled=True,
+                            device_type = "cuda"):
             if train_soft_labels is not None:
                 labels = train_soft_labels[i].to(
                     device

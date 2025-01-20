@@ -232,6 +232,11 @@ if __name__ == "__main__":
         action = "store_true",  
         help = "Whether to use automatic mixed precision for finetuning."
     )
+    parser.add_argument(
+        "--finetune_grad_checkpoint",
+        action = "store_true",
+        help = "Whether to use gradient checkpointing for finetuning."
+    )
     parser.add_argument("--finetune_keep_best", action="store_true")
     add_optional_parameters(parser)
     args = parser.parse_args()
@@ -362,6 +367,7 @@ if __name__ == "__main__":
         except:
             pass
     model.to(args.device)
+    model.gradient_checkpointing = args.finetune_grad_checkpoint
     free, total = torch.cuda.mem_get_info(int(args.device.split(":")[1]))
     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)

@@ -37,7 +37,7 @@ except:
 
 
 @torch.no_grad()
-def generate_hessians(model, dataloader, dataloader_val, dev):
+def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_layer=False):
     print("Starting...")
 
     use_cache = model.config.use_cache
@@ -284,6 +284,10 @@ def generate_hessians(model, dataloader, dataloader_val, dev):
         del layer
         torch.cuda.empty_cache()
         
+        print("stop after first layer", stop_after_first_layer)
+        if stop_after_first_layer:
+            return
+        
         
         print("after cleaning up", i)
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
@@ -362,6 +366,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Offload activations to CPU to save memory.",
     )
+    parser.add_argument(
+        "--stop_after_first_layer",
+        action="store_true",
+        help = "Stop after the first layer, used for debugging."
+    )
     args = parser.parse_args()
     # init W&B logging
 
@@ -404,5 +413,6 @@ if __name__ == "__main__":
     else:
         train_loader = dataloader
         val_loader = None
-    generate_hessians(model, train_loader, val_loader, args.device)
+    generate_hessians(model, train_loader, val_loader, args.device,
+                        stop_after_first_layer=args.stop_after_first_layer)
     print("total time taken:", time.time() - tick)
