@@ -114,6 +114,22 @@ def load_layer_from_checkpoint(
                     , **checkpoint_args["quantizer_kwargs"]
                 )
 
+        elif compression_type == "sparse":
+            new_layer = linear_compress.LinearQuantizedSparse(
+                module.weight, module.bias, add_bias
+            )
+            
+            if checkpoint_args.get("quantizer_type","not") == "1st_order" or quantizer_type == "1st_order":
+                quantizer_class = vector_quantizer_2.VectorQuantizer_1st_order
+                # print("using 1st order")
+                # assert(isinstance(new_layer.quantizer, vector_quantizer_2.VectorQuantizer_1st_order))
+            else:
+                quantizer_class = vector_quantizer.VectorQuantizer
+
+            new_layer.blank_recreate(
+                quantizer_class, checkpoint_args["quantizer_args"]["quantizer_kwargs"],
+                checkpoint_args["sparsify_kwargs"])
+            
         if compression_type == "tensorized":
             tensorized_kwargs = checkpoint_args["tensorize_kwargs"]
             if tensorized_kwargs["sparse_frac"] > 0:
@@ -142,12 +158,17 @@ def load_layer_from_checkpoint(
         # print(new_layer.original_weight) 
         if clean:          
             new_layer.clean()
-        new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device)
+        try:
+            new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device)
+                                             ), strict=False)
+        except RuntimeError:
+            new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False
                                              ), strict=False)
         
         if cache_reconstruct:
             new_layer.cache_reconstruct()
         new_layer.to(original_dtype)
+        new_layer.to(device)
             # print("new_layer.quantization_compressor.
         delattr(parent_module, name.split(".")[1])
         setattr(parent_module, name.split(".")[1], new_layer)
@@ -293,7 +314,7 @@ def load_model_from_checkpoints(
         #     setattr(parent_module, name.split(".")[1], new_layer)
         # # break    
 
-    # print("bpv", n_bits / n_params)
+    print("bpv", n_bits / n_params)
     if log_wandb:
         wandb.log({f"{base_model}/bpv": n_bits / n_params})
     model.to(original_dtype)
@@ -433,7 +454,7 @@ if __name__ == "__main__":
     parser.add_argument("--device", type=str, default="cuda:7")
     parser.add_argument("--seqlen", type=int, default=4096)
     parser.add_argument("--offload_activations", action="store_true")
-    parser.add_argument("--batch_size", type=int, default=1, 
+    parser.add_argument("--batch_size", type=int, default=4, 
                         help = "batch size for the activations, if not specified, we will perform a binary search to fine the optimal batch size")
     parser.add_argument("--results_log_path", type=str, default = None)
 
@@ -454,7 +475,9 @@ if __name__ == "__main__":
                                                         # lambda x: "joint2" if "self_attn" in x else "quantize",
                                                         model,
                                             log_wandb=args.log_wandb,
-                                            device = args.device)
+                                            device = args.device,
+                                            cache_reconstruct = True
+        )
 
     model.seqlen = args.seqlen
     model.eval()

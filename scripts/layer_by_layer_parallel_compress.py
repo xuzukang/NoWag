@@ -21,15 +21,17 @@ parser.add_argument("--weights_path", type = str, default = "/data/lliu/huffman/
 parser.add_argument("--save_path", type = str, default = "/data/lliu/huffman/models/{model_name}/compressed",
                     help = "path to save the compressed models")
 parser.add_argument("--self_attn_compression_algorithm", type = str, 
-                    choices = ["tensor", "quantize", "joint"],
+                    choices = ["tensor", "quantize", "joint","sparse"],
                     default = "quantize",
                     help = "algorithm to use for self attention compression")
 parser.add_argument("--mlp_compression_algorithm",
-                    type = str, choices=["tensor", "quantize", "joint"],
+                    type = str, choices=["tensor", "quantize", "joint","sparse"],
                     default = "quantize",
                     help = "algorithm to use for mlp compression")
 parser.add_argument("--devices", type = str, nargs = "+", default = ["cuda:5", "cuda:6", "cuda:4","cuda:7"],
                     help = "list of devices to run the compression on if not provided will use all devices")
+parser.add_argument("--already_done_runs", type = str, nargs = "+", default = ["None"],
+                    help = "list of runs that have already been done")
 parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml")
 parser.add_argument("--self_attn_yaml_path", type = str, default = None)
 parser.add_argument("--mlp_yaml_path", type = str, default = None)
@@ -179,6 +181,7 @@ def read_log(log_path:str,wandb_log_prefix:str = "")->bool:
                         if "n_params" in line:
                             TOTAL_PARAMS += float(line.split(" ")[-1])
                         if "n_bits" in line:
+                            # print("n_bits_line:", line)
                             TOTAL_BITS += float(line.split(" ")[-1])
         print("best_loss", best_loss, "running bpv:", round(TOTAL_BITS/TOTAL_PARAMS, 6))
         if args.use_wandb:
@@ -256,6 +259,8 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
 
     if compression_algorithm == "tensor":
         command += "tensor_compress.py"
+    elif compression_algorithm == "sparse":
+        command += "sparse_quantize_compress.py"
     elif compression_algorithm == "joint":
         command += "joint_compress.py"
     else:
@@ -273,39 +278,50 @@ def make_command(load_path:str,model_name:str)-> tuple[str,str,str]:
 
     if args.use_already_done:
         #we check over the past logs to see if the command has already been run
-        for path in glob.glob(save_path.replace(run_name, "*").replace("compressed.pt", "compressed_args.yaml")):
-            print("path", path)
-            other_args = yaml.load(open(path, "r"), Loader = yaml.FullLoader)
-            yaml_args = yaml.load(open(yaml_path, "r"), Loader = yaml.FullLoader)
-            print("yaml_args", yaml_args)
-            print("other_args", other_args)
-            #check if all the keys in yaml_args are in other_args
-            #we do not check the otherway because other_args may have more keys that we add in the compression script
-            try:
-                is_same = check_dict(yaml_args, other_args)
-            except:
-                is_same = False
-            print("is_same", is_same)
-            # for key in yaml_args.keys():
-            #     if key not in other_args.keys():
-            #         print("key not in other_args", key)
-            #         is_same = False
-            #         break
-            #     if yaml_args[key] != other_args[key]:
-            #         print("key not the same", key)
-            #         print("yaml_args[key]", yaml_args[key])
-            #         print("other_args[key]", other_args[key])
-            #         is_same = False
-            #         break
-            if is_same:
-                print("already done with ", command_name)
-                print("loading from", path.replace("compressed_args.yaml", "compressed.pt"))
-                if read_log(path.replace("compressed_args.yaml", "compressed.log"), wandb_log_prefix = command_name + "/"):
+        model_name_idx = args.save_path.split("/").index("{model_name}")
+        
+        prev_run_names = [run_name]
+        if "None" not in args.already_done_runs:
+            prev_run_names += args.already_done_runs
+        elif "all" in args.already_done_runs:
+            prev_run_names += [path.split("/")[model_name_idx] for path in glob.glob(args.save_path.replace("{model_name}", "*"))]
+            
+        # for prev_run_names in [run_name] + args.already_done_runes if isinstance(args.alread_done_runs)==list \
+        #                 else [path.split("/")[model_name_idx] for path in glob.glob(args.save_path.replace("{model_name}", "*"))]:
+        for prev_run_name in prev_run_names:
+            for path in glob.glob(save_path.replace(run_name, prev_run_name).replace("compressed.pt", "compressed_args.yaml")):
+                print("path", path)
+                other_args = yaml.load(open(path, "r"), Loader = yaml.FullLoader)
+                yaml_args = yaml.load(open(yaml_path, "r"), Loader = yaml.FullLoader)
+                print("yaml_args", yaml_args)
+                print("other_args", other_args)
+                #check if all the keys in yaml_args are in other_args
+                #we do not check the otherway because other_args may have more keys that we add in the compression script
+                try:
+                    is_same = check_dict(yaml_args, other_args)
+                except:
+                    is_same = False
+                print("is_same", is_same)
+                # for key in yaml_args.keys():
+                #     if key not in other_args.keys():
+                #         print("key not in other_args", key)
+                #         is_same = False
+                #         break
+                #     if yaml_args[key] != other_args[key]:
+                #         print("key not the same", key)
+                #         print("yaml_args[key]", yaml_args[key])
+                #         print("other_args[key]", other_args[key])
+                #         is_same = False
+                #         break
+                if is_same:
                     print("already done with ", command_name)
-                    # raise ValueError("stop here")
-                    return None, command_name,  path.replace("compressed_args.yaml", "compressed.log")
-                else:
-                    print("could not read log, rerunning")
+                    print("loading from", path.replace("compressed_args.yaml", "compressed.pt"))
+                    if read_log(path.replace("compressed_args.yaml", "compressed.log"), wandb_log_prefix = command_name + "/"):
+                        print("already done with ", command_name)
+                        # raise ValueError("stop here")
+                        return None, command_name,  path.replace("compressed_args.yaml", "compressed.log")
+                    else:
+                        print("could not read log, rerunning")
             # raise ValueError("stop here")
         # raise ValueError("stop here")
     return command, command_name, log_path

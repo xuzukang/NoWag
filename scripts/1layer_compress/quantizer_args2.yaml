@@ -1,5 +1,5 @@
 quantizer_kwargs:
-  d: 4
+  d: 6
   n_bits: 2
   cluster_ignore_norms: True
   n_iters: 100
@@ -27,9 +27,9 @@ quantizer_kwargs:
 #   n_discrete_updates: 1
 seed: 1234
 dtype: 'float32'
-allocation_config: /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/allocation/test_allocation2/allocation.yaml
-max_d_prod: 15
-max_d: 6
+# allocation_config: /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/allocation/test_allocation2/allocation.yaml
+# max_d_prod: 15
+# max_d: 6
 # quantizer_type: '1st_order'
 # initial_discrete_update: True
 # n_discrete_updates: 1

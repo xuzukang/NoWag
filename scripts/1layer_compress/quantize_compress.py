@@ -92,6 +92,29 @@ if kwargs.get("hessian_regularization", 0) > 0:
     
 # print("hessian", compression_module.hessian)
 # raise ValueError("stop here")
+
+#hanlding of allocation based bits stuff
+if "allocation_config" in kwargs:
+    #load the allocation file 
+    allocation = yaml.load(open(kwargs["allocation_config"], "r"), Loader = yaml.FullLoader)
+    allocation_config = allocation[args.hessian_path.split("/")[-2] + "/" + args.hessian_path.split("/")[-1]]
+    
+    n_bits = allocation_config["n_bits"]
+    #get the corresponding d that can be used and is less than max_d_prod
+    d = 1
+    print("n_bits", n_bits)
+    while d * n_bits <= kwargs.get("max_d_prod", 12) and d <= kwargs.get("max_d", 6):
+        print(d,kwargs.get("max_d", 6))
+        print(n_bits*d)
+        if n_bits*d % 1 < 1e-5:
+            best_d = d 
+        d += 1
+    
+    #update the quantizer kwargs
+    kwargs["quantizer_kwargs"]["d"] = best_d
+    kwargs["quantizer_kwargs"]["n_bits"] = n_bits
+    print("best_d", best_d, "n_bits", n_bits)       
+    
 compression_module.quantize(
     vq2.VectorQuantizer_1st_order if kwargs.get("quantizer_type", "original") == "1st_order" else vq.VectorQuantizer,
     **kwargs["quantizer_kwargs"]

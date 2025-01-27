@@ -5,11 +5,13 @@ import transformers
 import math
 import numpy as np
 import os
-from typing import Tuple, Optional, Union, List
+from typing import Tuple, Optional, Union, List, Literal
 from src.quantizers.quantizer_parent import QuantizerParent
 import src.utils.compress_parent as compress_parent
+import src.utils.sparse as sparse
 import src.alignment.hessian_general_align as hessian_general_align
 import src.quantizers.vector_quantizer as vector_quantizer
+import src.utils.quantizer as quantizer_utils
 
 
 class LinearQuantized(compress_parent.CompressorParent):
@@ -293,7 +295,7 @@ class LinearQuantized(compress_parent.CompressorParent):
     #     return super().load_state_dict(state_dict, strict, assign)
 
 
-class LowRankSparse(LinearQuantized):
+class LinearQuantizedSparse(LinearQuantized):
     def __init__(
         self,
         weight: torch.FloatTensor,
@@ -307,155 +309,209 @@ class LowRankSparse(LinearQuantized):
             bias (Optional[torch.FloatTensor], optional): the original bias vector of shape (out_features) or None.
             add_bias (bool, optional): should we add a bias to the layer or not. Defaults to False.
         """
-        super(LowRankSparse, self).__init__(weight, bias, add_bias)
-        self.low_ranked = False
-        self.debug = False
+        super(LinearQuantizedSparse, self).__init__(weight, bias, add_bias)
+        self.sparsed = False
 
-    def low_rank(self, rank: int, sparse_frac: float):
-        """low rank the weight matrix
+    def initalize_sparse(self,
+                 sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed","wanda"]],
+                 frac_sparse:Union[float,List[float]] = 0.1,
+                    **kwargs):
+        """create a sparse compensator
 
         Args:
-            rank (int): the rank of the low rank approximation
-            sparse_frac (float): the fraction of the weight matrix to be sparse
+            sparse_type (List[Literal[&quot;hessian&quot;,&quot;dim_0&quot;,&quot;dim_1&quot;,&quot;unstructed&quot;]]): the types of sparsity to use
+            frac_sparse (Union[float,List[float]], optional): how much sparsity to use, if a list is given, its 
+            length should be the same as sparse_type, and it will be the fraction of sparsity for each type. If float, then we equally split the sparsity among the types. Defaults to 0.1.
         """
-        self.rank = rank
-        self.sparse_frac = sparse_frac
-        self.low_ranked = True
+        
+        if isinstance(frac_sparse,float):
+            frac_sparse = [frac_sparse/len(sparse_types)]*len(sparse_types) if len(sparse_types) > 0 else []
+            
+        sparse_modules = []
+        for i,sparse_type in enumerate(sparse_types):
+            
+            if frac_sparse[0] <= 0.0:
+                new_sparse_module = None
+            if sparse_type == "hessian":
+                new_sparse_module = sparse.Dim0_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
+            elif sparse_type == "dim_0":
+                new_sparse_module = sparse.Dim0_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
+            elif sparse_type == "dim_1":
+                new_sparse_module = sparse.Dim1_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
+            elif sparse_type == "wanda":
+                new_sparse_module = sparse.UnstructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
+            else:
+                raise NotImplementedError
+            
+            sparse_modules.append(new_sparse_module)
+        
+        self.sparse_modules = nn.ModuleList(sparse_modules)
+        self.sparsed = True
+        self.sparse_after_norm = False
+        
+        
+    def sparsify(self,
+                 sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed"]],
+                 frac_sparse:Union[float,List[float]] = 0.1,
+                 remaining_error:Optional[torch.FloatTensor] = None,
+                 sparse_after_norm:bool = False,
+                    **kwargs):
+        """create a sparse compensator
 
-        norm_0 = torch.norm(self.original_weight, p=2, dim=0)
-        norm_1 = torch.norm(self.original_weight, p=2, dim=1)
+        Args:
+            sparse_type (List[Literal[&quot;hessian&quot;,&quot;dim_0&quot;,&quot;dim_1&quot;,&quot;unstructed&quot;]]): the types of sparsity to use
+            frac_sparse (Union[float,List[float]], optional): how much sparsity to use, if a list is given, its 
+            length should be the same as sparse_type, and it will be the fraction of sparsity for each type. If float, then we equally split the sparsity among the types. Defaults to 0.1.
+        """
+        with torch.no_grad():
+            
+            if remaining_error is None:
+                if sparse_after_norm:
+                    remaining_error = self.reconstruct(denormalize = False) - self.quantizer.normalizer.normalize(self.original_weight)
+                else:
+                    remaining_error = self.reconstruct() - self.original_weight
+            
+            self.initalize_sparse(sparse_types, frac_sparse)
+                
+                
+            for i,sparse_type in enumerate(sparse_types):
+                if self.sparse_modules[i] is None:
+                    print("skipping because of 0 sparsity")
+                    continue
+                if sparse_type == "hessian":
+                    self.sparse_modules[i].update_sparse_hessian_importance(remaining_error, torch.norm(self.hessian, dim = 1))
+                elif sparse_type == "dim_0":
+                    self.sparse_modules[i].update_sparse_norm(remaining_error)
+                elif sparse_type == "dim_1":
+                    self.sparse_modules[i].update_sparse_norm(remaining_error)
+                elif sparse_type == "wanda":
+                    self.sparse_modules[i].update_wanda_like(remaining_error, torch.diag(self.hessian))
+                else:
+                    raise NotImplementedError
+                
+                # print(self.sparse_modules[i].reconstruct()[:,self.sparse_modules[i].sparse_mask])
+                
+                # print(remaining_error[:,self.sparse_modules[i].sparse_mask])
+                remaining_error = remaining_error + self.sparse_modules[i].reconstruct()
+                # print(remaining_error[:,self.sparse_modules[i].sparse_mask])
+            
+            self.sparse_after_norm = sparse_after_norm
+                
+    def sparse_before_quantize(self,
+             sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed"]],
+            frac_sparse:Union[float,List[float]],
+            quantizer_class: QuantizerParent, 
+            quantizer_kwargs:dict,
+            quantize_minus_sparse:bool = True,
+            sparse_after_norm:bool = False,
+    ):
+        """initialize and pick the sparse values BEFORE quantizing"""
+        
+        if sparse_after_norm:
+            normalizer,normalized_weight = quantizer_utils.Normalizer.normalize_init(self.original_weight,
+                                                                   quantizer_kwargs.get("norm_order",[0,1]),
+                                                                   quantizer_kwargs.get("zero",[True,True]))
+            print("here")
+            self.sparsify(sparse_types, frac_sparse,
+                      -normalized_weight,
+                      sparse_after_norm=sparse_after_norm)
+        else:
 
-        threshold = torch.kthvalue(
-            torch.cat([norm_0, norm_1]),
-            int(self.sparse_frac * (self.in_features + self.out_features)),
-        ).values
+            self.sparsify(sparse_types, frac_sparse,
+                        -self.original_weight,
+                        sparse_after_norm=sparse_after_norm)
+            normalizer = None
+        
+            
+        
+        #calculate the overall mask
+        mask_overall = torch.zeros((self.out_features, self.in_features), dtype = torch.bool, device = self.original_weight.device)
+        for sparse_module in self.sparse_modules:
+            if isinstance(sparse_module, sparse.Dim0_StructuredSparse):
+                mask_overall = mask_overall | sparse_module.sparse_mask.unsqueeze(0)
+            elif isinstance(sparse_module, sparse.Dim1_StructuredSparse):
+                mask_overall = mask_overall | sparse_module.sparse_mask.unsqueeze(1)
+            elif isinstance(sparse_module, sparse.UnstructuredSparse):
+                mask_overall = mask_overall | sparse_module.sparse_mask
+        
+        #add to the quantizer kwargs
+        quantizer_kwargs["mask"] = ~mask_overall
 
-        mask_0 = norm_0 < threshold
-        mask_1 = norm_1 < threshold
-        self.n_non_sparse_0 = mask_0.sum().item()
-        self.n_non_sparse_1 = mask_1.sum().item()
+        if quantize_minus_sparse:
+            sparse_sum = torch.zeros_like(self.original_weight)
+            for sparse_module in self.sparse_modules:
+                sparse_sum += sparse_module.reconstruct()
+            weight_to_quantize = self.original_weight - sparse_sum if not sparse_after_norm else self.original_weight - normalizer.denormalize(sparse_sum)
+        else:
+            weight_to_quantize = self.original_weight
+            
+        self.quantize(quantizer_class, 
+                      weight_to_quantize,
+                      normalizer = normalizer,
+                      **quantizer_kwargs)
 
-        # self.register_buffer("mask", mask_0.unsqueeze(0) & mask_1.unsqueeze(1))
-        self.register_buffer("mask_0", mask_0)
-        self.register_buffer("mask_1", mask_1)
-
-        self.sparse_values_1 = nn.Parameter(
-            self.original_weight[~mask_1], requires_grad=True
-        )  # shape of (n_non_sparse_1, in_features)
-        self.sparse_values_0 = nn.Parameter(
-            (self.original_weight[mask_1.unsqueeze(1) & ~mask_0.unsqueeze(0)]).reshape(
-                self.n_non_sparse_0, self.in_features - self.n_non_sparse_1
-            )
+        #reupdate the sparse values
+        if sparse_after_norm:
+            remaining_error = self.reconstruct(ignore_sparse=True, denormalize = False) - normalized_weight
+        else:
+            remaining_error = self.reconstruct(ignore_sparse = True) - self.original_weight
+        for i,sparse_module in enumerate(self.sparse_modules):
+            if sparse_module is None:
+                continue
+            self.sparse_modules[i].update_fixed_mask(remaining_error)
+        
+    def quantize(self, quantizer_class: QuantizerParent, weight_to_quantize:torch.FloatTensor = None, **kwargs):
+        """quantize the weights"""
+        # print(kwargs)
+        self.quantizer = quantizer_class.quantize(
+            self.original_weight if weight_to_quantize is None else weight_to_quantize
+            , self.hessian, **kwargs
         )
-        # shape of (n_non_sparse_0, in_features - n_non_sparse_0)
+        self.quantized = True
 
-        non_sparse_weight = self.original_weight[mask_1][:, mask_0]
+        
+    def forward(self, x: torch.FloatTensor):
+        
+        y = F.linear(x, super().reconstruct(), self.original_bias)
+        if not hasattr(self, "cached_reconstruct"):
+            for sparse_module in self.sparse_modules:
+                if sparse_module is not None:
+                    y = y + sparse_module(x)
+        return y
+    
+    def get_n_bits(self):
+        n_bits = super().get_n_bits()
+        if self.sparsed:
+            for sparse_module in self.sparse_modules:
+                n_bits += sparse_module.get_n_bits()
+        return n_bits
+    
+    def blank_recreate(self, quantizer_class, quantizer_kwargs,
+                       sparse_kwargs = {}):
+        super().blank_recreate(quantizer_class, **quantizer_kwargs)
+        
+        if len(sparse_kwargs) > 0:
+            self.initalize_sparse(sparse_kwargs["sparse_types"], sparse_kwargs["frac_sparse"])
+        
+        self.sparse_after_norm = sparse_kwargs.get("sparse_after_norm", False)
+            
+        
+    def reconstruct(self, ignore_sparse = False, **kwargs) -> torch.FloatTensor:
+        """reconstructs the weigth matrix from the quantized version"""
+        if hasattr(self, "cached_reconstruct"):
+            # print("returning cached")
+            return self.cached_reconstruct
+        if self.quantized:
+            actual_denorm = kwargs.get("denormalize", True)
+            kwargs["denormalize"] = kwargs.get("denormalize", True) and not self.sparse_after_norm
+            reconstructed = self.quantizer(**kwargs)
+            if self.sparsed and not ignore_sparse:
+                for sparse_module in self.sparse_modules:
+                    reconstructed += sparse_module.reconstruct()
+            if self.sparse_after_norm and actual_denorm:
+                reconstructed = self.quantizer.normalizer.denormalize(reconstructed)
 
-        u, s, v = torch.svd(non_sparse_weight)
-
-        A = u[:, :rank] @ torch.sqrt(torch.diag(s[:rank]))
-        B = v[:, :rank] @ torch.sqrt(torch.diag(s[:rank]))
-
-        self.A = LinearQuantized(A, None, False)
-        self.B = LinearQuantized(B, None, False)
-
-    def reconstruct(self):
-        if self.low_ranked:
-            non_sparse_weight = self.A.reconstruct() @ self.B.reconstruct().T
-            mask = self.mask_0.unsqueeze(0) & self.mask_1.unsqueeze(1)
-            return_weight = torch.empty(
-                self.out_features,
-                self.in_features,
-                device=non_sparse_weight.device,
-                dtype=non_sparse_weight.dtype,
-            )
-            return_weight[~mask] = self.sparse_weights
-            return_weight[mask] = non_sparse_weight.flatten()
-            return return_weight
+            # print("here")
+            return reconstructed
         else:
             return self.original_weight
-
-    def quantize(self, quantizer_class, **kwargs):
-        """quantize the weights"""
-        if self.low_ranked:
-            self.A.quantize(quantizer_class, **kwargs)
-            self.B.quantize(quantizer_class, **kwargs)
-        else:
-            raise ValueError("The module is not low ranked")
-
-    def update_discrete(self):
-        if self.low_ranked:
-            self.A.update_discrete()
-            self.B.update_discrete()
-
-    def forward(self, x: torch.FloatTensor):
-        """should act like a linear layer"""
-        if self.low_ranked:
-            x = x.reshape(-1, self.in_features)
-            y = torch.zeros(
-                x.shape[0], self.out_features, device=x.device, dtype=x.dtype
-            )
-            y[:, ~self.mask_1] += F.linear(x, self.sparse_values_1)
-            # we should pass it like this for 2 reasons
-            # 1. its faster
-            # 2. it allows for both A and B to log the hessian
-            y[:, self.mask_1] += self.B(self.A(x[:, self.mask_0])) + F.linear(
-                x[:, ~self.mask_0], self.sparse_values_0
-            )
-
-        else:
-            return super(LowRankSparse, self).forward(x)
-
-    def enable_hessian_logging(self):
-        """enable hessian logging"""
-        if self.low_ranked:
-            # if its low rank, we do not need the hessian for the
-            # parent layer but we do need it for the A and B
-            self.dump_hessian()
-            self.A.enable_hessian_logging()
-            self.B.enable_hessian_logging()
-        else:
-            self.log_hessian_flag = True
-            self.hessian = torch.zeros(
-                self.in_features,
-                self.in_features,
-                device=self.original_weight.device,
-                dtype=torch.float32,
-            )
-            self.n_samples = 0
-
-    def dump_hessian(self) -> List[torch.FloatTensor]:
-        """gives the hessian calculated and stops logging the inputs for the hessian
-
-        Returns:
-            torch.FloatTensor: the hessian
-        """
-        hessians = []
-        if self.low_ranked:
-            hessians.append(self.A.dump_hessian())
-            hessians.append(self.B.dump_hessian())
-        else:
-            self.log_hessian_flag = False
-            del self.hessian
-            del self.n_samples
-        return hessians
-
-    def clean(self):
-        if self.low_ranked:
-            self.A.clean()
-            self.B.clean()
-        super(LowRankSparse, self).clean()
-
-    def get_n_bits(self):
-        return (
-            self.A.get_n_bits()
-            + self.B.get_n_bits()
-            + (self.sparse_values_0.numel() + self.sparse_values_1.numel()) * 16
-            + 16
-            * (
-                self.out_features
-                + self.in_features
-                - self.n_non_sparse_0
-                - self.n_non_sparse_1
-            )
-        )

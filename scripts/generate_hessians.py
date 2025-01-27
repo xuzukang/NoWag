@@ -37,7 +37,8 @@ except:
 
 
 @torch.no_grad()
-def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_layer=False):
+def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_layer=False,
+                      save_weights=False):
     print("Starting...")
 
     use_cache = model.config.use_cache
@@ -185,6 +186,14 @@ def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_l
                 parent_module = getattr(layer, name.split(".")[0])
                 sublayer: nn.Linear = getattr(parent_module, name.split(".")[1])
                 print("sublayer", sublayer)
+
+                if save_weights:
+                    weight_save_path = os.path.join(args.save_path, f"layer_{i}/{name}.pt")
+                    os.makedirs(os.path.dirname(weight_save_path), exist_ok=True)
+                    print("saving weights to", weight_save_path)
+                    torch.save({"weight": sublayer.weight, "bias": sublayer.bias}, weight_save_path)
+                    continue
+
                 new_layer = linear_compress.LinearQuantized(
                     sublayer.weight, sublayer.bias,
                 )
@@ -198,6 +207,8 @@ def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_l
 
             # garbage collect
             torch.cuda.empty_cache()
+            if save_weights:
+                continue
 
             # pass the inputs through the models:
             inference_layer(layer, inps, outs, 
@@ -265,6 +276,13 @@ def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_l
 
         free, total = torch.cuda.mem_get_info(int(dev.split(":")[1]))
         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
+
+        layer.to(torch.device("cpu"))
+
+        if save_weights:
+            del layer
+            torch.cuda.empty_cache()
+            continue
         
         # for obj in gc.get_objects():
         #     try:
@@ -276,7 +294,7 @@ def generate_hessians(model, dataloader, dataloader_val, dev, stop_after_first_l
         #         pass
 
         # layers[i] = layer.to(torch.device("cpu"))
-        layer.to(torch.device("cpu"))
+        # layer.to(torch.device("cpu"))
         for name in names:
             # print(name)
             del utils.recursive_find(layer, name).original_weight
@@ -371,6 +389,11 @@ if __name__ == "__main__":
         action="store_true",
         help = "Stop after the first layer, used for debugging."
     )
+    parser.add_argument(
+        "--save_weights",
+        action="store_true",
+        help="Save the weights of the model.",
+    )
     args = parser.parse_args()
     # init W&B logging
 
@@ -414,5 +437,6 @@ if __name__ == "__main__":
         train_loader = dataloader
         val_loader = None
     generate_hessians(model, train_loader, val_loader, args.device,
-                        stop_after_first_layer=args.stop_after_first_layer)
+                        stop_after_first_layer=args.stop_after_first_layer,
+                        save_weights=args.save_weights)
     print("total time taken:", time.time() - tick)

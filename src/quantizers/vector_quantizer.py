@@ -29,6 +29,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         cluster_ignore_norms: bool = True,
         additional_parameters: dict[str, torch.Tensor] = {},
         pad = 0,
+        mask: Optional[torch.BoolTensor] = None,
     ):
         """Vector Quantizer without any sparse preservations
 
@@ -54,10 +55,15 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         self.cluster_ignore_norms = cluster_ignore_norms
         self.normalizer = normalizer
         self.pad = pad
+        if mask is not None:
+            self.register_buffer("mask", mask)
+        else:
+            self.mask = None
 
-    def forward(self):
+    def forward(self, denormalize = True):
         reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
-        reconstructed_weight = self.normalizer.denormalize(reconstructed_weight)
+        if denormalize:
+            reconstructed_weight = self.normalizer.denormalize(reconstructed_weight)
         if self.pad > 0:
             reconstructed_weight = reconstructed_weight[:,:-self.pad]
 
@@ -142,6 +148,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
         cluster_ignore_norms: bool = True,
         minibatch_size:float = 1, #fraction of the weight matrix to use for the quantization
         time_clustering:bool = False,
+        mask: Optional[torch.BoolTensor] = None,
+        normalizer: Optional[quantizer_utils.Normalizer] = None,
         **kwargs,
     ):
         # print("weight", weight[0])
@@ -151,6 +159,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             if n_in % d != 0:
                 pad = d - (n_in % d)
                 weight_pad = F.pad(weight, (0, pad), value = torch.mean(weight).item())
+                if mask is not None:
+                    mask = F.pad(mask, (0, pad), value = False)
                 print("hessian", hessian.shape)
                 hessian = F.pad(hessian, (0, pad, 0, pad))
                 print("padding", pad)
@@ -161,10 +171,12 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                 weight_pad = weight
             weight_use = weight_pad.clone()
             print(zero)
-            normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
-            normalizer:quantizer_utils.Normalizer
+            if normalizer is None:
+                normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
+                normalizer:quantizer_utils.Normalizer
             # norm_0, norm_1, weight_use = quantizer_utils.normalize(weight_use, norm_order)
-            
+            else:
+                weight_use = normalizer.normalizer_and_potentially_pad(weight_use)
             H_diag = torch.diag(hessian)
             # H_diag = H_diag.reshape(-1,d)
             importances = (H_diag).reshape(  # .unsqueeze(0).expand(weight.shape[0], -1)
@@ -172,6 +184,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             )
 
             weight_subvectors = weight_use.reshape(-1, d)
+            if mask is not None:
+                mask_subvectors = mask.reshape(-1, d)
             n_subvectors = weight_subvectors.shape[0]
             n_centriods = 2 ** (int(n_bits * d))
             print(n_centriods)
@@ -253,7 +267,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                         )
                         
                     else:
-                        print("here")
+                        # print("here")
                     
                         if time_clustering:
                             start = time.time()
@@ -261,7 +275,8 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                         assignments = quantizer_utils.cluster_assignment_step(
                             weight_subvectors, centriods, importances,
                             n_out, n_in, normalizer.norms[0] if not cluster_ignore_norms else torch.empty(0), normalizer.norms[1] if not cluster_ignore_norms else torch.empty(0),
-                            subblock_size = n_in//d
+                            subblock_size = n_in//d,
+                            mask = mask_subvectors if mask is not None else None
                             
                         )
                         if time_clustering:
@@ -275,6 +290,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                             weight_subvectors, centriods,assignments, importances,
                             n_out, n_in, n_centriods, 
                             normalizer.norms[0] if not cluster_ignore_norms else None, normalizer.norms[1] if not cluster_ignore_norms else None,
+                            mask = mask_subvectors if mask is not None else None
                         )
                         #get the counts of the assignments
                         # unique, counts = torch.unique(assignments, return_counts=True)

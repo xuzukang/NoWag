@@ -21,6 +21,7 @@ class Normalizer(nn.Module):
                  norms: List[Union[torch.Tensor|None]],
                  zeros: List[Union[torch.Tensor|None]],
                  norm_order: List[int] = [0, 1],
+                 shape:Tuple[int,int] = (0,0)
                  ):
         super(Normalizer, self).__init__()
         self.norm_order = norm_order
@@ -28,19 +29,21 @@ class Normalizer(nn.Module):
         self.norms = nn.ParameterList([nn.Parameter(norm) for norm in norms])
         self.zeros = nn.ParameterList([nn.Parameter(zero) for zero in zeros])
 
+        self.original_shape = shape
         
 
     def denormalize(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
         """denormalize the input weight matrix"""
-
+        # print("denormalize")
         #we have to do this in reverse
         denormalized_weight = normalized_weight.clone()
+        reversed_norm_order = self.norm_order[::-1]
         for i in reversed(self.norm_order):
             if self.norms[i] is not None and self.norms[i].numel() > 0:
-                denormalized_weight = denormalized_weight * self.norms[i].unsqueeze(i)
+                denormalized_weight = denormalized_weight * self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
             if self.zeros[i] is not None and self.zeros[i].numel() > 0:
                 # print(self.zeros[i].shape)
-                denormalized_weight = denormalized_weight + self.zeros[i].unsqueeze(i)
+                denormalized_weight = denormalized_weight + self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
             
         return denormalized_weight
 
@@ -73,22 +76,44 @@ class Normalizer(nn.Module):
     def normalize(self, weight:torch.FloatTensor)->torch.FloatTensor:
         """normalize the input weight matrix"""
         normalized_weight = weight.clone()
+        reversed_norm_order = self.norm_order[::-1]
         for i in self.norm_order:
             if self.zeros[i] is not None and self.zeros[i].numel() > 0:
-                normalized_weight = normalized_weight - self.zeros[i].unsqueeze(i)
+                normalized_weight = normalized_weight - self.zeros[i][:weight.shape[reversed_norm_order[i]]].unsqueeze(i)
             if self.norms[i] is not None and self.norms[i].numel() > 0:
-                normalized_weight = normalized_weight / self.norms[i].unsqueeze(i)
+                normalized_weight = normalized_weight / self.norms[i][:weight.shape[reversed_norm_order[i]]].unsqueeze(i)
         
         return normalized_weight
-    
+
+    def normalizer_and_potentially_pad(self,weight:torch.FloatTensor)->torch.FloatTensor:
+
+        reversed_norm_order = self.norm_order[::-1]
+        for i in self.norm_order:
+            if weight.shape[reversed_norm_order[i]] != self.original_shape[reversed_norm_order[i]]:
+                
+                #check that the shape is LARGER
+                assert weight.shape[reversed_norm_order[i]] > self.original_shape[reversed_norm_order[i]]
+                
+                #pad the zeros
+                if self.zeros[i] is not None and self.zeros[i].numel() > 0:
+                    self.zeros[i] = F.pad(self.zeros[i], (0, weight.shape[reversed_norm_order[i]] - self.original_shape[reversed_norm_order[i]]), mode='constant', value=0)
+                #pad the norms
+                if self.norms[i] is not None and self.norms[i].numel() > 0:
+                    self.norms[i] = F.pad(self.norms[i], (0, weight.shape[reversed_norm_order[i]] - self.original_shape[reversed_norm_order[i]]), mode='constant', value=1)
+                
+        return self.normalize(weight)
+
+
     @staticmethod
     def normalize_init(weight:torch.FloatTensor, 
-                  norm_order:list[int],
-                  zero:list[bool],
+                  norm_order:list[int] = [0, 1],
+                  zero:list[bool]= [True, True],
                   eps:float = 1e-5)->Tuple[Normalizer, torch.FloatTensor]:
         
         norms = [None] * len(weight.shape)
         zeros = [None] * len(weight.shape)
+        
+        n_out, n_in = weight.shape
         # print(zero)
         for dim in norm_order:
             if zero[dim]:
@@ -99,7 +124,7 @@ class Normalizer(nn.Module):
             assert torch.all(torch.isfinite(weight))
             assert torch.all(torch.isfinite(norms[dim]))
         
-        return Normalizer(norms, zeros, norm_order), weight
+        return Normalizer(norms, zeros, norm_order,(n_out,n_in)), weight
     
     def get_n_bits(self):
         n_bits = 0
@@ -176,6 +201,7 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
                    norm_0: torch.Tensor = torch.empty(0), 
                    norm_1: torch.Tensor = torch.empty(0),
                    subblock_size: int = 1024,
+                   mask: Optional[torch.BoolTensor] = None,
                    quick_stop:bool = False)->torch.LongTensor:
     """
     vector (length d) weighted k-means algorithm to cluser X which is of shape (n_out, n_in) into len(centriods) clusters
@@ -189,6 +215,7 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
         norm_0: torch.tensor of shape (n_in) if None, then normalization is not considered
     norm_1: torch.tensor of shape (n_out) if None, then normalization is not considered
     subblock_size: int, for simplicty we will asume that this number is a multiple of n_in
+    mask: torch.BoolTensor of shape (n_out*n_in/d, d) if None, then all values are considered
     
     returns: torch.tensor of the assignments, shape of (n_out*n_in/d)
     """
@@ -223,6 +250,8 @@ def cluster_assignment_step(X_reshaped: torch.Tensor,
                 # print(errors.shape, weights_use.shape)
                 errors = errors * weights_use.unsqueeze(-1)
 
+            if mask is not None:
+                errors = errors * mask[i : i + subblock_size].unsqueeze(-1)
             # sum by the d
             errors = errors.sum(1)
             # shape of (n, k)
@@ -289,7 +318,7 @@ def cluster_assignment_step_with_minibatch(X_reshaped: torch.Tensor,
             errors = (X_block.unsqueeze(-1) - centriods.T.unsqueeze(0)) ** 2
             # shape of (subblock size, d, k)
             if not ignore_norm_1:
-                raise ValueError("not implemented")
+                # raise ValueError("not implemented")
                 weights_rescaled = weights_use.clone()
                 for j in range(subblock_size*d//n_in):
                     # print("weights_rescaled[j*n_in//d:(j+1)*n_in//d].numel()",weights_rescaled[j*n_in//d:(j+1)*n_in//d].numel())
@@ -367,6 +396,7 @@ def cluster_update_step(
     k: int,
     norm_0: torch.Tensor = torch.empty(0), 
     norm_1: torch.Tensor = torch.empty(0),
+    mask: Optional[torch.BoolTensor] = None,
 )->torch.FloatTensor:
     """
     vector (length d) weighted k-means algorithm to cluser X which is of shape (n_out, n_in) into len(centriods) clusters
@@ -405,6 +435,9 @@ def cluster_update_step(
             assignments_weights = weights[idxs % weights.shape[0]]  # shape of (n_i,d)
             if not ignore_norm_1:
                 assignments_weights *= (norm_1[idxs // n_in]**2).unsqueeze(-1)    
+            
+            if mask is not None:
+                assignments_weights = assignments_weights * mask[idxs]
                 
             # print(assignments_weights.shape, assignment_X.shape)
             centriods[i] = torch.sum(assignments_weights * assignment_X, dim=0) / (torch.sum(
