@@ -29,37 +29,38 @@
 #  --wandb_project "compression_no_finetune" \
 #  --ppl_eval
 
-python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
- --models_to_compress "meta-llama/Llama-2-7b-hf" --seqlens 4096 \
- --hessian_path "/data/lliu/huffman/models/{model_name}/hessians_new/seed_0/pajama/128" \
- --self_attn_compression_algorithm "quantize" \
- --mlp_compression_algorithm "quantize" \
- --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2" \
- --yaml_path "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml" \
- --use_wandb \
- --wandb_project "compression_no_finetune" \
- --ppl_eval
+# python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
+#  --models_to_compress "meta-llama/Llama-2-7b-hf" --seqlens 4096 \
+#  --hessian_path "/data/lliu/huffman/models/{model_name}/hessians_new/seed_0/pajama/128" \
+#  --self_attn_compression_algorithm "quantize" \
+#  --mlp_compression_algorithm "quantize" \
+#  --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2" \
+#  --yaml_path "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml" \
+#  --use_wandb \
+#  --resume_wandb --wandb_id stx5kyp8 \
+#  --wandb_project "compression_no_finetune" \
+#  --ppl_eval
 
  python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
  --models_to_compress "meta-llama/Llama-2-7b-hf" --seqlens 4096 \
  --hessian_path "/data/lliu/huffman/models/{model_name}/hessians_new/seed_0/pajama/128" \
  --self_attn_compression_algorithm "quantize" \
  --mlp_compression_algorithm "quantize" \
- --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2" \
+ --devices "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2" \
  --yaml_path "/data/lliu/huffman/scripts/1layer_compress/quantizer_args2.yaml" \
  --use_wandb \
+ --resume_wandb --wandb_id f3c7625m \
  --wandb_project "compression_no_finetune" \
  --ppl_eval
 
 #  python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
 #  --models_to_compress "meta-llama/Meta-Llama-3-8B" --seqlens 8192 \
 #  --hessian_path "/data/lliu/huffman/models/{model_name}/hessians_new/seed_0/pajama/128" \
-#  --self_attn_compression_algorithm "sparse" \
-#  --mlp_compression_algorithm "sparse" \
-#  --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2" \
-#  --yaml_path "/data/lliu/huffman/scripts/1layer_compress/yamls/sparse_args6d.yaml" \
+#  --self_attn_compression_algorithm "quantize" \
+#  --mlp_compression_algorithm "quantize" \
+#  --devices "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2" \
+#  --yaml_path "/data/lliu/huffman/scripts/1layer_compress/quantizer_args2.yaml" \
 #  --use_wandb \
-#  --resume_wandb --wandb_id 2vhzw6el \
 #  --wandb_project "compression_no_finetune" \
 #  --ppl_eval
 

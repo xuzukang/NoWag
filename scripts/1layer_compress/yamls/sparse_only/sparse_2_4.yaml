@@ -1,0 +1,13 @@
+sparse_types: 
+  - wanda
+frac_sparse: 0.5
+norm_order: 
+  - 0
+  - 1
+zero:
+  - False
+  - False
+sparse_after_norm: True
+pattern: 
+  - 2
+  - 4

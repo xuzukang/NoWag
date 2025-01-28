@@ -339,7 +339,8 @@ class LinearQuantizedSparse(LinearQuantized):
             elif sparse_type == "dim_1":
                 new_sparse_module = sparse.Dim1_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
             elif sparse_type == "wanda":
-                new_sparse_module = sparse.UnstructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
+                new_sparse_module = sparse.UnstructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device,
+                                                                pattern = kwargs.get("pattern", None))
             else:
                 raise NotImplementedError
             
@@ -371,7 +372,7 @@ class LinearQuantizedSparse(LinearQuantized):
                 else:
                     remaining_error = self.reconstruct() - self.original_weight
             
-            self.initalize_sparse(sparse_types, frac_sparse)
+            self.initalize_sparse(sparse_types, frac_sparse, **kwargs)
                 
                 
             for i,sparse_type in enumerate(sparse_types):
@@ -396,9 +397,35 @@ class LinearQuantizedSparse(LinearQuantized):
                 # print(remaining_error[:,self.sparse_modules[i].sparse_mask])
             
             self.sparse_after_norm = sparse_after_norm
+
+    def sparse_only(self, sparse_types:List[Literal["hessian","dim_0","dim_1","wanda"]],
+            frac_sparse:Union[float,List[float]],
+            norm_order:List[int] = [0,1],
+            zero:List[bool] = [True,True],
+            sparse_after_norm:bool = False,
+            **kwargs):
+        
+        if sparse_after_norm:
+            normalizer,normalized_weight = quantizer_utils.Normalizer.normalize_init(self.original_weight,
+                                                                   norm_order, zero)
+            # print("here")
+            self.sparsify(sparse_types, frac_sparse,
+                      -normalized_weight,
+                      sparse_after_norm=sparse_after_norm,
+                      **kwargs)
+        else:
+
+            self.sparsify(sparse_types, frac_sparse,
+                        -self.original_weight,
+                        sparse_after_norm=sparse_after_norm)
+            normalizer = None
+        
+        self.normalizer = normalizer
+        
+
                 
     def sparse_before_quantize(self,
-             sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed"]],
+             sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed","wanda"]],
             frac_sparse:Union[float,List[float]],
             quantizer_class: QuantizerParent, 
             quantizer_kwargs:dict,
@@ -411,7 +438,7 @@ class LinearQuantizedSparse(LinearQuantized):
             normalizer,normalized_weight = quantizer_utils.Normalizer.normalize_init(self.original_weight,
                                                                    quantizer_kwargs.get("norm_order",[0,1]),
                                                                    quantizer_kwargs.get("zero",[True,True]))
-            print("here")
+            # print("here")
             self.sparsify(sparse_types, frac_sparse,
                       -normalized_weight,
                       sparse_after_norm=sparse_after_norm)
@@ -471,12 +498,14 @@ class LinearQuantizedSparse(LinearQuantized):
 
         
     def forward(self, x: torch.FloatTensor):
-        
-        y = F.linear(x, super().reconstruct(), self.original_bias)
-        if not hasattr(self, "cached_reconstruct"):
-            for sparse_module in self.sparse_modules:
-                if sparse_module is not None:
-                    y = y + sparse_module(x)
+        if hasattr(self, "cached_reconstruct"):
+            y = F.linear(x, self.cached_reconstruct, self.original_bias)
+        else:
+            y = F.linear(x, super().reconstruct(), self.original_bias)
+            if not hasattr(self, "cached_reconstruct"):
+                for sparse_module in self.sparse_modules:
+                    if sparse_module is not None:
+                        y = y + sparse_module(x)
         return y
     
     def get_n_bits(self):
@@ -498,6 +527,7 @@ class LinearQuantizedSparse(LinearQuantized):
         
     def reconstruct(self, ignore_sparse = False, **kwargs) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the quantized version"""
+        # print("reconstructing")
         if hasattr(self, "cached_reconstruct"):
             # print("returning cached")
             return self.cached_reconstruct
@@ -510,6 +540,16 @@ class LinearQuantizedSparse(LinearQuantized):
                     reconstructed += sparse_module.reconstruct()
             if self.sparse_after_norm and actual_denorm:
                 reconstructed = self.quantizer.normalizer.denormalize(reconstructed)
+        elif self.sparsed:
+            # print("here")
+            reconstructed = self.sparse_modules[0].reconstruct()
+            for sparse_module in self.sparse_modules[1:]:
+                if sparse_module is not None:
+                    reconstructed += sparse_module.reconstruct()
+            
+            if self.sparse_after_norm:
+                # print("skipping")
+                reconstructed = self.normalizer.denormalize_inplace(reconstructed)
 
             # print("here")
             return reconstructed

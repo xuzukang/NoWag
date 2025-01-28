@@ -106,7 +106,7 @@ if "allocation_config" in kwargs:
     while d * n_bits <= kwargs.get("max_d_prod", 12) and d <= kwargs.get("max_d", 6):
         print(d,kwargs.get("max_d", 6))
         print(n_bits*d)
-        if n_bits*d % 1 < 1e-5:
+        if n_bits*d % 1 < 1e-4 or n_bits*d % 1 > 1 - 1e-4:
             best_d = d 
         d += 1
     

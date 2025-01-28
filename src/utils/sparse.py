@@ -1,7 +1,7 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Optional
+from typing import Optional, Tuple
 
 #a class of sparse stuff
 
@@ -162,7 +162,8 @@ class UnstructuredSparse(nn.Module):
                  n_out:int,
                  n_in:int,
                  frac_sparse:float,
-                 device:torch.device):
+                 device:torch.device,
+                 pattern:Optional[Tuple[int,int]] = None):
         
         super(UnstructuredSparse, self).__init__()
         
@@ -173,6 +174,8 @@ class UnstructuredSparse(nn.Module):
         self.n_in = n_in
         self.frac_sparse = frac_sparse
         self.n_sparse = int(frac_sparse*n_out*n_in)
+
+        self.sparse_pattern = pattern
         
         
         self.register_buffer('sparse_mask', sparse_mask)
@@ -184,10 +187,23 @@ class UnstructuredSparse(nn.Module):
                       n_sparse:int):
         idxs_sorted = torch.argsort(importances.flatten(), descending=True)
         idx0, idx1 = idxs_sorted//importances.shape[1], idxs_sorted%importances.shape[1]
-        
         new_mask = torch.zeros_like(importances, dtype=torch.bool)
         new_mask[idx0[:n_sparse], idx1[:n_sparse]] = True
         return new_mask
+    
+    @staticmethod
+    def generate_mask_pattern(importances:torch.FloatTensor,
+                                pattern:Tuple[int,int]):
+        
+        n_zero, n_pattern = pattern
+
+        idxs_sorted = torch.argsort(importances.reshape(-1,n_pattern), dim=-1, descending=True)
+        # print("generate_mask_pattern", idxs_sorted)
+        mask_unshaped = torch.zeros_like(importances.reshape(-1,n_pattern), dtype=torch.bool, device=importances.device)
+        mask_unshaped[torch.arange(mask_unshaped.shape[0]).unsqueeze(1), idxs_sorted[:,:n_zero]] = True
+        return mask_unshaped.reshape(importances.shape)
+
+        
     
         
     def update_wanda_like(self, remaining_error:torch.FloatTensor,
@@ -197,7 +213,10 @@ class UnstructuredSparse(nn.Module):
         #calculate the importance
         importances = remaining_error**2 * hessian_diag.unsqueeze(0)
         
-        new_mask = self.generate_mask(importances, self.n_sparse)
+        if self.sparse_pattern is not None:
+            new_mask = self.generate_mask_pattern(importances, self.sparse_pattern)
+        else:
+            new_mask = self.generate_mask(importances, self.n_sparse)
         # #sort the importances
         # idxs_sorted = torch.argsort(importances.flatten(), descending=True)
         # idx0, idx1 = idxs_sorted//self.n_in, idxs_sorted%self.n_in

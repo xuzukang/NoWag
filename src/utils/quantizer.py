@@ -31,6 +31,17 @@ class Normalizer(nn.Module):
 
         self.original_shape = shape
         
+    def denormalize_inplace(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
+
+        reversed_norm_order = self.norm_order[::-1]
+        for i in reversed(self.norm_order):
+            if self.norms[i] is not None and self.norms[i].numel() > 0:
+                normalized_weight *= self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
+                normalized_weight += self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+            
+        return normalized_weight
+
 
     def denormalize(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
         """denormalize the input weight matrix"""

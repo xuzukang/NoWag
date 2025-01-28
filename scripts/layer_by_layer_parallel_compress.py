@@ -226,13 +226,15 @@ def check_still_running(devices_dict)->list[str]:
             devices_dict[device] = []
     return DEVICES_OPEN
 
-def check_dict(dict_reference, dict_to_check):
+def check_dict(dict_reference, dict_to_check, keys_to_ignore = []):
     # print()
     for key in dict_reference.keys():
+        if key in keys_to_ignore:
+            continue
         if key not in dict_to_check.keys():
             return False
         elif isinstance(dict_reference[key], dict):
-            if not check_dict(dict_reference[key], dict_to_check[key]):
+            if not check_dict(dict_reference[key], dict_to_check[key], ["d","n_bits"] if key == "quantizer_kwargs" and "allocation_config" in dict_to_check.keys() else []):
                 return False
         elif dict_reference[key] != dict_to_check[key]:
             return False

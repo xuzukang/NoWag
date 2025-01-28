@@ -7,8 +7,8 @@ quantizer_kwargs:
     - 0 
     - 1
   zero:
-    - True
-    - True
+    - False
+    - False
   # time_clustering: True
   initialize_method: 'kmeans'
   minibatch_size: 1
