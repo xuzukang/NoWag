@@ -18,7 +18,6 @@ def zero_shot(base_model, model,
               tasks:list[str] = ["winogrande", "piqa", "hellaswag", "arc_easy", "arc_challenge"],
               num_fewshot:int = 0):
   
-  model = model.to(device)
   tokenizer = AutoTokenizer.from_pretrained(base_model)
   tokenizer.pad_token = tokenizer.eos_token
 
@@ -37,7 +36,9 @@ def zero_shot(base_model, model,
   return results["results"]
 
 if __name__ == "__main__":
+  import sys 
 
+  sys.stderr = sys.stdout
   torch.set_grad_enabled(False)
 
   parser = argparse.ArgumentParser()
@@ -70,8 +71,9 @@ if __name__ == "__main__":
   random.seed(args.seed)
   torch.random.manual_seed(args.seed)
 
-  model = get_llama(args.base_model)
-  model = model.to(args.device)
+  model = get_llama(args.base_model,
+                    device_map="auto")
+  # model = model.to(args.device)
 
   if args.quantized_weight_yaml is not None:
     checkpoints_paths = yaml.load(open(args.quantized_weight_yaml, "r"), Loader=yaml.FullLoader)
@@ -128,6 +130,13 @@ if __name__ == "__main__":
     # results["config"]["model"] = args.base_model + " " + args.quantized_weight_yaml
     with open(args.output_path, "w") as f:
       json.dump(results, f, indent=2)
+
+
+  avg = 0
+  for task in results:
+    print(results[task], end = " & ")
+    avg += results[task]["acc"]
+  print(avg/len(results))
 # if args.output_path is not None:
 #         os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
 #         # otherwise cannot save

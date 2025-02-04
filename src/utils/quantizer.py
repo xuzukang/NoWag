@@ -33,9 +33,18 @@ class Normalizer(nn.Module):
         
     def denormalize_inplace(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
 
-        reversed_norm_order = self.norm_order[::-1]
+        reversed_norm_order = [1,0]
+        # print("reversed_norm_order", reversed_norm_order)
+        # print("norm_order", self.norm_order)
+        # for norm in self.norms:
+        #     # print(norm.shape)
         for i in reversed(self.norm_order):
+            # print("i", i)
+            # print("reversed_norm_order[i]", reversed_norm_order[i])
             if self.norms[i] is not None and self.norms[i].numel() > 0:
+                # print(self.norms[i].shape)
+                # print(normalized_weight.shape[reversed_norm_order[i]])
+                # print(self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i).shape)
                 normalized_weight *= self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
             if self.zeros[i] is not None and self.zeros[i].numel() > 0:
                 normalized_weight += self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
@@ -48,7 +57,7 @@ class Normalizer(nn.Module):
         # print("denormalize")
         #we have to do this in reverse
         denormalized_weight = normalized_weight.clone()
-        reversed_norm_order = self.norm_order[::-1]
+        reversed_norm_order = [1,0]
         for i in reversed(self.norm_order):
             if self.norms[i] is not None and self.norms[i].numel() > 0:
                 denormalized_weight = denormalized_weight * self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
@@ -119,23 +128,36 @@ class Normalizer(nn.Module):
     def normalize_init(weight:torch.FloatTensor, 
                   norm_order:list[int] = [0, 1],
                   zero:list[bool]= [True, True],
-                  eps:float = 1e-5)->Tuple[Normalizer, torch.FloatTensor]:
+                  eps:float = 1e-5,
+                  norm_rescale:float = True,
+                  powers:float = 1
+                  )->Tuple[Normalizer, torch.FloatTensor]:
         
         norms = [None] * len(weight.shape)
         zeros = [None] * len(weight.shape)
         
         n_out, n_in = weight.shape
         # print(zero)
+        # print("norm_order", norm_order)
         for dim in norm_order:
+            # print("dim",dim)
             if zero[dim]:
                 zeros[dim] = torch.mean(weight, dim=dim)
-                weight = weight - zeros[dim].unsqueeze(dim)
-            norms[dim] = torch.norm(weight, dim=dim) + eps
-            weight = weight / norms[dim].unsqueeze(dim)
+                if norm_rescale:
+                    weight = weight - zeros[dim].unsqueeze(dim)
+                # weight = weight - zeros[dim].unsqueeze(dim)
+            norms[dim] = torch.norm(weight, dim=dim)**powers + eps
+            if norm_rescale:
+                weight = weight / norms[dim].unsqueeze(dim)
             assert torch.all(torch.isfinite(weight))
             assert torch.all(torch.isfinite(norms[dim]))
+            
+        normalizer = Normalizer(norms, zeros, norm_order,(n_out,n_in))
         
-        return Normalizer(norms, zeros, norm_order,(n_out,n_in)), weight
+        if not norm_rescale:
+            weight = normalizer.normalize(weight)
+        
+        return normalizer, weight
     
     def get_n_bits(self):
         n_bits = 0
@@ -456,3 +478,25 @@ def cluster_update_step(
             ) + 1e-5)
         # print("centriods", centriods)
         return centriods
+
+
+if __name__ == "__main__":
+    
+    #test the normalizer
+    
+    X = torch.randn(4096, 400)
+    
+    normalizer,X_normalized = Normalizer.normalize_init(X,
+                                                        norm_order=[1,0],
+                                                        zero=[False,False]
+                                                        )
+    
+    X_denormalized = normalizer.denormalize(X_normalized)
+    
+    print(X_denormalized)
+    print(X)
+    print(torch.max(torch.abs(X_denormalized - X)))
+    assert torch.allclose(X, X_denormalized,atol=1e-7
+                          ), "denormalize incorrect"
+    
+    

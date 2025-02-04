@@ -3,12 +3,10 @@ quantizer_kwargs:
   n_bits: 2
   cluster_ignore_norms: True
   n_iters: 100
-  norm_order: 
-    - 0 
-    - 1
+  norm_order: []
   zero:
-    - True
-    - True
+    - False
+    - False
   # time_clustering: True
   initialize_method: 'kmeans'
   minibatch_size: 1
@@ -27,9 +25,9 @@ quantizer_kwargs:
 #   n_discrete_updates: 1
 seed: 1234
 dtype: 'float32'
-allocation_config: /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/allocation/test_allocation2/allocation.yaml
-max_d_prod: 15
-max_d: 6
+# allocation_config: /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/allocation/test_allocation2/allocation.yaml
+# max_d_prod: 15
+# max_d: 6
 # quantizer_type: '1st_order'
 # initial_discrete_update: True
 # n_discrete_updates: 1

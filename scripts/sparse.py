@@ -41,6 +41,7 @@ def sparse_layer(
 
         parent_module = getattr(layer, name.split(".")[0])
         module = getattr(parent_module, name.split(".")[1])
+        original_device = module.weight.device
         module.to(device)
         original_dtype = module.weight.dtype
         module.to(torch.float32)
@@ -64,15 +65,11 @@ def sparse_layer(
 
         # new_layer(torch.randn(1, new_layer.in_features).to(device))
         
-        module.to(device_store)
-        del module.weight
-        del module.bias
+        module.weight.data = new_layer.reconstruct()
+        module.to(original_device).to(original_dtype)
+        setattr(parent_module, name.split(".")[1], module)
+        del new_layer
         del hessian
-
-        delattr(parent_module, name.split(".")[1])
-        new_layer.to(original_dtype).to(device_store)
-        # print(new_layer.cached_reconstruct.device)
-        setattr(parent_module, name.split(".")[1], new_layer)
         # getattr(parent_module, name.split(".")[1]).to(device_store)
 
         torch.cuda.empty_cache()
@@ -126,6 +123,10 @@ def sparse_model(model,
     return model    
 
 if __name__ == "__main__":
+    import sys 
+    
+    sys.stderr = sys.stdout
+    
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -153,6 +154,8 @@ if __name__ == "__main__":
                         help = "batch size for the activations, if not specified, we will perform a binary search to fine the optimal batch size")
     parser.add_argument("--save_path", type=str, default = None)
     parser.add_argument("--save_model", action="store_true")
+    parser.add_argument("--save_and_load_model", action="store_true")
+    parser.add_argument("--save_and_load_temp_path", type=str, default = "temp/temp_model")
 
     args = parser.parse_args()
 
@@ -163,7 +166,7 @@ if __name__ == "__main__":
     model.seqlen = args.seqlen
     model_name = args.base_model
 
-    
+    model = model.to("cpu")
     # print(checkpoints)
     model = sparse_model(model,
                             hessian_path = args.hessian_dir.replace("{model_name}", model_name),
@@ -191,10 +194,32 @@ if __name__ == "__main__":
         
         results[dataset] = ppl
 
+    if args.save_and_load_model:
+        #save the model to a temp file
+        #count the number of models in the temp folder
+        # n_models = len(os.listdir("temp/temp_model"))
+        # temp_path = "temp/temp_model/model_" + str(n_models)
+        model.save_pretrained(args.save_and_load_temp_path)
+        #load the model from the temp file
+        model = ppl_eval.get_llama(args.base_model, model_path = args.save_and_load_temp_path,
+                                   device_map = "auto")
+        model.seqlen = args.seqlen
+        model.eval()
+
 
     if "None" not in args.zero_shot_tasks:
         results["zero_shot"] = zs.zero_shot(args.base_model, model, device = args.device,
                                             tasks = args.zero_shot_tasks)
+        
+        #parse the results
+        print("results to add to a table:")
+        avg_acc = 0
+        for task in args.zero_shot_tasks:
+            print(round(results[task]["acc"] * 100,2), end = " & ")
+            avg_acc += results[task]["acc"]
+        print()
+        print("avg acc:", round(avg_acc / len(args.zero_shot_tasks) * 100,2))
+        
 
     if args.save_path is not None:
         save_path = args.save_path.replace("{model_name}", model_name)
@@ -205,8 +230,9 @@ if __name__ == "__main__":
             yaml.dump(results, f)
 
         if args.save_model:
-            raise NotImplementedError("Saving the model is not implemented yet")
-
+            #just use the hf save function
+            model.save_pretrained(save_path)
+    # os.system("rm -rf temp/temp_model")
 
 
     

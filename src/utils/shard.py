@@ -1,6 +1,6 @@
 """Simple sharded model from QIUP # caoebook
 """
-import glog
+# import glog
 import torch
 from torch import nn
 
@@ -76,7 +76,7 @@ class ShardTransformer(nn.Module):
     def manifest(self, *args, **kwargs):
         for i in range(len(self.shards)):
             device = self.devices[i]
-            glog.info(f'manifesting layers on gpu {device}')
+            # glog.info(f'manifesting layers on gpu {device}')
             args, kwargs = convert_args(args, kwargs, device, self.dtype)
             self.shards[i](*args, **kwargs)
 

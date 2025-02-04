@@ -7,7 +7,9 @@ from typing import Any, Dict, Iterable, Optional, Sequence, Tuple
 DEV = torch.device("cuda:0")
 
 
-def get_llama(model: str):
+def get_llama(model: str, model_path: Optional[str] = None,
+              device_map: Optional[str] = None
+              ) -> Any:
     import torch
 
     def skip(*args, **kwargs):
@@ -22,19 +24,21 @@ def get_llama(model: str):
         # model = LlamaForCausalLM.from_pretrained(model, torch_dtype="auto")
         import transformers
         model = transformers.AutoModelForCausalLM.from_pretrained(
-            model,
+            model if model_path is None else model_path,
             torch_dtype="auto",
              low_cpu_mem_usage=True,
-            attn_implementation='sdpa'
+            attn_implementation='sdpa',
+            device_map = device_map
         )
     else:
         import transformers
 
         model = transformers.AutoModelForCausalLM.from_pretrained(
-            model,
+            model if model_path is None else model_path,
             torch_dtype="auto",
              low_cpu_mem_usage=True,
-            attn_implementation='sdpa'
+            attn_implementation='sdpa',
+            device_map = device_map
         )
     # model.seqlen = 8192
     print("Model loaded.", model)

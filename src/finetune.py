@@ -274,27 +274,38 @@ def finetune_end_to_end(
     return total_loss, None
 
 
+@torch.no_grad()
+def val_once(model:
+
 @torch.enable_grad()
 def finetune_end_to_end_amp(
     model: llama.LlamaForCausalLM,
     optimizer: torch.optim.Optimizer,
-    train_tokens: List[torch.LongTensor],
-    train_soft_labels: List[torch.FloatTensor],
-    val_tokens: Optional[List[torch.LongTensor]] = None,
-    val_soft_labels: Optional[List[torch.FloatTensor]] = None,
-    discrete_update_fn: Optional[Callable] = None,
-    update_every_n_tokens: int = 4096,
+    trainloader: torch.utils.data.DataLoader,
+    valloader: Optional[torch.utils.data.DataLoader] = None,
+    epochs: int = 1,
     log_wandb: bool = False,
-    device: str = "cuda:0",
     use_tqdm: bool = True,
+    position_ids: Optional[torch.Tensor] = None,
+    attention_mask: Optional[torch.Tensor] = None,
+    update_freq: int = 1,
+    save_fn: Optional[Callable] = None,
+    patience: int = -1,
+    **kwargs,
 ) -> Tuple[float, Optional[float]]:
     """finetune the model for one epoch"""
     # move everything to cpu first
     # assert model.seqlen % update_every_n_tokens == 0, "update_every_n_tokens must be a multiple of the sequence length"
 
-    total_loss = 0
-    n_tokens = 0
     scaler = amp.GradScaler(enabled=True)
+
+    loss_fn = nn.CrossEntropyLoss()
+
+
+
+
+
+
     n_accumulation_steps = update_every_n_tokens//(train_tokens[0][0].shape[1])
     model.float()
     for i in tqdm.tqdm(range(len(train_tokens)), disable=not use_tqdm, desc="Training", miniters=len(train_tokens) // 100):

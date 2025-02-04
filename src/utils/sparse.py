@@ -1,7 +1,7 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union, Literal
 
 #a class of sparse stuff
 
@@ -163,7 +163,9 @@ class UnstructuredSparse(nn.Module):
                  n_in:int,
                  frac_sparse:float,
                  device:torch.device,
-                 pattern:Optional[Tuple[int,int]] = None):
+                 pattern:Optional[Tuple[int,int]] = None,
+                 sparse_group:Union[int, Literal["n_in"]] = -1):
+
         
         super(UnstructuredSparse, self).__init__()
         
@@ -176,6 +178,7 @@ class UnstructuredSparse(nn.Module):
         self.n_sparse = int(frac_sparse*n_out*n_in)
 
         self.sparse_pattern = pattern
+        self.sparse_group = sparse_group if sparse_group != "n_in" else n_in
         
         
         self.register_buffer('sparse_mask', sparse_mask)
@@ -190,6 +193,19 @@ class UnstructuredSparse(nn.Module):
         new_mask = torch.zeros_like(importances, dtype=torch.bool)
         new_mask[idx0[:n_sparse], idx1[:n_sparse]] = True
         return new_mask
+    
+    @staticmethod
+    def generate_mask_grouped(importances:torch.FloatTensor,
+                              frac_sparse:float,
+                              n_group:int):    
+        importances_reshaped = importances.reshape(-1, n_group) #reshaped into the groups
+        idxs_sorted = torch.argsort(importances_reshaped, dim=-1, descending=True)
+        new_mask = torch.zeros_like(importances_reshaped, dtype=torch.bool)
+
+        n_sparse_group = int(frac_sparse*n_group)
+        assert n_sparse_group * importances_reshaped.shape[0] == int(frac_sparse * importances.shape[1] * importances.shape[0]), f"n_sparse_group * importances_reshaped.shape[0] != int(frac_sparse * importances.shape[1] * importances.shape[0])"
+        new_mask[torch.arange(new_mask.shape[0]).unsqueeze(1), idxs_sorted[:,:n_sparse_group]] = True
+        return new_mask.reshape(importances.shape)
     
     @staticmethod
     def generate_mask_pattern(importances:torch.FloatTensor,
@@ -215,6 +231,8 @@ class UnstructuredSparse(nn.Module):
         
         if self.sparse_pattern is not None:
             new_mask = self.generate_mask_pattern(importances, self.sparse_pattern)
+        elif self.sparse_group > 0:
+            new_mask = self.generate_mask_grouped(importances, self.frac_sparse, self.sparse_group)
         else:
             new_mask = self.generate_mask(importances, self.n_sparse)
         # #sort the importances

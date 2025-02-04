@@ -1,6 +1,11 @@
 import torch
 import torch.nn as nn
+import numpy as np
+import random
 import wandb
+import gc
+import os 
+import glob
 
 def param_to_buffer(module: nn.Module, param_name: str):
     """converts a parameter to a buffer in a module
@@ -77,4 +82,19 @@ def intialize_wandb(args, config: dict = None):
     
     wandb.init(project=project_name, name=run_name, id=run_id,
                config = config, resume = "allow")
+    
+def seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    np.random.seed(seed)    
+    random.seed(seed)
                
+def clean():
+    gc.collect()
+    torch.cuda.empty_cache()
+    torch.cuda.ipc_collect()
+
+def find_run_num(save_path:str)->str:
+    """counts the number of runs in a directory and returns 'run_x' where x is the next run number"""
+    n_prev_runs = len(glob.glob(os.path.join(save_path, "run_*")))
+    return f"run_{n_prev_runs}"

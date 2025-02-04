@@ -329,7 +329,7 @@ class LinearQuantizedSparse(LinearQuantized):
             
         sparse_modules = []
         for i,sparse_type in enumerate(sparse_types):
-            
+            # print("sparse_type", sparse_type)
             if frac_sparse[0] <= 0.0:
                 new_sparse_module = None
             if sparse_type == "hessian":
@@ -340,7 +340,8 @@ class LinearQuantizedSparse(LinearQuantized):
                 new_sparse_module = sparse.Dim1_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
             elif sparse_type == "wanda":
                 new_sparse_module = sparse.UnstructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device,
-                                                                pattern = kwargs.get("pattern", None))
+                                                                pattern = kwargs.get("pattern", None),
+                                                                sparse_group = kwargs.get("group", -1))
             else:
                 raise NotImplementedError
             
@@ -417,7 +418,8 @@ class LinearQuantizedSparse(LinearQuantized):
 
             self.sparsify(sparse_types, frac_sparse,
                         -self.original_weight,
-                        sparse_after_norm=sparse_after_norm)
+                        sparse_after_norm=sparse_after_norm,
+                        **kwargs)
             normalizer = None
         
         self.normalizer = normalizer
