@@ -1,1 +1,0 @@
-python -u post_quantization_fine_tune.py meta-llama/Llama-2-7b-hf ./models/llama2_20_bit_reasign_no_fine_tune wikitext2 --device cuda:6 --nsamples_val 0 --log_wandb --add_bias --finetune_epochs 10

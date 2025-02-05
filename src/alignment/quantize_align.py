@@ -4,15 +4,17 @@ import torch.nn.functional as F
 import numpy as np
 import argparse
 
+
 @torch.enable_grad()
-def align_cluster_one_step(X:torch.Tensor,
-                           centriods:torch.Tensor,
-                           reconstruction_fn:callable,
-                           reconstruction_additional_params:dict[str, torch.Tensor],
-                           hessian:torch.Tensor,
-                           centriods_optimizer:torch.optim.Optimizer,
-                           clip_grad:float = 0,
-                           )->tuple[float, torch.Tensor]:
+def align_cluster_one_step(
+    X: torch.Tensor,
+    centriods: torch.Tensor,
+    reconstruction_fn: callable,
+    reconstruction_additional_params: dict[str, torch.Tensor],
+    hessian: torch.Tensor,
+    centriods_optimizer: torch.optim.Optimizer,
+    clip_grad: float = 0,
+) -> tuple[float, torch.Tensor]:
     """aligns the centriods for one iteration on the callibration dataset
 
     Args:
@@ -28,17 +30,19 @@ def align_cluster_one_step(X:torch.Tensor,
         tuple[float, torch.Tensor]: _description_
     """
 
-    reconstructed_weights = reconstruction_fn(centriods = centriods, **reconstruction_additional_params)
+    reconstructed_weights = reconstruction_fn(
+        centriods=centriods, **reconstruction_additional_params
+    )
     # print(reconstructed_weights.dtype)
     diff = X - reconstructed_weights
     # print(diff.dtype)
     # print(hessian.dtype)
-    loss = torch.einsum('ij,jk,ik->', diff, hessian, diff)
+    loss = torch.einsum("ij,jk,ik->", diff, hessian, diff)
     loss.backward()
 
-    #get the gradient of the centriods
+    # get the gradient of the centriods
 
-    #if args clip the gradients
+    # if args clip the gradients
     if clip_grad > 0:
         centriods.grad = torch.clamp(centriods.grad, -clip_grad, clip_grad)
     centriods_optimizer.step()
@@ -50,5 +54,3 @@ def align_cluster_one_step(X:torch.Tensor,
     #     # print("centriods", centriods)
     # print(loss.item())
     return loss.item(), centriods
-
-                       

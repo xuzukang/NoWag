@@ -1,0 +1,33 @@
+quantizer_kwargs:
+  d: 8
+  n_bits: 2
+  cluster_ignore_norms: True
+  n_iters: 100
+  norm_order: 
+    - 0 
+    - 1
+  zero:
+    - True
+    - True
+  # time_clustering: True
+  initialize_method: 'kmeans'
+  minibatch_size: 0.25
+  random_minibatch: True
+# alignment_kwargs:
+#   clip_grad: 0.1
+#   discrete_update_every: 1
+#   low_bound: 1.0e-05
+#   lr: 0.001
+#   lr_multiplier: 1
+#   n_iters: 100
+#   patience: 1000
+#   patience_scheduler: 1000
+#   verbose: 10
+#   reinitialize_optimizer: False
+seed: 1234
+# quantizer_type: '1st_order'
+# initial_discrete_update: True
+# n_discrete_updates: 1
+# final_discrete_update: True
+
+# hessian_regularization: 0.01

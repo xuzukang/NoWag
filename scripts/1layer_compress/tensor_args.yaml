@@ -1,0 +1,25 @@
+seed: 0
+tensorize_kwargs:
+  N_qudits: 3
+  # fixed_qudits_shapes:
+  #   - 64
+  #   - 16
+  norm_order:
+    - 0
+    - 1
+  zeros:
+    - false
+    - false
+  sparse_frac: 0.0
+  sparse_method: 'structured_0_1'
+  pad_method: 'pad_smaller'
+alignment_kwargs:
+  clip_grad: 0.1
+  low_bound: 1.0e-05
+  lr: 0.01
+  lr_multiplier: 0.3333333333333333
+  n_iters: 2500
+  n_iters_warmup_task: 0
+  patience: 250
+  patience_scheduler: 50
+  verbose: 100

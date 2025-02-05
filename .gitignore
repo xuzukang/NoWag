@@ -3,3 +3,9 @@ test/*
 wandb/*
 models/*
 debug/*
+quantized_models/*
+*.pt
+logs/parallel_compress/*
+tmp/*
+temp/*
+*.log

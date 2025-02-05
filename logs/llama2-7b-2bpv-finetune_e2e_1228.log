@@ -1,0 +1,88 @@
+2024-12-06 01:14:32.792702: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-12-06 01:14:32.809913: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-12-06 01:14:32.815322: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-06 01:14:32.829444: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-12-06 01:14:34.196308: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Traceback (most recent call last):
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1166, in init
+    wi.setup(kwargs)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 191, in setup
+    self._wl = wandb_setup.setup(settings=setup_settings)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_setup.py", line 327, in setup
+    ret = _setup(settings=settings)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_setup.py", line 320, in _setup
+    wl = _WandbSetup(settings=settings)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_setup.py", line 303, in __init__
+    _WandbSetup._instance = _WandbSetup__WandbSetup(settings=settings, pid=pid)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_setup.py", line 114, in __init__
+    self._setup()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_setup.py", line 250, in _setup
+    self._setup_manager()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_setup.py", line 277, in _setup_manager
+    self._manager = wandb_manager._Manager(settings=self._settings)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_manager.py", line 138, in __init__
+    self._service.start()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/service/service.py", line 258, in start
+    self._launch_server()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/service/service.py", line 250, in _launch_server
+    self._wait_for_ports(fname, proc=internal_proc)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/service/service.py", line 126, in _wait_for_ports
+    time.sleep(0.2)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/lliu/huffman/post_quantization_fine_tune.py", line 209, in <module>
+    wandb.init(config=args, project="post_training_quantization")
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1191, in init
+    assert logger
+AssertionError
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/__main__.py", line 3, in <module>
+    cli.cli(prog_name="python -m wandb")
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/click/core.py", line 1128, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/click/core.py", line 1053, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/click/core.py", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/click/core.py", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/click/core.py", line 754, in invoke
+    return __callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/cli/cli.py", line 102, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/cli/cli.py", line 279, in service
+    server.serve()
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/service/server.py", line 114, in serve
+    self._inform_used_ports(sock_port=sock_port)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/service/server.py", line 52, in _inform_used_ports
+    pf.write(self._port_fname)
+  File "/home/lliu/anaconda3/lib/python3.11/site-packages/wandb/sdk/service/port_file.py", line 21, in write
+    f = tempfile.NamedTemporaryFile(prefix=bname, dir=dname, mode="w", delete=False)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/tempfile.py", line 563, in NamedTemporaryFile
+    file = _io.open(dir, mode, buffering=buffering,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/tempfile.py", line 560, in opener
+    fd, name = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lliu/anaconda3/lib/python3.11/tempfile.py", line 256, in _mkstemp_inner
+    fd = _os.open(file, flags, 0o600)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp5epbaxzs/port-1153180.txt9bm53_oe'
