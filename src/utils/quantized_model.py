@@ -66,12 +66,14 @@ def load_layer_from_checkpoint(
     for name in tqdm.tqdm(sublayer_names, leave=True, disable=True):
         parent_module = getattr(layer, name.split(".")[0])
         module = getattr(parent_module, name.split(".")[1])
-        if device is None:
-            device = next(module.parameters()).device
+        # if device is None:
+        original_device = next(module.parameters()).device
             
         original_dtype = next(iter(module.parameters())).dtype
 
-            
+
+        module.to(device)   
+
         sublayer_full_name = f"{base_model}/layer_{layer_idx}/{name}"
         if sublayer_full_name not in checkpoints:
             sublayer_full_name = f"layer_{layer_idx}/{name}" #try an abbreviated version I used before
@@ -165,28 +167,30 @@ def load_layer_from_checkpoint(
         if cache_reconstruct:
             new_layer.cache_reconstruct()
         new_layer.to(original_dtype)
-        new_layer.to(device)
+        new_layer.to(original_device)
             # print("new_layer.quantization_compressor.
         delattr(parent_module, name.split(".")[1])
         setattr(parent_module, name.split(".")[1], new_layer)
-
+        utils.clean()
         n_bits += new_layer.get_n_bits()
         n_params += new_layer.get_n_original_parameters()
+        # utils.get_gpu_memory(device)
+    utils.clean()
     return layer, n_bits, n_params
 
-
+@torch.no_grad()    
 def load_model_from_checkpoints(
                                 checkpoints:dict[str:str],
                                 base_model:str,
-                                model:llama.LlamaForCausalLM,
-                                add_bias:bool = False,
+                                model:Optional[llama.LlamaForCausalLM] = None,
+                                add_bias:Optional[bool] = False,
                                 key_no_exist_handling:Literal["raise","ignore","warn"] = "raise",
-                                disable_tqdm:bool = False,
-                                log_wandb:bool = False,
-                                quantizer_type:str = "",
-                                clean:bool = True,
-                                device:str = "cpu",
-                                cache_reconstruct:bool = False
+                                disable_tqdm:Optional[bool] = False,
+                                log_wandb:Optional[bool] = False,
+                                quantizer_type:Optional[str] = "",
+                                clean:Optional[bool] = True,
+                                device:Optional[str] = "cpu",
+                                cache_reconstruct:Optional[bool] = False
                                 
                                 ) -> Tuple[llama.LlamaForCausalLM, float, int]:
     """
@@ -206,6 +210,10 @@ def load_model_from_checkpoints(
     
     n_bits = 0
     n_params = 0
+
+    if model is None:
+        model = get_llama(base_model)
+        model.to("cpu")
     
     layers = model.model.layers
     # original_dtype = next(iter(model.parameters())).dtype

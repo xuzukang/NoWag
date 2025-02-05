@@ -1,11 +1,0 @@
-  0%|          | 0/280 [00:00<?, ?it/s]already done with  pajama/128/layer_3/mlp.gate_proj.pt
-log_path ./logs/parallel_compress/./meta-llama/Llama-2-13b-hf/joint2/pajama/128/layer_3/mlp.gate_proj.pt.log
-Traceback (most recent call last):
-  File "/data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py", line 185, in <module>
-    command, command_name = make_command(path)
-                            ^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py", line 168, in make_command
-    print("best_loss", best_loss, "running bpv:", round(TOTAL_BITS/TOTAL_PARAMS, 6))
-          ^^^^^^^^^^^
-UnboundLocalError: cannot access local variable 'best_loss' where it is not associated with a value
-  0%|          | 0/280 [00:00<?, ?it/s]

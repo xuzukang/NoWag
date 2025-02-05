@@ -9,10 +9,12 @@ import transformers.models.llama.modeling_llama as llama
 import argparse
 import tqdm
 import numpy as np
-from typing import List, Optional, Callable, Tuple
+from typing import List, Optional, Callable, Tuple, Union
 from copy import deepcopy
 import wandb
 import gc
+
+import src.utils.shard as shard
 
 
 class NANError(Exception):
@@ -275,14 +277,35 @@ def finetune_end_to_end(
 
 
 @torch.no_grad()
-def val_once(model:
+def val_once(model:Union[llama.LlamaForCausalLM, shard.ShardTransformer],
+             val_loader:torch.utils.data.DataLoader,
+             loss_fn:Callable,
+             position_ids:torch.Tensor=None,
+            attention_mask:torch.Tensor=None):
+    
+    model.eval()
+    total_loss = 0
+    ct = 0
+    with torch.no_grad():
+        for source, target in val_loader:
+            output = model(
+                source,
+                position_ids=position_ids,
+                attention_mask=attention_mask.float())[:, :-1].contiguous()
+            total_loss += loss_fn(
+                output.view(-1, output.shape[-1]),
+                target.to(0).view(-1, target.shape[-1]),
+            )
+            ct += 1
+    model.train()
+    return (total_loss / ct).cpu().item()
 
 @torch.enable_grad()
 def finetune_end_to_end_amp(
     model: llama.LlamaForCausalLM,
     optimizer: torch.optim.Optimizer,
-    trainloader: torch.utils.data.DataLoader,
-    valloader: Optional[torch.utils.data.DataLoader] = None,
+    train_loader: torch.utils.data.DataLoader,
+    val_loader: Optional[torch.utils.data.DataLoader] = None,
     epochs: int = 1,
     log_wandb: bool = False,
     use_tqdm: bool = True,
@@ -301,207 +324,53 @@ def finetune_end_to_end_amp(
 
     loss_fn = nn.CrossEntropyLoss()
 
+    best_loss = val_once(model, val_loader,
+                         position_ids, attention_mask,
+                         loss_fn)
+    
+    patience_used = 0
 
+    for epoch in tqdm.tqdm(range(epochs), disable=not use_tqdm):
+        count = 0
+        train_loss = 0
+        for source, target in tqdm.tqdm(train_loader, disable=not use_tqdm, desc=f"epoch {epoch}"):
+            with amp.autocast(device_type="cuda",
+                                 dtype=torch.float16,
+                                 enabled=True):
+                 output = model(
+                      source,
+                      position_ids=position_ids,
+                      attention_mask=attention_mask,
+                 )[:, :-1].contiguous()
+                 loss = loss_fn(output.view(-1, output.shape[-1]),
+                                 target.to(0).view(-1, target.shape[-1]))
+            scaler.scale(loss).backward()
+            train_loss += loss.item()
+            count += 1
 
-
-
-
-    n_accumulation_steps = update_every_n_tokens//(train_tokens[0][0].shape[1])
-    model.float()
-    for i in tqdm.tqdm(range(len(train_tokens)), disable=not use_tqdm, desc="Training", miniters=len(train_tokens) // 100):
-        tokens = train_tokens[i][0].to(device)
-        n_tokens += tokens.shape[1]
-        # print("n_tokens", n_tokens, tokens.shape)
-        with torch.autocast(dtype=torch.float16,
-                            enabled=True,
-                            device_type = "cuda"):
-            if train_soft_labels is not None:
-                labels = train_soft_labels[i].to(
-                    device
-                )  # soft labels from the teacher model
-                out = model(tokens)[0]
-                loss = cross_entropy_loss(out, labels)
-            else:
-                loss = model(tokens, labels=tokens)[0]
-        scaler.scale(loss/n_accumulation_steps).backward()
-        # loss.backward()
-        total_loss += loss.item()
+            if count % update_freq == update_freq - 1 or count == len(train_loader) - 1:
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()
+        
+        print(f"epoch {epoch} train loss: {train_loss/count}")
         if log_wandb:
-            wandb.log({"train_loss": loss.item()})
-        if n_tokens >= update_every_n_tokens:
-            scaler.step(optimizer)
-            scaler.update()
-            optimizer.zero_grad()
-            if discrete_update_fn is not None:
-                discrete_update_fn(model)
-
-    total_loss = total_loss / len(train_tokens)  # * train_tokens[0][0].shape[0])
-    if val_tokens is not None:
-        print("Warning: validation is not implemented yet")
-    if log_wandb:
-        wandb.log({"train_loss_batch": total_loss})
-    return total_loss, None
-
-
-
-# @torch.enable_grad()
-# def finetune_end_to_end(model: llama.LlamaForCausalLM,
-#                         train_inps: List[torch.FloatTensor],
-#                         train_outputs: List[torch.FloatTensor],
-#                         args:argparse.Namespace,
-#                         val_inps: Optional[List[torch.FloatTensor]] = None,
-#                         val_outputs: Optional[List[torch.FloatTensor]] = None,
-#                         discrete_update_fn: Optional[Callable] = None,
-#                         parameters_to_optimize:List[str] = None,
-#                         model_kwargs:dict = {}, early_stop_eps:float = 1e-7,adam_eps:float = 1e-4):
-
-
-#     device = args.device
-
-#     #get the parameters
-#     if parameters_to_optimize is None:
-#         parameters_to_optimize = {name: param for name, param in model.named_parameters() if param.requires_grad}
-#         parameters_not_to_optimize = {name: param for name, param in model.named_parameters() if not param.requires_grad}
-#         print("the following parameters will not be optimized:", parameters_not_to_optimize.keys())
-#         print("number of parameters to not optimize:", sum([param.numel() for param in parameters_not_to_optimize.values()]))
-#     else:
-#         print("using the provided parameters")
-
-#     print("optimizing the following parameters:",parameters_to_optimize.keys())
-
-#     n_total_params = 0
-#     for param in parameters_to_optimize.keys():
-#         print(param, f"{parameters_to_optimize[param].numel():,}")
-#         n_total_params += parameters_to_optimize[param].numel()
-#     print("total number of parameters to optimize:",
-#             f"{n_total_params:,}")
-
-#     optimizer = torch.optim.Adam(nn.ParameterList(parameters_to_optimize.values()), lr=args.finetune_lr,
-#                                  betas = (args.finetune_adam_beta1, args.finetune_adam_beta2),
-#                                     eps=adam_eps)
-
-#     # print("initial parameter",list(parameters_to_optimize.keys())[0], parameters_to_optimize[list(parameters_to_optimize.keys())[0]])
-#     #set the model to train mode
-#     model.train()
-
-
-#     n_accumulation_steps = args.n_accumulation_steps
-
-#     n_batches = len(train_inps)
-#     if val_inps is not None:
-#         n_batches_val = len(val_inps)
-
-#     indexes = torch.randperm(len(train_inps), device=torch.device('cpu'))
-
-
-#     scaler = amp.GradScaler()
-#     prev_epoch_loss = np.inf
-#     patience = args.finetune_early_stop
-#     print("n accumulation steps:", n_accumulation_steps)
-#     print("n batches:", n_batches)
-
-#     free, total = torch.cuda.mem_get_info(int(device.split(":")[1]))
-#     print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-
-
-#     for epoch in range(args.finetune_epochs):
-#         # print(f"epoch {epoch}")
-#         total_loss = 0
-#         n = 0
-#         for batch_idx in tqdm.tqdm(indexes):
-#             batch = train_inps[batch_idx][0].to(device)
-#             teacher_out = train_outputs[batch_idx][0].to(device)
-#             # with amp.autocast():
-#                 #forward pass
-#             out = model(batch)[0]
-#             loss = cross_entropy_loss(out, teacher_out)
-#             if args.log_wandb:
-#                 wandb.log({"loss": loss.item()})
-#             if not torch.isfinite(loss):
-#                 raise NANError("NAN detected in the loss, suggesting increasing the epsilon value")
-
-#             loss.backward()
-#             # scaler.scale(loss/n_accumulation_steps).backward()
-#             #print out the gradient for the first parameter
-#             # if i == 4:
-#             #     print(parameters_to_optimize[list(parameters_to_optimize.keys())[0]].grad)
-#             #     print(out)
-#             #     print(batch_outputs)
-
-#             total_loss += loss.item()
-#             n += 1
-
-#             if (n+1) % n_accumulation_steps == 0:
-#                 optimizer.step()
-#                 optimizer.zero_grad()
-#                 if discrete_update_fn is not None:
-#                     discrete_update_fn(model)
-
-
-#         if val_inps is not None:
-#             total_loss_val = 0
-#             n_val = 0
-#             with torch.no_grad():
-#                 for val_batch_index in range(len(val_inps)):
-#                     val_batch = val_inps[val_batch_index][0].to(device)
-#                     val_teacher_out = val_outputs[val_batch_index][0].to(device)
-
-#                     # with amp.autocast():
-#                         #forward pass
-#                     out = model(val_batch)[0]
-#                     loss = cross_entropy_loss(out, val_teacher_out)
-#                     total_loss_val += loss.item()
-#                     n_val += 1
-#             if args.log_wandb:
-#                 wandb.log({"epoch_loss": total_loss/n, "val_loss": total_loss_val/n_val})
-#             print(f"epoch {epoch} loss: {total_loss/n} val loss: {total_loss_val/n_val}")
-
-#         else:
-#             if args.log_wandb:
-#                 wandb.log({"epoch_loss": total_loss/n})
-#             print(f"epoch {epoch} loss: {total_loss/n}")
-#             total_loss_val = total_loss # a hacky way to avoid the if statement
-#             n_val = n
-#         free, total = torch.cuda.mem_get_info(int(device.split(":")[1]))
-#         print(free // 1024**2, "MiB free out of", total // 1024**2, "MiB total")
-#         if total_loss_val/n_val > prev_epoch_loss - early_stop_eps:
-#             patience -= 1
-#             if patience == 0:
-#                 print("early stopping")
-#                 break
-#         #otherwise
-#         else:
-#             patience = args.finetune_early_stop
-#             prev_epoch_loss = total_loss_val/n_val
-#             if args.finetune_keep_best:
-#                 best_weights = deepcopy(parameters_to_optimize)
-
-
-#     if args.finetune_keep_best:
-#         # print("best weight 1:",list(best_weights.keys())[0], best_weights[list(best_weights.keys())[0]])
-#         model.load_state_dict({name: param for name, param in best_weights.items()}, strict=False)
-#     return model
-
-# # def finetune_amp_eps_wrapper(layer: modeling_llama.LlamaDecoderLayer,
-# #                                       train_inps: torch.Tensor,
-# #                                       train_outputs: torch.Tensor,
-# #                                       val_inps: torch.Tensor,
-# #                                       val_outputs: torch.Tensor,
-# #                                       args:argparse.Namespace,
-# #                                       parameters_to_optimize:dict = None,
-# #                                       layer_kwargs:dict = None,
-# #                                       early_stop_eps:float = 1e-7,
-# #                                       adam_eps_range:tuple = (1e-7, 1e-6, 1e-5, 1e-4)):
-
-# #     for eps in adam_eps_range:
-# #         try:
-# #             return finetune_amp(layer, train_inps, train_outputs,
-# #                                 val_inps, val_outputs,
-# #                                 args, parameters_to_optimize, layer_kwargs, early_stop_eps,
-# #                                 eps)
-# #         except NANError as e:
-# #             print(e.message)
-# #             print(f"trying the next epsilon value {eps}")
-# #             continue
-# #     print("all epsilon values failed")
-# #     raise NANError("all epsilon values failed")
+            wandb.log({"train_loss": train_loss/count})
+        if val_loader is not None:
+            val_loss = val_once(model, val_loader,
+                                position_ids, attention_mask,
+                                loss_fn)
+            print(f"epoch {epoch} val loss: {val_loss}")
+            if log_wandb:
+                wandb.log({"val_loss": val_loss})
+            if val_loss < best_loss:
+                best_loss = val_loss
+                patience_used = 0
+                if save_fn is not None:
+                    save_fn(model)
+            else:
+                patience_used += 1
+                if patience_used == patience:
+                    print("early stopping")
+                    break
+            

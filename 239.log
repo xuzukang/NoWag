@@ -1,2047 +1,0 @@
-  0%|          | 0/224 [00:00<?, ?it/s]already done with  pajama/128/layer_3/mlp.gate_proj.pt
-best_loss 270.354248046875 running bpv: 1.893169
-already done with  pajama/128/layer_3/mlp.up_proj.pt
-best_loss 229.5111846923828 running bpv: 1.893169
-already done with  pajama/128/layer_3/self_attn.q_proj.pt
-best_loss 579.759765625 running bpv: 1.924709
-already done with  pajama/128/layer_3/self_attn.k_proj.pt
-best_loss 646.091552734375 running bpv: 1.947696
-already done with  pajama/128/layer_3/self_attn.o_proj.pt
-best_loss 1.3413543701171875 running bpv: 1.965194
-already done with  pajama/128/layer_3/mlp.down_proj.pt
-best_loss 1.8309352397918701 running bpv: 1.955111
-already done with  pajama/128/layer_3/self_attn.v_proj.pt
-best_loss 169.3349609375 running bpv: 1.966645
-already done with  pajama/128/layer_5/mlp.gate_proj.pt
-best_loss 482.552734375 running bpv: 1.953257
-already done with  pajama/128/layer_5/mlp.up_proj.pt
-best_loss 387.99560546875 running bpv: 1.943996
-already done with  pajama/128/layer_5/self_attn.q_proj.pt
-best_loss 637.4156494140625 running bpv: 1.952145
-already done with  pajama/128/layer_5/self_attn.k_proj.pt
-best_loss 708.8358764648438 running bpv: 1.959455
-already done with  pajama/128/layer_5/self_attn.o_proj.pt
-best_loss 4.52095890045166 running bpv: 1.96605
-already done with  pajama/128/layer_5/mlp.down_proj.pt
-best_loss 4.8027191162109375 running bpv: 1.961128
-already done with  pajama/128/layer_5/self_attn.v_proj.pt
-best_loss 190.7017822265625 running bpv: 1.966645
-already done with  pajama/128/layer_8/mlp.gate_proj.pt
-best_loss 720.5978393554688 running bpv: 1.95928
-already done with  pajama/128/layer_8/mlp.up_proj.pt
-best_loss 599.8656005859375 running bpv: 1.953257
-already done with  pajama/128/layer_8/self_attn.q_proj.pt
-best_loss 971.0189208984375 running bpv: 1.95788
-already done with  pajama/128/layer_8/self_attn.k_proj.pt
-best_loss 1000.559814453125 running bpv: 1.962209
-already done with  pajama/128/layer_8/self_attn.o_proj.pt
-best_loss 13.830799102783203 running bpv: 1.966271
-already done with  pajama/128/layer_8/mlp.down_proj.pt
-best_loss 11.396044731140137 running bpv: 1.963019
-already done with  pajama/128/layer_8/self_attn.v_proj.pt
-best_loss 312.27740478515625 running bpv: 1.966645
-already done with  pajama/128/layer_12/mlp.gate_proj.pt
-best_loss 890.76416015625 running bpv: 1.961566
-already done with  pajama/128/layer_12/mlp.up_proj.pt
-best_loss 827.4927978515625 running bpv: 1.957143
-already done with  pajama/128/layer_12/self_attn.q_proj.pt
-best_loss 1239.16162109375 running bpv: 1.960364
-already done with  pajama/128/layer_12/self_attn.k_proj.pt
-best_loss 1330.7923583984375 running bpv: 1.963437
-already done with  pajama/128/layer_12/self_attn.o_proj.pt
-best_loss 31.37116241455078 running bpv: 1.966372
-already done with  pajama/128/layer_12/mlp.down_proj.pt
-best_loss 20.32006072998047 running bpv: 1.963945
-already done with  pajama/128/layer_12/self_attn.v_proj.pt
-best_loss 451.8945007324219 running bpv: 1.966645
-already done with  pajama/128/layer_1/mlp.gate_proj.pt
-best_loss 69.17503356933594 running bpv: 1.962768
-already done with  pajama/128/layer_1/mlp.up_proj.pt
-best_loss 62.110958099365234 running bpv: 1.95928
-already done with  pajama/128/layer_1/self_attn.q_proj.pt
-best_loss 26.991451263427734 running bpv: 1.961751
-already done with  pajama/128/layer_1/self_attn.k_proj.pt
-best_loss 29.11209487915039 running bpv: 1.964133
-already done with  pajama/128/layer_1/self_attn.o_proj.pt
-best_loss 0.3045862019062042 running bpv: 1.96643
-already done with  pajama/128/layer_1/mlp.down_proj.pt
-best_loss 0.4112584590911865 running bpv: 1.964494
-already done with  pajama/128/layer_1/self_attn.v_proj.pt
-best_loss 3.255488634109497 running bpv: 1.966645
-already done with  pajama/128/layer_7/mlp.gate_proj.pt
-best_loss 697.4810791015625 running bpv: 1.963511
-already done with  pajama/128/layer_7/mlp.up_proj.pt
-best_loss 544.81591796875 running bpv: 1.960633
-already done with  pajama/128/layer_7/self_attn.q_proj.pt
-best_loss 991.6454467773438 running bpv: 1.962636
-already done with  pajama/128/layer_7/self_attn.k_proj.pt
-best_loss 1010.8096923828125 running bpv: 1.96458
-already done with  pajama/128/layer_7/self_attn.o_proj.pt
-best_loss 9.061895370483398 running bpv: 1.966468
-already done with  pajama/128/layer_7/mlp.down_proj.pt
-best_loss 9.192328453063965 running bpv: 1.964857
-already done with  pajama/128/layer_7/self_attn.v_proj.pt
-best_loss 304.0806579589844 running bpv: 1.966645
-already done with  pajama/128/layer_0/mlp.gate_proj.pt
-best_loss 16.204967498779297 running bpv: 1.964014
-already done with  pajama/128/layer_0/mlp.up_proj.pt
-best_loss 15.931107521057129 running bpv: 1.961566
-already done with  pajama/128/layer_0/self_attn.q_proj.pt
-best_loss 0.5149383544921875 running bpv: 1.96325
-already done with  pajama/128/layer_0/self_attn.k_proj.pt
-best_loss 0.6939030885696411 running bpv: 1.964893
-already done with  pajama/128/layer_0/self_attn.o_proj.pt
-best_loss 0.014960438013076782 running bpv: 1.966495
-already done with  pajama/128/layer_0/mlp.down_proj.pt
-best_loss 0.04994524270296097 running bpv: 1.965116
-already done with  pajama/128/layer_0/self_attn.v_proj.pt
-best_loss 0.22256705164909363 running bpv: 1.966645
-already done with  pajama/128/layer_31/mlp.gate_proj.pt
-best_loss 3004.77685546875 running bpv: 1.964379
-already done with  pajama/128/layer_31/mlp.up_proj.pt
-best_loss 2686.930419921875 running bpv: 1.962248
-already done with  pajama/128/layer_31/self_attn.q_proj.pt
-best_loss 1291.2940673828125 running bpv: 1.963701
-already done with  pajama/128/layer_31/self_attn.k_proj.pt
-best_loss 1396.947509765625 running bpv: 1.965123
-already done with  pajama/128/layer_31/self_attn.o_proj.pt
-best_loss 224.17564392089844 running bpv: 1.966514
-already done with  pajama/128/layer_31/mlp.down_proj.pt
-best_loss 541.3553466796875 running bpv: 1.965309
-already done with  pajama/128/layer_31/self_attn.v_proj.pt
-best_loss 988.1417236328125 running bpv: 1.966645
-already done with  pajama/128/layer_21/mlp.gate_proj.pt
-best_loss 2176.29345703125 running bpv: 1.964654
-already done with  pajama/128/layer_21/mlp.up_proj.pt
-best_loss 1853.4326171875 running bpv: 1.962768
-already done with  pajama/128/layer_21/self_attn.q_proj.pt
-best_loss 1585.939208984375 running bpv: 1.964046
-already done with  pajama/128/layer_21/self_attn.k_proj.pt
-best_loss 1626.128662109375 running bpv: 1.9653
-already done with  pajama/128/layer_21/self_attn.o_proj.pt
-best_loss 59.01573944091797 running bpv: 1.966529
-already done with  pajama/128/layer_21/mlp.down_proj.pt
-best_loss 87.84068298339844 running bpv: 1.965459
-already done with  pajama/128/layer_21/self_attn.v_proj.pt
-best_loss 1000.679443359375 running bpv: 1.966645
-already done with  pajama/128/layer_26/mlp.gate_proj.pt
-best_loss 2918.858642578125 running bpv: 1.96487
-already done with  pajama/128/layer_26/mlp.up_proj.pt
-best_loss 2523.623779296875 running bpv: 1.963179
-already done with  pajama/128/layer_26/self_attn.q_proj.pt
-best_loss 1874.30908203125 running bpv: 1.964319
-already done with  pajama/128/layer_26/self_attn.k_proj.pt
-best_loss 1914.814208984375 running bpv: 1.96544
-already done with  pajama/128/layer_26/self_attn.o_proj.pt
-best_loss 108.14741516113281 running bpv: 1.966541
-already done with  pajama/128/layer_26/mlp.down_proj.pt
-best_loss 130.71072387695312 running bpv: 1.965578
-already done with  pajama/128/layer_26/self_attn.v_proj.pt
-best_loss 1491.229736328125 running bpv: 1.966645
-already done with  pajama/128/layer_14/mlp.gate_proj.pt
-best_loss 1026.802490234375 running bpv: 1.965044
-already done with  pajama/128/layer_14/mlp.up_proj.pt
-best_loss 981.3709106445312 running bpv: 1.963511
-already done with  pajama/128/layer_14/self_attn.q_proj.pt
-best_loss 1326.99658203125 running bpv: 1.96454
-already done with  pajama/128/layer_14/self_attn.k_proj.pt
-best_loss 1376.757568359375 running bpv: 1.965553
-already done with  pajama/128/layer_14/self_attn.o_proj.pt
-best_loss 42.478275299072266 running bpv: 1.966551
-already done with  pajama/128/layer_14/mlp.down_proj.pt
-best_loss 29.131614685058594 running bpv: 1.965676
-already done with  pajama/128/layer_14/self_attn.v_proj.pt
-best_loss 503.2622985839844 running bpv: 1.966645
-already done with  pajama/128/layer_15/mlp.gate_proj.pt
-best_loss 1128.72802734375 running bpv: 1.965186
-already done with  pajama/128/layer_15/mlp.up_proj.pt
-best_loss 1083.4892578125 running bpv: 1.963785
-already done with  pajama/128/layer_15/self_attn.q_proj.pt
-best_loss 1259.977783203125 running bpv: 1.964723
-already done with  pajama/128/layer_15/self_attn.k_proj.pt
-best_loss 1349.507080078125 running bpv: 1.965647
-already done with  pajama/128/layer_15/self_attn.o_proj.pt
-best_loss 46.27610778808594 running bpv: 1.966559
-already done with  pajama/128/layer_15/mlp.down_proj.pt
-best_loss 36.970375061035156 running bpv: 1.965757
-already done with  pajama/128/layer_15/self_attn.v_proj.pt
-best_loss 530.69921875 running bpv: 1.966645
-already done with  pajama/128/layer_4/mlp.gate_proj.pt
-best_loss 382.4545593261719 running bpv: 1.965306
-already done with  pajama/128/layer_4/mlp.up_proj.pt
-best_loss 310.8258361816406 running bpv: 1.964014
-already done with  pajama/128/layer_4/self_attn.q_proj.pt
-best_loss 563.74267578125 running bpv: 1.964876
-already done with  pajama/128/layer_4/self_attn.k_proj.pt
-best_loss 597.85400390625 running bpv: 1.965726
-already done with  pajama/128/layer_4/self_attn.o_proj.pt
-best_loss 2.9352190494537354 running bpv: 1.966566
-already done with  pajama/128/layer_4/mlp.down_proj.pt
-best_loss 3.321382522583008 running bpv: 1.965826
-already done with  pajama/128/layer_4/self_attn.v_proj.pt
-best_loss 162.07537841796875 running bpv: 1.966645
-already done with  pajama/128/layer_27/mlp.gate_proj.pt
-best_loss 3090.975341796875 running bpv: 1.965407
-already done with  pajama/128/layer_27/mlp.up_proj.pt
-best_loss 2679.318603515625 running bpv: 1.96421
-already done with  pajama/128/layer_27/self_attn.q_proj.pt
-best_loss 2076.22607421875 running bpv: 1.965007
-already done with  pajama/128/layer_27/self_attn.k_proj.pt
-best_loss 2145.0107421875 running bpv: 1.965794
-already done with  pajama/128/layer_27/self_attn.o_proj.pt
-best_loss 92.63406372070312 running bpv: 1.966571
-already done with  pajama/128/layer_27/mlp.down_proj.pt
-best_loss 148.31463623046875 running bpv: 1.965885
-already done with  pajama/128/layer_27/self_attn.v_proj.pt
-best_loss 1551.5413818359375 running bpv: 1.966645
-already done with  pajama/128/layer_2/mlp.gate_proj.pt
-best_loss 158.63995361328125 running bpv: 1.965494
-already done with  pajama/128/layer_2/mlp.up_proj.pt
-best_loss 136.17156982421875 running bpv: 1.964379
-already done with  pajama/128/layer_2/self_attn.q_proj.pt
-best_loss 220.77005004882812 running bpv: 1.96512
-already done with  pajama/128/layer_2/self_attn.k_proj.pt
-best_loss 236.69619750976562 running bpv: 1.965852
-already done with  pajama/128/layer_2/self_attn.o_proj.pt
-best_loss 0.7851979732513428 running bpv: 1.966576
-already done with  pajama/128/layer_2/mlp.down_proj.pt
-best_loss 0.8960755467414856 running bpv: 1.965936
-already done with  pajama/128/layer_2/self_attn.v_proj.pt
-best_loss 60.62411117553711 running bpv: 1.966645
-already done with  pajama/128/layer_28/mlp.gate_proj.pt
-best_loss 3200.4033203125 running bpv: 1.96557
-already done with  pajama/128/layer_28/mlp.up_proj.pt
-best_loss 2908.63720703125 running bpv: 1.964525
-already done with  pajama/128/layer_28/self_attn.q_proj.pt
-best_loss 2015.95556640625 running bpv: 1.965218
-already done with  pajama/128/layer_28/self_attn.k_proj.pt
-best_loss 2094.946044921875 running bpv: 1.965903
-already done with  pajama/128/layer_28/self_attn.o_proj.pt
-best_loss 128.31007385253906 running bpv: 1.966581
-already done with  pajama/128/layer_28/mlp.down_proj.pt
-best_loss 181.64639282226562 running bpv: 1.965981
-already done with  pajama/128/layer_28/self_attn.v_proj.pt
-best_loss 1696.669189453125 running bpv: 1.966645
-already done with  pajama/128/layer_18/mlp.gate_proj.pt
-best_loss 1718.7791748046875 running bpv: 1.965636
-already done with  pajama/128/layer_18/mlp.up_proj.pt
-best_loss 1527.257080078125 running bpv: 1.964654
-already done with  pajama/128/layer_18/self_attn.q_proj.pt
-best_loss 1485.26611328125 running bpv: 1.965304
-already done with  pajama/128/layer_18/self_attn.k_proj.pt
-best_loss 1558.185791015625 running bpv: 1.965948
-already done with  pajama/128/layer_18/self_attn.o_proj.pt
-best_loss 51.86266326904297 running bpv: 1.966585
-already done with  pajama/128/layer_18/mlp.down_proj.pt
-best_loss 64.00053405761719 running bpv: 1.96602
-already done with  pajama/128/layer_18/self_attn.v_proj.pt
-best_loss 798.900390625 running bpv: 1.966645
-already done with  pajama/128/layer_25/mlp.gate_proj.pt
-best_loss 2766.7470703125 running bpv: 1.965695
-already done with  pajama/128/layer_25/mlp.up_proj.pt
-best_loss 2345.84033203125 running bpv: 1.964768
-already done with  pajama/128/layer_25/self_attn.q_proj.pt
-best_loss 2028.275390625 running bpv: 1.965381
-already done with  pajama/128/layer_25/self_attn.k_proj.pt
-best_loss 2051.391357421875 running bpv: 1.965987
-already done with  pajama/128/layer_25/self_attn.o_proj.pt
-best_loss 63.893131256103516 running bpv: 1.966588
-already done with  pajama/128/layer_25/mlp.down_proj.pt
-best_loss 118.53509521484375 running bpv: 1.966055
-already done with  pajama/128/layer_25/self_attn.v_proj.pt
-best_loss 1517.4501953125 running bpv: 1.966645
-already done with  pajama/128/layer_30/mlp.gate_proj.pt
-best_loss 3397.859130859375 running bpv: 1.965747
-already done with  pajama/128/layer_30/mlp.up_proj.pt
-best_loss 3077.146484375 running bpv: 1.96487
-already done with  pajama/128/layer_30/self_attn.q_proj.pt
-best_loss 1888.326416015625 running bpv: 1.965449
-already done with  pajama/128/layer_30/self_attn.k_proj.pt
-best_loss 1975.290771484375 running bpv: 1.966023
-already done with  pajama/128/layer_30/self_attn.o_proj.pt
-best_loss 162.73561096191406 running bpv: 1.966591
-already done with  pajama/128/layer_30/self_attn.v_proj.pt
-best_loss 1807.0072021484375 running bpv: 1.967155
-already done with  pajama/128/layer_29/mlp.gate_proj.pt
-best_loss 3302.370849609375 running bpv: 1.966287
-already done with  pajama/128/layer_29/mlp.up_proj.pt
-best_loss 3044.038330078125 running bpv: 1.96544
-already done with  pajama/128/layer_29/self_attn.q_proj.pt
-best_loss 1758.49365234375 running bpv: 1.965993
-already done with  pajama/128/layer_29/self_attn.k_proj.pt
-best_loss 1816.5419921875 running bpv: 1.966541
-already done with  pajama/128/layer_29/self_attn.o_proj.pt
-best_loss 134.60069274902344 running bpv: 1.967085
-already done with  pajama/128/layer_29/self_attn.v_proj.pt
-best_loss 1591.7425537109375 running bpv: 1.967624
-pajama/128/layer_16/self_attn.q_proj.pt is done
-best_loss 1298.48876953125 running bpv: 1.968158
- 62%|██████▏   | 139/224 [01:40<01:01,  1.39it/s]pajama/128/layer_16/self_attn.k_proj.pt is done
-best_loss 1382.23974609375 running bpv: 1.968688
- 62%|██████▎   | 140/224 [01:55<01:12,  1.16it/s]pajama/128/layer_16/mlp.up_proj.pt is done
-best_loss 1238.6416015625 running bpv: 1.967845
- 63%|██████▎   | 141/224 [03:00<02:28,  1.78s/it]pajama/128/layer_16/mlp.gate_proj.pt is done
-best_loss 1309.541259765625 running bpv: 1.96702
- 63%|██████▎   | 142/224 [03:15<02:48,  2.05s/it]pajama/128/layer_16/self_attn.o_proj.pt is done
-best_loss 63.239479064941406 running bpv: 1.967541
-pajama/128/layer_16/self_attn.v_proj.pt is done
-best_loss 602.66015625 running bpv: 1.968057
- 64%|██████▍   | 144/224 [04:15<04:45,  3.56s/it]pajama/128/layer_29/mlp.down_proj.pt is done
-best_loss 218.0821533203125 running bpv: 1.967576
- 65%|██████▍   | 145/224 [05:30<08:11,  6.23s/it]pajama/128/layer_13/self_attn.q_proj.pt is done
-best_loss 1277.50048828125 running bpv: 1.968085
-pajama/128/layer_30/mlp.down_proj.pt is done
-best_loss 303.52630615234375 running bpv: 1.967611
- 66%|██████▌   | 147/224 [05:50<08:27,  6.59s/it]pajama/128/layer_16/mlp.down_proj.pt is done
-best_loss 49.27790832519531 running bpv: 1.967147
-pajama/128/layer_13/mlp.up_proj.pt is done
-best_loss 903.4468994140625 running bpv: 1.966373
- 67%|██████▋   | 149/224 [06:10<08:45,  7.00s/it]pajama/128/layer_13/mlp.gate_proj.pt is done
-best_loss 945.4615478515625 running bpv: 1.965616
- 67%|██████▋   | 150/224 [06:25<09:25,  7.64s/it]pajama/128/layer_13/self_attn.k_proj.pt is done
-best_loss 1321.31298828125 running bpv: 1.966109
- 67%|██████▋   | 151/224 [06:50<11:26,  9.41s/it]pajama/128/layer_13/self_attn.o_proj.pt is done
-best_loss 35.2009162902832 running bpv: 1.966599
- 68%|██████▊   | 152/224 [07:05<12:08, 10.12s/it]pajama/128/layer_13/self_attn.v_proj.pt is done
-best_loss 502.5500793457031 running bpv: 1.967085
- 68%|██████▊   | 153/224 [07:20<12:51, 10.87s/it]pajama/128/layer_10/self_attn.q_proj.pt is done
-best_loss 1076.00390625 running bpv: 1.967567
- 69%|██████▉   | 154/224 [08:15<21:57, 18.82s/it]pajama/128/layer_10/self_attn.k_proj.pt is done
-best_loss 1143.499267578125 running bpv: 1.968045
- 69%|██████▉   | 155/224 [08:30<20:44, 18.04s/it]pajama/128/layer_10/self_attn.o_proj.pt is done
-best_loss 26.78888702392578 running bpv: 1.96852
- 70%|██████▉   | 156/224 [08:45<19:39, 17.35s/it]pajama/128/layer_10/mlp.up_proj.pt is done
-best_loss 698.1048583984375 running bpv: 1.967766
- 70%|███████   | 157/224 [09:10<21:27, 19.22s/it]pajama/128/layer_10/mlp.gate_proj.pt is done
-best_loss 788.9384765625 running bpv: 1.967026
- 71%|███████   | 158/224 [09:25<19:56, 18.13s/it]pajama/128/layer_10/self_attn.v_proj.pt is done
-best_loss 342.7768859863281 running bpv: 1.967494
- 71%|███████   | 159/224 [09:50<21:38, 19.98s/it]pajama/128/layer_13/mlp.down_proj.pt is done
-best_loss 25.753395080566406 running bpv: 1.967065
- 71%|███████▏  | 160/224 [10:05<19:50, 18.60s/it]pajama/128/layer_19/self_attn.q_proj.pt is done
-best_loss 1438.90625 running bpv: 1.967526
- 72%|███████▏  | 161/224 [10:40<24:25, 23.26s/it]pajama/128/layer_19/self_attn.k_proj.pt is done
-best_loss 1497.279296875 running bpv: 1.967984
- 72%|███████▏  | 162/224 [11:15<27:32, 26.65s/it]pajama/128/layer_19/self_attn.o_proj.pt is done
-best_loss 49.0740966796875 running bpv: 1.968439
- 73%|███████▎  | 163/224 [11:30<23:38, 23.25s/it]pajama/128/layer_19/mlp.up_proj.pt is done
-best_loss 1637.3797607421875 running bpv: 1.967718
- 73%|███████▎  | 164/224 [11:55<23:46, 23.77s/it]pajama/128/layer_19/mlp.gate_proj.pt is done
-best_loss 1861.986572265625 running bpv: 1.96701
-pajama/128/layer_10/mlp.down_proj.pt is done
-best_loss 16.261417388916016 running bpv: 1.966603
- 74%|███████▍  | 166/224 [12:15<16:53, 17.48s/it]pajama/128/layer_19/self_attn.v_proj.pt is done
-best_loss 809.7093505859375 running bpv: 1.967048
- 75%|███████▍  | 167/224 [12:40<18:21, 19.33s/it]pajama/128/layer_6/self_attn.q_proj.pt is done
-best_loss 914.661865234375 running bpv: 1.967489
- 75%|███████▌  | 168/224 [13:25<24:16, 26.01s/it]pajama/128/layer_6/self_attn.k_proj.pt is done
-best_loss 953.822509765625 running bpv: 1.967928
- 75%|███████▌  | 169/224 [13:50<23:35, 25.74s/it]pajama/128/layer_6/self_attn.o_proj.pt is done
-best_loss 6.3553056716918945 running bpv: 1.968364
- 76%|███████▌  | 170/224 [14:05<20:27, 22.74s/it]pajama/128/layer_6/mlp.gate_proj.pt is done
-best_loss 604.2984619140625 running bpv: 1.967673
- 76%|███████▋  | 171/224 [14:30<20:39, 23.39s/it]pajama/128/layer_6/mlp.up_proj.pt is done
-best_loss 467.642333984375 running bpv: 1.966995
- 77%|███████▋  | 172/224 [14:45<18:09, 20.96s/it]pajama/128/layer_19/mlp.down_proj.pt is done
-best_loss 72.12429809570312 running bpv: 1.966604
- 77%|███████▋  | 173/224 [15:00<16:20, 19.22s/it]pajama/128/layer_6/self_attn.v_proj.pt is done
-best_loss 272.2082824707031 running bpv: 1.967031
- 78%|███████▊  | 174/224 [15:15<14:58, 17.98s/it]pajama/128/layer_11/self_attn.q_proj.pt is done
-best_loss 1166.576904296875 running bpv: 1.967456
- 78%|███████▊  | 175/224 [16:10<23:38, 28.95s/it]pajama/128/layer_11/self_attn.k_proj.pt is done
-best_loss 1178.16015625 running bpv: 1.967877
- 79%|███████▊  | 176/224 [16:25<19:50, 24.80s/it]pajama/128/layer_11/self_attn.o_proj.pt is done
-best_loss 28.157379150390625 running bpv: 1.968295
- 79%|███████▉  | 177/224 [16:40<17:08, 21.88s/it]pajama/128/layer_6/mlp.down_proj.pt is done
-best_loss 7.07060432434082 running bpv: 1.967902
- 79%|███████▉  | 178/224 [16:55<15:11, 19.82s/it]pajama/128/layer_11/mlp.up_proj.pt is done
-best_loss 765.7962646484375 running bpv: 1.967248
- 80%|███████▉  | 179/224 [17:10<13:47, 18.38s/it]pajama/128/layer_11/mlp.gate_proj.pt is done
-best_loss 842.1951904296875 running bpv: 1.966606
- 80%|████████  | 180/224 [17:25<12:44, 17.37s/it]pajama/128/layer_11/self_attn.v_proj.pt is done
-best_loss 462.4133605957031 running bpv: 1.967016
- 81%|████████  | 181/224 [17:50<14:05, 19.66s/it]pajama/128/layer_20/self_attn.q_proj.pt is done
-best_loss 1483.03857421875 running bpv: 1.967424
- 81%|████████▏ | 182/224 [18:35<19:04, 27.25s/it]pajama/128/layer_20/self_attn.k_proj.pt is done
-best_loss 1542.403564453125 running bpv: 1.967829
- 82%|████████▏ | 183/224 [18:50<16:06, 23.58s/it]pajama/128/layer_20/self_attn.o_proj.pt is done
-best_loss 64.27435302734375 running bpv: 1.968232
- 82%|████████▏ | 184/224 [19:15<16:00, 24.01s/it]pajama/128/layer_20/mlp.gate_proj.pt is done
-best_loss 2016.7489013671875 running bpv: 1.967595
- 83%|████████▎ | 185/224 [19:40<15:47, 24.31s/it]pajama/128/layer_20/mlp.up_proj.pt is done
-best_loss 1746.965576171875 running bpv: 1.966969
-pajama/128/layer_11/mlp.down_proj.pt is done
-best_loss 17.621152877807617 running bpv: 1.966607
- 83%|████████▎ | 187/224 [20:00<10:55, 17.71s/it]pajama/128/layer_20/self_attn.v_proj.pt is done
-best_loss 838.8360595703125 running bpv: 1.967002
- 84%|████████▍ | 188/224 [20:15<10:13, 17.04s/it]pajama/128/layer_23/self_attn.q_proj.pt is done
-best_loss 1900.873046875 running bpv: 1.967395
- 84%|████████▍ | 189/224 [21:00<14:12, 24.35s/it]pajama/128/layer_23/self_attn.k_proj.pt is done
-best_loss 1933.63037109375 running bpv: 1.967785
- 85%|████████▍ | 190/224 [21:15<12:21, 21.81s/it]pajama/128/layer_23/self_attn.o_proj.pt is done
-best_loss 68.56022644042969 running bpv: 1.968173
- 85%|████████▌ | 191/224 [21:30<10:56, 19.90s/it]pajama/128/layer_23/mlp.gate_proj.pt is done
-best_loss 2474.133544921875 running bpv: 1.96756
- 86%|████████▌ | 192/224 [22:15<14:26, 27.07s/it]pajama/128/layer_20/mlp.down_proj.pt is done
-best_loss 85.56671142578125 running bpv: 1.967204
- 86%|████████▌ | 193/224 [22:30<12:10, 23.57s/it]pajama/128/layer_23/mlp.up_proj.pt is done
-best_loss 2086.52783203125 running bpv: 1.966609
-pajama/128/layer_23/self_attn.v_proj.pt is done
-best_loss 1276.3563232421875 running bpv: 1.96699
-pajama/128/layer_17/self_attn.q_proj.pt is done
-best_loss 1375.5433349609375 running bpv: 1.967368
- 88%|████████▊ | 196/224 [23:55<12:13, 26.21s/it]pajama/128/layer_17/self_attn.k_proj.pt is done
-best_loss 1433.1514892578125 running bpv: 1.967745
-pajama/128/layer_17/self_attn.o_proj.pt is done
-best_loss 46.9980583190918 running bpv: 1.968119
- 88%|████████▊ | 198/224 [24:15<08:55, 20.61s/it]pajama/128/layer_17/mlp.gate_proj.pt is done
-best_loss 1505.5267333984375 running bpv: 1.967528
- 89%|████████▉ | 199/224 [24:40<08:57, 21.48s/it]pajama/128/layer_23/mlp.down_proj.pt is done
-best_loss 104.71064758300781 running bpv: 1.967185
- 89%|████████▉ | 200/224 [24:55<08:01, 20.05s/it]pajama/128/layer_17/mlp.up_proj.pt is done
-best_loss 1368.2740478515625 running bpv: 1.96661
- 90%|████████▉ | 201/224 [25:10<07:13, 18.85s/it]pajama/128/layer_17/self_attn.v_proj.pt is done
-best_loss 644.7489624023438 running bpv: 1.966978
- 90%|█████████ | 202/224 [25:25<06:33, 17.87s/it]pajama/128/layer_9/self_attn.q_proj.pt is done
-best_loss 1050.745361328125 running bpv: 1.967343
- 91%|█████████ | 203/224 [26:20<09:43, 27.78s/it]pajama/128/layer_9/self_attn.k_proj.pt is done
-best_loss 1103.503173828125 running bpv: 1.967707
- 91%|█████████ | 204/224 [26:35<08:05, 24.25s/it]pajama/128/layer_9/self_attn.o_proj.pt is done
-best_loss 18.81256103515625 running bpv: 1.968068
- 92%|█████████▏| 205/224 [26:50<06:51, 21.64s/it]pajama/128/layer_9/mlp.gate_proj.pt is done
-best_loss 760.9864501953125 running bpv: 1.967498
- 92%|█████████▏| 206/224 [27:15<06:46, 22.60s/it]pajama/128/layer_9/mlp.up_proj.pt is done
-best_loss 654.1846313476562 running bpv: 1.966936
- 92%|█████████▏| 207/224 [27:30<05:46, 20.39s/it]pajama/128/layer_17/mlp.down_proj.pt is done
-best_loss 54.13439178466797 running bpv: 1.966611
- 93%|█████████▎| 208/224 [27:45<05:00, 18.81s/it]pajama/128/layer_9/self_attn.v_proj.pt is done
-best_loss 339.3204650878906 running bpv: 1.966966
- 93%|█████████▎| 209/224 [28:00<04:25, 17.68s/it]pajama/128/layer_22/self_attn.q_proj.pt is done
-best_loss 1711.0341796875 running bpv: 1.96732
- 94%|█████████▍| 210/224 [28:45<06:01, 25.80s/it]pajama/128/layer_22/self_attn.k_proj.pt is done
-best_loss 1763.562255859375 running bpv: 1.967671
- 94%|█████████▍| 211/224 [29:10<05:32, 25.56s/it]pajama/128/layer_22/self_attn.o_proj.pt is done
-best_loss 74.293212890625 running bpv: 1.968021
- 95%|█████████▍| 212/224 [29:25<04:28, 22.41s/it]pajama/128/layer_22/mlp.gate_proj.pt is done
-best_loss 2333.123291015625 running bpv: 1.967469
- 95%|█████████▌| 213/224 [29:50<04:15, 23.18s/it]pajama/128/layer_22/mlp.up_proj.pt is done
-best_loss 1959.37841796875 running bpv: 1.966926
- 96%|█████████▌| 214/224 [30:15<03:57, 23.73s/it]pajama/128/layer_9/mlp.down_proj.pt is done
-best_loss 13.48019027709961 running bpv: 1.966612
- 96%|█████████▌| 215/224 [30:30<03:10, 21.12s/it]pajama/128/layer_22/self_attn.v_proj.pt is done
-best_loss 1039.42724609375 running bpv: 1.966956
- 96%|█████████▋| 216/224 [30:45<02:34, 19.28s/it]pajama/128/layer_24/self_attn.q_proj.pt is done
-best_loss 1713.74951171875 running bpv: 1.967298
- 97%|█████████▋| 217/224 [31:30<03:08, 26.99s/it]pajama/128/layer_24/self_attn.k_proj.pt is done
-best_loss 1732.8389892578125 running bpv: 1.967638
- 97%|█████████▋| 218/224 [31:45<02:20, 23.40s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 84.92597961425781 running bpv: 1.967976
- 98%|█████████▊| 219/224 [32:20<02:14, 26.88s/it]pajama/128/layer_22/mlp.down_proj.pt is done
-best_loss 99.38528442382812 running bpv: 1.967661
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 2606.56494140625 running bpv: 1.967133
-pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 84.92597961425781 running bpv: 1.967467
- 99%|█████████▉| 222/224 [32:30<00:27, 13.64s/it]pajama/128/layer_22/mlp.down_proj.pt is done
-best_loss 99.38528442382812 running bpv: 1.96716
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 2606.56494140625 running bpv: 1.966645
-done
-100%|██████████| 224/224 [32:30<00:00,  8.71s/it]
-Finished compressing Llama-2-7b-hf
-  0%|          | 0/280 [00:00<?, ?it/s]pajama/128/layer_3/self_attn.k_proj.pt is done
-best_loss 258.4765625 running bpv: 2.006875
-  0%|          | 1/280 [01:00<4:40:00, 60.22s/it]pajama/128/layer_3/self_attn.o_proj.pt is done
-best_loss 1.8265032768249512 running bpv: 2.006875
-  1%|          | 2/280 [01:15<2:35:46, 33.62s/it]pajama/128/layer_3/mlp.gate_proj.pt is done
-best_loss 190.0557861328125 running bpv: 2.005519
-  1%|          | 3/280 [01:30<1:55:58, 25.12s/it]pajama/128/layer_3/mlp.up_proj.pt is done
-best_loss 159.0856475830078 running bpv: 2.005152
-pajama/128/layer_3/self_attn.v_proj.pt is done
-best_loss 58.78556823730469 running bpv: 2.005357
-  2%|▏         | 5/280 [01:50<1:15:54, 16.56s/it]pajama/128/layer_3/mlp.down_proj.pt is done
-best_loss 81.50537109375 running bpv: 2.005152
-  2%|▏         | 6/280 [02:05<1:13:34, 16.11s/it]pajama/128/layer_5/self_attn.q_proj.pt is done
-best_loss 509.20965576171875 running bpv: 2.005294
-  2%|▎         | 7/280 [02:20<1:11:50, 15.79s/it]pajama/128/layer_3/self_attn.q_proj.pt is done
-best_loss 216.75009155273438 running bpv: 2.005415
-pajama/128/layer_5/self_attn.k_proj.pt is done
-best_loss 511.62200927734375 running bpv: 2.005519
-  3%|▎         | 9/280 [02:40<59:26, 13.16s/it]  pajama/128/layer_5/mlp.gate_proj.pt is done
-best_loss 348.5624084472656 running bpv: 2.005357
-pajama/128/layer_5/mlp.up_proj.pt is done
-best_loss 279.80810546875 running bpv: 2.00524
-  4%|▍         | 11/280 [03:00<53:25, 11.92s/it]pajama/128/layer_5/self_attn.o_proj.pt is done
-best_loss 4.360340595245361 running bpv: 2.00532
-pajama/128/layer_8/self_attn.q_proj.pt is done
-best_loss 712.1439819335938 running bpv: 2.005392
-  5%|▍         | 13/280 [03:40<1:05:58, 14.83s/it]pajama/128/layer_8/self_attn.k_proj.pt is done
-best_loss 758.9054565429688 running bpv: 2.005458
-pajama/128/layer_5/mlp.down_proj.pt is done
-best_loss 4.384510040283203 running bpv: 2.005357
-  5%|▌         | 15/280 [04:00<58:15, 13.19s/it]  pajama/128/layer_8/mlp.up_proj.pt is done
-best_loss 465.7800598144531 running bpv: 2.005276
-pajama/128/layer_5/self_attn.v_proj.pt is done
-best_loss 160.62794494628906 running bpv: 2.005331
-  6%|▌         | 17/280 [04:20<53:15, 12.15s/it]pajama/128/layer_8/mlp.gate_proj.pt is done
-best_loss 578.8033447265625 running bpv: 2.005261
-pajama/128/layer_8/self_attn.o_proj.pt is done
-best_loss 14.608076095581055 running bpv: 2.005311
-  7%|▋         | 19/280 [04:40<49:52, 11.47s/it]pajama/128/layer_8/self_attn.v_proj.pt is done
-best_loss 262.466064453125 running bpv: 2.005357
-pajama/128/layer_39/self_attn.q_proj.pt is done
-best_loss 1013.1343994140625 running bpv: 2.005401
-  8%|▊         | 21/280 [05:00<47:31, 11.01s/it]pajama/128/layer_8/mlp.down_proj.pt is done
-best_loss 11.277207374572754 running bpv: 2.005337
-pajama/128/layer_39/self_attn.k_proj.pt is done
-best_loss 1072.50537109375 running bpv: 2.005377
-  8%|▊         | 23/280 [05:20<45:49, 10.70s/it]pajama/128/layer_39/self_attn.o_proj.pt is done
-best_loss 459.5968322753906 running bpv: 2.005415
-  9%|▊         | 24/280 [05:35<48:57, 11.48s/it]pajama/128/layer_39/mlp.gate_proj.pt is done
-best_loss 2423.49755859375 running bpv: 2.005357
-pajama/128/layer_39/mlp.up_proj.pt is done
-best_loss 2094.63427734375 running bpv: 2.005306
-  9%|▉         | 26/280 [05:55<46:27, 10.97s/it]pajama/128/layer_39/self_attn.v_proj.pt is done
-best_loss 1008.240234375 running bpv: 2.005341
-pajama/128/layer_39/mlp.down_proj.pt is done
-best_loss 483.44598388671875 running bpv: 2.005294
- 10%|█         | 28/280 [06:15<44:45, 10.66s/it]pajama/128/layer_12/self_attn.q_proj.pt is done
-best_loss 907.0957641601562 running bpv: 2.005326
-pajama/128/layer_12/self_attn.k_proj.pt is done
-best_loss 974.218505859375 running bpv: 2.005357
- 11%|█         | 30/280 [06:35<43:32, 10.45s/it]pajama/128/layer_12/mlp.gate_proj.pt is done
-best_loss 688.263671875 running bpv: 2.005314
- 11%|█         | 31/280 [06:50<46:51, 11.29s/it]pajama/128/layer_12/mlp.up_proj.pt is done
-best_loss 634.5740966796875 running bpv: 2.005276
-pajama/128/layer_12/self_attn.o_proj.pt is done
-best_loss 37.41379928588867 running bpv: 2.005304
-pajama/128/layer_12/self_attn.v_proj.pt is done
-best_loss 369.0528564453125 running bpv: 2.005331
- 12%|█▏        | 34/280 [07:15<40:55,  9.98s/it]pajama/128/layer_1/self_attn.q_proj.pt is done
-best_loss 43.82744216918945 running bpv: 2.005357
- 12%|█▎        | 35/280 [07:40<51:26, 12.60s/it]pajama/128/layer_12/mlp.down_proj.pt is done
-best_loss 19.43429183959961 running bpv: 2.00532
-pajama/128/layer_1/self_attn.k_proj.pt is done
-best_loss 44.231239318847656 running bpv: 2.005345
-pajama/128/layer_1/mlp.gate_proj.pt is done
-best_loss 44.11634826660156 running bpv: 2.005311
- 14%|█▎        | 38/280 [08:05<43:28, 10.78s/it]pajama/128/layer_1/self_attn.o_proj.pt is done
-best_loss 0.3699082136154175 running bpv: 2.005334
-pajama/128/layer_1/mlp.up_proj.pt is done
-best_loss 38.371246337890625 running bpv: 2.005302
- 14%|█▍        | 40/280 [08:25<42:12, 10.55s/it]pajama/128/layer_1/self_attn.v_proj.pt is done
-best_loss 6.514858722686768 running bpv: 2.005325
-pajama/128/layer_7/self_attn.q_proj.pt is done
-best_loss 592.7182006835938 running bpv: 2.005346
- 15%|█▌        | 42/280 [08:45<41:13, 10.39s/it]pajama/128/layer_7/self_attn.k_proj.pt is done
-best_loss 638.87451171875 running bpv: 2.005368
- 15%|█▌        | 43/280 [09:00<44:11, 11.19s/it]pajama/128/layer_1/mlp.down_proj.pt is done
-best_loss 0.39373978972435 running bpv: 2.005337
-pajama/128/layer_7/mlp.up_proj.pt is done
-best_loss 400.4653625488281 running bpv: 2.005308
- 16%|█▌        | 45/280 [09:20<42:17, 10.80s/it]pajama/128/layer_7/self_attn.o_proj.pt is done
-best_loss 10.79603385925293 running bpv: 2.005328
-pajama/128/layer_7/mlp.gate_proj.pt is done
-best_loss 514.6420288085938 running bpv: 2.005301
-pajama/128/layer_7/self_attn.v_proj.pt is done
-best_loss 207.05419921875 running bpv: 2.00532
- 17%|█▋        | 48/280 [09:45<37:48,  9.78s/it]pajama/128/layer_33/self_attn.q_proj.pt is done
-best_loss 1537.2115478515625 running bpv: 2.005339
- 18%|█▊        | 49/280 [10:00<40:57, 10.64s/it]pajama/128/layer_33/self_attn.k_proj.pt is done
-best_loss 1601.601318359375 running bpv: 2.005357
- 18%|█▊        | 50/280 [10:15<43:58, 11.47s/it]pajama/128/layer_33/self_attn.o_proj.pt is done
-best_loss 69.85403442382812 running bpv: 2.005375
- 18%|█▊        | 51/280 [10:30<46:39, 12.23s/it]pajama/128/layer_33/mlp.gate_proj.pt is done
-best_loss 2445.9033203125 running bpv: 2.005348
-pajama/128/layer_7/mlp.down_proj.pt is done
-best_loss 8.911884307861328 running bpv: 2.005324
-pajama/128/layer_33/mlp.up_proj.pt is done
-best_loss 2064.110107421875 running bpv: 2.0053
- 19%|█▉        | 54/280 [10:55<39:02, 10.36s/it]pajama/128/layer_33/self_attn.v_proj.pt is done
-best_loss 1170.14501953125 running bpv: 2.005317
-pajama/128/layer_34/self_attn.q_proj.pt is done
-best_loss 1544.257568359375 running bpv: 2.005333
- 20%|██        | 56/280 [11:15<38:16, 10.25s/it]pajama/128/layer_34/self_attn.k_proj.pt is done
-best_loss 1625.7049560546875 running bpv: 2.005349
- 20%|██        | 57/280 [11:30<41:19, 11.12s/it]pajama/128/layer_33/mlp.down_proj.pt is done
-best_loss 112.32096862792969 running bpv: 2.005326
-pajama/128/layer_34/mlp.gate_proj.pt is done
-best_loss 2512.6953125 running bpv: 2.005305
- 21%|██        | 59/280 [11:50<39:32, 10.74s/it]pajama/128/layer_34/self_attn.o_proj.pt is done
-best_loss 89.28723907470703 running bpv: 2.00532
-pajama/128/layer_34/mlp.up_proj.pt is done
-best_loss 2195.0234375 running bpv: 2.005299
- 22%|██▏       | 61/280 [12:10<38:18, 10.50s/it]pajama/128/layer_34/self_attn.v_proj.pt is done
-best_loss 1281.45947265625 running bpv: 2.005314
-pajama/128/layer_0/self_attn.q_proj.pt is done
-best_loss 3.4739842414855957 running bpv: 2.005329
- 22%|██▎       | 63/280 [12:40<43:10, 11.94s/it]pajama/128/layer_0/self_attn.k_proj.pt is done
-best_loss 2.0043716430664062 running bpv: 2.005343
- 23%|██▎       | 64/280 [12:55<45:01, 12.51s/it]pajama/128/layer_0/mlp.gate_proj.pt is done
-best_loss 10.38659954071045 running bpv: 2.005323
-pajama/128/layer_34/mlp.down_proj.pt is done
-best_loss 125.32307434082031 running bpv: 2.005304
-pajama/128/layer_0/mlp.up_proj.pt is done
-best_loss 7.66945743560791 running bpv: 2.005285
- 24%|██▍       | 67/280 [13:20<37:49, 10.66s/it]pajama/128/layer_0/self_attn.o_proj.pt is done
-best_loss 0.027362067252397537 running bpv: 2.005299
-pajama/128/layer_0/self_attn.v_proj.pt is done
-best_loss 0.12678171694278717 running bpv: 2.005312
- 25%|██▍       | 69/280 [13:50<42:00, 11.95s/it]pajama/128/layer_32/self_attn.q_proj.pt is done
-best_loss 1657.416015625 running bpv: 2.005325
- 25%|██▌       | 70/280 [14:05<43:41, 12.48s/it]pajama/128/layer_32/self_attn.k_proj.pt is done
-best_loss 1734.12255859375 running bpv: 2.005338
-pajama/128/layer_0/mlp.down_proj.pt is done
-best_loss 0.05885427072644234 running bpv: 2.00532
-pajama/128/layer_32/self_attn.o_proj.pt is done
-best_loss 68.7874984741211 running bpv: 2.005333
- 26%|██▌       | 73/280 [14:30<36:55, 10.71s/it]pajama/128/layer_32/mlp.gate_proj.pt is done
-best_loss 2366.30419921875 running bpv: 2.005315
-pajama/128/layer_32/mlp.up_proj.pt is done
-best_loss 1979.5013427734375 running bpv: 2.005298
-pajama/128/layer_32/self_attn.v_proj.pt is done
-best_loss 1303.0860595703125 running bpv: 2.005311
- 27%|██▋       | 76/280 [15:05<37:38, 11.07s/it]pajama/128/layer_31/self_attn.q_proj.pt is done
-best_loss 1587.763916015625 running bpv: 2.005322
- 28%|██▊       | 77/280 [15:20<39:29, 11.67s/it]pajama/128/layer_31/self_attn.k_proj.pt is done
-best_loss 1674.3890380859375 running bpv: 2.005334
-pajama/128/layer_31/mlp.gate_proj.pt is done
-best_loss 2280.99365234375 running bpv: 2.005318
- 28%|██▊       | 79/280 [15:40<37:24, 11.16s/it]pajama/128/layer_31/mlp.up_proj.pt is done
-best_loss 1880.089111328125 running bpv: 2.005302
- 29%|██▊       | 80/280 [15:55<39:30, 11.85s/it]pajama/128/layer_31/self_attn.o_proj.pt is done
-best_loss 69.67636108398438 running bpv: 2.005313
-pajama/128/layer_32/mlp.down_proj.pt is done
-best_loss 107.14764404296875 running bpv: 2.005298
- 29%|██▉       | 82/280 [16:15<37:02, 11.23s/it]pajama/128/layer_31/self_attn.v_proj.pt is done
-best_loss 1130.80810546875 running bpv: 2.005309
-pajama/128/layer_21/self_attn.q_proj.pt is done
-best_loss 1132.097900390625 running bpv: 2.00532
- 30%|███       | 84/280 [16:35<35:22, 10.83s/it]pajama/128/layer_21/self_attn.k_proj.pt is done
-best_loss 1223.2003173828125 running bpv: 2.005331
- 30%|███       | 85/280 [16:50<37:45, 11.62s/it]pajama/128/layer_31/mlp.down_proj.pt is done
-best_loss 98.95310974121094 running bpv: 2.005316
-pajama/128/layer_21/self_attn.o_proj.pt is done
-best_loss 87.2704849243164 running bpv: 2.005326
- 31%|███       | 87/280 [17:10<35:32, 11.05s/it]pajama/128/layer_21/mlp.gate_proj.pt is done
-best_loss 1441.05517578125 running bpv: 2.005312
-pajama/128/layer_21/mlp.up_proj.pt is done
-best_loss 1265.4798583984375 running bpv: 2.005298
- 32%|███▏      | 89/280 [17:30<34:03, 10.70s/it]pajama/128/layer_21/self_attn.v_proj.pt is done
-best_loss 638.9918212890625 running bpv: 2.005308
- 32%|███▏      | 90/280 [17:45<36:30, 11.53s/it]pajama/128/layer_26/self_attn.q_proj.pt is done
-best_loss 1353.691650390625 running bpv: 2.005318
- 32%|███▎      | 91/280 [18:00<38:40, 12.28s/it]pajama/128/layer_26/self_attn.k_proj.pt is done
-best_loss 1424.4766845703125 running bpv: 2.005328
- 33%|███▎      | 92/280 [18:15<40:28, 12.92s/it]pajama/128/layer_21/mlp.down_proj.pt is done
-best_loss 70.17730712890625 running bpv: 2.005314
-pajama/128/layer_26/mlp.gate_proj.pt is done
-best_loss 1880.567626953125 running bpv: 2.005301
-pajama/128/layer_26/self_attn.o_proj.pt is done
-best_loss 69.77351379394531 running bpv: 2.005311
- 34%|███▍      | 95/280 [18:40<32:44, 10.62s/it]pajama/128/layer_26/mlp.up_proj.pt is done
-best_loss 1536.2957763671875 running bpv: 2.005298
-pajama/128/layer_26/self_attn.v_proj.pt is done
-best_loss 952.24560546875 running bpv: 2.005307
- 35%|███▍      | 97/280 [19:10<36:42, 12.04s/it]pajama/128/layer_14/self_attn.q_proj.pt is done
-best_loss 1040.28955078125 running bpv: 2.005316
- 35%|███▌      | 98/280 [19:25<38:11, 12.59s/it]pajama/128/layer_14/self_attn.k_proj.pt is done
-best_loss 1134.346923828125 running bpv: 2.005326
-pajama/128/layer_14/mlp.gate_proj.pt is done
-best_loss 792.0791625976562 running bpv: 2.005313
- 36%|███▌      | 100/280 [19:45<35:03, 11.69s/it]pajama/128/layer_14/mlp.up_proj.pt is done
-best_loss 751.8411254882812 running bpv: 2.0053
-pajama/128/layer_26/mlp.down_proj.pt is done
-best_loss 85.93644714355469 running bpv: 2.005288
-pajama/128/layer_14/self_attn.o_proj.pt is done
-best_loss 53.41217041015625 running bpv: 2.005297
- 37%|███▋      | 103/280 [20:10<30:14, 10.25s/it]pajama/128/layer_14/self_attn.v_proj.pt is done
-best_loss 432.09661865234375 running bpv: 2.005306
- 37%|███▋      | 104/280 [20:25<32:26, 11.06s/it]pajama/128/layer_14/mlp.down_proj.pt is done
-best_loss 26.9300479888916 running bpv: 2.005294
- 38%|███▊      | 105/280 [20:40<34:29, 11.83s/it]pajama/128/layer_15/self_attn.q_proj.pt is done
-best_loss 988.9100341796875 running bpv: 2.005303
-pajama/128/layer_15/self_attn.k_proj.pt is done
-best_loss 1090.4764404296875 running bpv: 2.005312
- 38%|███▊      | 107/280 [21:00<32:13, 11.17s/it]pajama/128/layer_15/mlp.gate_proj.pt is done
-best_loss 860.9956665039062 running bpv: 2.0053
- 39%|███▊      | 108/280 [21:15<34:15, 11.95s/it]pajama/128/layer_15/mlp.up_proj.pt is done
-best_loss 817.8163452148438 running bpv: 2.005289
-pajama/128/layer_15/self_attn.o_proj.pt is done
-best_loss 62.31031799316406 running bpv: 2.005297
-pajama/128/layer_15/self_attn.v_proj.pt is done
-best_loss 449.99102783203125 running bpv: 2.005305
- 40%|███▉      | 111/280 [21:40<28:55, 10.27s/it]pajama/128/layer_4/self_attn.q_proj.pt is done
-best_loss 453.69158935546875 running bpv: 2.005314
- 40%|████      | 112/280 [21:55<31:09, 11.13s/it]pajama/128/layer_4/self_attn.k_proj.pt is done
-best_loss 476.1988525390625 running bpv: 2.005322
- 40%|████      | 113/280 [22:10<33:11, 11.93s/it]pajama/128/layer_15/mlp.down_proj.pt is done
-best_loss 31.880237579345703 running bpv: 2.005311
- 41%|████      | 114/280 [22:25<34:55, 12.63s/it]pajama/128/layer_4/mlp.gate_proj.pt is done
-best_loss 261.02545166015625 running bpv: 2.0053
-pajama/128/layer_4/mlp.up_proj.pt is done
-best_loss 216.87762451171875 running bpv: 2.005289
- 41%|████▏     | 116/280 [22:45<31:41, 11.59s/it]pajama/128/layer_4/self_attn.v_proj.pt is done
-best_loss 131.8822021484375 running bpv: 2.005297
-pajama/128/layer_4/self_attn.o_proj.pt is done
-best_loss 2.690807819366455 running bpv: 2.005305
-pajama/128/layer_4/mlp.down_proj.pt is done
-best_loss 2.746739625930786 running bpv: 2.005294
- 42%|████▎     | 119/280 [23:20<31:12, 11.63s/it]pajama/128/layer_27/self_attn.q_proj.pt is done
-best_loss 1524.777099609375 running bpv: 2.005302
- 43%|████▎     | 120/280 [23:35<32:37, 12.23s/it]pajama/128/layer_27/self_attn.k_proj.pt is done
-best_loss 1600.723876953125 running bpv: 2.00531
-pajama/128/layer_27/self_attn.o_proj.pt is done
-best_loss 56.17139434814453 running bpv: 2.005317
-pajama/128/layer_27/mlp.gate_proj.pt is done
-best_loss 1956.1104736328125 running bpv: 2.005307
- 44%|████▍     | 123/280 [24:00<27:34, 10.54s/it]pajama/128/layer_27/mlp.up_proj.pt is done
-best_loss 1600.0091552734375 running bpv: 2.005297
-pajama/128/layer_27/self_attn.v_proj.pt is done
-best_loss 1072.242431640625 running bpv: 2.005304
- 45%|████▍     | 125/280 [24:20<26:49, 10.38s/it]pajama/128/layer_2/self_attn.q_proj.pt is done
-best_loss 158.24072265625 running bpv: 2.005311
- 45%|████▌     | 126/280 [24:35<28:41, 11.18s/it]pajama/128/layer_27/mlp.down_proj.pt is done
-best_loss 85.54090881347656 running bpv: 2.005302
-pajama/128/layer_2/self_attn.k_proj.pt is done
-best_loss 179.0464630126953 running bpv: 2.005309
- 46%|████▌     | 128/280 [24:55<27:20, 10.79s/it]pajama/128/layer_2/self_attn.o_proj.pt is done
-best_loss 0.8815819025039673 running bpv: 2.005316
-pajama/128/layer_2/self_attn.v_proj.pt is done
-best_loss 39.057289123535156 running bpv: 2.005323
- 46%|████▋     | 130/280 [25:15<26:20, 10.54s/it]pajama/128/layer_2/mlp.gate_proj.pt is done
-best_loss 115.86538696289062 running bpv: 2.005313
-pajama/128/layer_2/mlp.up_proj.pt is done
-best_loss 96.36762237548828 running bpv: 2.005304
-pajama/128/layer_2/mlp.down_proj.pt is done
-best_loss 0.9440994262695312 running bpv: 2.005294
- 48%|████▊     | 133/280 [25:50<26:56, 11.00s/it]pajama/128/layer_36/self_attn.q_proj.pt is done
-best_loss 1364.547119140625 running bpv: 2.005301
- 48%|████▊     | 134/280 [26:05<28:20, 11.65s/it]pajama/128/layer_36/self_attn.k_proj.pt is done
-best_loss 1452.3822021484375 running bpv: 2.005308
-pajama/128/layer_36/mlp.gate_proj.pt is done
-best_loss 2716.774169921875 running bpv: 2.005299
- 49%|████▊     | 136/280 [26:25<26:42, 11.13s/it]pajama/128/layer_36/mlp.up_proj.pt is done
-best_loss 2468.885498046875 running bpv: 2.00529
-pajama/128/layer_36/self_attn.o_proj.pt is done
-best_loss 147.49375915527344 running bpv: 2.005297
-pajama/128/layer_36/self_attn.v_proj.pt is done
-best_loss 1209.691650390625 running bpv: 2.005303
- 50%|████▉     | 139/280 [26:50<23:29, 10.00s/it]pajama/128/layer_28/self_attn.q_proj.pt is done
-best_loss 1522.0146484375 running bpv: 2.00531
- 50%|█████     | 140/280 [27:05<25:12, 10.81s/it]pajama/128/layer_28/self_attn.k_proj.pt is done
-best_loss 1599.5001220703125 running bpv: 2.005316
- 50%|█████     | 141/280 [27:20<26:51, 11.59s/it]pajama/128/layer_28/mlp.gate_proj.pt is done
-best_loss 2016.028076171875 running bpv: 2.005307
- 51%|█████     | 142/280 [27:35<28:19, 12.31s/it]pajama/128/layer_36/mlp.down_proj.pt is done
-best_loss 171.2565460205078 running bpv: 2.005299
- 51%|█████     | 143/280 [27:50<29:32, 12.94s/it]pajama/128/layer_28/mlp.up_proj.pt is done
-best_loss 1647.2080078125 running bpv: 2.00529
-pajama/128/layer_28/self_attn.o_proj.pt is done
-best_loss 62.65057373046875 running bpv: 2.005297
-pajama/128/layer_28/self_attn.v_proj.pt is done
-best_loss 1082.819091796875 running bpv: 2.005303
- 52%|█████▏    | 146/280 [28:15<23:46, 10.64s/it]pajama/128/layer_18/self_attn.q_proj.pt is done
-best_loss 1131.610107421875 running bpv: 2.005309
- 52%|█████▎    | 147/280 [28:30<25:26, 11.48s/it]pajama/128/layer_28/mlp.down_proj.pt is done
-best_loss 87.0462646484375 running bpv: 2.005301
-pajama/128/layer_18/self_attn.k_proj.pt is done
-best_loss 1222.37939453125 running bpv: 2.005307
- 53%|█████▎    | 149/280 [28:50<23:55, 10.96s/it]pajama/128/layer_18/mlp.up_proj.pt is done
-best_loss 1039.0682373046875 running bpv: 2.005298
- 54%|█████▎    | 150/280 [29:05<25:30, 11.77s/it]pajama/128/layer_18/mlp.gate_proj.pt is done
-best_loss 1154.1376953125 running bpv: 2.00529
-pajama/128/layer_18/self_attn.o_proj.pt is done
-best_loss 54.37874984741211 running bpv: 2.005296
-pajama/128/layer_18/self_attn.v_proj.pt is done
-best_loss 581.1665649414062 running bpv: 2.005302
- 55%|█████▍    | 153/280 [29:30<21:32, 10.18s/it]pajama/128/layer_25/self_attn.q_proj.pt is done
-best_loss 1356.0506591796875 running bpv: 2.005308
- 55%|█████▌    | 154/280 [29:45<23:12, 11.05s/it]pajama/128/layer_25/self_attn.k_proj.pt is done
-best_loss 1422.7860107421875 running bpv: 2.005314
- 55%|█████▌    | 155/280 [30:00<24:42, 11.86s/it]pajama/128/layer_18/mlp.down_proj.pt is done
-best_loss 45.19102478027344 running bpv: 2.005306
- 56%|█████▌    | 156/280 [30:15<25:59, 12.58s/it]pajama/128/layer_25/self_attn.o_proj.pt is done
-best_loss 61.347198486328125 running bpv: 2.005312
-pajama/128/layer_25/mlp.gate_proj.pt is done
-best_loss 1807.153564453125 running bpv: 2.005304
-pajama/128/layer_25/mlp.up_proj.pt is done
-best_loss 1483.2664794921875 running bpv: 2.005296
- 57%|█████▋    | 159/280 [30:40<21:08, 10.49s/it]pajama/128/layer_25/self_attn.v_proj.pt is done
-best_loss 932.9608154296875 running bpv: 2.005302
- 57%|█████▋    | 160/280 [30:55<22:41, 11.34s/it]pajama/128/layer_37/self_attn.q_proj.pt is done
-best_loss 1241.6026611328125 running bpv: 2.005308
- 57%|█████▊    | 161/280 [31:10<24:02, 12.13s/it]pajama/128/layer_25/mlp.down_proj.pt is done
-best_loss 80.31784057617188 running bpv: 2.0053
-pajama/128/layer_37/self_attn.k_proj.pt is done
-best_loss 1273.036865234375 running bpv: 2.005306
- 58%|█████▊    | 163/280 [31:30<22:04, 11.32s/it]pajama/128/layer_37/mlp.gate_proj.pt is done
-best_loss 2768.86669921875 running bpv: 2.005298
- 59%|█████▊    | 164/280 [31:45<23:24, 12.11s/it]pajama/128/layer_37/mlp.up_proj.pt is done
-best_loss 2543.266845703125 running bpv: 2.005291
-pajama/128/layer_37/self_attn.v_proj.pt is done
-best_loss 1224.2640380859375 running bpv: 2.005296
- 59%|█████▉    | 166/280 [32:05<21:29, 11.31s/it]pajama/128/layer_37/self_attn.o_proj.pt is done
-best_loss 185.0476837158203 running bpv: 2.005302
-pajama/128/layer_30/self_attn.q_proj.pt is done
-best_loss 1742.447021484375 running bpv: 2.005307
- 60%|██████    | 168/280 [32:25<20:15, 10.85s/it]pajama/128/layer_37/mlp.down_proj.pt is done
-best_loss 206.19586181640625 running bpv: 2.0053
- 60%|██████    | 169/280 [32:50<25:19, 13.69s/it]pajama/128/layer_30/self_attn.k_proj.pt is done
-best_loss 1809.67431640625 running bpv: 2.005305
-pajama/128/layer_30/self_attn.o_proj.pt is done
-best_loss 62.71061706542969 running bpv: 2.005311
-pajama/128/layer_30/mlp.gate_proj.pt is done
-best_loss 2197.86376953125 running bpv: 2.005303
- 61%|██████▏   | 172/280 [33:15<20:11, 11.22s/it]pajama/128/layer_30/mlp.up_proj.pt is done
-best_loss 1816.7901611328125 running bpv: 2.005296
-pajama/128/layer_30/self_attn.v_proj.pt is done
-best_loss 1349.9083251953125 running bpv: 2.005301
- 62%|██████▏   | 174/280 [33:45<21:51, 12.37s/it]pajama/128/layer_29/self_attn.q_proj.pt is done
-best_loss 1605.0858154296875 running bpv: 2.005307
- 62%|██████▎   | 175/280 [34:00<22:28, 12.84s/it]pajama/128/layer_29/self_attn.k_proj.pt is done
-best_loss 1683.11328125 running bpv: 2.005312
-pajama/128/layer_30/mlp.down_proj.pt is done
-best_loss 96.38880920410156 running bpv: 2.005305
- 63%|██████▎   | 177/280 [34:20<20:23, 11.88s/it]pajama/128/layer_29/mlp.gate_proj.pt is done
-best_loss 2080.911865234375 running bpv: 2.005298
-pajama/128/layer_29/mlp.up_proj.pt is done
-best_loss 1712.6502685546875 running bpv: 2.005291
-pajama/128/layer_29/self_attn.v_proj.pt is done
-best_loss 1123.29931640625 running bpv: 2.005296
- 64%|██████▍   | 180/280 [34:45<17:19, 10.39s/it]pajama/128/layer_29/self_attn.o_proj.pt is done
-best_loss 58.5697135925293 running bpv: 2.005301
-pajama/128/layer_16/self_attn.q_proj.pt is done
-best_loss 1080.692138671875 running bpv: 2.005306
- 65%|██████▌   | 182/280 [35:05<16:47, 10.28s/it]pajama/128/layer_16/self_attn.k_proj.pt is done
-best_loss 1185.5576171875 running bpv: 2.005311
- 65%|██████▌   | 183/280 [35:20<17:54, 11.08s/it]pajama/128/layer_29/mlp.down_proj.pt is done
-best_loss 90.76899719238281 running bpv: 2.005304
- 66%|██████▌   | 184/280 [35:35<18:57, 11.85s/it]pajama/128/layer_16/mlp.gate_proj.pt is done
-best_loss 951.2926025390625 running bpv: 2.005298
- 66%|██████▌   | 185/280 [35:50<19:50, 12.53s/it]pajama/128/layer_16/self_attn.o_proj.pt is done
-best_loss 62.012474060058594 running bpv: 2.005303
-pajama/128/layer_16/mlp.up_proj.pt is done
-best_loss 897.1157836914062 running bpv: 2.005296
-pajama/128/layer_16/self_attn.v_proj.pt is done
-best_loss 505.48455810546875 running bpv: 2.005301
- 67%|██████▋   | 188/280 [36:15<16:06, 10.51s/it]pajama/128/layer_13/self_attn.q_proj.pt is done
-best_loss 1039.4466552734375 running bpv: 2.005306
- 68%|██████▊   | 189/280 [36:30<17:12, 11.35s/it]pajama/128/layer_16/mlp.down_proj.pt is done
-best_loss 39.116363525390625 running bpv: 2.005299
-pajama/128/layer_13/self_attn.k_proj.pt is done
-best_loss 1059.97998046875 running bpv: 2.005304
- 68%|██████▊   | 191/280 [36:50<16:08, 10.88s/it]pajama/128/layer_13/mlp.gate_proj.pt is done
-best_loss 736.094970703125 running bpv: 2.005298
- 69%|██████▊   | 192/280 [37:05<17:09, 11.70s/it]pajama/128/layer_13/self_attn.o_proj.pt is done
-best_loss 43.884239196777344 running bpv: 2.005302
-pajama/128/layer_13/mlp.up_proj.pt is done
-best_loss 688.5984497070312 running bpv: 2.005296
-pajama/128/layer_13/self_attn.v_proj.pt is done
-best_loss 449.38165283203125 running bpv: 2.005301
- 70%|██████▉   | 195/280 [37:30<14:22, 10.15s/it]pajama/128/layer_10/self_attn.q_proj.pt is done
-best_loss 854.3812255859375 running bpv: 2.005305
- 70%|███████   | 196/280 [37:45<15:26, 11.02s/it]pajama/128/layer_10/self_attn.k_proj.pt is done
-best_loss 918.2703247070312 running bpv: 2.00531
- 70%|███████   | 197/280 [38:00<16:22, 11.84s/it]pajama/128/layer_13/mlp.down_proj.pt is done
-best_loss 22.88490104675293 running bpv: 2.005304
-pajama/128/layer_10/mlp.up_proj.pt is done
-best_loss 560.577392578125 running bpv: 2.005297
- 71%|███████   | 199/280 [38:20<15:04, 11.16s/it]pajama/128/layer_10/mlp.gate_proj.pt is done
-best_loss 643.8102416992188 running bpv: 2.005291
-pajama/128/layer_10/self_attn.o_proj.pt is done
-best_loss 27.89982032775879 running bpv: 2.005296
-pajama/128/layer_10/self_attn.v_proj.pt is done
-best_loss 319.9639892578125 running bpv: 2.0053
- 72%|███████▏  | 202/280 [38:45<12:53,  9.91s/it]pajama/128/layer_19/self_attn.q_proj.pt is done
-best_loss 1128.1162109375 running bpv: 2.005305
- 72%|███████▎  | 203/280 [39:00<13:51, 10.80s/it]pajama/128/layer_10/mlp.down_proj.pt is done
-best_loss 15.705948829650879 running bpv: 2.005299
- 73%|███████▎  | 204/280 [39:15<14:44, 11.63s/it]pajama/128/layer_19/self_attn.k_proj.pt is done
-best_loss 1205.85400390625 running bpv: 2.005303
-pajama/128/layer_19/mlp.up_proj.pt is done
-best_loss 1111.7841796875 running bpv: 2.005297
- 74%|███████▎  | 206/280 [39:35<13:37, 11.04s/it]pajama/128/layer_19/self_attn.o_proj.pt is done
-best_loss 59.26131820678711 running bpv: 2.005302
-pajama/128/layer_19/mlp.gate_proj.pt is done
-best_loss 1248.510498046875 running bpv: 2.005296
-pajama/128/layer_19/self_attn.v_proj.pt is done
-best_loss 602.2892456054688 running bpv: 2.0053
- 75%|███████▍  | 209/280 [40:10<13:23, 11.32s/it]pajama/128/layer_6/self_attn.q_proj.pt is done
-best_loss 603.4027099609375 running bpv: 2.005305
- 75%|███████▌  | 210/280 [40:25<13:56, 11.95s/it]pajama/128/layer_6/self_attn.k_proj.pt is done
-best_loss 641.35498046875 running bpv: 2.005309
-pajama/128/layer_6/self_attn.o_proj.pt is done
-best_loss 6.457601547241211 running bpv: 2.005313
- 76%|███████▌  | 212/280 [40:45<12:49, 11.31s/it]pajama/128/layer_19/mlp.down_proj.pt is done
-best_loss 50.46403503417969 running bpv: 2.005307
-pajama/128/layer_6/mlp.gate_proj.pt is done
-best_loss 442.70745849609375 running bpv: 2.005302
-pajama/128/layer_6/mlp.up_proj.pt is done
-best_loss 347.7962341308594 running bpv: 2.005296
- 77%|███████▋  | 215/280 [41:10<10:55, 10.08s/it]pajama/128/layer_6/self_attn.v_proj.pt is done
-best_loss 204.22177124023438 running bpv: 2.0053
-pajama/128/layer_11/self_attn.q_proj.pt is done
-best_loss 836.2734375 running bpv: 2.005304
- 78%|███████▊  | 217/280 [41:30<10:33, 10.06s/it]pajama/128/layer_11/self_attn.k_proj.pt is done
-best_loss 903.6395263671875 running bpv: 2.005308
- 78%|███████▊  | 218/280 [41:45<11:15, 10.89s/it]pajama/128/layer_6/mlp.down_proj.pt is done
-best_loss 6.4919209480285645 running bpv: 2.005303
-pajama/128/layer_11/mlp.gate_proj.pt is done
-best_loss 656.0421142578125 running bpv: 2.005297
- 79%|███████▊  | 220/280 [42:05<10:36, 10.60s/it]pajama/128/layer_11/self_attn.o_proj.pt is done
-best_loss 32.60187530517578 running bpv: 2.005301
-pajama/128/layer_11/self_attn.v_proj.pt is done
-best_loss 305.6362609863281 running bpv: 2.005305
- 79%|███████▉  | 222/280 [42:25<10:03, 10.41s/it]pajama/128/layer_11/mlp.up_proj.pt is done
-best_loss 592.2051391601562 running bpv: 2.0053
-pajama/128/layer_20/self_attn.q_proj.pt is done
-best_loss 1063.2493896484375 running bpv: 2.005304
- 80%|████████  | 224/280 [42:45<09:35, 10.28s/it]pajama/128/layer_20/self_attn.k_proj.pt is done
-best_loss 1146.13134765625 running bpv: 2.005308
- 80%|████████  | 225/280 [43:00<10:12, 11.14s/it]pajama/128/layer_11/mlp.down_proj.pt is done
-best_loss 17.639236450195312 running bpv: 2.005303
-pajama/128/layer_20/mlp.up_proj.pt is done
-best_loss 1171.40234375 running bpv: 2.005297
- 81%|████████  | 227/280 [43:20<09:29, 10.75s/it]pajama/128/layer_20/mlp.gate_proj.pt is done
-best_loss 1323.61181640625 running bpv: 2.005292
-pajama/128/layer_20/self_attn.o_proj.pt is done
-best_loss 65.26188659667969 running bpv: 2.005296
-pajama/128/layer_20/self_attn.v_proj.pt is done
-best_loss 557.2721557617188 running bpv: 2.0053
- 82%|████████▏ | 230/280 [43:55<09:17, 11.14s/it]pajama/128/layer_23/self_attn.q_proj.pt is done
-best_loss 1221.7518310546875 running bpv: 2.005304
- 82%|████████▎ | 231/280 [44:10<09:37, 11.79s/it]pajama/128/layer_23/self_attn.k_proj.pt is done
-best_loss 1294.58349609375 running bpv: 2.005308
-pajama/128/layer_20/mlp.down_proj.pt is done
-best_loss 56.80224609375 running bpv: 2.005302
- 83%|████████▎ | 233/280 [44:30<08:46, 11.21s/it]pajama/128/layer_23/mlp.gate_proj.pt is done
-best_loss 1651.650634765625 running bpv: 2.005297
-pajama/128/layer_23/self_attn.o_proj.pt is done
-best_loss 60.326019287109375 running bpv: 2.005301
- 84%|████████▍ | 235/280 [44:50<08:07, 10.83s/it]pajama/128/layer_23/mlp.up_proj.pt is done
-best_loss 1378.7784423828125 running bpv: 2.005296
-pajama/128/layer_23/self_attn.v_proj.pt is done
-best_loss 802.1466674804688 running bpv: 2.0053
- 85%|████████▍ | 237/280 [45:10<07:34, 10.57s/it]pajama/128/layer_35/self_attn.q_proj.pt is done
-best_loss 1445.8984375 running bpv: 2.005303
- 85%|████████▌ | 238/280 [45:25<07:57, 11.38s/it]pajama/128/layer_35/self_attn.k_proj.pt is done
-best_loss 1510.254638671875 running bpv: 2.005307
- 85%|████████▌ | 239/280 [45:40<08:17, 12.12s/it]pajama/128/layer_23/mlp.down_proj.pt is done
-best_loss 75.45223999023438 running bpv: 2.005302
-pajama/128/layer_35/mlp.gate_proj.pt is done
-best_loss 2606.76171875 running bpv: 2.005297
- 86%|████████▌ | 241/280 [46:00<07:22, 11.34s/it]pajama/128/layer_35/self_attn.o_proj.pt is done
-best_loss 91.61803436279297 running bpv: 2.005301
-pajama/128/layer_35/mlp.up_proj.pt is done
-best_loss 2345.081787109375 running bpv: 2.005296
-pajama/128/layer_35/self_attn.v_proj.pt is done
-best_loss 1218.1002197265625 running bpv: 2.005299
- 87%|████████▋ | 244/280 [46:25<06:00, 10.01s/it]pajama/128/layer_35/mlp.down_proj.pt is done
-best_loss 143.014892578125 running bpv: 2.005294
- 88%|████████▊ | 245/280 [46:40<06:20, 10.88s/it]pajama/128/layer_38/self_attn.q_proj.pt is done
-best_loss 1188.978271484375 running bpv: 2.005298
-pajama/128/layer_38/self_attn.k_proj.pt is done
-best_loss 1248.751953125 running bpv: 2.005302
- 88%|████████▊ | 247/280 [47:00<05:49, 10.59s/it]pajama/128/layer_38/self_attn.o_proj.pt is done
-best_loss 294.1490478515625 running bpv: 2.005306
- 89%|████████▊ | 248/280 [47:15<06:05, 11.43s/it]pajama/128/layer_38/mlp.gate_proj.pt is done
-best_loss 2826.580078125 running bpv: 2.005301
-pajama/128/layer_38/mlp.up_proj.pt is done
-best_loss 2510.627685546875 running bpv: 2.005296
- 89%|████████▉ | 250/280 [47:35<05:27, 10.93s/it]pajama/128/layer_38/self_attn.v_proj.pt is done
-best_loss 1315.640625 running bpv: 2.005299
-pajama/128/layer_38/mlp.down_proj.pt is done
-best_loss 273.7765808105469 running bpv: 2.005294
- 90%|█████████ | 252/280 [47:55<04:57, 10.62s/it]pajama/128/layer_17/self_attn.q_proj.pt is done
-best_loss 1073.5496826171875 running bpv: 2.005298
-pajama/128/layer_17/self_attn.k_proj.pt is done
-best_loss 1179.60888671875 running bpv: 2.005302
- 91%|█████████ | 254/280 [48:15<04:30, 10.42s/it]pajama/128/layer_17/mlp.gate_proj.pt is done
-best_loss 1055.211669921875 running bpv: 2.005297
-pajama/128/layer_17/mlp.up_proj.pt is done
-best_loss 974.3050537109375 running bpv: 2.005292
- 91%|█████████▏| 256/280 [48:35<04:06, 10.29s/it]pajama/128/layer_17/self_attn.o_proj.pt is done
-best_loss 60.75844955444336 running bpv: 2.005296
-pajama/128/layer_17/self_attn.v_proj.pt is done
-best_loss 522.8297119140625 running bpv: 2.005299
- 92%|█████████▏| 258/280 [48:55<03:44, 10.20s/it]pajama/128/layer_9/self_attn.q_proj.pt is done
-best_loss 866.7635498046875 running bpv: 2.005303
- 92%|█████████▎| 259/280 [49:10<03:52, 11.07s/it]pajama/128/layer_9/self_attn.k_proj.pt is done
-best_loss 903.99658203125 running bpv: 2.005306
- 93%|█████████▎| 260/280 [49:25<03:57, 11.88s/it]pajama/128/layer_17/mlp.down_proj.pt is done
-best_loss 42.85584259033203 running bpv: 2.005301
- 93%|█████████▎| 261/280 [49:40<03:59, 12.59s/it]pajama/128/layer_9/self_attn.o_proj.pt is done
-best_loss 19.758848190307617 running bpv: 2.005305
-pajama/128/layer_9/mlp.gate_proj.pt is done
-best_loss 629.6959228515625 running bpv: 2.0053
-pajama/128/layer_9/mlp.up_proj.pt is done
-best_loss 529.4481201171875 running bpv: 2.005296
-pajama/128/layer_9/self_attn.v_proj.pt is done
-best_loss 324.6558532714844 running bpv: 2.005299
- 95%|█████████▍| 265/280 [50:10<02:25,  9.72s/it]pajama/128/layer_22/self_attn.q_proj.pt is done
-best_loss 1262.5938720703125 running bpv: 2.005302
- 95%|█████████▌| 266/280 [50:25<02:28, 10.60s/it]pajama/128/layer_9/mlp.down_proj.pt is done
-best_loss 13.361024856567383 running bpv: 2.005298
- 95%|█████████▌| 267/280 [50:40<02:28, 11.46s/it]pajama/128/layer_22/self_attn.k_proj.pt is done
-best_loss 1343.3446044921875 running bpv: 2.005301
-pajama/128/layer_22/mlp.gate_proj.pt is done
-best_loss 1560.8782958984375 running bpv: 2.005297
- 96%|█████████▌| 269/280 [51:00<02:00, 10.94s/it]pajama/128/layer_22/mlp.up_proj.pt is done
-best_loss 1329.403564453125 running bpv: 2.005292
-pajama/128/layer_22/self_attn.o_proj.pt is done
-best_loss 57.90869140625 running bpv: 2.005296
-pajama/128/layer_22/self_attn.v_proj.pt is done
-best_loss 809.069091796875 running bpv: 2.005299
- 97%|█████████▋| 272/280 [51:25<01:18,  9.81s/it]pajama/128/layer_24/self_attn.q_proj.pt is done
-best_loss 1290.9666748046875 running bpv: 2.005302
- 98%|█████████▊| 273/280 [51:40<01:14, 10.70s/it]pajama/128/layer_24/self_attn.k_proj.pt is done
-best_loss 1334.930908203125 running bpv: 2.005306
- 98%|█████████▊| 274/280 [51:55<01:09, 11.54s/it]pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 1718.9031982421875 running bpv: 2.005301
- 98%|█████████▊| 275/280 [52:10<01:01, 12.30s/it]pajama/128/layer_24/mlp.up_proj.pt is done
-best_loss 1420.0985107421875 running bpv: 2.005297
- 99%|█████████▊| 276/280 [52:20<00:47, 11.75s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 52.329124450683594 running bpv: 2.0053
-pajama/128/layer_22/mlp.down_proj.pt is done
-best_loss 74.22919464111328 running bpv: 2.005296
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 1718.9031982421875 running bpv: 2.005291
-pajama/128/layer_24/mlp.up_proj.pt is done
-best_loss 1420.0985107421875 running bpv: 2.005287
-100%|██████████| 280/280 [52:30<00:00,  6.42s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 52.329124450683594 running bpv: 2.00529
-pajama/128/layer_22/mlp.down_proj.pt is done
-best_loss 74.22919464111328 running bpv: 2.005286
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 1718.9031982421875 running bpv: 2.005282
-done
-283it [52:30, 11.13s/it]                         
-Finished quantizing Llama-2-13b-hf
-  0%|          | 0/280 [00:00<?, ?it/s]pajama/128/layer_3/self_attn.o_proj.pt is done
-best_loss 2.0446600914001465 running bpv: 2.068437
-  0%|          | 1/280 [02:20<10:51:05, 140.02s/it]pajama/128/layer_3/self_attn.k_proj.pt is done
-best_loss 254.10952758789062 running bpv: 2.068437
-  1%|          | 2/280 [02:45<5:35:16, 72.36s/it]  pajama/128/layer_3/self_attn.q_proj.pt is done
-best_loss 223.69284057617188 running bpv: 2.068437
-  1%|          | 3/280 [03:10<3:54:14, 50.74s/it]pajama/128/layer_3/self_attn.v_proj.pt is done
-best_loss 70.97718811035156 running bpv: 2.068437
-  1%|▏         | 4/280 [04:05<4:01:08, 52.42s/it]pajama/128/layer_3/mlp.up_proj.pt is done
-best_loss 203.526123046875 running bpv: 1.993307
-  2%|▏         | 5/280 [04:40<3:31:28, 46.14s/it]pajama/128/layer_3/mlp.gate_proj.pt is done
-best_loss 238.23385620117188 running bpv: 1.961336
-  2%|▏         | 6/280 [04:55<2:42:21, 35.55s/it]pajama/128/layer_5/self_attn.q_proj.pt is done
-best_loss 519.6563720703125 running bpv: 1.971635
-  2%|▎         | 7/280 [06:30<4:10:12, 54.99s/it]pajama/128/layer_5/self_attn.o_proj.pt is done
-best_loss 4.786898612976074 running bpv: 1.980126
-  3%|▎         | 8/280 [06:55<3:26:00, 45.44s/it]pajama/128/layer_5/self_attn.k_proj.pt is done
-best_loss 517.6976318359375 running bpv: 1.987248
-  3%|▎         | 9/280 [07:10<2:42:16, 35.93s/it]pajama/128/layer_5/mlp.gate_proj.pt is done
-best_loss 438.581787109375 running bpv: 1.968429
-  4%|▎         | 10/280 [07:25<2:12:36, 29.47s/it]pajama/128/layer_5/mlp.up_proj.pt is done
-best_loss 361.93310546875 running bpv: 1.95532
-  4%|▍         | 11/280 [07:50<2:05:59, 28.10s/it]pajama/128/layer_5/self_attn.v_proj.pt is done
-best_loss 195.6451416015625 running bpv: 1.961336
-  4%|▍         | 12/280 [08:45<2:42:04, 36.29s/it]pajama/128/layer_8/self_attn.q_proj.pt is done
-best_loss 790.510986328125 running bpv: 1.966746
-  5%|▍         | 13/280 [10:20<4:00:37, 54.07s/it]pajama/128/layer_3/mlp.down_proj.pt is done
-best_loss 2.382688045501709 running bpv: 1.958472
-  5%|▌         | 14/280 [10:45<3:20:47, 45.29s/it]pajama/128/layer_8/self_attn.k_proj.pt is done
-best_loss 810.947021484375 running bpv: 1.963152
-  5%|▌         | 15/280 [11:20<3:06:20, 42.19s/it]pajama/128/layer_8/mlp.up_proj.pt is done
-best_loss 612.4168090820312 running bpv: 1.954789
-  6%|▌         | 16/280 [12:05<3:09:21, 43.04s/it]pajama/128/layer_8/self_attn.o_proj.pt is done
-best_loss 15.315619468688965 running bpv: 1.958967
-  6%|▌         | 17/280 [12:20<2:31:41, 34.61s/it]pajama/128/layer_8/mlp.gate_proj.pt is done
-best_loss 732.9530639648438 running bpv: 1.952017
-  6%|▋         | 18/280 [12:35<2:05:23, 28.72s/it]pajama/128/layer_5/mlp.down_proj.pt is done
-best_loss 5.5420427322387695 running bpv: 1.947527
-  7%|▋         | 19/280 [12:50<1:47:00, 24.60s/it]pajama/128/layer_8/self_attn.v_proj.pt is done
-best_loss 317.6188049316406 running bpv: 1.951125
-  7%|▋         | 20/280 [13:25<2:00:07, 27.72s/it]pajama/128/layer_39/self_attn.q_proj.pt is done
-best_loss 1079.547119140625 running bpv: 1.954516
-  8%|▊         | 21/280 [14:30<2:47:58, 38.91s/it]pajama/128/layer_39/self_attn.k_proj.pt is done
-best_loss 1107.309814453125 running bpv: 1.957716
-  8%|▊         | 22/280 [15:05<2:42:16, 37.74s/it]pajama/128/layer_39/self_attn.o_proj.pt is done
-best_loss 456.39056396484375 running bpv: 1.960741
-  8%|▊         | 23/280 [16:20<3:29:32, 48.92s/it]pajama/128/layer_8/mlp.down_proj.pt is done
-best_loss 14.275492668151855 running bpv: 1.956417
-  9%|▊         | 24/280 [17:05<3:23:43, 47.75s/it]pajama/128/layer_39/mlp.gate_proj.pt is done
-best_loss 2824.13427734375 running bpv: 1.951633
-  9%|▉         | 25/280 [17:20<2:41:10, 37.92s/it]pajama/128/layer_39/self_attn.v_proj.pt is done
-best_loss 1196.5421142578125 running bpv: 1.95435
-  9%|▉         | 26/280 [17:35<2:11:25, 31.05s/it]pajama/128/layer_39/mlp.up_proj.pt is done
-best_loss 2420.56103515625 running bpv: 1.950075
- 10%|▉         | 27/280 [18:30<2:41:13, 38.23s/it]pajama/128/layer_12/self_attn.q_proj.pt is done
-best_loss 1039.6461181640625 running bpv: 1.95261
- 10%|█         | 28/280 [19:35<3:14:18, 46.27s/it]pajama/128/layer_12/self_attn.k_proj.pt is done
-best_loss 1074.874267578125 running bpv: 1.955038
- 10%|█         | 29/280 [19:50<2:34:18, 36.89s/it]pajama/128/layer_12/self_attn.o_proj.pt is done
-best_loss 40.55034637451172 running bpv: 1.957367
- 11%|█         | 30/280 [20:35<2:43:50, 39.32s/it]pajama/128/layer_12/mlp.up_proj.pt is done
-best_loss 831.9979248046875 running bpv: 1.953408
- 11%|█         | 31/280 [21:40<3:15:09, 47.03s/it]pajama/128/layer_12/self_attn.v_proj.pt is done
-best_loss 450.25775146484375 running bpv: 1.955603
- 11%|█▏        | 32/280 [21:55<2:34:39, 37.42s/it]pajama/128/layer_12/mlp.gate_proj.pt is done
-best_loss 872.080810546875 running bpv: 1.951996
- 12%|█▏        | 33/280 [22:50<2:55:45, 42.69s/it]pajama/128/layer_1/self_attn.q_proj.pt is done
-best_loss 26.789691925048828 running bpv: 1.954072
- 12%|█▏        | 34/280 [24:25<3:59:23, 58.39s/it]pajama/128/layer_1/self_attn.k_proj.pt is done
-best_loss 23.86733627319336 running bpv: 1.956075
- 12%|█▎        | 35/280 [25:20<3:54:16, 57.37s/it]pajama/128/layer_1/mlp.gate_proj.pt is done
-best_loss 53.586605072021484 running bpv: 1.95273
- 13%|█▎        | 36/280 [26:05<3:38:13, 53.66s/it]pajama/128/layer_1/mlp.up_proj.pt is done
-best_loss 47.80732727050781 running bpv: 1.949675
-pajama/128/layer_39/mlp.down_proj.pt is done
-best_loss 474.63909912109375 running bpv: 1.947527
- 14%|█▎        | 38/280 [26:25<2:15:09, 33.51s/it]pajama/128/layer_12/mlp.down_proj.pt is done
-best_loss 24.65317153930664 running bpv: 1.94555
- 14%|█▍        | 39/280 [26:40<1:56:10, 28.92s/it]pajama/128/layer_1/self_attn.o_proj.pt is done
-best_loss 0.37372469902038574 running bpv: 1.947333
-pajama/128/layer_1/self_attn.v_proj.pt is done
-best_loss 5.8453497886657715 running bpv: 1.949066
- 15%|█▍        | 41/280 [28:40<2:46:32, 41.81s/it]pajama/128/layer_7/self_attn.q_proj.pt is done
-best_loss 667.3799438476562 running bpv: 1.950749
- 15%|█▌        | 42/280 [29:15<2:39:40, 40.25s/it]pajama/128/layer_7/self_attn.k_proj.pt is done
-best_loss 688.9676513671875 running bpv: 1.952386
-pajama/128/layer_7/self_attn.o_proj.pt is done
-best_loss 12.12759017944336 running bpv: 1.953978
- 16%|█▌        | 44/280 [31:05<3:01:14, 46.08s/it]pajama/128/layer_7/self_attn.v_proj.pt is done
-best_loss 255.57992553710938 running bpv: 1.955527
- 16%|█▌        | 45/280 [31:20<2:33:41, 39.24s/it]pajama/128/layer_7/mlp.up_proj.pt is done
-best_loss 521.9112548828125 running bpv: 1.952935
- 16%|█▋        | 46/280 [31:35<2:10:26, 33.44s/it]pajama/128/layer_7/mlp.gate_proj.pt is done
-best_loss 645.1276245117188 running bpv: 1.95052
- 17%|█▋        | 47/280 [32:30<2:31:11, 38.93s/it]pajama/128/layer_1/mlp.down_proj.pt is done
-best_loss 0.5140478014945984 running bpv: 1.948784
- 17%|█▋        | 48/280 [32:45<2:05:51, 32.55s/it]pajama/128/layer_33/self_attn.q_proj.pt is done
-best_loss 1765.8148193359375 running bpv: 1.950226
- 18%|█▊        | 49/280 [34:00<2:50:25, 44.26s/it]pajama/128/layer_33/self_attn.k_proj.pt is done
-best_loss 1816.100830078125 running bpv: 1.951633
- 18%|█▊        | 50/280 [34:55<3:01:19, 47.30s/it]pajama/128/layer_33/self_attn.o_proj.pt is done
-best_loss 75.96231079101562 running bpv: 1.953007
- 18%|█▊        | 51/280 [35:10<2:25:04, 38.01s/it]pajama/128/layer_33/mlp.gate_proj.pt is done
-best_loss 3077.705078125 running bpv: 1.950821
- 19%|█▊        | 52/280 [37:05<3:49:39, 60.44s/it]pajama/128/layer_33/mlp.up_proj.pt is done
-best_loss 2655.0634765625 running bpv: 1.948766
-pajama/128/layer_33/self_attn.v_proj.pt is done
-best_loss 1452.1348876953125 running bpv: 1.950075
-pajama/128/layer_7/mlp.down_proj.pt is done
-best_loss 11.69703483581543 running bpv: 1.948575
- 20%|█▉        | 55/280 [37:30<1:58:09, 31.51s/it]pajama/128/layer_34/self_attn.q_proj.pt is done
-best_loss 1773.638427734375 running bpv: 1.949836
- 20%|██        | 56/280 [39:15<2:55:00, 46.88s/it]pajama/128/layer_34/self_attn.k_proj.pt is done
-best_loss 1815.380126953125 running bpv: 1.95107
-pajama/128/layer_34/self_attn.o_proj.pt is done
-best_loss 100.24363708496094 running bpv: 1.952279
- 21%|██        | 58/280 [39:35<2:02:25, 33.09s/it]pajama/128/layer_34/mlp.gate_proj.pt is done
-best_loss 3177.01416015625 running bpv: 1.950377
- 21%|██        | 59/280 [41:20<2:57:42, 48.25s/it]pajama/128/layer_34/self_attn.v_proj.pt is done
-best_loss 1580.2677001953125 running bpv: 1.951549
-pajama/128/layer_33/mlp.down_proj.pt is done
-best_loss 147.78506469726562 running bpv: 1.950146
- 22%|██▏       | 61/280 [41:40<2:03:37, 33.87s/it]pajama/128/layer_34/mlp.up_proj.pt is done
-best_loss 2815.27001953125 running bpv: 1.948414
- 22%|██▏       | 62/280 [42:25<2:11:37, 36.23s/it]pajama/128/layer_0/self_attn.q_proj.pt is done
-best_loss 0.2194790542125702 running bpv: 1.949534
- 22%|██▎       | 63/280 [44:20<3:17:10, 54.52s/it]pajama/128/layer_0/self_attn.k_proj.pt is done
-best_loss 0.2961050271987915 running bpv: 1.950633
- 23%|██▎       | 64/280 [44:55<2:58:46, 49.66s/it]pajama/128/layer_0/mlp.gate_proj.pt is done
-best_loss 11.315770149230957 running bpv: 1.948962
- 23%|██▎       | 65/280 [45:20<2:34:45, 43.19s/it]pajama/128/layer_0/self_attn.o_proj.pt is done
-best_loss 0.015225952491164207 running bpv: 1.950029
- 24%|██▎       | 66/280 [45:35<2:06:37, 35.50s/it]pajama/128/layer_0/mlp.up_proj.pt is done
-best_loss 9.171314239501953 running bpv: 1.948427
- 24%|██▍       | 67/280 [46:40<2:35:23, 43.77s/it]pajama/128/layer_34/mlp.down_proj.pt is done
-best_loss 160.30722045898438 running bpv: 1.947261
- 24%|██▍       | 68/280 [46:55<2:05:35, 35.55s/it]pajama/128/layer_0/self_attn.v_proj.pt is done
-best_loss 0.09375372529029846 running bpv: 1.948286
- 25%|██▍       | 69/280 [48:00<2:35:02, 44.09s/it]pajama/128/layer_32/self_attn.q_proj.pt is done
-best_loss 1927.142333984375 running bpv: 1.949293
- 25%|██▌       | 70/280 [48:45<2:35:15, 44.36s/it]pajama/128/layer_32/self_attn.k_proj.pt is done
-best_loss 1957.5693359375 running bpv: 1.950283
- 25%|██▌       | 71/280 [49:00<2:04:20, 35.70s/it]pajama/128/layer_32/self_attn.o_proj.pt is done
-best_loss 77.88406372070312 running bpv: 1.951257
- 26%|██▌       | 72/280 [49:45<2:13:18, 38.46s/it]pajama/128/layer_32/mlp.up_proj.pt is done
-best_loss 2514.488525390625 running bpv: 1.949749
- 26%|██▌       | 73/280 [50:30<2:19:23, 40.40s/it]pajama/128/layer_32/mlp.gate_proj.pt is done
-best_loss 2993.389404296875 running bpv: 1.948306
- 26%|██▋       | 74/280 [50:45<1:52:42, 32.83s/it]pajama/128/layer_32/self_attn.v_proj.pt is done
-best_loss 1626.78564453125 running bpv: 1.949246
- 27%|██▋       | 75/280 [51:00<1:33:57, 27.50s/it]pajama/128/layer_0/mlp.down_proj.pt is done
-best_loss 0.06315846741199493 running bpv: 1.948181
- 27%|██▋       | 76/280 [52:35<2:42:09, 47.70s/it]pajama/128/layer_31/self_attn.q_proj.pt is done
-best_loss 1847.2227783203125 running bpv: 1.949096
- 28%|██▊       | 77/280 [52:50<2:08:15, 37.91s/it]pajama/128/layer_31/self_attn.k_proj.pt is done
-best_loss 1916.44189453125 running bpv: 1.949998
-pajama/128/layer_31/self_attn.o_proj.pt is done
-best_loss 76.12100219726562 running bpv: 1.950885
- 28%|██▊       | 79/280 [54:30<2:25:40, 43.48s/it]pajama/128/layer_31/mlp.gate_proj.pt is done
-best_loss 2896.87060546875 running bpv: 1.949519
- 29%|██▊       | 80/280 [54:45<2:01:25, 36.43s/it]pajama/128/layer_31/self_attn.v_proj.pt is done
-best_loss 1405.5860595703125 running bpv: 1.950386
- 29%|██▉       | 81/280 [55:00<1:42:14, 30.83s/it]pajama/128/layer_31/mlp.up_proj.pt is done
-best_loss 2421.14794921875 running bpv: 1.949066
- 29%|██▉       | 82/280 [55:15<1:27:32, 26.53s/it]pajama/128/layer_32/mlp.down_proj.pt is done
-best_loss 137.61386108398438 running bpv: 1.948094
- 30%|██▉       | 83/280 [55:50<1:34:52, 28.90s/it]pajama/128/layer_21/self_attn.q_proj.pt is done
-best_loss 1299.1832275390625 running bpv: 1.948933
- 30%|███       | 84/280 [56:55<2:08:04, 39.21s/it]pajama/128/layer_21/self_attn.k_proj.pt is done
-best_loss 1333.0576171875 running bpv: 1.94976
- 30%|███       | 85/280 [57:20<1:54:02, 35.09s/it]pajama/128/layer_21/self_attn.o_proj.pt is done
-best_loss 97.02110290527344 running bpv: 1.950576
- 31%|███       | 86/280 [57:55<1:53:22, 35.07s/it]pajama/128/layer_21/mlp.up_proj.pt is done
-best_loss 1601.53076171875 running bpv: 1.949326
- 31%|███       | 87/280 [59:20<2:40:09, 49.79s/it]pajama/128/layer_31/mlp.down_proj.pt is done
-best_loss 128.07460021972656 running bpv: 1.948404
-pajama/128/layer_21/mlp.gate_proj.pt is done
-best_loss 1811.624267578125 running bpv: 1.947237
-pajama/128/layer_21/self_attn.v_proj.pt is done
-best_loss 787.5599365234375 running bpv: 1.948021
- 32%|███▏      | 90/280 [59:45<1:24:23, 26.65s/it]pajama/128/layer_26/self_attn.q_proj.pt is done
-best_loss 1573.1910400390625 running bpv: 1.948795
- 32%|███▎      | 91/280 [1:01:30<2:15:46, 43.10s/it]pajama/128/layer_26/self_attn.k_proj.pt is done
-best_loss 1610.625 running bpv: 1.949559
-pajama/128/layer_26/self_attn.o_proj.pt is done
-best_loss 80.17094421386719 running bpv: 1.950313
- 33%|███▎      | 93/280 [1:02:00<1:41:29, 32.57s/it]pajama/128/layer_26/mlp.gate_proj.pt is done
-best_loss 2394.48046875 running bpv: 1.949163
- 34%|███▎      | 94/280 [1:02:55<1:55:39, 37.31s/it]pajama/128/layer_26/self_attn.v_proj.pt is done
-best_loss 1177.724609375 running bpv: 1.949902
- 34%|███▍      | 95/280 [1:03:40<2:00:31, 39.09s/it]pajama/128/layer_21/mlp.down_proj.pt is done
-best_loss 89.09356689453125 running bpv: 1.949044
- 34%|███▍      | 96/280 [1:04:15<1:56:45, 38.07s/it]pajama/128/layer_26/mlp.up_proj.pt is done
-best_loss 1971.9324951171875 running bpv: 1.947959
- 35%|███▍      | 97/280 [1:04:30<1:37:40, 32.02s/it]pajama/128/layer_14/self_attn.q_proj.pt is done
-best_loss 1205.173095703125 running bpv: 1.948677
- 35%|███▌      | 98/280 [1:05:45<2:12:40, 43.74s/it]pajama/128/layer_14/self_attn.k_proj.pt is done
-best_loss 1253.263427734375 running bpv: 1.949387
- 35%|███▌      | 99/280 [1:06:30<2:13:00, 44.09s/it]pajama/128/layer_14/self_attn.o_proj.pt is done
-best_loss 57.903297424316406 running bpv: 1.950088
- 36%|███▌      | 100/280 [1:06:45<1:47:19, 35.78s/it]pajama/128/layer_14/mlp.gate_proj.pt is done
-best_loss 997.9536743164062 running bpv: 1.949022
- 36%|███▌      | 101/280 [1:07:00<1:28:45, 29.75s/it]pajama/128/layer_14/mlp.up_proj.pt is done
-best_loss 975.00146484375 running bpv: 1.947989
- 36%|███▋      | 102/280 [1:07:45<1:41:31, 34.22s/it]pajama/128/layer_26/mlp.down_proj.pt is done
-best_loss 108.4476547241211 running bpv: 1.947227
- 37%|███▋      | 103/280 [1:08:10<1:32:55, 31.50s/it]pajama/128/layer_14/self_attn.v_proj.pt is done
-best_loss 534.39990234375 running bpv: 1.947904
- 37%|███▋      | 104/280 [1:08:35<1:26:45, 29.57s/it]pajama/128/layer_15/self_attn.q_proj.pt is done
-best_loss 1140.46826171875 running bpv: 1.948575
- 38%|███▊      | 105/280 [1:09:50<2:05:40, 43.09s/it]pajama/128/layer_15/self_attn.k_proj.pt is done
-best_loss 1206.3719482421875 running bpv: 1.949238
- 38%|███▊      | 106/280 [1:10:25<1:57:58, 40.68s/it]pajama/128/layer_15/self_attn.o_proj.pt is done
-best_loss 66.21760559082031 running bpv: 1.949893
- 38%|███▊      | 107/280 [1:10:50<1:43:47, 36.00s/it]pajama/128/layer_15/mlp.up_proj.pt is done
-best_loss 1057.7470703125 running bpv: 1.9489
- 39%|███▊      | 108/280 [1:11:35<1:50:54, 38.69s/it]pajama/128/layer_15/self_attn.v_proj.pt is done
-best_loss 555.3240356445312 running bpv: 1.949544
- 39%|███▉      | 109/280 [1:12:30<2:04:11, 43.57s/it]pajama/128/layer_15/mlp.gate_proj.pt is done
-best_loss 1074.974853515625 running bpv: 1.948575
- 39%|███▉      | 110/280 [1:12:45<1:39:12, 35.02s/it]pajama/128/layer_14/mlp.down_proj.pt is done
-best_loss 34.138343811035156 running bpv: 1.947857
-pajama/128/layer_4/self_attn.o_proj.pt is done
-best_loss 3.147207260131836 running bpv: 1.948486
- 40%|████      | 112/280 [1:14:45<2:10:18, 46.54s/it]pajama/128/layer_4/self_attn.q_proj.pt is done
-best_loss 463.36260986328125 running bpv: 1.949107
- 40%|████      | 113/280 [1:15:00<1:47:47, 38.72s/it]pajama/128/layer_4/self_attn.k_proj.pt is done
-best_loss 485.82696533203125 running bpv: 1.949723
- 41%|████      | 114/280 [1:15:15<1:29:58, 32.52s/it]pajama/128/layer_4/mlp.gate_proj.pt is done
-best_loss 328.25726318359375 running bpv: 1.948793
- 41%|████      | 115/280 [1:16:10<1:46:14, 38.64s/it]pajama/128/layer_4/mlp.up_proj.pt is done
-best_loss 277.44696044921875 running bpv: 1.947888
- 41%|████▏     | 116/280 [1:16:25<1:27:31, 32.02s/it]pajama/128/layer_15/mlp.down_proj.pt is done
-best_loss 39.90160369873047 running bpv: 1.947218
- 42%|████▏     | 117/280 [1:16:40<1:13:47, 27.16s/it]pajama/128/layer_4/self_attn.v_proj.pt is done
-best_loss 159.17831420898438 running bpv: 1.947816
- 42%|████▏     | 118/280 [1:16:55<1:03:49, 23.64s/it]pajama/128/layer_27/self_attn.q_proj.pt is done
-best_loss 1794.268798828125 running bpv: 1.948407
- 42%|████▎     | 119/280 [1:18:30<1:59:29, 44.53s/it]pajama/128/layer_27/self_attn.k_proj.pt is done
-best_loss 1825.571044921875 running bpv: 1.948992
- 43%|████▎     | 120/280 [1:18:45<1:35:31, 35.82s/it]pajama/128/layer_27/self_attn.o_proj.pt is done
-best_loss 60.78600311279297 running bpv: 1.949572
-pajama/128/layer_27/mlp.gate_proj.pt is done
-best_loss 2509.8525390625 running bpv: 1.948698
- 44%|████▎     | 122/280 [1:20:15<1:45:23, 40.02s/it]pajama/128/layer_27/self_attn.v_proj.pt is done
-best_loss 1316.8831787109375 running bpv: 1.949269
- 44%|████▍     | 123/280 [1:20:40<1:35:02, 36.32s/it]pajama/128/layer_27/mlp.up_proj.pt is done
-best_loss 2055.4052734375 running bpv: 1.948414
-pajama/128/layer_4/mlp.down_proj.pt is done
-best_loss 3.4855401515960693 running bpv: 1.947779
-pajama/128/layer_2/self_attn.o_proj.pt is done
-best_loss 0.9998050332069397 running bpv: 1.948337
- 45%|████▌     | 126/280 [1:22:55<1:44:40, 40.78s/it]pajama/128/layer_2/self_attn.q_proj.pt is done
-best_loss 152.62753295898438 running bpv: 1.94889
- 45%|████▌     | 127/280 [1:23:10<1:31:04, 35.72s/it]pajama/128/layer_2/self_attn.k_proj.pt is done
-best_loss 167.07852172851562 running bpv: 1.949438
- 46%|████▌     | 128/280 [1:23:25<1:18:58, 31.18s/it]pajama/128/layer_2/mlp.gate_proj.pt is done
-best_loss 143.41476440429688 running bpv: 1.948614
- 46%|████▌     | 129/280 [1:23:40<1:08:45, 27.32s/it]pajama/128/layer_2/mlp.up_proj.pt is done
-best_loss 122.64962768554688 running bpv: 1.947809
- 46%|████▋     | 130/280 [1:24:55<1:38:35, 39.44s/it]pajama/128/layer_2/self_attn.v_proj.pt is done
-best_loss 44.631046295166016 running bpv: 1.948346
- 47%|████▋     | 131/280 [1:25:10<1:21:46, 32.93s/it]pajama/128/layer_27/mlp.down_proj.pt is done
-best_loss 110.80683898925781 running bpv: 1.947746
- 47%|████▋     | 132/280 [1:25:25<1:09:02, 27.99s/it]pajama/128/layer_36/self_attn.q_proj.pt is done
-best_loss 1554.627197265625 running bpv: 1.948275
- 48%|████▊     | 133/280 [1:27:00<1:54:57, 46.92s/it]pajama/128/layer_36/self_attn.k_proj.pt is done
-best_loss 1607.7509765625 running bpv: 1.948799
- 48%|████▊     | 134/280 [1:27:15<1:31:50, 37.74s/it]pajama/128/layer_36/self_attn.o_proj.pt is done
-best_loss 170.1487274169922 running bpv: 1.949319
- 48%|████▊     | 135/280 [1:27:40<1:22:14, 34.03s/it]pajama/128/layer_36/mlp.up_proj.pt is done
-best_loss 3080.1181640625 running bpv: 1.948538
- 49%|████▊     | 136/280 [1:28:25<1:29:24, 37.26s/it]pajama/128/layer_36/mlp.gate_proj.pt is done
-best_loss 3374.412353515625 running bpv: 1.947776
- 49%|████▉     | 137/280 [1:28:40<1:13:07, 30.68s/it]pajama/128/layer_36/self_attn.v_proj.pt is done
-best_loss 1492.246826171875 running bpv: 1.948286
- 49%|████▉     | 138/280 [1:29:05<1:08:37, 28.99s/it]pajama/128/layer_2/mlp.down_proj.pt is done
-best_loss 1.2438013553619385 running bpv: 1.947716
-pajama/128/layer_28/self_attn.q_proj.pt is done
-best_loss 1779.7637939453125 running bpv: 1.948218
- 50%|█████     | 140/280 [1:30:45<1:30:09, 38.64s/it]pajama/128/layer_28/self_attn.k_proj.pt is done
-best_loss 1810.17822265625 running bpv: 1.948717
- 50%|█████     | 141/280 [1:31:10<1:21:42, 35.27s/it]pajama/128/layer_28/self_attn.o_proj.pt is done
-best_loss 72.35460662841797 running bpv: 1.949211
- 51%|█████     | 142/280 [1:31:25<1:08:58, 29.99s/it]pajama/128/layer_28/mlp.gate_proj.pt is done
-best_loss 2583.3896484375 running bpv: 1.94847
- 51%|█████     | 143/280 [1:32:30<1:30:10, 39.49s/it]pajama/128/layer_28/self_attn.v_proj.pt is done
-best_loss 1336.7437744140625 running bpv: 1.948958
- 51%|█████▏    | 144/280 [1:32:55<1:20:20, 35.44s/it]pajama/128/layer_28/mlp.up_proj.pt is done
-best_loss 2117.73779296875 running bpv: 1.948231
- 52%|█████▏    | 145/280 [1:33:10<1:06:37, 29.61s/it]pajama/128/layer_36/mlp.down_proj.pt is done
-best_loss 214.8316650390625 running bpv: 1.947689
- 52%|█████▏    | 146/280 [1:34:35<1:41:57, 45.65s/it]pajama/128/layer_18/self_attn.q_proj.pt is done
-best_loss 1312.7265625 running bpv: 1.948168
- 52%|█████▎    | 147/280 [1:35:10<1:34:17, 42.53s/it]pajama/128/layer_18/self_attn.k_proj.pt is done
-best_loss 1366.800537109375 running bpv: 1.948642
- 53%|█████▎    | 148/280 [1:35:25<1:15:43, 34.42s/it]pajama/128/layer_18/self_attn.o_proj.pt is done
-best_loss 61.674049377441406 running bpv: 1.949113
- 53%|█████▎    | 149/280 [1:36:30<1:34:56, 43.48s/it]pajama/128/layer_18/mlp.gate_proj.pt is done
-best_loss 1446.419921875 running bpv: 1.948408
- 54%|█████▎    | 150/280 [1:36:45<1:15:51, 35.01s/it]pajama/128/layer_18/mlp.up_proj.pt is done
-best_loss 1335.0823974609375 running bpv: 1.947718
- 54%|█████▍    | 151/280 [1:37:10<1:08:51, 32.03s/it]pajama/128/layer_18/self_attn.v_proj.pt is done
-best_loss 725.1256103515625 running bpv: 1.948181
- 54%|█████▍    | 152/280 [1:37:25<57:28, 26.94s/it]  pajama/128/layer_28/mlp.down_proj.pt is done
-best_loss 113.509033203125 running bpv: 1.947665
-pajama/128/layer_25/self_attn.q_proj.pt is done
-best_loss 1572.2457275390625 running bpv: 1.948121
- 55%|█████▌    | 154/280 [1:39:25<1:28:32, 42.17s/it]pajama/128/layer_25/self_attn.k_proj.pt is done
-best_loss 1605.318603515625 running bpv: 1.948575
-pajama/128/layer_25/self_attn.o_proj.pt is done
-best_loss 69.61431121826172 running bpv: 1.949024
- 56%|█████▌    | 156/280 [1:39:45<1:00:46, 29.40s/it]pajama/128/layer_25/self_attn.v_proj.pt is done
-best_loss 1148.972412109375 running bpv: 1.949471
- 56%|█████▌    | 157/280 [1:41:20<1:29:58, 43.89s/it]pajama/128/layer_25/mlp.gate_proj.pt is done
-best_loss 2308.824951171875 running bpv: 1.948797
- 56%|█████▋    | 158/280 [1:41:35<1:15:09, 36.96s/it]pajama/128/layer_25/mlp.up_proj.pt is done
-best_loss 1911.482421875 running bpv: 1.948136
-pajama/128/layer_18/mlp.down_proj.pt is done
-best_loss 57.39116668701172 running bpv: 1.947643
- 57%|█████▋    | 160/280 [1:42:35<1:08:15, 34.13s/it]pajama/128/layer_37/self_attn.q_proj.pt is done
-best_loss 1364.3525390625 running bpv: 1.948079
- 57%|█████▊    | 161/280 [1:43:40<1:21:28, 41.08s/it]pajama/128/layer_37/self_attn.k_proj.pt is done
-best_loss 1362.05419921875 running bpv: 1.948513
- 58%|█████▊    | 162/280 [1:43:55<1:08:18, 34.74s/it]pajama/128/layer_37/mlp.gate_proj.pt is done
-best_loss 3379.736328125 running bpv: 1.947872
- 58%|█████▊    | 163/280 [1:44:40<1:12:53, 37.38s/it]pajama/128/layer_37/self_attn.o_proj.pt is done
-best_loss 200.98550415039062 running bpv: 1.948301
- 59%|█████▊    | 164/280 [1:45:05<1:05:49, 34.05s/it]pajama/128/layer_25/mlp.down_proj.pt is done
-best_loss 103.40852355957031 running bpv: 1.947821
- 59%|█████▉    | 165/280 [1:45:40<1:05:46, 34.32s/it]pajama/128/layer_37/self_attn.v_proj.pt is done
-best_loss 1501.2047119140625 running bpv: 1.948244
- 59%|█████▉    | 166/280 [1:45:55<54:46, 28.83s/it]  pajama/128/layer_37/mlp.up_proj.pt is done
-best_loss 3171.24365234375 running bpv: 1.947622
- 60%|█████▉    | 167/280 [1:46:20<52:12, 27.72s/it]pajama/128/layer_30/self_attn.q_proj.pt is done
-best_loss 2045.8232421875 running bpv: 1.948041
- 60%|██████    | 168/280 [1:47:25<1:12:04, 38.61s/it]pajama/128/layer_30/self_attn.k_proj.pt is done
-best_loss 2070.57275390625 running bpv: 1.948456
- 60%|██████    | 169/280 [1:47:50<1:04:01, 34.60s/it]pajama/128/layer_30/self_attn.o_proj.pt is done
-best_loss 71.25827026367188 running bpv: 1.948869
- 61%|██████    | 170/280 [1:48:15<58:13, 31.76s/it]  pajama/128/layer_30/mlp.gate_proj.pt is done
-best_loss 2800.2607421875 running bpv: 1.948254
- 61%|██████    | 171/280 [1:49:40<1:26:26, 47.59s/it]pajama/128/layer_30/self_attn.v_proj.pt is done
-best_loss 1667.8388671875 running bpv: 1.948662
- 61%|██████▏   | 172/280 [1:49:55<1:08:10, 37.87s/it]pajama/128/layer_30/mlp.up_proj.pt is done
-best_loss 2334.1083984375 running bpv: 1.948056
- 62%|██████▏   | 173/280 [1:50:10<55:21, 31.04s/it]  pajama/128/layer_29/self_attn.q_proj.pt is done
-best_loss 1900.6671142578125 running bpv: 1.94846
- 62%|██████▏   | 174/280 [1:51:55<1:33:55, 53.16s/it]pajama/128/layer_29/self_attn.k_proj.pt is done
-best_loss 1954.268798828125 running bpv: 1.948861
- 62%|██████▎   | 175/280 [1:52:20<1:18:16, 44.73s/it]pajama/128/layer_37/mlp.down_proj.pt is done
-best_loss 254.06060791015625 running bpv: 1.948404
-pajama/128/layer_29/mlp.gate_proj.pt is done
-best_loss 2673.6513671875 running bpv: 1.947816
- 63%|██████▎   | 177/280 [1:53:00<57:13, 33.33s/it]  pajama/128/layer_29/self_attn.o_proj.pt is done
-best_loss 64.70584106445312 running bpv: 1.94821
- 64%|██████▎   | 178/280 [1:53:35<57:22, 33.75s/it]pajama/128/layer_30/mlp.down_proj.pt is done
-best_loss 123.74008178710938 running bpv: 1.947769
- 64%|██████▍   | 179/280 [1:53:50<48:33, 28.85s/it]pajama/128/layer_29/self_attn.v_proj.pt is done
-best_loss 1388.944580078125 running bpv: 1.948159
- 64%|██████▍   | 180/280 [1:54:15<46:20, 27.80s/it]pajama/128/layer_29/mlp.up_proj.pt is done
-best_loss 2221.79248046875 running bpv: 1.947586
-pajama/128/layer_16/self_attn.q_proj.pt is done
-best_loss 1244.6484375 running bpv: 1.947973
- 65%|██████▌   | 182/280 [1:56:05<1:04:50, 39.69s/it]pajama/128/layer_16/self_attn.k_proj.pt is done
-best_loss 1296.52734375 running bpv: 1.948356
- 65%|██████▌   | 183/280 [1:56:30<58:31, 36.20s/it]  pajama/128/layer_16/self_attn.o_proj.pt is done
-best_loss 67.40708923339844 running bpv: 1.948738
- 66%|██████▌   | 184/280 [1:56:45<49:18, 30.82s/it]pajama/128/layer_16/mlp.up_proj.pt is done
-best_loss 1155.4439697265625 running bpv: 1.94817
- 66%|██████▌   | 185/280 [1:58:30<1:20:02, 50.55s/it]pajama/128/layer_16/self_attn.v_proj.pt is done
-best_loss 623.6583251953125 running bpv: 1.948548
- 66%|██████▋   | 186/280 [1:58:45<1:03:51, 40.76s/it]pajama/128/layer_29/mlp.down_proj.pt is done
-best_loss 116.97918701171875 running bpv: 1.948121
- 67%|██████▋   | 187/280 [1:59:00<51:54, 33.49s/it]  pajama/128/layer_16/mlp.gate_proj.pt is done
-best_loss 1183.455078125 running bpv: 1.94757
-pajama/128/layer_13/self_attn.q_proj.pt is done
-best_loss 1162.103271484375 running bpv: 1.947942
- 68%|██████▊   | 189/280 [2:01:10<1:12:08, 47.56s/it]pajama/128/layer_13/self_attn.k_proj.pt is done
-best_loss 1163.5966796875 running bpv: 1.948312
- 68%|██████▊   | 190/280 [2:01:25<59:31, 39.69s/it]  pajama/128/layer_13/self_attn.o_proj.pt is done
-best_loss 48.04838562011719 running bpv: 1.948679
-pajama/128/layer_13/mlp.gate_proj.pt is done
-best_loss 926.693603515625 running bpv: 1.948133
- 69%|██████▊   | 192/280 [2:02:15<49:24, 33.69s/it]pajama/128/layer_16/mlp.down_proj.pt is done
-best_loss 49.21916580200195 running bpv: 1.947724
- 69%|██████▉   | 193/280 [2:03:00<52:33, 36.24s/it]pajama/128/layer_13/mlp.up_proj.pt is done
-best_loss 897.4029541015625 running bpv: 1.947195
- 69%|██████▉   | 194/280 [2:03:15<44:31, 31.06s/it]pajama/128/layer_13/self_attn.v_proj.pt is done
-best_loss 554.3795166015625 running bpv: 1.947556
- 70%|██████▉   | 195/280 [2:03:30<38:07, 26.91s/it]pajama/128/layer_10/self_attn.q_proj.pt is done
-best_loss 957.801025390625 running bpv: 1.947914
- 70%|███████   | 196/280 [2:05:25<1:10:56, 50.67s/it]pajama/128/layer_10/self_attn.k_proj.pt is done
-best_loss 992.2233276367188 running bpv: 1.948271
- 70%|███████   | 197/280 [2:05:40<56:22, 40.75s/it]  pajama/128/layer_10/self_attn.o_proj.pt is done
-best_loss 29.61559295654297 running bpv: 1.948625
- 71%|███████   | 198/280 [2:05:55<45:41, 33.43s/it]pajama/128/layer_10/mlp.gate_proj.pt is done
-best_loss 813.9710693359375 running bpv: 1.948099
- 71%|███████   | 199/280 [2:06:40<49:38, 36.77s/it]pajama/128/layer_10/mlp.up_proj.pt is done
-best_loss 729.6064453125 running bpv: 1.947581
- 71%|███████▏  | 200/280 [2:06:55<40:33, 30.41s/it]pajama/128/layer_13/mlp.down_proj.pt is done
-best_loss 28.90627670288086 running bpv: 1.947194
- 72%|███████▏  | 201/280 [2:07:40<45:42, 34.71s/it]pajama/128/layer_10/self_attn.v_proj.pt is done
-best_loss 386.33465576171875 running bpv: 1.947542
- 72%|███████▏  | 202/280 [2:07:55<37:32, 28.87s/it]pajama/128/layer_19/self_attn.q_proj.pt is done
-best_loss 1294.005615234375 running bpv: 1.947888
- 72%|███████▎  | 203/280 [2:09:00<50:50, 39.61s/it]pajama/128/layer_19/self_attn.k_proj.pt is done
-best_loss 1325.013916015625 running bpv: 1.948232
- 73%|███████▎  | 204/280 [2:10:05<59:45, 47.18s/it]pajama/128/layer_19/self_attn.o_proj.pt is done
-best_loss 66.69450378417969 running bpv: 1.948575
- 73%|███████▎  | 205/280 [2:10:20<46:57, 37.57s/it]pajama/128/layer_19/mlp.up_proj.pt is done
-best_loss 1424.4815673828125 running bpv: 1.948067
- 74%|███████▎  | 206/280 [2:11:15<52:46, 42.79s/it]pajama/128/layer_19/mlp.gate_proj.pt is done
-best_loss 1565.6461181640625 running bpv: 1.947566
- 74%|███████▍  | 207/280 [2:11:40<45:34, 37.46s/it]pajama/128/layer_19/self_attn.v_proj.pt is done
-best_loss 748.7888793945312 running bpv: 1.947904
- 74%|███████▍  | 208/280 [2:12:05<40:28, 33.73s/it]pajama/128/layer_10/mlp.down_proj.pt is done
-best_loss 19.914653778076172 running bpv: 1.947529
-pajama/128/layer_6/self_attn.o_proj.pt is done
-best_loss 7.142834186553955 running bpv: 1.947864
- 75%|███████▌  | 210/280 [2:14:05<53:29, 45.85s/it]pajama/128/layer_6/self_attn.q_proj.pt is done
-best_loss 659.318359375 running bpv: 1.948196
- 75%|███████▌  | 211/280 [2:14:20<43:56, 38.20s/it]pajama/128/layer_6/self_attn.k_proj.pt is done
-best_loss 685.7745971679688 running bpv: 1.948527
- 76%|███████▌  | 212/280 [2:14:35<36:25, 32.14s/it]pajama/128/layer_6/mlp.gate_proj.pt is done
-best_loss 558.0206909179688 running bpv: 1.948037
- 76%|███████▌  | 213/280 [2:15:00<33:43, 30.20s/it]pajama/128/layer_19/mlp.down_proj.pt is done
-best_loss 64.69940185546875 running bpv: 1.947669
- 76%|███████▋  | 214/280 [2:15:55<40:51, 37.14s/it]pajama/128/layer_6/mlp.up_proj.pt is done
-best_loss 446.916259765625 running bpv: 1.947191
- 77%|███████▋  | 215/280 [2:16:10<33:23, 30.82s/it]pajama/128/layer_6/self_attn.v_proj.pt is done
-best_loss 246.0029296875 running bpv: 1.947517
- 77%|███████▋  | 216/280 [2:16:25<27:59, 26.24s/it]pajama/128/layer_11/self_attn.q_proj.pt is done
-best_loss 946.8277587890625 running bpv: 1.947841
- 78%|███████▊  | 217/280 [2:18:00<48:41, 46.37s/it]pajama/128/layer_11/self_attn.k_proj.pt is done
-best_loss 999.2849731445312 running bpv: 1.948163
- 78%|███████▊  | 218/280 [2:18:35<44:26, 43.02s/it]pajama/128/layer_11/self_attn.o_proj.pt is done
-best_loss 34.9018669128418 running bpv: 1.948483
- 78%|███████▊  | 219/280 [2:18:50<35:17, 34.71s/it]pajama/128/layer_11/mlp.up_proj.pt is done
-best_loss 773.8651123046875 running bpv: 1.948009
- 79%|███████▊  | 220/280 [2:19:55<43:43, 43.72s/it]pajama/128/layer_11/mlp.gate_proj.pt is done
-best_loss 827.4413452148438 running bpv: 1.947541
- 79%|███████▉  | 221/280 [2:20:10<34:34, 35.16s/it]pajama/128/layer_6/mlp.down_proj.pt is done
-best_loss 8.37380313873291 running bpv: 1.94719
- 79%|███████▉  | 222/280 [2:20:25<28:09, 29.14s/it]pajama/128/layer_11/self_attn.v_proj.pt is done
-best_loss 369.0769958496094 running bpv: 1.947506
- 80%|███████▉  | 223/280 [2:20:40<23:39, 24.91s/it]pajama/128/layer_20/self_attn.q_proj.pt is done
-best_loss 1224.8392333984375 running bpv: 1.947819
- 80%|████████  | 224/280 [2:22:25<45:37, 48.89s/it]pajama/128/layer_20/self_attn.k_proj.pt is done
-best_loss 1268.6181640625 running bpv: 1.948131
- 80%|████████  | 225/280 [2:22:40<35:30, 38.74s/it]pajama/128/layer_20/self_attn.o_proj.pt is done
-best_loss 74.92881774902344 running bpv: 1.948442
- 81%|████████  | 226/280 [2:22:55<28:27, 31.62s/it]pajama/128/layer_20/mlp.gate_proj.pt is done
-best_loss 1658.9271240234375 running bpv: 1.947982
- 81%|████████  | 227/280 [2:24:00<36:46, 41.63s/it]pajama/128/layer_11/mlp.down_proj.pt is done
-best_loss 22.23129653930664 running bpv: 1.947637
- 81%|████████▏ | 228/280 [2:24:15<29:09, 33.65s/it]pajama/128/layer_20/self_attn.v_proj.pt is done
-best_loss 687.7996215820312 running bpv: 1.947944
- 82%|████████▏ | 229/280 [2:24:50<28:56, 34.05s/it]pajama/128/layer_20/mlp.up_proj.pt is done
-best_loss 1499.504638671875 running bpv: 1.947495
- 82%|████████▏ | 230/280 [2:25:05<23:36, 28.34s/it]pajama/128/layer_23/self_attn.q_proj.pt is done
-best_loss 1402.817138671875 running bpv: 1.947799
- 82%|████████▎ | 231/280 [2:26:20<34:34, 42.34s/it]pajama/128/layer_23/self_attn.k_proj.pt is done
-best_loss 1437.86279296875 running bpv: 1.948102
- 83%|████████▎ | 232/280 [2:27:05<34:30, 43.14s/it]pajama/128/layer_23/self_attn.o_proj.pt is done
-best_loss 66.35623168945312 running bpv: 1.948403
-pajama/128/layer_23/mlp.gate_proj.pt is done
-best_loss 2085.3681640625 running bpv: 1.947957
- 84%|████████▎ | 234/280 [2:27:45<24:53, 32.46s/it]pajama/128/layer_23/mlp.up_proj.pt is done
-best_loss 1767.811279296875 running bpv: 1.947518
- 84%|████████▍ | 235/280 [2:28:50<30:23, 40.53s/it]pajama/128/layer_23/self_attn.v_proj.pt is done
-best_loss 991.215087890625 running bpv: 1.947816
- 84%|████████▍ | 236/280 [2:29:15<26:44, 36.47s/it]pajama/128/layer_20/mlp.down_proj.pt is done
-best_loss 72.49945068359375 running bpv: 1.947485
- 85%|████████▍ | 237/280 [2:30:10<29:44, 41.51s/it]pajama/128/layer_35/self_attn.q_proj.pt is done
-best_loss 1640.95263671875 running bpv: 1.94778
- 85%|████████▌ | 238/280 [2:30:55<29:44, 42.49s/it]pajama/128/layer_35/self_attn.k_proj.pt is done
-best_loss 1688.6688232421875 running bpv: 1.948074
- 85%|████████▌ | 239/280 [2:31:20<25:37, 37.49s/it]pajama/128/layer_35/self_attn.o_proj.pt is done
-best_loss 99.75289916992188 running bpv: 1.948367
- 86%|████████▌ | 240/280 [2:32:15<28:22, 42.57s/it]pajama/128/layer_35/mlp.gate_proj.pt is done
-best_loss 3272.4677734375 running bpv: 1.947934
- 86%|████████▌ | 241/280 [2:32:30<22:25, 34.50s/it]pajama/128/layer_35/mlp.up_proj.pt is done
-best_loss 2996.237060546875 running bpv: 1.947507
- 86%|████████▋ | 242/280 [2:32:45<18:12, 28.75s/it]pajama/128/layer_35/self_attn.v_proj.pt is done
-best_loss 1495.7451171875 running bpv: 1.947797
- 87%|████████▋ | 243/280 [2:33:10<17:02, 27.64s/it]pajama/128/layer_23/mlp.down_proj.pt is done
-best_loss 97.80108642578125 running bpv: 1.947476
- 87%|████████▋ | 244/280 [2:33:25<14:19, 23.88s/it]pajama/128/layer_38/self_attn.q_proj.pt is done
-best_loss 1304.2149658203125 running bpv: 1.947763
- 88%|████████▊ | 245/280 [2:34:50<24:33, 42.11s/it]pajama/128/layer_38/self_attn.k_proj.pt is done
-best_loss 1324.344482421875 running bpv: 1.948048
- 88%|████████▊ | 246/280 [2:35:25<22:39, 39.99s/it]pajama/128/layer_38/self_attn.o_proj.pt is done
-best_loss 308.7213134765625 running bpv: 1.948332
- 88%|████████▊ | 247/280 [2:36:00<21:10, 38.50s/it]pajama/128/layer_38/self_attn.v_proj.pt is done
-best_loss 1600.6640625 running bpv: 1.948615
- 89%|████████▊ | 248/280 [2:37:35<29:33, 55.41s/it]pajama/128/layer_38/mlp.gate_proj.pt is done
-best_loss 3366.4560546875 running bpv: 1.948194
- 89%|████████▉ | 249/280 [2:37:50<22:22, 43.31s/it]pajama/128/layer_38/mlp.up_proj.pt is done
-best_loss 3016.61181640625 running bpv: 1.947779
-pajama/128/layer_35/mlp.down_proj.pt is done
-best_loss 180.92062377929688 running bpv: 1.947467
- 90%|████████▉ | 251/280 [2:38:40<16:51, 34.87s/it]pajama/128/layer_17/self_attn.q_proj.pt is done
-best_loss 1239.668701171875 running bpv: 1.947746
- 90%|█████████ | 252/280 [2:39:45<19:45, 42.33s/it]pajama/128/layer_17/self_attn.k_proj.pt is done
-best_loss 1291.285400390625 running bpv: 1.948023
- 90%|█████████ | 253/280 [2:40:10<17:00, 37.80s/it]pajama/128/layer_17/self_attn.o_proj.pt is done
-best_loss 66.63870239257812 running bpv: 1.948299
- 91%|█████████ | 254/280 [2:40:45<16:03, 37.04s/it]pajama/128/layer_17/mlp.gate_proj.pt is done
-best_loss 1322.294677734375 running bpv: 1.947891
- 91%|█████████ | 255/280 [2:41:00<12:51, 30.88s/it]pajama/128/layer_17/mlp.up_proj.pt is done
-best_loss 1251.6986083984375 running bpv: 1.947488
- 91%|█████████▏| 256/280 [2:42:15<17:23, 43.48s/it]pajama/128/layer_17/self_attn.v_proj.pt is done
-best_loss 643.0333251953125 running bpv: 1.947762
-pajama/128/layer_38/mlp.down_proj.pt is done
-best_loss 306.415771484375 running bpv: 1.947459
- 92%|█████████▏| 258/280 [2:44:25<19:29, 53.15s/it]pajama/128/layer_9/self_attn.q_proj.pt is done
-best_loss 949.8728637695312 running bpv: 1.94773
- 92%|█████████▎| 259/280 [2:44:50<16:12, 46.31s/it]pajama/128/layer_9/self_attn.k_proj.pt is done
-best_loss 974.95556640625 running bpv: 1.948
-pajama/128/layer_9/mlp.up_proj.pt is done
-best_loss 692.617919921875 running bpv: 1.947604
- 93%|█████████▎| 261/280 [2:45:50<12:32, 39.63s/it]pajama/128/layer_9/mlp.gate_proj.pt is done
-best_loss 803.0834350585938 running bpv: 1.947212
- 94%|█████████▎| 262/280 [2:46:05<10:12, 34.05s/it]pajama/128/layer_9/self_attn.o_proj.pt is done
-best_loss 21.023941040039062 running bpv: 1.947479
- 94%|█████████▍| 263/280 [2:46:30<09:01, 31.84s/it]pajama/128/layer_9/self_attn.v_proj.pt is done
-best_loss 393.0188293457031 running bpv: 1.947746
- 94%|█████████▍| 264/280 [2:47:05<08:42, 32.66s/it]pajama/128/layer_17/mlp.down_proj.pt is done
-best_loss 54.38605499267578 running bpv: 1.947451
- 95%|█████████▍| 265/280 [2:47:30<07:38, 30.59s/it]pajama/128/layer_22/self_attn.q_proj.pt is done
-best_loss 1454.59423828125 running bpv: 1.947715
- 95%|█████████▌| 266/280 [2:48:25<08:43, 37.39s/it]pajama/128/layer_22/self_attn.k_proj.pt is done
-best_loss 1509.533447265625 running bpv: 1.947978
- 95%|█████████▌| 267/280 [2:49:10<08:34, 39.55s/it]pajama/128/layer_22/self_attn.o_proj.pt is done
-best_loss 63.485252380371094 running bpv: 1.94824
- 96%|█████████▌| 268/280 [2:49:25<06:29, 32.46s/it]pajama/128/layer_22/mlp.up_proj.pt is done
-best_loss 1697.015625 running bpv: 1.947853
- 96%|█████████▌| 269/280 [2:51:00<09:18, 50.73s/it]pajama/128/layer_22/self_attn.v_proj.pt is done
-best_loss 992.2570190429688 running bpv: 1.948113
-pajama/128/layer_22/mlp.gate_proj.pt is done
-best_loss 1962.9169921875 running bpv: 1.94773
- 97%|█████████▋| 271/280 [2:51:20<04:49, 32.20s/it]pajama/128/layer_9/mlp.down_proj.pt is done
-best_loss 17.01040267944336 running bpv: 1.947443
- 97%|█████████▋| 272/280 [2:51:45<04:03, 30.44s/it]pajama/128/layer_24/self_attn.q_proj.pt is done
-best_loss 1462.80810546875 running bpv: 1.9477
- 98%|█████████▊| 273/280 [2:53:00<04:54, 42.00s/it]pajama/128/layer_24/self_attn.k_proj.pt is done
-best_loss 1501.55224609375 running bpv: 1.947957
- 98%|█████████▊| 274/280 [2:53:25<03:44, 37.40s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 61.538490295410156 running bpv: 1.948212
- 98%|█████████▊| 275/280 [2:53:50<02:49, 33.95s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 61.538490295410156 running bpv: 1.948466
- 99%|█████████▊| 276/280 [2:54:00<01:48, 27.13s/it]pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 2184.258056640625 running bpv: 1.948089
- 99%|█████████▉| 277/280 [2:54:10<01:06, 22.18s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 61.538490295410156 running bpv: 1.948341
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 2184.258056640625 running bpv: 1.947968
-100%|█████████▉| 279/280 [2:54:20<00:14, 14.41s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 61.538490295410156 running bpv: 1.948218
-done
-100%|██████████| 280/280 [2:54:20<00:00, 37.36s/it]
-Finished compressing Llama-2-13b-hf
-  0%|          | 0/224 [00:00<?, ?it/s]pajama/128/layer_3/self_attn.q_proj.pt is done
-best_loss 990.2655029296875 running bpv: 2.008789
-  0%|          | 1/224 [00:40<2:29:19, 40.18s/it]pajama/128/layer_3/self_attn.v_proj.pt is done
-best_loss 41.616920471191406 running bpv: 2.011719
-  1%|          | 2/224 [01:05<1:55:37, 31.25s/it]pajama/128/layer_3/mlp.up_proj.pt is done
-best_loss 410.45404052734375 running bpv: 2.00699
-  1%|▏         | 3/224 [01:30<1:44:35, 28.40s/it]pajama/128/layer_3/self_attn.k_proj.pt is done
-best_loss 583.3226318359375 running bpv: 2.007812
-pajama/128/layer_3/self_attn.o_proj.pt is done
-best_loss 0.919291615486145 running bpv: 2.007975
-pajama/128/layer_5/self_attn.k_proj.pt is done
-best_loss 662.7791748046875 running bpv: 2.008594
-  3%|▎         | 6/224 [01:55<54:56, 15.12s/it]  pajama/128/layer_5/self_attn.q_proj.pt is done
-best_loss 1079.33349609375 running bpv: 2.008621
-  3%|▎         | 7/224 [02:10<54:35, 15.09s/it]pajama/128/layer_5/mlp.gate_proj.pt is done
-best_loss 1092.8427734375 running bpv: 2.00754
-  4%|▎         | 8/224 [02:25<54:15, 15.07s/it]pajama/128/layer_5/self_attn.v_proj.pt is done
-best_loss 36.34513854980469 running bpv: 2.007901
-  4%|▍         | 9/224 [02:40<53:56, 15.05s/it]pajama/128/layer_5/self_attn.o_proj.pt is done
-best_loss 2.3951687812805176 running bpv: 2.007975
-pajama/128/layer_5/mlp.up_proj.pt is done
-best_loss 601.0477294921875 running bpv: 2.007371
-  5%|▍         | 11/224 [03:00<45:40, 12.87s/it]pajama/128/layer_3/mlp.gate_proj.pt is done
-best_loss 645.4122924804688 running bpv: 2.00699
-  5%|▌         | 12/224 [03:15<47:14, 13.37s/it]pajama/128/layer_5/mlp.down_proj.pt is done
-best_loss 1.897902488708496 running bpv: 2.006727
-pajama/128/layer_8/self_attn.k_proj.pt is done
-best_loss 778.79443359375 running bpv: 2.006911
-  6%|▋         | 14/224 [03:35<42:02, 12.01s/it]pajama/128/layer_8/self_attn.q_proj.pt is done
-best_loss 1226.8143310546875 running bpv: 2.00699
-pajama/128/layer_8/self_attn.v_proj.pt is done
-best_loss 58.649330139160156 running bpv: 2.007161
-  7%|▋         | 16/224 [03:55<39:06, 11.28s/it]pajama/128/layer_8/mlp.gate_proj.pt is done
-best_loss 1264.2392578125 running bpv: 2.006925
-pajama/128/layer_8/self_attn.o_proj.pt is done
-best_loss 8.916316986083984 running bpv: 2.00699
-pajama/128/layer_8/mlp.up_proj.pt is done
-best_loss 723.1604614257812 running bpv: 2.006805
-  8%|▊         | 19/224 [04:20<34:07,  9.99s/it]pajama/128/layer_12/self_attn.q_proj.pt is done
-best_loss 1106.2230224609375 running bpv: 2.006866
-  9%|▉         | 20/224 [04:35<36:54, 10.85s/it]pajama/128/layer_12/self_attn.k_proj.pt is done
-best_loss 678.6878662109375 running bpv: 2.00699
-pajama/128/layer_8/mlp.down_proj.pt is done
-best_loss 2.8772616386413574 running bpv: 2.006829
- 10%|▉         | 22/224 [04:55<35:35, 10.57s/it]pajama/128/layer_3/mlp.down_proj.pt is done
-best_loss 0.7627403736114502 running bpv: 2.006696
-pajama/128/layer_12/self_attn.v_proj.pt is done
-best_loss 75.461181640625 running bpv: 2.0068
- 11%|█         | 24/224 [05:15<34:37, 10.39s/it]pajama/128/layer_12/mlp.gate_proj.pt is done
-best_loss 1269.9140625 running bpv: 2.006681
-pajama/128/layer_12/mlp.up_proj.pt is done
-best_loss 864.5477294921875 running bpv: 2.006579
-pajama/128/layer_12/self_attn.o_proj.pt is done
-best_loss 16.67330551147461 running bpv: 2.006625
-pajama/128/layer_1/self_attn.k_proj.pt is done
-best_loss 79.02085876464844 running bpv: 2.006711
- 12%|█▎        | 28/224 [05:45<29:25,  9.01s/it]pajama/128/layer_1/self_attn.q_proj.pt is done
-best_loss 137.80201721191406 running bpv: 2.006753
- 13%|█▎        | 29/224 [06:00<32:07,  9.88s/it]pajama/128/layer_1/self_attn.o_proj.pt is done
-best_loss 0.383919894695282 running bpv: 2.006793
- 13%|█▎        | 30/224 [06:15<34:48, 10.77s/it]pajama/128/layer_12/mlp.down_proj.pt is done
-best_loss 4.004560470581055 running bpv: 2.006696
-pajama/128/layer_1/mlp.up_proj.pt is done
-best_loss 202.22265625 running bpv: 2.006612
- 14%|█▍        | 32/224 [06:35<33:38, 10.51s/it]pajama/128/layer_1/self_attn.v_proj.pt is done
-best_loss 3.629356622695923 running bpv: 2.006684
-pajama/128/layer_7/self_attn.k_proj.pt is done
-best_loss 676.7069702148438 running bpv: 2.006756
- 15%|█▌        | 34/224 [06:55<32:46, 10.35s/it]pajama/128/layer_1/mlp.down_proj.pt is done
-best_loss 0.7033069133758545 running bpv: 2.006674
-pajama/128/layer_7/self_attn.q_proj.pt is done
-best_loss 1051.784912109375 running bpv: 2.006708
- 16%|█▌        | 36/224 [07:15<32:05, 10.24s/it]pajama/128/layer_7/self_attn.v_proj.pt is done
-best_loss 47.024410247802734 running bpv: 2.006774
- 17%|█▋        | 37/224 [07:30<34:38, 11.11s/it]pajama/128/layer_7/self_attn.o_proj.pt is done
-best_loss 6.37022590637207 running bpv: 2.006805
-pajama/128/layer_7/mlp.gate_proj.pt is done
-best_loss 1209.025390625 running bpv: 2.006727
-pajama/128/layer_7/mlp.up_proj.pt is done
-best_loss 704.41015625 running bpv: 2.006657
-pajama/128/layer_0/self_attn.k_proj.pt is done
-best_loss 35.86107635498047 running bpv: 2.006716
- 18%|█▊        | 41/224 [08:00<28:15,  9.27s/it]pajama/128/layer_7/mlp.down_proj.pt is done
-best_loss 2.7053568363189697 running bpv: 2.00665
- 19%|█▉        | 42/224 [08:15<30:47, 10.15s/it]pajama/128/layer_1/mlp.gate_proj.pt is done
-best_loss 250.76254272460938 running bpv: 2.006589
-pajama/128/layer_0/self_attn.q_proj.pt is done
-best_loss 66.52375030517578 running bpv: 2.006617
- 20%|█▉        | 44/224 [08:35<30:19, 10.11s/it]pajama/128/layer_0/mlp.gate_proj.pt is done
-best_loss 149.57437133789062 running bpv: 2.006562
- 20%|██        | 45/224 [08:50<32:46, 10.99s/it]pajama/128/layer_0/mlp.up_proj.pt is done
-best_loss 115.70435333251953 running bpv: 2.00651
-pajama/128/layer_0/self_attn.o_proj.pt is done
-best_loss 0.11331992596387863 running bpv: 2.006537
-pajama/128/layer_0/self_attn.v_proj.pt is done
-best_loss 0.6754320859909058 running bpv: 2.006585
-pajama/128/layer_0/mlp.down_proj.pt is done
-best_loss 0.11442482471466064 running bpv: 2.006535
- 22%|██▏       | 49/224 [09:20<26:53,  9.22s/it]pajama/128/layer_31/self_attn.k_proj.pt is done
-best_loss 756.1685180664062 running bpv: 2.006582
-pajama/128/layer_31/self_attn.q_proj.pt is done
-best_loss 1465.554443359375 running bpv: 2.006606
- 23%|██▎       | 51/224 [09:40<27:11,  9.43s/it]pajama/128/layer_31/self_attn.v_proj.pt is done
-best_loss 291.7220764160156 running bpv: 2.006651
-pajama/128/layer_31/mlp.gate_proj.pt is done
-best_loss 5185.72802734375 running bpv: 2.006602
- 24%|██▎       | 53/224 [10:00<27:19,  9.59s/it]pajama/128/layer_31/self_attn.o_proj.pt is done
-best_loss 211.3879852294922 running bpv: 2.006625
-pajama/128/layer_31/mlp.up_proj.pt is done
-best_loss 3378.524658203125 running bpv: 2.006578
- 25%|██▍       | 55/224 [10:20<27:20,  9.70s/it]pajama/128/layer_21/self_attn.k_proj.pt is done
-best_loss 974.1573486328125 running bpv: 2.00662
-pajama/128/layer_21/self_attn.q_proj.pt is done
-best_loss 1562.0982666015625 running bpv: 2.006642
- 25%|██▌       | 57/224 [10:40<27:14,  9.79s/it]pajama/128/layer_21/mlp.gate_proj.pt is done
-best_loss 2978.964111328125 running bpv: 2.006597
- 26%|██▌       | 58/224 [10:55<29:32, 10.68s/it]pajama/128/layer_21/self_attn.o_proj.pt is done
-best_loss 14.242317199707031 running bpv: 2.006618
- 26%|██▋       | 59/224 [11:10<31:41, 11.52s/it]pajama/128/layer_31/mlp.down_proj.pt is done
-best_loss 184.6278076171875 running bpv: 2.006576
-pajama/128/layer_21/self_attn.v_proj.pt is done
-best_loss 114.6700439453125 running bpv: 2.006614
-pajama/128/layer_21/mlp.up_proj.pt is done
-best_loss 1545.24169921875 running bpv: 2.006574
-pajama/128/layer_26/self_attn.k_proj.pt is done
-best_loss 957.4136352539062 running bpv: 2.006611
- 28%|██▊       | 63/224 [11:40<25:13,  9.40s/it]pajama/128/layer_21/mlp.down_proj.pt is done
-best_loss 10.86996841430664 running bpv: 2.006571
-pajama/128/layer_26/self_attn.q_proj.pt is done
-best_loss 1524.5113525390625 running bpv: 2.00659
- 29%|██▉       | 65/224 [12:00<25:21,  9.57s/it]pajama/128/layer_26/mlp.gate_proj.pt is done
-best_loss 4031.74658203125 running bpv: 2.006553
- 29%|██▉       | 66/224 [12:15<27:31, 10.46s/it]pajama/128/layer_26/self_attn.o_proj.pt is done
-best_loss 18.55498695373535 running bpv: 2.006571
-pajama/128/layer_26/self_attn.v_proj.pt is done
-best_loss 190.41062927246094 running bpv: 2.006606
-pajama/128/layer_26/mlp.up_proj.pt is done
-best_loss 2106.595703125 running bpv: 2.00657
- 31%|███       | 69/224 [12:40<24:45,  9.58s/it]pajama/128/layer_14/self_attn.k_proj.pt is done
-best_loss 989.7830200195312 running bpv: 2.006603
-pajama/128/layer_14/self_attn.q_proj.pt is done
-best_loss 1387.9256591796875 running bpv: 2.00662
- 32%|███▏      | 71/224 [13:00<24:44,  9.70s/it]pajama/128/layer_14/self_attn.o_proj.pt is done
-best_loss 18.766281127929688 running bpv: 2.006637
- 32%|███▏      | 72/224 [13:15<26:49, 10.59s/it]pajama/128/layer_14/mlp.gate_proj.pt is done
-best_loss 1597.2958984375 running bpv: 2.006601
-pajama/128/layer_26/mlp.down_proj.pt is done
-best_loss 15.567520141601562 running bpv: 2.006568
-pajama/128/layer_14/self_attn.v_proj.pt is done
-best_loss 81.75753784179688 running bpv: 2.006599
-pajama/128/layer_14/mlp.up_proj.pt is done
-best_loss 1008.9241943359375 running bpv: 2.006566
- 34%|███▍      | 76/224 [13:45<22:23,  9.08s/it]pajama/128/layer_15/self_attn.k_proj.pt is done
-best_loss 894.21240234375 running bpv: 2.006597
-pajama/128/layer_15/self_attn.q_proj.pt is done
-best_loss 1618.89111328125 running bpv: 2.006612
- 35%|███▍      | 78/224 [14:05<22:40,  9.32s/it]pajama/128/layer_15/self_attn.o_proj.pt is done
-best_loss 18.27125358581543 running bpv: 2.006628
- 35%|███▌      | 79/224 [14:20<24:39, 10.21s/it]pajama/128/layer_15/self_attn.v_proj.pt is done
-best_loss 90.77452850341797 running bpv: 2.006657
-pajama/128/layer_14/mlp.down_proj.pt is done
-best_loss 5.403650283813477 running bpv: 2.006625
-pajama/128/layer_15/mlp.gate_proj.pt is done
-best_loss 1809.5927734375 running bpv: 2.006593
- 37%|███▋      | 82/224 [14:45<22:22,  9.46s/it]pajama/128/layer_15/mlp.up_proj.pt is done
-best_loss 1074.8060302734375 running bpv: 2.006564
-pajama/128/layer_4/self_attn.k_proj.pt is done
-best_loss 478.82574462890625 running bpv: 2.006591
- 38%|███▊      | 84/224 [15:05<22:25,  9.61s/it]pajama/128/layer_4/self_attn.q_proj.pt is done
-best_loss 828.4891357421875 running bpv: 2.006606
-pajama/128/layer_15/mlp.down_proj.pt is done
-best_loss 6.870535850524902 running bpv: 2.006577
- 38%|███▊      | 86/224 [15:25<22:21,  9.72s/it]pajama/128/layer_4/self_attn.v_proj.pt is done
-best_loss 39.942665100097656 running bpv: 2.006603
-pajama/128/layer_4/mlp.gate_proj.pt is done
-best_loss 919.7977294921875 running bpv: 2.006575
- 39%|███▉      | 88/224 [15:45<22:12,  9.80s/it]pajama/128/layer_4/self_attn.o_proj.pt is done
-best_loss 1.951573371887207 running bpv: 2.006589
-pajama/128/layer_4/mlp.up_proj.pt is done
-best_loss 500.76751708984375 running bpv: 2.006562
-pajama/128/layer_27/self_attn.k_proj.pt is done
-best_loss 1071.7186279296875 running bpv: 2.006587
- 41%|████      | 91/224 [16:10<20:29,  9.24s/it]pajama/128/layer_27/self_attn.q_proj.pt is done
-best_loss 1668.8173828125 running bpv: 2.0066
- 41%|████      | 92/224 [16:25<22:16, 10.13s/it]pajama/128/layer_4/mlp.down_proj.pt is done
-best_loss 1.3175204992294312 running bpv: 2.006574
- 42%|████▏     | 93/224 [16:40<24:01, 11.01s/it]pajama/128/layer_27/self_attn.o_proj.pt is done
-best_loss 25.59186363220215 running bpv: 2.006586
-pajama/128/layer_27/mlp.gate_proj.pt is done
-best_loss 4420.5107421875 running bpv: 2.006561
-pajama/128/layer_27/self_attn.v_proj.pt is done
-best_loss 256.5059814453125 running bpv: 2.006585
- 43%|████▎     | 96/224 [17:05<20:59,  9.84s/it]pajama/128/layer_27/mlp.up_proj.pt is done
-best_loss 2349.08837890625 running bpv: 2.00656
-pajama/128/layer_2/self_attn.k_proj.pt is done
-best_loss 551.1881103515625 running bpv: 2.006583
- 44%|████▍     | 98/224 [17:25<20:46,  9.89s/it]pajama/128/layer_2/self_attn.q_proj.pt is done
-best_loss 887.2925415039062 running bpv: 2.006596
-pajama/128/layer_27/mlp.down_proj.pt is done
-best_loss 19.27439308166504 running bpv: 2.006571
- 45%|████▍     | 100/224 [17:45<20:30,  9.92s/it]pajama/128/layer_2/self_attn.v_proj.pt is done
-best_loss 23.1358585357666 running bpv: 2.006594
-pajama/128/layer_2/mlp.gate_proj.pt is done
-best_loss 412.8040771484375 running bpv: 2.00657
- 46%|████▌     | 102/224 [18:05<20:13,  9.95s/it]pajama/128/layer_2/mlp.up_proj.pt is done
-best_loss 303.74334716796875 running bpv: 2.006546
-pajama/128/layer_2/self_attn.o_proj.pt is done
-best_loss 0.3791045546531677 running bpv: 2.006558
-pajama/128/layer_28/self_attn.k_proj.pt is done
-best_loss 925.6067504882812 running bpv: 2.00658
- 47%|████▋     | 105/224 [18:30<18:29,  9.32s/it]pajama/128/layer_28/self_attn.q_proj.pt is done
-best_loss 1615.02880859375 running bpv: 2.006591
- 47%|████▋     | 106/224 [18:45<20:04, 10.21s/it]pajama/128/layer_2/mlp.down_proj.pt is done
-best_loss 0.39756348729133606 running bpv: 2.006568
-pajama/128/layer_28/self_attn.v_proj.pt is done
-best_loss 261.1117858886719 running bpv: 2.00659
- 48%|████▊     | 108/224 [19:05<19:36, 10.15s/it]pajama/128/layer_28/mlp.gate_proj.pt is done
-best_loss 4754.88134765625 running bpv: 2.006567
-pajama/128/layer_28/self_attn.o_proj.pt is done
-best_loss 30.038623809814453 running bpv: 2.006578
-pajama/128/layer_28/mlp.up_proj.pt is done
-best_loss 2715.255859375 running bpv: 2.006557
- 50%|████▉     | 111/224 [19:30<17:45,  9.42s/it]pajama/128/layer_18/self_attn.k_proj.pt is done
-best_loss 1039.2344970703125 running bpv: 2.006577
-pajama/128/layer_18/self_attn.q_proj.pt is done
-best_loss 1583.9281005859375 running bpv: 2.006588
- 50%|█████     | 113/224 [19:50<17:43,  9.58s/it]pajama/128/layer_28/mlp.down_proj.pt is done
-best_loss 26.273408889770508 running bpv: 2.006566
-pajama/128/layer_18/mlp.gate_proj.pt is done
-best_loss 2403.99755859375 running bpv: 2.006546
- 51%|█████▏    | 115/224 [20:10<17:37,  9.70s/it]pajama/128/layer_18/self_attn.v_proj.pt is done
-best_loss 86.07672119140625 running bpv: 2.006565
-pajama/128/layer_18/self_attn.o_proj.pt is done
-best_loss 8.05386734008789 running bpv: 2.006576
-pajama/128/layer_18/mlp.up_proj.pt is done
-best_loss 1278.986083984375 running bpv: 2.006555
- 53%|█████▎    | 118/224 [20:35<16:13,  9.19s/it]pajama/128/layer_25/self_attn.k_proj.pt is done
-best_loss 992.3189697265625 running bpv: 2.006575
-pajama/128/layer_25/self_attn.q_proj.pt is done
-best_loss 1654.31982421875 running bpv: 2.006585
- 54%|█████▎    | 120/224 [20:55<16:17,  9.40s/it]pajama/128/layer_25/self_attn.v_proj.pt is done
-best_loss 195.82521057128906 running bpv: 2.006604
- 54%|█████▍    | 121/224 [21:10<17:39, 10.29s/it]pajama/128/layer_25/mlp.gate_proj.pt is done
-best_loss 3666.758056640625 running bpv: 2.006584
-pajama/128/layer_18/mlp.down_proj.pt is done
-best_loss 8.334903717041016 running bpv: 2.006564
-pajama/128/layer_25/self_attn.o_proj.pt is done
-best_loss 14.180511474609375 running bpv: 2.006574
- 55%|█████▌    | 124/224 [21:35<15:49,  9.50s/it]pajama/128/layer_25/mlp.up_proj.pt is done
-best_loss 1935.9154052734375 running bpv: 2.006554
-pajama/128/layer_30/self_attn.k_proj.pt is done
-best_loss 869.2188720703125 running bpv: 2.006572
- 56%|█████▋    | 126/224 [21:55<15:44,  9.64s/it]pajama/128/layer_30/self_attn.q_proj.pt is done
-best_loss 1519.680419921875 running bpv: 2.006582
-pajama/128/layer_25/mlp.down_proj.pt is done
-best_loss 13.271839141845703 running bpv: 2.006563
- 57%|█████▋    | 128/224 [22:15<15:35,  9.74s/it]pajama/128/layer_30/self_attn.v_proj.pt is done
-best_loss 414.56103515625 running bpv: 2.006581
-pajama/128/layer_30/self_attn.o_proj.pt is done
-best_loss 74.09053802490234 running bpv: 2.00659
- 58%|█████▊    | 130/224 [22:35<15:22,  9.82s/it]pajama/128/layer_30/mlp.gate_proj.pt is done
-best_loss 5604.4375 running bpv: 2.006571
-pajama/128/layer_30/mlp.up_proj.pt is done
-best_loss 3350.27099609375 running bpv: 2.006553
-pajama/128/layer_30/mlp.down_proj.pt is done
-best_loss 68.13702392578125 running bpv: 2.006535
- 59%|█████▉    | 133/224 [23:00<14:01,  9.25s/it]pajama/128/layer_29/self_attn.k_proj.pt is done
-best_loss 1075.70556640625 running bpv: 2.006553
-pajama/128/layer_29/self_attn.q_proj.pt is done
-best_loss 1765.5947265625 running bpv: 2.006562
- 60%|██████    | 135/224 [23:20<14:01,  9.45s/it]pajama/128/layer_29/self_attn.v_proj.pt is done
-best_loss 324.5941162109375 running bpv: 2.006579
-pajama/128/layer_29/self_attn.o_proj.pt is done
-best_loss 35.98223876953125 running bpv: 2.006587
- 61%|██████    | 137/224 [23:40<13:55,  9.60s/it]pajama/128/layer_29/mlp.gate_proj.pt is done
-best_loss 5008.921875 running bpv: 2.00657
-pajama/128/layer_29/mlp.up_proj.pt is done
-best_loss 3028.86376953125 running bpv: 2.006552
-pajama/128/layer_16/self_attn.k_proj.pt is done
-best_loss 880.3905639648438 running bpv: 2.006569
- 62%|██████▎   | 140/224 [24:05<12:47,  9.13s/it]pajama/128/layer_16/self_attn.q_proj.pt is done
-best_loss 1434.5577392578125 running bpv: 2.006577
- 63%|██████▎   | 141/224 [24:20<13:51, 10.02s/it]pajama/128/layer_16/mlp.gate_proj.pt is done
-best_loss 2048.960205078125 running bpv: 2.00656
- 63%|██████▎   | 142/224 [24:35<14:53, 10.90s/it]pajama/128/layer_16/self_attn.o_proj.pt is done
-best_loss 16.342166900634766 running bpv: 2.006569
-pajama/128/layer_29/mlp.down_proj.pt is done
-best_loss 37.58873748779297 running bpv: 2.006552
- 64%|██████▍   | 144/224 [24:55<14:07, 10.60s/it]pajama/128/layer_16/mlp.up_proj.pt is done
-best_loss 1135.82275390625 running bpv: 2.006536
-pajama/128/layer_16/self_attn.v_proj.pt is done
-best_loss 77.15859985351562 running bpv: 2.006551
-pajama/128/layer_13/self_attn.k_proj.pt is done
-best_loss 984.670654296875 running bpv: 2.006567
- 66%|██████▌   | 147/224 [25:20<12:23,  9.65s/it]pajama/128/layer_13/self_attn.q_proj.pt is done
-best_loss 1408.76171875 running bpv: 2.006575
- 66%|██████▌   | 148/224 [25:35<13:21, 10.54s/it]pajama/128/layer_13/self_attn.o_proj.pt is done
-best_loss 20.42859649658203 running bpv: 2.006583
-pajama/128/layer_16/mlp.down_proj.pt is done
-best_loss 7.088561534881592 running bpv: 2.006567
-pajama/128/layer_13/self_attn.v_proj.pt is done
-best_loss 81.96701049804688 running bpv: 2.006582
- 67%|██████▋   | 151/224 [26:00<11:42,  9.62s/it]pajama/128/layer_13/mlp.gate_proj.pt is done
-best_loss 1370.5228271484375 running bpv: 2.006566
-pajama/128/layer_13/mlp.up_proj.pt is done
-best_loss 925.5386352539062 running bpv: 2.006551
-pajama/128/layer_10/self_attn.k_proj.pt is done
-best_loss 886.6735229492188 running bpv: 2.006566
- 69%|██████▉   | 154/224 [26:25<10:40,  9.14s/it]pajama/128/layer_10/self_attn.q_proj.pt is done
-best_loss 1390.4951171875 running bpv: 2.006574
- 69%|██████▉   | 155/224 [26:40<11:31, 10.03s/it]pajama/128/layer_10/self_attn.o_proj.pt is done
-best_loss 10.914241790771484 running bpv: 2.006581
-pajama/128/layer_10/self_attn.v_proj.pt is done
-best_loss 63.02622985839844 running bpv: 2.006596
- 70%|███████   | 157/224 [27:00<11:11, 10.02s/it]pajama/128/layer_13/mlp.down_proj.pt is done
-best_loss 4.787937641143799 running bpv: 2.00658
-pajama/128/layer_10/mlp.gate_proj.pt is done
-best_loss 1290.1866455078125 running bpv: 2.006565
-pajama/128/layer_10/mlp.up_proj.pt is done
-best_loss 795.8524169921875 running bpv: 2.00655
-pajama/128/layer_19/self_attn.k_proj.pt is done
-best_loss 992.3389892578125 running bpv: 2.006564
- 72%|███████▏  | 161/224 [27:30<09:17,  8.86s/it]pajama/128/layer_19/self_attn.q_proj.pt is done
-best_loss 1639.573486328125 running bpv: 2.006572
- 72%|███████▏  | 162/224 [27:45<10:03,  9.73s/it]pajama/128/layer_10/mlp.down_proj.pt is done
-best_loss 3.434156894683838 running bpv: 2.006557
- 73%|███████▎  | 163/224 [28:00<10:47, 10.62s/it]pajama/128/layer_19/self_attn.v_proj.pt is done
-best_loss 99.37411499023438 running bpv: 2.006571
-pajama/128/layer_19/self_attn.o_proj.pt is done
-best_loss 7.4970383644104 running bpv: 2.006578
-pajama/128/layer_19/mlp.gate_proj.pt is done
-best_loss 2581.899658203125 running bpv: 2.006564
-pajama/128/layer_19/mlp.up_proj.pt is done
-best_loss 1336.956298828125 running bpv: 2.006549
- 75%|███████▍  | 167/224 [28:30<08:38,  9.09s/it]pajama/128/layer_6/self_attn.k_proj.pt is done
-best_loss 624.7334594726562 running bpv: 2.006563
-pajama/128/layer_6/self_attn.q_proj.pt is done
-best_loss 1080.9949951171875 running bpv: 2.00657
- 75%|███████▌  | 169/224 [28:50<08:32,  9.33s/it]pajama/128/layer_19/mlp.down_proj.pt is done
-best_loss 8.577616691589355 running bpv: 2.006556
- 76%|███████▌  | 170/224 [29:05<09:11, 10.21s/it]pajama/128/layer_6/self_attn.v_proj.pt is done
-best_loss 43.38172912597656 running bpv: 2.00657
-pajama/128/layer_6/self_attn.o_proj.pt is done
-best_loss 4.328571796417236 running bpv: 2.006577
- 77%|███████▋  | 172/224 [29:25<08:47, 10.15s/it]pajama/128/layer_6/mlp.gate_proj.pt is done
-best_loss 1210.81787109375 running bpv: 2.006563
-pajama/128/layer_6/mlp.up_proj.pt is done
-best_loss 656.7338256835938 running bpv: 2.006549
-pajama/128/layer_11/self_attn.k_proj.pt is done
-best_loss 842.438720703125 running bpv: 2.006562
- 78%|███████▊  | 175/224 [29:50<07:41,  9.43s/it]pajama/128/layer_11/self_attn.q_proj.pt is done
-best_loss 1242.924560546875 running bpv: 2.006569
- 79%|███████▊  | 176/224 [30:05<08:15, 10.32s/it]pajama/128/layer_11/self_attn.o_proj.pt is done
-best_loss 11.809870719909668 running bpv: 2.006576
-pajama/128/layer_6/mlp.down_proj.pt is done
-best_loss 2.3937859535217285 running bpv: 2.006562
-pajama/128/layer_11/self_attn.v_proj.pt is done
-best_loss 64.34502410888672 running bpv: 2.006575
- 80%|███████▉  | 179/224 [30:30<07:08,  9.51s/it]pajama/128/layer_11/mlp.gate_proj.pt is done
-best_loss 1316.79248046875 running bpv: 2.006562
-pajama/128/layer_11/mlp.up_proj.pt is done
-best_loss 839.6220703125 running bpv: 2.006548
-pajama/128/layer_20/self_attn.k_proj.pt is done
-best_loss 997.8287353515625 running bpv: 2.006561
- 81%|████████▏ | 182/224 [30:55<06:21,  9.08s/it]pajama/128/layer_20/self_attn.q_proj.pt is done
-best_loss 1627.0020751953125 running bpv: 2.006568
- 82%|████████▏ | 183/224 [31:10<06:48,  9.96s/it]pajama/128/layer_11/mlp.down_proj.pt is done
-best_loss 3.63364315032959 running bpv: 2.006555
-pajama/128/layer_20/self_attn.v_proj.pt is done
-best_loss 110.35557556152344 running bpv: 2.006567
- 83%|████████▎ | 185/224 [31:30<06:28,  9.97s/it]pajama/128/layer_20/mlp.gate_proj.pt is done
-best_loss 2746.20654296875 running bpv: 2.006554
-pajama/128/layer_20/self_attn.o_proj.pt is done
-best_loss 7.801945686340332 running bpv: 2.006561
-pajama/128/layer_20/mlp.up_proj.pt is done
-best_loss 1435.5142822265625 running bpv: 2.006548
-pajama/128/layer_23/self_attn.k_proj.pt is done
-best_loss 1029.810302734375 running bpv: 2.00656
- 84%|████████▍ | 189/224 [32:00<05:09,  8.84s/it]pajama/128/layer_23/self_attn.q_proj.pt is done
-best_loss 1648.477294921875 running bpv: 2.006566
- 85%|████████▍ | 190/224 [32:15<05:30,  9.71s/it]pajama/128/layer_20/mlp.down_proj.pt is done
-best_loss 9.148040771484375 running bpv: 2.006554
-pajama/128/layer_23/self_attn.o_proj.pt is done
-best_loss 8.985455513000488 running bpv: 2.00656
-pajama/128/layer_23/mlp.up_proj.pt is done
-best_loss 1718.7164306640625 running bpv: 2.006548
- 86%|████████▌ | 193/224 [32:40<04:44,  9.19s/it]pajama/128/layer_23/mlp.gate_proj.pt is done
-best_loss 3263.657470703125 running bpv: 2.006536
-pajama/128/layer_23/self_attn.v_proj.pt is done
-best_loss 150.00198364257812 running bpv: 2.006547
-pajama/128/layer_17/self_attn.k_proj.pt is done
-best_loss 937.276123046875 running bpv: 2.006559
- 88%|████████▊ | 196/224 [33:05<04:08,  8.89s/it]pajama/128/layer_17/self_attn.q_proj.pt is done
-best_loss 1538.2333984375 running bpv: 2.006565
- 88%|████████▊ | 197/224 [33:20<04:23,  9.76s/it]pajama/128/layer_17/self_attn.v_proj.pt is done
-best_loss 94.57893371582031 running bpv: 2.006577
- 88%|████████▊ | 198/224 [33:35<04:36, 10.65s/it]pajama/128/layer_17/self_attn.o_proj.pt is done
-best_loss 12.609395980834961 running bpv: 2.006583
-pajama/128/layer_17/mlp.gate_proj.pt is done
-best_loss 2251.72607421875 running bpv: 2.006571
-pajama/128/layer_23/mlp.down_proj.pt is done
-best_loss 11.677040100097656 running bpv: 2.006559
-pajama/128/layer_9/self_attn.k_proj.pt is done
-best_loss 771.089111328125 running bpv: 2.00657
- 90%|█████████ | 202/224 [34:05<03:20,  9.10s/it]pajama/128/layer_17/mlp.up_proj.pt is done
-best_loss 1213.2281494140625 running bpv: 2.006558
-pajama/128/layer_9/self_attn.q_proj.pt is done
-best_loss 1210.245361328125 running bpv: 2.006564
- 91%|█████████ | 204/224 [34:25<03:06,  9.34s/it]pajama/128/layer_17/mlp.down_proj.pt is done
-best_loss 8.629537582397461 running bpv: 2.006553
- 92%|█████████▏| 205/224 [34:40<03:14, 10.22s/it]pajama/128/layer_9/self_attn.v_proj.pt is done
-best_loss 79.35453796386719 running bpv: 2.006564
-pajama/128/layer_9/self_attn.o_proj.pt is done
-best_loss 10.227344512939453 running bpv: 2.00657
-pajama/128/layer_9/mlp.gate_proj.pt is done
-best_loss 1336.225830078125 running bpv: 2.006558
- 93%|█████████▎| 208/224 [35:05<02:31,  9.47s/it]pajama/128/layer_9/mlp.up_proj.pt is done
-best_loss 758.8221435546875 running bpv: 2.006547
-pajama/128/layer_22/self_attn.k_proj.pt is done
-best_loss 1000.125 running bpv: 2.006558
- 94%|█████████▍| 210/224 [35:25<02:14,  9.61s/it]pajama/128/layer_22/self_attn.q_proj.pt is done
-best_loss 1553.0787353515625 running bpv: 2.006563
-pajama/128/layer_9/mlp.down_proj.pt is done
-best_loss 3.218742609024048 running bpv: 2.006552
- 95%|█████████▍| 212/224 [35:45<01:56,  9.72s/it]pajama/128/layer_22/mlp.gate_proj.pt is done
-best_loss 3085.79541015625 running bpv: 2.006541
- 95%|█████████▌| 213/224 [36:00<01:56, 10.61s/it]pajama/128/layer_22/self_attn.o_proj.pt is done
-best_loss 10.114053726196289 running bpv: 2.006547
-pajama/128/layer_22/mlp.up_proj.pt is done
-best_loss 1605.8167724609375 running bpv: 2.006536
-pajama/128/layer_22/self_attn.v_proj.pt is done
-best_loss 130.58541870117188 running bpv: 2.006546
-pajama/128/layer_24/self_attn.k_proj.pt is done
-best_loss 944.1868286132812 running bpv: 2.006557
- 97%|█████████▋| 217/224 [36:30<01:03,  9.09s/it]pajama/128/layer_24/self_attn.q_proj.pt is done
-best_loss 1622.2398681640625 running bpv: 2.006562
- 97%|█████████▋| 218/224 [36:45<00:59,  9.97s/it]pajama/128/layer_22/mlp.down_proj.pt is done
-best_loss 11.214762687683105 running bpv: 2.006551
- 98%|█████████▊| 219/224 [37:00<00:54, 10.85s/it]pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 10.981646537780762 running bpv: 2.006557
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 3437.513427734375 running bpv: 2.006546
-pajama/128/layer_22/mlp.down_proj.pt is done
-best_loss 11.214762687683105 running bpv: 2.006536
- 99%|█████████▉| 222/224 [37:10<00:15,  7.63s/it]pajama/128/layer_24/self_attn.v_proj.pt is done
-best_loss 183.36669921875 running bpv: 2.006546
-pajama/128/layer_24/self_attn.o_proj.pt is done
-best_loss 10.981646537780762 running bpv: 2.006551
-pajama/128/layer_24/mlp.gate_proj.pt is done
-best_loss 3437.513427734375 running bpv: 2.006541
-done
-225it [37:10,  9.91s/it]                         
-Finished quantizing Meta-Llama-3-8B
-  0%|          | 0/224 [00:00<?, ?it/s]already done with  pajama/128/layer_3/self_attn.q_proj.pt
-Traceback (most recent call last):
-  File "/data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py", line 182, in <module>
-    command, command_name = make_command(path)
-                            ^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py", line 156, in make_command
-    with open(log_path, "r") as f:
-         ^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: './logs/parallel_compress/./meta-llama/Meta-Llama-3-8B/joint/pajama/128/layer_3/self_attn.q_proj.pt.log'
-  0%|          | 0/224 [00:00<?, ?it/s]
-Finished compressing Meta-Llama-3-8B

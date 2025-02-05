@@ -1,205 +1,0 @@
-2024-12-05 17:46:15.651027: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
-2024-12-05 17:46:15.667340: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-2024-12-05 17:46:15.672501: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-2024-12-05 17:46:15.685459: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-12-05 17:46:16.731336: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  4.37it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.81it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.73it/s]
-Model loaded. LlamaForCausalLM(
-  (model): LlamaModel(
-    (embed_tokens): Embedding(32000, 4096)
-    (layers): ModuleList(
-      (0-31): 32 x LlamaDecoderLayer(
-        (self_attn): LlamaSdpaAttention(
-          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (rotary_emb): LlamaRotaryEmbedding()
-        )
-        (mlp): LlamaMLP(
-          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
-          (act_fn): SiLU()
-        )
-        (input_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-        (post_attention_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-      )
-    )
-    (norm): LlamaRMSNorm((4096,), eps=1e-05)
-    (rotary_emb): LlamaRotaryEmbedding()
-  )
-  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
-)
-Starting...
-getting inputs:   0%|          | 0/128 [00:00<?, ?it/s]getting inputs:   1%|          | 1/128 [00:00<01:29,  1.42it/s]getting inputs:   4%|▍         | 5/128 [00:00<00:16,  7.68it/s]getting inputs:   7%|▋         | 9/128 [00:00<00:08, 13.40it/s]getting inputs:  10%|█         | 13/128 [00:01<00:06, 18.03it/s]getting inputs:  13%|█▎        | 17/128 [00:01<00:05, 22.03it/s]getting inputs:  16%|█▋        | 21/128 [00:01<00:04, 25.29it/s]getting inputs:  20%|█▉        | 25/128 [00:01<00:03, 27.79it/s]getting inputs:  23%|██▎       | 29/128 [00:01<00:03, 29.47it/s]getting inputs:  26%|██▌       | 33/128 [00:01<00:03, 30.56it/s]getting inputs:  29%|██▉       | 37/128 [00:01<00:02, 31.23it/s]getting inputs:  31%|███▏      | 40/128 [00:01<00:02, 30.87it/s]getting inputs:  34%|███▎      | 43/128 [00:01<00:02, 30.52it/s]getting inputs:  37%|███▋      | 47/128 [00:02<00:02, 30.38it/s]getting inputs:  40%|███▉      | 51/128 [00:02<00:02, 30.25it/s]getting inputs:  43%|████▎     | 55/128 [00:02<00:02, 30.21it/s]getting inputs:  46%|████▌     | 59/128 [00:02<00:02, 30.23it/s]getting inputs:  49%|████▉     | 63/128 [00:02<00:02, 30.30it/s]getting inputs:  52%|█████▏    | 67/128 [00:02<00:02, 30.22it/s]getting inputs:  55%|█████▌    | 71/128 [00:02<00:01, 30.15it/s]getting inputs:  59%|█████▊    | 75/128 [00:03<00:01, 29.08it/s]getting inputs:  62%|██████▏   | 79/128 [00:03<00:01, 30.33it/s]getting inputs:  65%|██████▍   | 83/128 [00:03<00:01, 30.16it/s]getting inputs:  67%|██████▋   | 86/128 [00:03<00:01, 29.60it/s]getting inputs:  70%|███████   | 90/128 [00:03<00:01, 29.74it/s]getting inputs:  73%|███████▎  | 93/128 [00:03<00:01, 29.02it/s]getting inputs:  76%|███████▌  | 97/128 [00:03<00:01, 29.39it/s]getting inputs:  79%|███████▉  | 101/128 [00:03<00:00, 29.68it/s]getting inputs:  81%|████████▏ | 104/128 [00:04<00:00, 28.73it/s]getting inputs:  84%|████████▍ | 108/128 [00:04<00:00, 29.31it/s]getting inputs:  88%|████████▊ | 112/128 [00:04<00:00, 29.76it/s]getting inputs:  91%|█████████ | 116/128 [00:04<00:00, 30.01it/s]getting inputs:  94%|█████████▍| 120/128 [00:04<00:00, 30.13it/s]getting inputs:  97%|█████████▋| 124/128 [00:04<00:00, 30.13it/s]getting inputs: 100%|██████████| 128/128 [00:04<00:00, 30.32it/s]getting inputs: 100%|██████████| 128/128 [00:04<00:00, 26.54it/s]
-48323 MiB free out of 48676 MiB total
-Ready.
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:26,  1.17it/s]Inference:   6%|▋         | 2/32 [00:01<00:20,  1.48it/s]Inference:   9%|▉         | 3/32 [00:01<00:17,  1.61it/s]Inference:  12%|█▎        | 4/32 [00:02<00:16,  1.67it/s]Inference:  16%|█▌        | 5/32 [00:03<00:15,  1.71it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.73it/s]Inference:  22%|██▏       | 7/32 [00:04<00:14,  1.76it/s]Inference:  25%|██▌       | 8/32 [00:04<00:13,  1.78it/s]Inference:  28%|██▊       | 9/32 [00:05<00:12,  1.78it/s]Inference:  31%|███▏      | 10/32 [00:05<00:12,  1.79it/s]Inference:  34%|███▍      | 11/32 [00:06<00:11,  1.79it/s]Inference:  38%|███▊      | 12/32 [00:06<00:11,  1.79it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.79it/s]Inference:  44%|████▍     | 14/32 [00:08<00:10,  1.78it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.78it/s]Inference:  50%|█████     | 16/32 [00:09<00:09,  1.78it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.69it/s]Inference:  56%|█████▋    | 18/32 [00:10<00:08,  1.72it/s]Inference:  59%|█████▉    | 19/32 [00:11<00:07,  1.74it/s]Inference:  62%|██████▎   | 20/32 [00:11<00:06,  1.76it/s]Inference:  66%|██████▌   | 21/32 [00:12<00:06,  1.77it/s]Inference:  69%|██████▉   | 22/32 [00:12<00:05,  1.78it/s]Inference:  72%|███████▏  | 23/32 [00:13<00:05,  1.78it/s]Inference:  75%|███████▌  | 24/32 [00:13<00:04,  1.78it/s]Inference:  78%|███████▊  | 25/32 [00:14<00:03,  1.79it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.79it/s]Inference:  84%|████████▍ | 27/32 [00:15<00:02,  1.80it/s]Inference:  88%|████████▊ | 28/32 [00:16<00:02,  1.80it/s]Inference:  91%|█████████ | 29/32 [00:16<00:01,  1.81it/s]Inference:  94%|█████████▍| 30/32 [00:17<00:01,  1.78it/s]Inference:  97%|█████████▋| 31/32 [00:17<00:00,  1.77it/s]Inference: 100%|██████████| 32/32 [00:18<00:00,  1.77it/s]Inference: 100%|██████████| 32/32 [00:18<00:00,  1.75it/s]
-layer0: self_attn.q_proj
-iter 0, train loss 21638.42578125, val loss None, lr 0.01
-iter 250, train loss 50.91909408569336, val loss None, lr 0.01
-iter 500, train loss 44.44975280761719, val loss None, lr 0.01
-iter 750, train loss 53.221641540527344, val loss None, lr 0.01
-iter 1000, train loss 40.280494689941406, val loss None, lr 0.01
-iter 1250, train loss 32.391902923583984, val loss None, lr 0.01
-iter 1500, train loss 44.148162841796875, val loss None, lr 0.01
-iter 1750, train loss 40.869041442871094, val loss None, lr 0.01
-iter 2000, train loss 45.036949157714844, val loss None, lr 0.01
-iter 2250, train loss 37.717464447021484, val loss None, lr 0.01
-best loss 25.198667526245117
-layer0: self_attn.k_proj
-iter 0, train loss 13561.328125, val loss None, lr 0.01
-iter 250, train loss 58.00823974609375, val loss None, lr 0.01
-iter 500, train loss 70.99754333496094, val loss None, lr 0.01
-iter 750, train loss 61.40625762939453, val loss None, lr 0.01
-iter 1000, train loss 45.091793060302734, val loss None, lr 0.01
-iter 1250, train loss 55.883934020996094, val loss None, lr 0.01
-iter 1500, train loss 39.612239837646484, val loss None, lr 0.01
-iter 1750, train loss 43.56867599487305, val loss None, lr 0.01
-iter 2000, train loss 50.02709197998047, val loss None, lr 0.01
-iter 2250, train loss 49.317691802978516, val loss None, lr 0.01
-best loss 38.38935089111328
-layer0: self_attn.v_proj
-iter 0, train loss 33.00835418701172, val loss None, lr 0.01
-iter 250, train loss 2.549180507659912, val loss None, lr 0.01
-iter 500, train loss 2.399240732192993, val loss None, lr 0.01
-iter 750, train loss 2.383100748062134, val loss None, lr 0.01
-iter 1000, train loss 2.3557093143463135, val loss None, lr 0.01
-iter 1250, train loss 2.358344316482544, val loss None, lr 0.01
-iter 1500, train loss 2.3389406204223633, val loss None, lr 0.01
-iter 1750, train loss 2.3332016468048096, val loss None, lr 0.01
-iter 2000, train loss 2.3296544551849365, val loss None, lr 0.01
-iter 2250, train loss 2.33128023147583, val loss None, lr 0.01
-best loss 2.2980713844299316
-layer0: self_attn.o_proj
-iter 0, train loss 7.724525451660156, val loss None, lr 0.01
-iter 250, train loss 0.21658146381378174, val loss None, lr 0.01
-iter 500, train loss 0.20091411471366882, val loss None, lr 0.01
-iter 750, train loss 0.20075537264347076, val loss None, lr 0.01
-iter 1000, train loss 0.1882065385580063, val loss None, lr 0.01
-iter 1250, train loss 0.18330484628677368, val loss None, lr 0.01
-iter 1500, train loss 0.18464557826519012, val loss None, lr 0.01
-iter 1750, train loss 0.18429505825042725, val loss None, lr 0.01
-iter 2000, train loss 0.1819552183151245, val loss None, lr 0.01
-iter 2250, train loss 0.18713051080703735, val loss None, lr 0.01
-best loss 0.17694172263145447
-layer0: mlp.gate_proj
-iter 0, train loss 502.828369140625, val loss None, lr 0.01
-iter 250, train loss 177.98361206054688, val loss None, lr 0.01
-iter 500, train loss 172.11248779296875, val loss None, lr 0.01
-iter 750, train loss 169.28787231445312, val loss None, lr 0.01
-iter 1000, train loss 166.94615173339844, val loss None, lr 0.01
-iter 1250, train loss 166.62347412109375, val loss None, lr 0.01
-iter 1500, train loss 164.98828125, val loss None, lr 0.01
-iter 1750, train loss 166.1776580810547, val loss None, lr 0.01
-iter 2000, train loss 165.16213989257812, val loss None, lr 0.01
-iter 2250, train loss 164.00518798828125, val loss None, lr 0.01
-best loss 163.0470428466797
-layer0: mlp.up_proj
-iter 0, train loss 341.34027099609375, val loss None, lr 0.01
-iter 250, train loss 166.2803955078125, val loss None, lr 0.01
-iter 500, train loss 162.88926696777344, val loss None, lr 0.01
-iter 750, train loss 160.31802368164062, val loss None, lr 0.01
-iter 1000, train loss 159.33897399902344, val loss None, lr 0.01
-iter 1250, train loss 158.4512939453125, val loss None, lr 0.01
-iter 1500, train loss 157.27011108398438, val loss None, lr 0.01
-iter 1750, train loss 157.0565643310547, val loss None, lr 0.01
-iter 2000, train loss 156.4928741455078, val loss None, lr 0.01
-iter 2250, train loss 156.53033447265625, val loss None, lr 0.01
-best loss 154.81634521484375
-layer0: mlp.down_proj
-iter 0, train loss 1.9190449714660645, val loss None, lr 0.01
-iter 250, train loss 0.7181807160377502, val loss None, lr 0.01
-iter 500, train loss 0.7108822464942932, val loss None, lr 0.01
-iter 750, train loss 0.7067725658416748, val loss None, lr 0.01
-iter 1000, train loss 0.7043942213058472, val loss None, lr 0.01
-iter 1250, train loss 0.7054433226585388, val loss None, lr 0.01
-iter 1500, train loss 0.7025373578071594, val loss None, lr 0.01
-iter 1750, train loss 0.7013502717018127, val loss None, lr 0.01
-iter 2000, train loss 0.701025664806366, val loss None, lr 0.01
-iter 2250, train loss 0.6998485922813416, val loss None, lr 0.01
-best loss 0.699234127998352
-48323 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:09,  3.15it/s]Inference:   6%|▋         | 2/32 [00:00<00:09,  3.31it/s]Inference:   9%|▉         | 3/32 [00:00<00:08,  3.58it/s]Inference:  12%|█▎        | 4/32 [00:01<00:07,  3.55it/s]Inference:  16%|█▌        | 5/32 [00:01<00:07,  3.52it/s]Inference:  19%|█▉        | 6/32 [00:01<00:07,  3.64it/s]Inference:  22%|██▏       | 7/32 [00:01<00:06,  3.59it/s]Inference:  25%|██▌       | 8/32 [00:02<00:06,  3.56it/s]Inference:  28%|██▊       | 9/32 [00:02<00:06,  3.68it/s]Inference:  31%|███▏      | 10/32 [00:02<00:06,  3.61it/s]Inference:  34%|███▍      | 11/32 [00:03<00:05,  3.63it/s]Inference:  38%|███▊      | 12/32 [00:03<00:05,  3.68it/s]Inference:  41%|████      | 13/32 [00:03<00:05,  3.62it/s]Inference:  44%|████▍     | 14/32 [00:03<00:04,  3.67it/s]Inference:  47%|████▋     | 15/32 [00:04<00:04,  3.61it/s]Inference:  50%|█████     | 16/32 [00:04<00:04,  3.64it/s]Inference:  53%|█████▎    | 17/32 [00:04<00:04,  3.68it/s]Inference:  56%|█████▋    | 18/32 [00:05<00:03,  3.61it/s]Inference:  59%|█████▉    | 19/32 [00:05<00:03,  3.58it/s]Inference:  62%|██████▎   | 20/32 [00:05<00:03,  3.67it/s]Inference:  66%|██████▌   | 21/32 [00:05<00:03,  3.62it/s]Inference:  69%|██████▉   | 22/32 [00:06<00:02,  3.58it/s]Inference:  72%|███████▏  | 23/32 [00:06<00:02,  3.67it/s]Inference:  75%|███████▌  | 24/32 [00:06<00:02,  3.55it/s]Inference:  78%|███████▊  | 25/32 [00:06<00:01,  3.52it/s]Inference:  81%|████████▏ | 26/32 [00:07<00:01,  3.61it/s]Inference:  84%|████████▍ | 27/32 [00:07<00:01,  3.57it/s]Inference:  88%|████████▊ | 28/32 [00:07<00:01,  3.61it/s]Inference:  91%|█████████ | 29/32 [00:08<00:00,  3.58it/s]Inference:  94%|█████████▍| 30/32 [00:08<00:00,  3.55it/s]Inference:  97%|█████████▋| 31/32 [00:08<00:00,  3.62it/s]Inference: 100%|██████████| 32/32 [00:08<00:00,  3.59it/s]Inference: 100%|██████████| 32/32 [00:08<00:00,  3.60it/s]
-42471 MiB free out of 48676 MiB total
-Saved layer 0 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/no_finetune/layer_0.pt
-after cast to cpu
-46465 MiB free out of 48676 MiB total
-Done with layer 0 total_time elapsed: 889 estimated time left: 27563
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:17,  1.74it/s]Inference:   6%|▋         | 2/32 [00:01<00:17,  1.76it/s]Inference:   9%|▉         | 3/32 [00:01<00:16,  1.72it/s]Inference:  12%|█▎        | 4/32 [00:02<00:16,  1.73it/s]Inference:  16%|█▌        | 5/32 [00:02<00:15,  1.73it/s]Inference:  19%|█▉        | 6/32 [00:03<00:15,  1.73it/s]Inference:  22%|██▏       | 7/32 [00:04<00:14,  1.71it/s]Inference:  25%|██▌       | 8/32 [00:04<00:14,  1.71it/s]Inference:  28%|██▊       | 9/32 [00:05<00:13,  1.71it/s]Inference:  31%|███▏      | 10/32 [00:05<00:12,  1.71it/s]Inference:  34%|███▍      | 11/32 [00:06<00:12,  1.70it/s]Inference:  38%|███▊      | 12/32 [00:06<00:11,  1.72it/s]Inference:  41%|████      | 13/32 [00:07<00:11,  1.72it/s]Inference:  44%|████▍     | 14/32 [00:08<00:10,  1.71it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.71it/s]Inference:  50%|█████     | 16/32 [00:09<00:09,  1.71it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.71it/s]Inference:  56%|█████▋    | 18/32 [00:10<00:08,  1.71it/s]Inference:  59%|█████▉    | 19/32 [00:11<00:07,  1.70it/s]Inference:  62%|██████▎   | 20/32 [00:11<00:07,  1.70it/s]Inference:  66%|██████▌   | 21/32 [00:12<00:06,  1.70it/s]Inference:  69%|██████▉   | 22/32 [00:12<00:05,  1.70it/s]Inference:  72%|███████▏  | 23/32 [00:13<00:05,  1.70it/s]Inference:  75%|███████▌  | 24/32 [00:14<00:04,  1.69it/s]Inference:  78%|███████▊  | 25/32 [00:14<00:04,  1.69it/s]Inference:  81%|████████▏ | 26/32 [00:15<00:03,  1.69it/s]Inference:  84%|████████▍ | 27/32 [00:15<00:02,  1.69it/s]Inference:  88%|████████▊ | 28/32 [00:16<00:02,  1.69it/s]Inference:  91%|█████████ | 29/32 [00:17<00:01,  1.69it/s]Inference:  94%|█████████▍| 30/32 [00:17<00:01,  1.69it/s]Inference:  97%|█████████▋| 31/32 [00:18<00:00,  1.69it/s]Inference: 100%|██████████| 32/32 [00:18<00:00,  1.69it/s]Inference: 100%|██████████| 32/32 [00:18<00:00,  1.70it/s]
-layer1: self_attn.q_proj
-iter 0, train loss 47161.3828125, val loss None, lr 0.01
-iter 250, train loss 703.9351806640625, val loss None, lr 0.01
-iter 500, train loss 603.6031494140625, val loss None, lr 0.01
-iter 750, train loss 607.4523315429688, val loss None, lr 0.01
-iter 1000, train loss 584.9321899414062, val loss None, lr 0.01
-iter 1250, train loss 613.5999755859375, val loss None, lr 0.01
-iter 1500, train loss 576.8510131835938, val loss None, lr 0.01
-iter 1750, train loss 618.131591796875, val loss None, lr 0.01
-iter 2000, train loss 595.7740478515625, val loss None, lr 0.01
-iter 2250, train loss 577.9609375, val loss None, lr 0.01
-best loss 523.716064453125
-layer1: self_attn.k_proj
-iter 0, train loss 49220.1484375, val loss None, lr 0.01
-iter 250, train loss 727.863525390625, val loss None, lr 0.01
-iter 500, train loss 664.9203491210938, val loss None, lr 0.01
-iter 750, train loss 624.0328369140625, val loss None, lr 0.01
-iter 1000, train loss 672.2696533203125, val loss None, lr 0.01
-iter 1250, train loss 640.7744140625, val loss None, lr 0.01
-iter 1500, train loss 674.3594970703125, val loss None, lr 0.01
-iter 1750, train loss 642.6538696289062, val loss None, lr 0.01
-iter 2000, train loss 684.8621215820312, val loss None, lr 0.01
-iter 2250, train loss 612.396484375, val loss None, lr 0.01
-best loss 570.0936279296875
-layer1: self_attn.v_proj
-iter 0, train loss 120.42587280273438, val loss None, lr 0.01
-iter 250, train loss 26.093894958496094, val loss None, lr 0.01
-iter 500, train loss 25.58833122253418, val loss None, lr 0.01
-iter 750, train loss 25.530797958374023, val loss None, lr 0.01
-iter 1000, train loss 25.5454044342041, val loss None, lr 0.01
-iter 1250, train loss 25.5174560546875, val loss None, lr 0.01
-iter 1500, train loss 25.279808044433594, val loss None, lr 0.01
-Traceback (most recent call last):
-  File "/data/lliu/huffman/llama_tensorize.py", line 551, in <module>
-    quantize(model, train_loader, val_loader, args.device)
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/llama_tensorize.py", line 264, in quantize
-    new_layer.align(
-  File "/data/lliu/huffman/src/tensor_compress.py", line 219, in align
-    hessian_general_align.align(
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/src/alignment/hessian_general_align.py", line 120, in align
-    break
-^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/_tensor.py", line 525, in backward
-    def backward(
-
-KeyboardInterrupt

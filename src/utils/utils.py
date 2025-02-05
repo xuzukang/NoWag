@@ -94,6 +94,15 @@ def clean():
     torch.cuda.empty_cache()
     torch.cuda.ipc_collect()
 
+def get_gpu_memory(device:torch.device):
+    total_memory = torch.cuda.get_device_properties(device).total_memory
+    reserved_memory = torch.cuda.memory_reserved(device)
+    allocated_memory = torch.cuda.memory_allocated(device)
+    free_memory = total_memory - reserved_memory - allocated_memory
+
+    as_gb = lambda x: round(x/1024**3, 2)
+    print(f"Total Memory: {as_gb(total_memory)}GB, Reserved Memory: {as_gb(reserved_memory)}GB, Allocated Memory: {as_gb(allocated_memory)}GB, Free Memory: {as_gb(free_memory)}GB")
+
 def find_run_num(save_path:str)->str:
     """counts the number of runs in a directory and returns 'run_x' where x is the next run number"""
     n_prev_runs = len(glob.glob(os.path.join(save_path, "run_*")))

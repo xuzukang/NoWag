@@ -61,7 +61,7 @@ def get_red_pajama(nsamples, seqlen, model, train_test: str = "train"):
     trainloader = []
     import random
 
-    for _ in tqdm.tqdm(range(nsamples)):
+    for _ in tqdm.tqdm(range(nsamples), desc="Loading Red Pajama"):
         while True:
             i = random.randint(0, len(traindata) - 1)
             trainenc = tokenizer(traindata[i]["text"], return_tensors="pt")

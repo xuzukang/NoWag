@@ -1,494 +1,0 @@
-wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
-wandb: Currently logged in as: m6481. Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.19.1
-wandb: Run data is saved locally in /data/lliu/huffman/wandb/run-20250107_171323-g87eipl0
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Resuming run desert-galaxy-76
-wandb: ⭐️ View project at https://wandb.ai/m6481/compression_no_finetune
-wandb: 🚀 View run at https://wandb.ai/m6481/compression_no_finetune/runs/g87eipl0
-Namespace(models_to_compress=['meta-llama/Llama-2-7b-hf'], seqlens=[4096], batch_size=1, hessian_path='/data/lliu/huffman/models/{model_name}/hessians_new/seed_0/pajama/128', discrete_update_hessian_path='/data/lliu/huffman/models/{model_name}/hessians_new/seed_42/pajama/128', weights_path='/data/lliu/huffman/models/{model_name}/original_weights', save_path='/data/lliu/huffman/models/{model_name}/compressed', self_attn_compression_algorithm='quantize', mlp_compression_algorithm='quantize', devices=['cuda:6', 'cuda:5', 'cuda:4', 'cuda:3', 'cuda:2'], yaml_path='/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml', self_attn_yaml_path=None, mlp_yaml_path=None, use_already_done=False, use_wandb=True, resume_wandb=True, wandb_id='g87eipl0', wandb_project='compression_no_finetune', ppl_eval=True)
-  0%|          | 0/224 [00:00<?, ?it/s]path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.gate_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/mlp.gate_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.gate_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.gate_proj/compressed.log
-best_loss 36.851314544677734 running bpv: 2.005723
-already done with  meta-llama/Llama-2-7b-hf/layer_3/mlp.gate_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.up_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/mlp.up_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.up_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.up_proj/compressed.log
-best_loss 31.452659606933594 running bpv: 2.005723
-already done with  meta-llama/Llama-2-7b-hf/layer_3/mlp.up_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.q_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.q_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.q_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.q_proj/compressed.log
-best_loss 83.00355529785156 running bpv: 2.006204
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.q_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.k_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.k_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.k_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.k_proj/compressed.log
-best_loss 92.5238037109375 running bpv: 2.006555
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.k_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.o_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.o_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.o_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.o_proj/compressed.log
-best_loss 0.21167629957199097 running bpv: 2.006821
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.o_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.down_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/mlp.down_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.down_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/mlp.down_proj/compressed.log
-best_loss 0.8072618246078491 running bpv: 2.006555
-already done with  meta-llama/Llama-2-7b-hf/layer_3/mlp.down_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.v_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.v_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.v_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_3/self_attn.v_proj/compressed.log
-best_loss 22.92733383178711 running bpv: 2.00674
-already done with  meta-llama/Llama-2-7b-hf/layer_3/self_attn.v_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.gate_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/mlp.gate_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.gate_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.gate_proj/compressed.log
-best_loss 68.33273315429688 running bpv: 2.006555
-already done with  meta-llama/Llama-2-7b-hf/layer_5/mlp.gate_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.up_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/mlp.up_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.up_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.up_proj/compressed.log
-best_loss 54.48064041137695 running bpv: 2.006426
-already done with  meta-llama/Llama-2-7b-hf/layer_5/mlp.up_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.q_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.q_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.q_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.q_proj/compressed.log
-best_loss 95.58329010009766 running bpv: 2.006555
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.q_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.k_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.k_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.k_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.k_proj/compressed.log
-best_loss 106.54869079589844 running bpv: 2.00667
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.k_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.o_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.o_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.o_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.o_proj/compressed.log
-best_loss 0.7277671098709106 running bpv: 2.006773
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.o_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.down_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/mlp.down_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.down_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/mlp.down_proj/compressed.log
-best_loss 2.1368637084960938 running bpv: 2.006651
-already done with  meta-llama/Llama-2-7b-hf/layer_5/mlp.down_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.v_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.v_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.v_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_5/self_attn.v_proj/compressed.log
-best_loss 28.365232467651367 running bpv: 2.00674
-already done with  meta-llama/Llama-2-7b-hf/layer_5/self_attn.v_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.gate_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/mlp.gate_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.gate_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.gate_proj/compressed.log
-best_loss 106.67100524902344 running bpv: 2.006638
-already done with  meta-llama/Llama-2-7b-hf/layer_8/mlp.gate_proj
-path   8%|▊         | 19/224 [00:00<00:01, 184.35it/s]/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.up_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/mlp.up_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.up_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.up_proj/compressed.log
-best_loss 87.48828887939453 running bpv: 2.006555
-already done with  meta-llama/Llama-2-7b-hf/layer_8/mlp.up_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.q_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.q_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.q_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.q_proj/compressed.log
-best_loss 155.6551055908203 running bpv: 2.006628
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.q_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.k_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.k_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.k_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.k_proj/compressed.log
-best_loss 158.32089233398438 running bpv: 2.006696
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.k_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.o_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.o_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.o_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.o_proj/compressed.log
-best_loss 2.4172372817993164 running bpv: 2.006761
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.o_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.down_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/mlp.down_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.down_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/mlp.down_proj/compressed.log
-best_loss 5.041171073913574 running bpv: 2.006682
-already done with  meta-llama/Llama-2-7b-hf/layer_8/mlp.down_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.v_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.v_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.v_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_8/self_attn.v_proj/compressed.log
-best_loss 47.56711196899414 running bpv: 2.00674
-already done with  meta-llama/Llama-2-7b-hf/layer_8/self_attn.v_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.gate_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/mlp.gate_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.gate_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.gate_proj/compressed.log
-best_loss 135.95762634277344 running bpv: 2.00667
-already done with  meta-llama/Llama-2-7b-hf/layer_12/mlp.gate_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.up_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/mlp.up_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.up_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.up_proj/compressed.log
-best_loss 125.14822387695312 running bpv: 2.006608
-already done with  meta-llama/Llama-2-7b-hf/layer_12/mlp.up_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.q_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.q_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.q_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.q_proj/compressed.log
-best_loss 203.02130126953125 running bpv: 2.00666
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.q_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.k_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.k_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.k_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.k_proj/compressed.log
-best_loss 217.55514526367188 running bpv: 2.006708
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.k_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.o_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.o_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.o_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.o_proj/compressed.log
-best_loss 5.171182632446289 running bpv: 2.006755
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.o_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.down_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/mlp.down_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.down_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/mlp.down_proj/compressed.log
-best_loss 8.992213249206543 running bpv: 2.006696
-already done with  meta-llama/Llama-2-7b-hf/layer_12/mlp.down_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.v_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.v_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.v_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_12/self_attn.v_proj/compressed.log
-best_loss 71.64300537109375 running bpv: 2.00674
-already done with  meta-llama/Llama-2-7b-hf/layer_12/self_attn.v_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.gate_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/mlp.gate_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.gate_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.gate_proj/compressed.log
-best_loss 7.807470321655273 running bpv: 2.006686
-already done with  meta-llama/Llama-2-7b-hf/layer_1/mlp.gate_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.up_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/mlp.up_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.up_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.up_proj/compressed.log
-best_loss 6.786705017089844 running bpv: 2.006638
-already done with  meta-llama/Llama-2-7b-hf/layer_1/mlp.up_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.q_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.q_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.q_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.q_proj/compressed.log
-best_loss 3.7910776138305664 running bpv: 2.006677
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.q_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.k_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.k_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.k_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.k_proj/compressed.log
-best_loss 3.8073854446411133 running bpv: 2.006715
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.k_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.o_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.o_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.o_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.o_proj/compressed.log
-best_loss 0.046175505965948105 running bpv: 2.006752
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.o_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.down_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/mlp.down_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.down_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/mlp.down_proj/compressed.log
-best_loss 0.1719738394021988 running bpv: 2.006705
-already done with  meta-llama/Llama-2-7b-hf/layer_1/mlp.down_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.v_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.v_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.v_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_1/self_attn.v_proj/compressed.log
-best_loss 0.36653316020965576 running bpv: 2.00674
-already done with  meta-llama/Llama-2-7b-hf/layer_1/self_attn.v_proj
-path  17%|█▋        | 38/224 [00:00<00:01, 184.85it/s]/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.gate_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_7/mlp.gate_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.gate_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.gate_proj/compressed.log
-best_loss 103.07699584960938 running bpv: 2.006696
-already done with  meta-llama/Llama-2-7b-hf/layer_7/mlp.gate_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.q_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_7/self_attn.q_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.q_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.q_proj/compressed.log
-best_loss 159.08236694335938 running bpv: 2.006729
-already done with  meta-llama/Llama-2-7b-hf/layer_7/self_attn.q_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.k_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_7/self_attn.k_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.k_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.k_proj/compressed.log
-best_loss 161.68557739257812 running bpv: 2.006761
-already done with  meta-llama/Llama-2-7b-hf/layer_7/self_attn.k_proj
-path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.o_proj/compressed_args.yaml
-yaml_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-other_args {'alignment_kwargs': {'clip_grad': 0.1, 'discrete_update_every': 1, 'eps': 0.001, 'low_bound': 1e-05, 'lr': 0.001, 'lr_multiplier': 0.333333, 'n_iters': 100, 'patience': 10, 'patience_scheduler': 1000, 'reinitailize_optimizer': False, 'verbose': 1}, 'compression_type': 'quantized', 'quantizer_kwargs': {'cluster_ignore_norms': True, 'd': 4, 'initialize_method': 'kmeans', 'n_bits': 2, 'n_iters': 100, 'norm_order': [0, 1], 'zero': [False, False]}, 'quantizer_type': '1st_order', 'seed': 0}
-is_same True
-already done with  meta-llama/Llama-2-7b-hf/layer_7/self_attn.o_proj
-loading from /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.o_proj/compressed.pt
-reading log /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.o_proj/compressed.log
-best_loss 1.5186851024627686 running bpv: 2.006792
-already done with  meta-llama/Llama-2-7b-hf/layer_7/self_attn.o_proj
-n_commands 185
-sample command python -u scripts/1layer_compress/quantize_compress.py --hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_7/mlp.up_proj.pt --save_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.up_proj/compressed.pt --yaml_path tmp/desert-galaxy-76/yaml.yaml --weights_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights --discrete_update_hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_42/pajama/128
-running: nohup python -u scripts/1layer_compress/quantize_compress.py --hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_7/mlp.up_proj.pt --save_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.up_proj/compressed.pt --yaml_path tmp/desert-galaxy-76/yaml.yaml --weights_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights --discrete_update_hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_42/pajama/128 --device cuda:6 > /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.up_proj/compressed.log 2>&1 &
-running: nohup python -u scripts/1layer_compress/quantize_compress.py --hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_7/mlp.down_proj.pt --save_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.down_proj/compressed.pt --yaml_path tmp/desert-galaxy-76/yaml.yaml --weights_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights --discrete_update_hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_42/pajama/128 --device cuda:5 > /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/mlp.down_proj/compressed.log 2>&1 &
-running: nohup python -u scripts/1layer_compress/quantize_compress.py --hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_7/self_attn.v_proj.pt --save_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.v_proj/compressed.pt --yaml_path tmp/desert-galaxy-76/yaml.yaml --weights_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights --discrete_update_hessian_path /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_42/pajama/128 --device cuda:4 > /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/desert-galaxy-76/meta-llama/Llama-2-7b-hf/layer_7/self_attn.v_proj/compressed.log 2>&1 &
-Traceback (most recent call last):
-  File "/data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py", line 337, in <module>
-    run_command(command, args.devices[i], log_path, command_name)
-  File "/data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py", line 140, in run_command
-    time.sleep(5)
-KeyboardInterrupt
-[1;34mwandb[0m: 🚀 View run [33mdesert-galaxy-76[0m at: [34mhttps://wandb.ai/m6481/compression_no_finetune/runs/g87eipl0[0m
-[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250107_171323-g87eipl0/logs[0m
- 17%|█▋        | 39/224 [00:13<01:04,  2.86it/s] 
-/home/lliu/anaconda3/lib/python3.11/site-packages/torch/jit/annotations.py:389: UserWarning: TorchScript will treat type annotations of Tensor dtype-specific subtypes as if they are normal Tensors. dtype constraints are not enforced in compilation either.
-  warnings.warn(
-/data/lliu/huffman
-  0%|          | 0/224 [00:00<?, ?it/s]  0%|          | 1/224 [00:02<10:21,  2.79s/it]  1%|          | 2/224 [00:04<08:17,  2.24s/it]  1%|▏         | 3/224 [00:05<05:41,  1.55s/it]  2%|▏         | 4/224 [00:06<04:28,  1.22s/it]  2%|▏         | 5/224 [00:06<03:48,  1.04s/it]  3%|▎         | 6/224 [00:09<05:20,  1.47s/it]  3%|▎         | 7/224 [00:09<04:26,  1.23s/it]  4%|▎         | 8/224 [00:11<05:08,  1.43s/it]  4%|▍         | 9/224 [00:13<05:36,  1.57s/it]  4%|▍         | 10/224 [00:14<04:39,  1.31s/it]  5%|▍         | 11/224 [00:15<04:00,  1.13s/it]  5%|▌         | 12/224 [00:15<03:32,  1.00s/it]  6%|▌         | 13/224 [00:18<04:54,  1.39s/it]  6%|▋         | 14/224 [00:18<04:10,  1.19s/it]  7%|▋         | 15/224 [00:20<04:50,  1.39s/it]  7%|▋         | 16/224 [00:22<05:17,  1.53s/it]  8%|▊         | 17/224 [00:23<04:26,  1.29s/it]  8%|▊         | 18/224 [00:23<03:49,  1.12s/it]  8%|▊         | 19/224 [00:24<03:24,  1.00it/s]  9%|▉         | 20/224 [00:26<04:43,  1.39s/it]  9%|▉         | 21/224 [00:27<04:01,  1.19s/it] 10%|▉         | 22/224 [00:29<04:41,  1.39s/it] 10%|█         | 23/224 [00:31<05:08,  1.53s/it] 11%|█         | 24/224 [00:32<04:17,  1.29s/it] 11%|█         | 25/224 [00:32<03:42,  1.12s/it] 12%|█▏        | 26/224 [00:33<03:17,  1.00it/s] 12%|█▏        | 27/224 [00:35<04:33,  1.39s/it] 12%|█▎        | 28/224 [00:36<03:53,  1.19s/it] 13%|█▎        | 29/224 [00:38<04:31,  1.39s/it] 13%|█▎        | 30/224 [00:40<04:58,  1.54s/it] 14%|█▍        | 31/224 [00:41<04:09,  1.29s/it] 14%|█▍        | 32/224 [00:41<03:35,  1.12s/it] 15%|█▍        | 33/224 [00:42<03:11,  1.00s/it] 15%|█▌        | 34/224 [00:44<04:24,  1.39s/it] 16%|█▌        | 35/224 [00:45<03:45,  1.19s/it] 16%|█▌        | 36/224 [00:47<04:21,  1.39s/it] 17%|█▋        | 37/224 [00:49<04:46,  1.53s/it] 17%|█▋        | 38/224 [00:49<03:59,  1.29s/it] 17%|█▋        | 39/224 [00:50<03:26,  1.12s/it] 18%|█▊        | 40/224 [00:51<03:03,  1.00it/s] 18%|█▊        | 41/224 [00:53<04:14,  1.39s/it] 19%|█▉        | 42/224 [00:54<03:36,  1.19s/it] 19%|█▉        | 43/224 [00:56<04:11,  1.39s/it] 20%|█▉        | 44/224 [00:58<04:35,  1.53s/it] 20%|██        | 45/224 [00:58<03:50,  1.29s/it] 21%|██        | 46/224 [00:59<03:18,  1.12s/it] 21%|██        | 47/224 [01:00<02:56,  1.00it/s] 21%|██▏       | 48/224 [01:02<04:04,  1.39s/it] 22%|██▏       | 49/224 [01:03<03:28,  1.19s/it] 22%|██▏       | 50/224 [01:05<04:01,  1.39s/it] 23%|██▎       | 51/224 [01:07<04:24,  1.53s/it] 23%|██▎       | 52/224 [01:07<03:41,  1.29s/it] 24%|██▎       | 53/224 [01:08<03:11,  1.12s/it] 24%|██▍       | 54/224 [01:09<02:49,  1.00it/s] 25%|██▍       | 55/224 [01:11<03:54,  1.39s/it] 25%|██▌       | 56/224 [01:12<03:19,  1.19s/it] 25%|██▌       | 57/224 [01:14<03:52,  1.39s/it] 26%|██▌       | 58/224 [01:15<04:14,  1.53s/it] 26%|██▋       | 59/224 [01:16<03:32,  1.29s/it] 27%|██▋       | 60/224 [01:17<03:03,  1.12s/it] 27%|██▋       | 61/224 [01:18<02:42,  1.00it/s] 28%|██▊       | 62/224 [01:20<03:44,  1.39s/it] 28%|██▊       | 63/224 [01:21<03:11,  1.19s/it] 29%|██▊       | 64/224 [01:22<03:42,  1.39s/it] 29%|██▉       | 65/224 [01:24<04:03,  1.53s/it] 29%|██▉       | 66/224 [01:25<03:23,  1.29s/it] 30%|██▉       | 67/224 [01:26<02:55,  1.12s/it] 30%|███       | 68/224 [01:26<02:35,  1.00it/s] 31%|███       | 69/224 [01:29<03:35,  1.39s/it] 31%|███▏      | 70/224 [01:30<03:03,  1.19s/it] 32%|███▏      | 71/224 [01:31<03:33,  1.40s/it] 32%|███▏      | 72/224 [01:33<03:54,  1.54s/it] 33%|███▎      | 73/224 [01:34<03:15,  1.29s/it] 33%|███▎      | 74/224 [01:35<02:48,  1.12s/it] 33%|███▎      | 75/224 [01:35<02:29,  1.00s/it] 34%|███▍      | 76/224 [01:38<03:25,  1.39s/it] 34%|███▍      | 77/224 [01:38<02:55,  1.19s/it] 35%|███▍      | 78/224 [01:40<03:23,  1.40s/it] 35%|███▌      | 79/224 [01:42<03:43,  1.54s/it] 36%|███▌      | 80/224 [01:43<03:06,  1.29s/it] 36%|███▌      | 81/224 [01:44<02:40,  1.12s/it] 37%|███▋      | 82/224 [01:44<02:22,  1.00s/it] 37%|███▋      | 83/224 [01:47<03:16,  1.39s/it] 38%|███▊      | 84/224 [01:47<02:46,  1.19s/it] 38%|███▊      | 85/224 [01:49<03:14,  1.40s/it] 38%|███▊      | 86/224 [01:51<03:32,  1.54s/it] 39%|███▉      | 87/224 [01:52<02:57,  1.29s/it] 39%|███▉      | 88/224 [01:53<02:32,  1.12s/it] 40%|███▉      | 89/224 [01:53<02:15,  1.00s/it] 40%|████      | 90/224 [01:56<03:06,  1.39s/it] 41%|████      | 91/224 [01:56<02:38,  1.19s/it] 41%|████      | 92/224 [01:58<03:03,  1.39s/it] 42%|████▏     | 93/224 [02:00<03:21,  1.54s/it] 42%|████▏     | 94/224 [02:01<02:48,  1.29s/it] 42%|████▏     | 95/224 [02:02<02:24,  1.12s/it] 43%|████▎     | 96/224 [02:02<02:08,  1.00s/it] 43%|████▎     | 97/224 [02:05<02:56,  1.39s/it] 44%|████▍     | 98/224 [02:05<02:30,  1.19s/it] 44%|████▍     | 99/224 [02:07<02:55,  1.40s/it] 45%|████▍     | 100/224 [02:09<03:11,  1.54s/it] 45%|████▌     | 101/224 [02:10<02:39,  1.30s/it] 46%|████▌     | 102/224 [02:10<02:17,  1.13s/it] 46%|████▌     | 103/224 [02:11<02:01,  1.01s/it] 46%|████▋     | 104/224 [02:13<02:47,  1.39s/it] 47%|████▋     | 105/224 [02:14<02:22,  1.19s/it] 47%|████▋     | 106/224 [02:16<02:45,  1.40s/it] 48%|████▊     | 107/224 [02:18<03:00,  1.55s/it] 48%|████▊     | 108/224 [02:19<02:30,  1.30s/it] 49%|████▊     | 109/224 [02:19<02:09,  1.13s/it] 49%|████▉     | 110/224 [02:20<01:54,  1.01s/it] 50%|████▉     | 111/224 [02:22<02:37,  1.39s/it] 50%|█████     | 112/224 [02:23<02:13,  1.19s/it] 50%|█████     | 113/224 [02:25<02:34,  1.40s/it] 51%|█████     | 114/224 [02:27<02:49,  1.54s/it] 51%|█████▏    | 115/224 [02:28<02:21,  1.29s/it] 52%|█████▏    | 116/224 [02:28<02:01,  1.12s/it] 52%|█████▏    | 117/224 [02:29<01:47,  1.00s/it] 53%|█████▎    | 118/224 [02:31<02:27,  1.39s/it] 53%|█████▎    | 119/224 [02:32<02:05,  1.19s/it] 54%|█████▎    | 120/224 [02:34<02:25,  1.40s/it] 54%|█████▍    | 121/224 [02:36<02:38,  1.54s/it] 54%|█████▍    | 122/224 [02:37<02:12,  1.29s/it] 55%|█████▍    | 123/224 [02:37<01:53,  1.12s/it] 55%|█████▌    | 124/224 [02:38<01:40,  1.00s/it] 56%|█████▌    | 125/224 [02:40<02:17,  1.39s/it] 56%|█████▋    | 126/224 [02:41<01:56,  1.19s/it] 57%|█████▋    | 127/224 [02:43<02:15,  1.39s/it] 57%|█████▋    | 128/224 [02:45<02:27,  1.53s/it] 58%|█████▊    | 129/224 [02:46<02:02,  1.29s/it] 58%|█████▊    | 130/224 [02:46<01:45,  1.12s/it] 58%|█████▊    | 131/224 [02:47<01:33,  1.00s/it] 59%|█████▉    | 132/224 [02:49<02:07,  1.39s/it] 59%|█████▉    | 133/224 [02:50<01:48,  1.19s/it] 60%|█████▉    | 134/224 [02:52<02:05,  1.39s/it] 60%|██████    | 135/224 [02:54<02:16,  1.53s/it] 61%|██████    | 136/224 [02:54<01:53,  1.29s/it] 61%|██████    | 137/224 [02:55<01:37,  1.12s/it] 62%|██████▏   | 138/224 [02:56<01:26,  1.00s/it] 62%|██████▏   | 139/224 [02:58<01:58,  1.39s/it] 62%|██████▎   | 140/224 [02:59<01:40,  1.19s/it] 63%|██████▎   | 141/224 [03:01<01:55,  1.40s/it] 63%|██████▎   | 142/224 [03:03<02:06,  1.54s/it] 64%|██████▍   | 143/224 [03:03<01:44,  1.29s/it] 64%|██████▍   | 144/224 [03:04<01:29,  1.12s/it] 65%|██████▍   | 145/224 [03:05<01:19,  1.00s/it] 65%|██████▌   | 146/224 [03:07<01:48,  1.39s/it] 66%|██████▌   | 147/224 [03:08<01:31,  1.19s/it] 66%|██████▌   | 148/224 [03:10<01:46,  1.40s/it] 67%|██████▋   | 149/224 [03:12<01:55,  1.54s/it] 67%|██████▋   | 150/224 [03:12<01:35,  1.29s/it] 67%|██████▋   | 151/224 [03:13<01:22,  1.12s/it] 68%|██████▊   | 152/224 [03:14<01:12,  1.01s/it] 68%|██████▊   | 153/224 [03:16<01:38,  1.39s/it] 69%|██████▉   | 154/224 [03:17<01:23,  1.19s/it] 69%|██████▉   | 155/224 [03:19<01:36,  1.40s/it] 70%|██████▉   | 156/224 [03:21<01:44,  1.54s/it] 70%|███████   | 157/224 [03:21<01:26,  1.30s/it] 71%|███████   | 158/224 [03:22<01:14,  1.13s/it] 71%|███████   | 159/224 [03:23<01:05,  1.01s/it] 71%|███████▏  | 160/224 [03:25<01:29,  1.39s/it] 72%|███████▏  | 161/224 [03:26<01:15,  1.19s/it] 72%|███████▏  | 162/224 [03:28<01:26,  1.40s/it] 73%|███████▎  | 163/224 [03:30<01:33,  1.54s/it] 73%|███████▎  | 164/224 [03:30<01:17,  1.29s/it] 74%|███████▎  | 165/224 [03:31<01:06,  1.12s/it] 74%|███████▍  | 166/224 [03:32<00:58,  1.00s/it] 75%|███████▍  | 167/224 [03:34<01:19,  1.39s/it] 75%|███████▌  | 168/224 [03:35<01:06,  1.19s/it] 75%|███████▌  | 169/224 [03:37<01:16,  1.40s/it] 76%|███████▌  | 170/224 [03:38<01:22,  1.54s/it] 76%|███████▋  | 171/224 [03:39<01:08,  1.29s/it] 77%|███████▋  | 172/224 [03:40<00:58,  1.12s/it] 77%|███████▋  | 173/224 [03:41<00:51,  1.00s/it] 78%|███████▊  | 174/224 [03:43<01:09,  1.39s/it] 78%|███████▊  | 175/224 [03:44<00:58,  1.19s/it] 79%|███████▊  | 176/224 [03:46<01:07,  1.40s/it] 79%|███████▉  | 177/224 [03:47<01:12,  1.54s/it] 79%|███████▉  | 178/224 [03:48<00:59,  1.29s/it] 80%|███████▉  | 179/224 [03:49<00:50,  1.12s/it] 80%|████████  | 180/224 [03:50<00:44,  1.00s/it] 81%|████████  | 181/224 [03:52<00:59,  1.39s/it] 81%|████████▏ | 182/224 [03:53<00:50,  1.19s/it] 82%|████████▏ | 183/224 [03:54<00:57,  1.40s/it] 82%|████████▏ | 184/224 [03:56<01:01,  1.54s/it] 83%|████████▎ | 185/224 [03:57<00:50,  1.30s/it] 83%|████████▎ | 186/224 [03:58<00:42,  1.13s/it] 83%|████████▎ | 187/224 [03:59<00:37,  1.01s/it] 84%|████████▍ | 188/224 [04:01<00:50,  1.39s/it] 84%|████████▍ | 189/224 [04:02<00:41,  1.20s/it] 85%|████████▍ | 190/224 [04:03<00:47,  1.40s/it] 85%|████████▌ | 191/224 [04:05<00:50,  1.54s/it] 86%|████████▌ | 192/224 [04:06<00:41,  1.30s/it] 86%|████████▌ | 193/224 [04:07<00:34,  1.13s/it] 87%|████████▋ | 194/224 [04:07<00:30,  1.01s/it] 87%|████████▋ | 195/224 [04:10<00:40,  1.40s/it] 88%|████████▊ | 196/224 [04:11<00:33,  1.20s/it] 88%|████████▊ | 197/224 [04:12<00:37,  1.40s/it] 88%|████████▊ | 198/224 [04:14<00:40,  1.54s/it] 89%|████████▉ | 199/224 [04:15<00:32,  1.30s/it] 89%|████████▉ | 200/224 [04:16<00:26,  1.12s/it] 90%|████████▉ | 201/224 [04:16<00:23,  1.00s/it] 90%|█████████ | 202/224 [04:19<00:30,  1.39s/it] 91%|█████████ | 203/224 [04:19<00:25,  1.19s/it] 91%|█████████ | 204/224 [04:21<00:27,  1.40s/it] 92%|█████████▏| 205/224 [04:23<00:29,  1.54s/it] 92%|█████████▏| 206/224 [04:24<00:23,  1.30s/it] 92%|█████████▏| 207/224 [04:25<00:19,  1.12s/it] 93%|█████████▎| 208/224 [04:25<00:16,  1.01s/it] 93%|█████████▎| 209/224 [04:28<00:20,  1.39s/it] 94%|█████████▍| 210/224 [04:28<00:16,  1.19s/it] 94%|█████████▍| 211/224 [04:30<00:18,  1.40s/it] 95%|█████████▍| 212/224 [04:32<00:18,  1.54s/it] 95%|█████████▌| 213/224 [04:33<00:14,  1.30s/it] 96%|█████████▌| 214/224 [04:34<00:11,  1.12s/it] 96%|█████████▌| 215/224 [04:34<00:09,  1.00s/it] 96%|█████████▋| 216/224 [04:37<00:11,  1.39s/it] 97%|█████████▋| 217/224 [04:37<00:08,  1.19s/it] 97%|█████████▋| 218/224 [04:39<00:08,  1.40s/it] 98%|█████████▊| 219/224 [04:41<00:07,  1.54s/it] 98%|█████████▊| 220/224 [04:42<00:05,  1.29s/it] 99%|█████████▊| 221/224 [04:43<00:03,  1.12s/it] 99%|█████████▉| 222/224 [04:43<00:02,  1.00s/it]100%|█████████▉| 223/224 [04:46<00:01,  1.39s/it]100%|██████████| 224/224 [04:46<00:00,  1.19s/it]100%|██████████| 224/224 [04:46<00:00,  1.28s/it]
-  0%|          | 0/32380026.88 [00:00<?, ?it/s]  1%|          | 167772.16/32380026.88 [00:01<04:37, 116181.24it/s]  1%|          | 335544.32/32380026.88 [00:02<04:25, 120679.39it/s]  2%|▏         | 503316.48/32380026.88 [00:04<04:20, 122178.52it/s]  2%|▏         | 671088.64/32380026.88 [00:05<04:17, 122909.63it/s]  3%|▎         | 838860.8/32380026.88 [00:06<04:16, 123200.00it/s]   3%|▎         | 1006632.9600000001/32380026.88 [00:08<04:14, 123331.02it/s]  4%|▎         | 1174405.12/32380026.88 [00:09<04:12, 123477.50it/s]          4%|▍         | 1342177.28/32380026.88 [00:10<04:11, 123572.70it/s]  5%|▍         | 1509949.44/32380026.88 [00:12<04:09, 123615.63it/s]  5%|▌         | 1677721.5999999999/32380026.88 [00:13<04:08, 123677.84it/s]  6%|▌         | 1845493.7599999998/32380026.88 [00:14<04:06, 123684.47it/s]  6%|▌         | 2013265.9199999997/32380026.88 [00:16<04:05, 123684.34it/s]  7%|▋         | 2181038.0799999996/32380026.88 [00:17<04:04, 123619.94it/s]  7%|▋         | 2348810.2399999998/32380026.88 [00:19<04:03, 123569.80it/s]  8%|▊         | 2516582.4/32380026.88 [00:20<04:01, 123539.65it/s]           8%|▊         | 2684354.56/32380026.88 [00:21<04:00, 123636.48it/s]  9%|▉         | 2852126.72/32380026.88 [00:23<03:58, 123708.97it/s]  9%|▉         | 3019898.8800000004/32380026.88 [00:24<03:57, 123734.98it/s] 10%|▉         | 3187671.0400000005/32380026.88 [00:25<03:55, 123745.11it/s] 10%|█         | 3355443.2000000007/32380026.88 [00:27<03:54, 123788.04it/s] 11%|█         | 3523215.360000001/32380026.88 [00:28<03:53, 123709.60it/s]  11%|█▏        | 3690987.520000001/32380026.88 [00:29<03:51, 123745.50it/s] 12%|█▏        | 3858759.680000001/32380026.88 [00:31<03:50, 123585.67it/s] 12%|█▏        | 4026531.8400000012/32380026.88 [00:32<03:49, 123619.77it/s] 13%|█▎        | 4194304.000000001/32380026.88 [00:33<03:47, 123630.90it/s]  13%|█▎        | 4362076.160000001/32380026.88 [00:35<03:46, 123695.93it/s] 14%|█▍        | 4529848.320000001/32380026.88 [00:36<03:45, 123763.68it/s] 15%|█▍        | 4697620.480000001/32380026.88 [00:38<03:43, 123807.15it/s] 15%|█▌        | 4865392.6400000015/32380026.88 [00:39<03:42, 123704.84it/s] 16%|█▌        | 5033164.800000002/32380026.88 [00:40<03:41, 123691.02it/s]  16%|█▌        | 5200936.960000002/32380026.88 [00:42<03:39, 123671.95it/s] 17%|█▋        | 5368709.120000002/32380026.88 [00:43<03:38, 123643.11it/s] 17%|█▋        | 5536481.280000002/32380026.88 [00:44<03:37, 123652.44it/s] 18%|█▊        | 5704253.440000002/32380026.88 [00:46<03:35, 123752.00it/s] 18%|█▊        | 5872025.600000002/32380026.88 [00:47<03:34, 123738.34it/s] 20%|█▉        | 6322913.280000002/32380026.88 [00:51<03:30, 123754.89it/s] 20%|██        | 6490685.440000002/32380026.88 [00:52<03:29, 123742.65it/s] 21%|██        | 6658457.600000002/32380026.88 [00:53<03:27, 123776.19it/s] 22%|██▏       | 7109345.280000002/32380026.88 [00:57<03:24, 123825.80it/s] 23%|██▎       | 7560232.960000002/32380026.88 [01:01<03:20, 123756.69it/s] 25%|██▍       | 8011120.6400000015/32380026.88 [01:04<03:17, 123599.68it/s] 25%|██▌       | 8178892.800000002/32380026.88 [01:06<03:15, 123585.24it/s]  26%|██▌       | 8346664.960000002/32380026.88 [01:07<03:14, 123499.48it/s] 26%|██▋       | 8514437.120000001/32380026.88 [01:08<03:13, 123515.04it/s] 27%|██▋       | 8682209.280000001/32380026.88 [01:10<03:11, 123520.15it/s] 27%|██▋       | 8849981.440000001/32380026.88 [01:11<03:10, 123576.25it/s] 29%|██▊       | 9300869.120000001/32380026.88 [01:15<03:06, 123823.60it/s] 29%|██▉       | 9468641.280000001/32380026.88 [01:16<03:05, 123786.36it/s] 31%|███       | 9919528.96/32380026.88 [01:20<03:01, 123837.31it/s]        32%|███▏      | 10370416.64/32380026.88 [01:23<02:57, 123674.61it/s] 33%|███▎      | 10821304.32/32380026.88 [01:27<02:54, 123712.87it/s] 35%|███▍      | 11272192.0/32380026.88 [01:31<02:50, 123702.74it/s]  35%|███▌      | 11439964.16/32380026.88 [01:32<02:49, 123658.07it/s] 37%|███▋      | 11890851.84/32380026.88 [01:36<02:45, 123677.71it/s] 38%|███▊      | 12341739.52/32380026.88 [01:39<02:41, 123696.29it/s] 40%|███▉      | 12792627.2/32380026.88 [01:43<02:38, 123776.47it/s]  41%|████      | 13243514.879999999/32380026.88 [01:47<02:34, 123675.52it/s] 41%|████▏     | 13411287.04/32380026.88 [01:48<02:33, 123653.28it/s]        43%|████▎     | 13862174.719999999/32380026.88 [01:52<02:29, 123712.15it/s] 44%|████▍     | 14313062.399999999/32380026.88 [01:55<02:25, 123750.13it/s] 45%|████▍     | 14480834.559999999/32380026.88 [01:57<02:24, 123780.28it/s] 46%|████▌     | 14931722.239999998/32380026.88 [02:00<02:21, 123737.52it/s] 47%|████▋     | 15099494.399999999/32380026.88 [02:02<02:19, 123734.12it/s] 48%|████▊     | 15550382.079999998/32380026.88 [02:05<02:15, 123841.55it/s] 49%|████▉     | 16001269.759999998/32380026.88 [02:09<02:12, 123879.95it/s] 50%|████▉     | 16169041.919999998/32380026.88 [02:10<02:10, 123925.35it/s] 51%|█████▏    | 16619929.599999998/32380026.88 [02:14<02:07, 123904.65it/s] 52%|█████▏    | 16787701.759999998/32380026.88 [02:15<02:05, 123844.49it/s] 53%|█████▎    | 17238589.439999998/32380026.88 [02:19<02:02, 123723.06it/s] 55%|█████▍    | 17689477.119999997/32380026.88 [02:23<01:58, 123710.72it/s] 56%|█████▌    | 18140364.799999997/32380026.88 [02:26<01:55, 123734.95it/s] 57%|█████▋    | 18591252.479999997/32380026.88 [02:30<01:51, 123767.11it/s] 58%|█████▊    | 18759024.639999997/32380026.88 [02:31<01:50, 123720.06it/s] 58%|█████▊    | 18926796.799999997/32380026.88 [02:33<01:48, 123681.15it/s] 60%|█████▉    | 19377684.479999997/32380026.88 [02:36<01:45, 123777.28it/s] 61%|██████    | 19828572.159999996/32380026.88 [02:40<01:41, 123707.76it/s] 63%|██████▎   | 20279459.839999996/32380026.88 [02:43<01:37, 123708.17it/s] 63%|██████▎   | 20447231.999999996/32380026.88 [02:45<01:36, 123710.08it/s] 64%|██████▎   | 20615004.159999996/32380026.88 [02:46<01:35, 123688.51it/s] 65%|██████▌   | 21065891.839999996/32380026.88 [02:50<01:31, 123766.35it/s] 66%|██████▌   | 21233663.999999996/32380026.88 [02:51<01:30, 123726.56it/s] 67%|██████▋   | 21684551.679999996/32380026.88 [02:55<01:26, 123694.24it/s] 67%|██████▋   | 21852323.839999996/32380026.88 [02:56<01:25, 123673.48it/s] 68%|██████▊   | 22020095.999999996/32380026.88 [02:58<01:23, 123698.96it/s] 69%|██████▉   | 22470983.679999996/32380026.88 [03:01<01:20, 123743.49it/s] 70%|██████▉   | 22638755.839999996/32380026.88 [03:03<01:18, 123742.29it/s] 71%|███████▏  | 23089643.519999996/32380026.88 [03:06<01:15, 123860.58it/s] 73%|███████▎  | 23540531.199999996/32380026.88 [03:10<01:11, 123913.51it/s] 74%|███████▍  | 23991418.879999995/32380026.88 [03:13<01:07, 123873.53it/s] 75%|███████▌  | 24442306.559999995/32380026.88 [03:17<01:04, 123759.44it/s] 76%|███████▌  | 24610078.719999995/32380026.88 [03:18<01:02, 123699.28it/s] 77%|███████▋  | 24777850.879999995/32380026.88 [03:20<01:01, 123654.82it/s] 78%|███████▊  | 25228738.559999995/32380026.88 [03:23<00:57, 123579.41it/s] 79%|███████▉  | 25679626.239999995/32380026.88 [03:27<00:54, 123462.74it/s] 81%|████████  | 26130513.919999994/32380026.88 [03:31<00:50, 123344.59it/s] 82%|████████▏ | 26581401.599999994/32380026.88 [03:34<00:47, 123214.31it/s] 83%|████████▎ | 26749173.759999994/32380026.88 [03:36<00:45, 123110.62it/s] 84%|████████▍ | 27200061.439999994/32380026.88 [03:40<00:42, 122896.30it/s] 85%|████████▌ | 27650949.119999994/32380026.88 [03:43<00:38, 122806.04it/s] 87%|████████▋ | 28101836.799999993/32380026.88 [03:47<00:34, 122676.30it/s] 87%|████████▋ | 28269608.959999993/32380026.88 [03:48<00:33, 122632.59it/s] 89%|████████▊ | 28720496.639999993/32380026.88 [03:52<00:29, 122565.08it/s] 90%|█████████ | 29171384.319999993/32380026.88 [03:56<00:26, 122525.55it/s] 91%|█████████ | 29339156.479999993/32380026.88 [03:57<00:24, 122473.75it/s] 91%|█████████ | 29506928.639999993/32380026.88 [03:58<00:23, 122437.18it/s] 92%|█████████▏| 29674700.799999993/32380026.88 [04:00<00:22, 122544.99it/s] 93%|█████████▎| 30125588.479999993/32380026.88 [04:03<00:18, 122964.95it/s] 94%|█████████▎| 30293360.639999993/32380026.88 [04:05<00:16, 123011.02it/s] 94%|█████████▍| 30461132.799999993/32380026.88 [04:06<00:15, 123085.50it/s] 95%|█████████▌| 30912020.479999993/32380026.88 [04:10<00:11, 123337.91it/s] 97%|█████████▋| 31362908.159999993/32380026.88 [04:13<00:08, 123294.29it/s] 97%|█████████▋| 31530680.319999993/32380026.88 [04:15<00:06, 123246.23it/s] 99%|█████████▉| 31981567.999999993/32380026.88 [04:18<00:03, 123309.34it/s] 99%|█████████▉| 32149340.159999993/32380026.88 [04:20<00:01, 123316.59it/s]32600227.839999992it [04:23, 123323.13it/s]                                 sparsifying /layer_0/self_attn.q_proj.pt
-sparsifying /layer_1/self_attn.q_proj.pt
-sparsifying /layer_2/self_attn.k_proj.pt
-sparsifying /layer_2/self_attn.q_proj.pt
-sparsifying /layer_1/self_attn.k_proj.pt
-sparsifying /layer_0/self_attn.k_proj.pt
-sparsifying /layer_3/self_attn.k_proj.pt
-sparsifying /layer_4/self_attn.k_proj.pt
-sparsifying /layer_3/self_attn.q_proj.pt
-sparsifying /layer_5/self_attn.k_proj.pt
-sparsifying /layer_4/self_attn.q_proj.pt
-sparsifying /layer_5/self_attn.q_proj.pt
-sparsifying /layer_6/self_attn.k_proj.pt
-sparsifying /layer_7/self_attn.k_proj.pt
-sparsifying /layer_9/self_attn.k_proj.pt
-sparsifying /layer_27/self_attn.q_proj.pt
-sparsifying /layer_27/self_attn.k_proj.pt
-sparsifying /layer_30/self_attn.k_proj.pt
-sparsifying /layer_30/self_attn.q_proj.pt
-sparsifying /layer_8/self_attn.k_proj.pt
-sparsifying /layer_28/self_attn.q_proj.pt
-sparsifying /layer_28/self_attn.k_proj.pt
-sparsifying /layer_31/self_attn.q_proj.pt
-sparsifying /layer_26/self_attn.v_proj.pt
-sparsifying /layer_31/self_attn.k_proj.pt
-sparsifying /layer_22/self_attn.k_proj.pt
-sparsifying /layer_29/self_attn.q_proj.pt
-sparsifying /layer_23/self_attn.k_proj.pt
-sparsifying /layer_29/self_attn.v_proj.pt
-sparsifying /layer_28/self_attn.v_proj.pt
-sparsifying /layer_27/self_attn.o_proj.pt
-sparsifying /layer_29/self_attn.k_proj.pt
-sparsifying /layer_22/self_attn.o_proj.pt
-sparsifying /layer_20/self_attn.o_proj.pt
-sparsifying /layer_18/self_attn.v_proj.pt
-sparsifying /layer_14/mlp.up_proj.pt
-sparsifying /layer_23/self_attn.o_proj.pt
-sparsifying /layer_31/self_attn.v_proj.pt
-sparsifying /layer_16/mlp.up_proj.pt
-sparsifying /layer_17/mlp.up_proj.pt
-sparsifying /layer_12/mlp.up_proj.pt
-sparsifying /layer_23/self_attn.v_proj.pt
-sparsifying /layer_19/self_attn.v_proj.pt
-sparsifying /layer_26/self_attn.k_proj.pt
-sparsifying /layer_25/self_attn.o_proj.pt
-sparsifying /layer_22/self_attn.v_proj.pt
-sparsifying /layer_18/mlp.up_proj.pt
-sparsifying /layer_18/self_attn.o_proj.pt
-sparsifying /layer_15/mlp.up_proj.pt
-sparsifying /layer_20/mlp.up_proj.pt
-sparsifying /layer_26/mlp.up_proj.pt
-sparsifying /layer_27/mlp.up_proj.pt
-sparsifying /layer_17/self_attn.o_proj.pt
-sparsifying /layer_24/mlp.up_proj.pt
-sparsifying /layer_22/mlp.up_proj.pt
-sparsifying /layer_19/mlp.up_proj.pt
-sparsifying /layer_28/mlp.up_proj.pt
-sparsifying /layer_27/self_attn.v_proj.pt
-sparsifying /layer_13/mlp.up_proj.pt
-sparsifying /layer_21/mlp.up_proj.pt
-sparsifying /layer_10/self_attn.k_proj.pt
-sparsifying /layer_10/mlp.gate_proj.pt
-sparsifying /layer_9/self_attn.o_proj.pt
-sparsifying /layer_23/mlp.up_proj.pt
-sparsifying /layer_25/mlp.up_proj.pt
-sparsifying /layer_13/self_attn.o_proj.pt
-sparsifying /layer_10/mlp.up_proj.pt
-sparsifying /layer_16/self_attn.o_proj.pt
-sparsifying /layer_24/mlp.gate_proj.pt
-sparsifying /layer_29/mlp.up_proj.pt
-sparsifying /layer_22/mlp.gate_proj.pt
-sparsifying /layer_26/mlp.gate_proj.pt
-sparsifying /layer_21/self_attn.o_proj.pt
-sparsifying /layer_28/self_attn.o_proj.pt
-sparsifying /layer_11/mlp.up_proj.pt
-sparsifying /layer_20/mlp.gate_proj.pt
-sparsifying /layer_21/mlp.gate_proj.pt
-sparsifying /layer_14/self_attn.o_proj.pt
-sparsifying /layer_19/self_attn.o_proj.pt
-sparsifying /layer_23/mlp.gate_proj.pt
-sparsifying /layer_12/self_attn.o_proj.pt
-sparsifying /layer_12/mlp.gate_proj.pt
-sparsifying /layer_26/self_attn.q_proj.pt
-sparsifying /layer_15/self_attn.o_proj.pt
-sparsifying /layer_19/mlp.gate_proj.pt
-sparsifying /layer_29/self_attn.o_proj.pt
-sparsifying /layer_27/mlp.gate_proj.pt
-sparsifying /layer_17/mlp.gate_proj.pt
-sparsifying /layer_7/mlp.gate_proj.pt
-sparsifying /layer_8/mlp.gate_proj.pt
-sparsifying /layer_20/self_attn.k_proj.pt
-sparsifying /layer_30/self_attn.v_proj.pt
-sparsifying /layer_9/mlp.gate_proj.pt
-sparsifying /layer_13/mlp.gate_proj.pt
-sparsifying /layer_25/mlp.gate_proj.pt
-sparsifying /layer_18/mlp.gate_proj.pt
-sparsifying /layer_25/self_attn.v_proj.pt
-sparsifying /layer_11/mlp.gate_proj.pt
-sparsifying /layer_28/mlp.gate_proj.pt
-sparsifying /layer_30/mlp.up_proj.pt
-sparsifying /layer_24/self_attn.v_proj.pt
-sparsifying /layer_29/mlp.gate_proj.pt
-sparsifying /layer_2/mlp.up_proj.pt
-sparsifying /layer_11/self_attn.o_proj.pt
-sparsifying /layer_18/self_attn.q_proj.pt
-sparsifying /layer_25/self_attn.k_proj.pt
-sparsifying /layer_6/mlp.gate_proj.pt
-sparsifying /layer_23/self_attn.q_proj.pt
-sparsifying /layer_20/self_attn.v_proj.pt
-sparsifying /layer_15/mlp.gate_proj.pt
-sparsifying /layer_16/mlp.gate_proj.pt
-sparsifying /layer_21/self_attn.k_proj.pt
-sparsifying /layer_14/mlp.gate_proj.pt
-sparsifying /layer_8/self_attn.o_proj.pt
-sparsifying /layer_9/mlp.up_proj.pt
-32600227.839999992it [04:24, 123322.64it/s]

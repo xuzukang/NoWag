@@ -24,6 +24,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         weight: torch.FloatTensor,
         bias: Optional[torch.FloatTensor] = None,
         add_bias: bool = False,
+        grad_checkpoint: bool = False,
     ):
         """quantized linear layer
 
@@ -56,6 +57,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         self.quantizer: QuantizerParent = None
         self.log_hessian_flag = False
         self.update_importance_flag = False
+        self.grad_checkpoint = grad_checkpoint
 
     def enable_hessian_logging(self):
         """enable hessian logging"""
@@ -131,13 +133,23 @@ class LinearQuantized(compress_parent.CompressorParent):
 
     def forward(self, x: torch.FloatTensor):
         """forward pass of the linear layer"""
+        if self.grad_checkpoint:
+            return self._checkpoint_forward(x)
+        else:
+            return self._no_checkpoint_forward(x)
+        
+    def _checkpoint_forward(self, x: torch.FloatTensor):
+        return torch.utils.checkpoint.checkpoint(
+            self._no_checkpoint_forward, x, use_reentrant=True
+        )
+    
+    def _no_checkpoint_forward(self, x: torch.FloatTensor):
         if self.log_hessian_flag:
             # print("logging to hessian")
             self.log_to_hessian_(x)
         if self.update_importance_flag:
             # print("updating importances")
             self.update_importances(x, self.decay)
-
         # W = self.reconstruct()
         return F.linear(x, self.reconstruct(), self.original_bias)
 
@@ -499,7 +511,7 @@ class LinearQuantizedSparse(LinearQuantized):
         self.quantized = True
 
         
-    def forward(self, x: torch.FloatTensor):
+    def _no_checkpoint_forward(self, x: torch.FloatTensor):
         if hasattr(self, "cached_reconstruct"):
             y = F.linear(x, self.cached_reconstruct, self.original_bias)
         else:
