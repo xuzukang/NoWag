@@ -1,6 +1,6 @@
 quantizer_kwargs:
-  d: 4
-  n_bits: 3
+  d: 6
+  n_bits: 2
   cluster_ignore_norms: True
   n_iters: 100
   norm_order: 

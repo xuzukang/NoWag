@@ -1,6 +1,12 @@
 CUDA_LAUNCH_BLOCKING = 1
 import time
 import torch
+import sys 
+import os 
+
+if __name__ == "__main__":
+    print(os.path.dirname(os.path.realpath(__file__)))
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 torch.autograd.set_detect_anomaly(True)
 import random
@@ -80,6 +86,7 @@ class SimpleDataset(Dataset):
 def make_loaders(X:torch.FloatTensor, Y:torch.FloatTensor, n_val:int, batch_size:int,
                  pin_memory:bool = True)->Tuple[DataLoader, DataLoader]:
     
+    print("X", X.shape, "Y", Y.shape)
     #make the indices
     idxs = torch.randperm(len(X))
     train_idxs = idxs[:-n_val]
@@ -133,7 +140,7 @@ def save_sharded_model_as_checkpoints(sharded_model, save_dir, checkpoints_dict,
                 save_path = os.path.join(save_dir, base_model, f"layer_{layer_idx}", sublayer_name, "compressed.pt")
                 args_path = save_path.replace("compressed.pt", "compressed_args.yaml")
                 os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                print(f"Saving {sublayer_name} to {save_path}")
+                # print(f"Saving {sublayer_name} to {save_path}")
                 os.system(f'cp {checkpoints_dict[f"{base_model}/layer_{layer_idx}/{sublayer_name}"].replace("compressed.pt", "compressed_args.yaml")} {args_path}')
                 torch.save(sublayer.state_dict(), save_path)
                 checkpoints_yaml_new[f"{base_model}/layer_{layer_idx}/{sublayer_name}"] = save_path
@@ -201,7 +208,7 @@ if __name__ == "__main__":
     parser.add_argument("--ft_lr",
                         type=float,
                         help="Learning rate for fine tuning.",
-                        default=1e-3)
+                        default=1e-5)
     parser.add_argument("--ft_adam_beta1",
                         type=float,
                         help="Adam beta1 for fine tuning.",
@@ -223,8 +230,12 @@ if __name__ == "__main__":
     parser.add_argument("--use_wandb",
                         action="store_true",
                         help="Use wandb for logging.")
+    parser.add_argument("--debug",
+                        action="store_true",
+                        help="Debug mode.")
     args = parser.parse_args()
 
+    torch.set_grad_enabled(False)
     utils.seed(args.seed)
 
     #change the paths
@@ -251,7 +262,7 @@ if __name__ == "__main__":
                                   seqlen=args.seqlen)
     
     train_data = torch.stack([_[0][0] for _ in train_data])
-    print(train_data.shape)
+    print("train_data.shape", train_data.shape)
 
     #get the target model outputs
     target_out = calculate_logits(orig_model, train_data, args.ft_batch_size)[:, :-1].contiguous().softmax(dim=-1).float()
@@ -260,21 +271,36 @@ if __name__ == "__main__":
     utils.clean()
 
     #load the compressed model
+    deug_model_path = f"temp/{args.base_model}.pt"
+    print("deug_model_path", deug_model_path, "exists", os.path.exists(deug_model_path))
     checkpoints = yaml.load(open(os.path.join(args.compressed_model_path, "checkpoints.yaml"),"r"), Loader=yaml.FullLoader)
     compressed_model, n_bits, n_values = quantized_model.load_model_from_checkpoints(checkpoints,
                                                                    args.base_model,
                                                                    add_bias = True,
                                                                    device="cpu",
-                                                                   cache_reconstruct=False)
-    print("bpv", n_bits, n_values)
+                                                                   cache_reconstruct=False,
+                                                                   load_checkpoints= not (args.debug and os.path.exists(deug_model_path)))
+    
+    if args.debug:
+        if os.path.exists(deug_model_path):
+            compressed_model.load_state_dict(torch.load(deug_model_path, map_location="cpu"))
+        else:
+            os.makedirs(os.path.dirname(deug_model_path), exist_ok=True)
+            torch.save(compressed_model.state_dict(), deug_model_path)
+            
+    print("n_bits", n_bits, "n_values", n_values)
+    print("bpv", n_bits / n_values)
     emb = compressed_model.model.embed_tokens(train_data)
     position_ids = torch.arange(args.seqlen, dtype=torch.int32)[None, :] + \
         torch.zeros(args.ft_batch_size, args.seqlen, dtype=torch.int32)
     attention_mask = _prepare_4d_causal_attention_mask(
         None, (args.ft_batch_size, args.seqlen), emb[:args.ft_batch_size], 0)
     
+    print("position_ids", position_ids.shape)
+    print("attention_mask", attention_mask.shape)   
     nshards = torch.cuda.device_count(
     ) if args.ft_nshards < 0 else args.ft_nshards
+    print("nshards", nshards)
     nlayers = len(compressed_model.model.layers)
     shards = [nn.ModuleList([]) for _ in range(nshards)]
     for i in range(nshards):
@@ -282,6 +308,10 @@ if __name__ == "__main__":
                        int(nlayers * (i + 1) / nshards)):
             shards[i].append(compressed_model.model.layers[j])
         shards[i] = {'device': i, 'arg_fn': llama_arg_fn, 'shard': shards[i]}
+    
+    for i in range(len(shards)):
+        print(f"shard {i} has {len(shards[i]['shard'])} layers")
+
     output_layer = {
         'layer': nn.Sequential(compressed_model.model.norm, compressed_model.lm_head),
         'fn': get_emb
@@ -289,14 +319,17 @@ if __name__ == "__main__":
 
     shard_model = shard.ShardTransformer(shards, output_layer,
                                          args.ft_grad_checkpoint, args.ft_train_mode)
-    shard_model.manifest(emb[:args.ft_batch_size],
-                         position_ids=position_ids,
-                         attention_mask=attention_mask)
+    print("emb[:args.ft_batch_size]", emb[:args.ft_batch_size].shape)
+    with torch.no_grad():
+        shard_model.manifest(emb[:args.ft_batch_size],
+                            position_ids=position_ids,
+                            attention_mask=attention_mask)
+    print("done manifesting")
     utils.clean()
 
-    trainloader,valloader = make_loaders(train_data, target_out, args.ft_n_val, args.ft_batch_size)
+    trainloader,valloader = make_loaders(emb, target_out, args.ft_n_val, args.ft_batch_size)
 
-
+    torch.set_grad_enabled(True)
     optimizer = torch.optim.Adam(shard_model.parameters(), lr=args.ft_lr, betas=(args.ft_adam_beta1, args.ft_adam_beta2))
 
     finetune.finetune_end_to_end_amp(shard_model,

@@ -61,14 +61,31 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
             self.mask = None
 
     def forward(self, denormalize = True):
-        reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
+        if hasattr(self, "cached_non_normalized"):
+            reconstructed_weight = self.cached_non_normalized
+            # print("using cache")
+        else:
+            reconstructed_weight = self.codebook[self.codes].view(self.reconstructed_shape)
         if denormalize:
+            # print("denormalizing")
             reconstructed_weight = self.normalizer.denormalize(reconstructed_weight)
         if self.pad > 0:
             reconstructed_weight = reconstructed_weight[:,:-self.pad]
 
         # print(self.reference_importances    )
         return reconstructed_weight
+    
+    def cache_non_normalized(self):
+        with torch.no_grad():
+            self.register_buffer("cached_non_normalized", self.codebook[self.codes].view(self.reconstructed_shape).requires_grad_(True))
+        
+    
+    def propagate_gradients(self):
+        self.codebook.grad = torch.zeros_like(self.codebook, dtype = self.cached_non_normalized.grad.dtype)
+
+        self.codebook.grad[self.codes] = self.cached_non_normalized.grad.view(-1, self.codebook.shape[1])
+        
+
 
     @torch.no_grad()
     def ema_update_importances(

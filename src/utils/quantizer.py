@@ -50,6 +50,23 @@ class Normalizer(nn.Module):
                 normalized_weight += self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
             
         return normalized_weight
+    
+    def denormalize_otf_in(self, input_activation:torch.FloatTensor)->torch.FloatTensor:
+        if 0 in self.norm_order:
+            idx = self.norm_order.index(0)
+            if self.norms[idx] is not None and self.norms[idx].numel() > 0:
+                input_activation = input_activation * self.norms[idx][:input_activation.shape[-1]]
+        return  input_activation
+    
+    def denormalize_otf_out(self, output_activation:torch.FloatTensor)->torch.FloatTensor:
+        if 1 in self.norm_order:
+            idx = self.norm_order.index(1)
+            if self.norms[idx] is not None and self.norms[idx].numel() > 0:
+                output_activation = output_activation * self.norms[idx][:output_activation.shape[-1]]
+            if self.zeros[idx] is not None and self.zeros[idx].numel() > 0:
+                raise ValueError("not implemented")
+            
+        return output_activation
 
 
     def denormalize(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
@@ -61,6 +78,7 @@ class Normalizer(nn.Module):
         for i in reversed(self.norm_order):
             if self.norms[i] is not None and self.norms[i].numel() > 0:
                 denormalized_weight = denormalized_weight * self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+                assert torch.isfinite(denormalized_weight).all()
             if self.zeros[i] is not None and self.zeros[i].numel() > 0:
                 # print(self.zeros[i].shape)
                 denormalized_weight = denormalized_weight + self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)

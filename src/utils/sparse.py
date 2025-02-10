@@ -40,14 +40,17 @@ class Dim0_StructuredSparse(SparseParent):
         self.register_buffer('sparse_mask', sparse_mask)
         self.sparse_values = nn.Parameter(torch.zeros((self.n_out, self.n_sparse), device=device))
         
-    def update_sparse_norm(self, remaining_error:torch.FloatTensor # remaining error of shape (n_out, n_in)
-                           ):
+    def sparse(self,
+               importances:torch.FloatTensor, # importance of shape (n_out, n_in)
+               remaining_weight:torch.FloatTensor, # importance of shape (n_out, n_in)
+               pooling_fn: callable = lambda x: torch.mean(x, dim=0), #pooling function
+                ):
         
-        #calculate the norm of the remaining error
-        sparse_norm = torch.norm(remaining_error, dim=0)
+        #calculate the pooled importance
+        pooled_importances = pooling_fn(importances)
         
-        #sort the norm
-        idxs_sorted = torch.argsort(sparse_norm, descending=True)
+        #sort the importances
+        idxs_sorted = torch.argsort(pooled_importances, descending=True)
         
         new_mask = torch.zeros_like(self.sparse_mask)
         
@@ -55,24 +58,8 @@ class Dim0_StructuredSparse(SparseParent):
         
         self.register_buffer('sparse_mask', new_mask)
         
-        self.sparse_values.data = -remaining_error[:, new_mask]
+        self.sparse_values.data = remaining_weight[:, new_mask]
         # print("sparse_values", self.sparse_values)
-        
-    def update_sparse_hessian_importance(self, remaining_error:torch.FloatTensor, # remaining error of shape (n_out, n_in)
-                                         importance:torch.FloatTensor # importance of shape (n_in) diagonal of hessian
-                    ):
-        
-        
-        #sort the importance
-        idxs_sorted = torch.argsort(importance, descending=True)
-        new_mask = torch.zeros_like(self.sparse_mask)
-        
-        new_mask[idxs_sorted[:self.n_sparse]] = True
-        
-        self.register_buffer('sparse_mask', new_mask)
-        self.sparse_values.data = -remaining_error[:,new_mask]
-        
-        # -remaining_error[:, idxs_sorted[:self.n_sparse]] #shape (n_out, n_sparse)
 
     def reconstruct(self):
         # print("sparse_idxs", torch.where(self.sparse_mask))
@@ -108,23 +95,26 @@ class Dim1_StructuredSparse(SparseParent):
         self.register_buffer('sparse_mask', sparse_mask)
         self.sparse_values = nn.Parameter(torch.zeros((self.n_sparse, self.n_in), device=device))
         
-    def update_sparse_norm(self, remaining_error:torch.FloatTensor # remaining error of shape (n_out, n_in)
-                           ):
-        
-        #calculate the norm of the remaining error
-        sparse_norm = torch.norm(remaining_error, dim=1)
-        
-        #sort the norm
-        idxs_sorted = torch.argsort(sparse_norm, descending=True)
-        
-        new_mask = torch.zeros_like(self.sparse_mask)
-        
-        new_mask[idxs_sorted[:self.n_sparse]] = True
-        
-        self.register_buffer('sparse_mask', new_mask)
-        
-        self.sparse_values.data = -remaining_error[new_mask, :]
-        print("sparse_values", self.sparse_values)
+    def sparse(self,
+                importances:torch.FloatTensor, # importance of shape (n_out, n_in)
+                remaining_weight:torch.FloatTensor, # importance of shape (n_out, n_in)
+                pooling_fn: callable = lambda x: torch.mean(x, dim=0), #pooling function
+                 ):
+          
+          #calculate the pooled importance
+          pooled_importances = pooling_fn(importances, dim=1)
+          
+          #sort the importances
+          idxs_sorted = torch.argsort(pooled_importances, descending=True)
+          
+          new_mask = torch.zeros_like(self.sparse_mask)
+          
+          new_mask[idxs_sorted[:self.n_sparse]] = True
+          
+          self.register_buffer('sparse_mask', new_mask)
+          
+          self.sparse_values.data = remaining_weight[new_mask]
+          # print("sparse_values", self.sparse_values)
 
     def forward(self, x:torch.FloatTensor, #shape (...,n_in)
                 y:Optional[torch.FloatTensor] = None
@@ -222,12 +212,9 @@ class UnstructuredSparse(nn.Module):
         
     
         
-    def update_wanda_like(self, remaining_error:torch.FloatTensor,
-                          hessian_diag:torch.FloatTensor, 
+    def sparse(self, importances:torch.FloatTensor, # importance of shape (n_out, n_in)
                           ):
         
-        #calculate the importance
-        importances = remaining_error**2 * hessian_diag.unsqueeze(0)
         
         if self.sparse_pattern is not None:
             new_mask = self.generate_mask_pattern(importances, self.sparse_pattern)

@@ -58,6 +58,7 @@ class LinearQuantized(compress_parent.CompressorParent):
         self.log_hessian_flag = False
         self.update_importance_flag = False
         self.grad_checkpoint = grad_checkpoint
+        self.otf_denormalize = False
 
     def enable_hessian_logging(self):
         """enable hessian logging"""
@@ -150,6 +151,15 @@ class LinearQuantized(compress_parent.CompressorParent):
         if self.update_importance_flag:
             # print("updating importances")
             self.update_importances(x, self.decay)
+        if self.otf_denormalize:
+            x = self.quantizer.normalizer.denormalize_otf_in(x)
+            assert torch.all(torch.isfinite(x))
+            x = F.linear(x, self.reconstruct(denormalize = False))
+            assert torch.all(torch.isfinite(x))
+            x = self.quantizer.normalizer.denormalize_otf_out(x)
+            if self.original_bias is not None:
+                x = x + self.original_bias
+            return x
         # W = self.reconstruct()
         return F.linear(x, self.reconstruct(), self.original_bias)
 
@@ -165,13 +175,14 @@ class LinearQuantized(compress_parent.CompressorParent):
         )
         self.quantized = True
 
-    def reconstruct(self) -> torch.FloatTensor:
+    def reconstruct(self,**kwargs
+                    ) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the quantized version"""
         if hasattr(self, "cached_reconstruct"):
             # print("returning cached")
             return self.cached_reconstruct
         if self.quantized:
-            return self.quantizer()
+            return self.quantizer(**kwargs)
         else:
             return self.original_weight
 
@@ -302,6 +313,9 @@ class LinearQuantized(compress_parent.CompressorParent):
         """recreate the quantizer without any weights"""
         self.quantizer = quantizer_class.blank_recreate(self.original_weight, **kwargs)
         self.quantized = True
+
+    def change_otf_denormalize(self, otf_denormalize: bool):
+        self.otf_denormalize = otf_denormalize
 
     # def load_state_dict(self, state_dict, strict = True, assign = False):
     #     return super().load_state_dict(state_dict, strict, assign)

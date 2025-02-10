@@ -3,7 +3,7 @@
 # import glog
 import torch
 from torch import nn
-
+import tqdm
 import time
 
 
@@ -62,7 +62,7 @@ def convert_args(args, kwargs, device, dtype):
     def convert_tensor(tensor):
         if tensor.dtype == torch.float16 or tensor.dtype == torch.float32:
             tensor = tensor.to(dtype)
-        return tensor.to(device)
+        return tensor.to("cpu").to(device)
 
     dev_args = []
     for i in range(len(args)):
@@ -83,9 +83,11 @@ class Shard(nn.Module):
         self.arg_fn = arg_fn
 
     def forward(self, *args, **kwargs):
+        tqdm.tqdm.write(f"input of shard layer: {args[0]}")
         for layer in self.layers:
             output = layer(*args, **kwargs)
             args, kwargs = self.arg_fn(output, args, kwargs)
+        tqdm.tqdm.write("output of shard layer: " + str(output))
         return args, kwargs
 
 
@@ -108,6 +110,7 @@ class ShardTransformer(nn.Module):
         for name, module in self.shards.named_modules():
             if isinstance(module, LinearQuantized):
                 module.grad_ckpt = grad_ckpt
+                module.change_otf_denormalize(True)
                 # module.train_mode = train_mode
         for i in range(len(shards)):
             device = self.devices[i]
@@ -138,6 +141,7 @@ class ShardTransformer(nn.Module):
                                                  use_reentrant=False)
 
     def forward(self, *args, **kwargs):
+        tqdm.tqdm.write(f"n_shards: {len(self.shards)}")
         for i in range(len(self.shards)):
             device = self.devices[i]
             args, kwargs = convert_args(args, kwargs, device, self.dtype)
@@ -145,5 +149,5 @@ class ShardTransformer(nn.Module):
                 args, kwargs = self.ckpt_shard(i, *args, **kwargs)
             else:
                 args, kwargs = self.shards[i](*args, **kwargs)
-
+        tqdm.tqdm.write(f"before output layer {self.output_layer_fn(args, kwargs).to(0)}")
         return self.output_layer(self.output_layer_fn(args, kwargs).to(0))

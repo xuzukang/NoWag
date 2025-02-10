@@ -190,8 +190,10 @@ if __name__ == "__main__":
                                                         model,
                                             log_wandb=args.log_wandb,
                                             device = args.device,
-                                            cache_reconstruct = True
+                                            cache_reconstruct = False
         )
+        utils.recursive_apply(model, "change_otf_denormalize", {"otf_denormalize": True})
+        utils.recursive_apply(model, "cache_non_normalized")
         print("bits", n_bits, "params", n_vals)
         print("bps", n_bits/n_vals)
         if args.log_wandb:

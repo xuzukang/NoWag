@@ -14,6 +14,6 @@ do
         --base_model ${base_models[$i]} \
         --quantized_weight_yaml "${quantized_weights[$i]}/checkpoints.yaml" \
         --tasks winogrande rte piqa arc_easy arc_challenge \
-        --save > "${quantized_weights[$i]}/zero_shot_eval.log"
+        --save > "${quantized_weights[$i]}/zero_shot_eval.log 2>&1"
 
 done

@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
   if args.quantized_weight_yaml is not None:
     checkpoints_paths = yaml.load(open(args.quantized_weight_yaml, "r"), Loader=yaml.FullLoader)
-    model = load_model_from_checkpoints(checkpoints = checkpoints_paths,
+    model, _, _ = load_model_from_checkpoints(checkpoints = checkpoints_paths,
                                         base_model = args.base_model,
                                         model = model,
                                         device = None,
