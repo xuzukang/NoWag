@@ -187,7 +187,7 @@ class VectorQuantizer(quantizer_parent.QuantizerParent):
                 pad = 0
                 weight_pad = weight
             weight_use = weight_pad.clone()
-            print(zero)
+            
             if normalizer is None:
                 normalizer, weight_use = quantizer_utils.Normalizer.normalize_init(weight_use, norm_order,zero = zero)
                 normalizer:quantizer_utils.Normalizer

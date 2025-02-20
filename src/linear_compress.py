@@ -339,7 +339,7 @@ class LinearQuantizedSparse(LinearQuantized):
         self.sparsed = False
 
     def initalize_sparse(self,
-                 sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed","wanda"]],
+                 sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
                  frac_sparse:Union[float,List[float]] = 0.1,
                     **kwargs):
         """create a sparse compensator
@@ -358,13 +358,11 @@ class LinearQuantizedSparse(LinearQuantized):
             # print("sparse_type", sparse_type)
             if frac_sparse[0] <= 0.0:
                 new_sparse_module = None
-            if sparse_type == "hessian":
-                new_sparse_module = sparse.Dim0_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
             elif sparse_type == "dim_0":
                 new_sparse_module = sparse.Dim0_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
             elif sparse_type == "dim_1":
                 new_sparse_module = sparse.Dim1_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
-            elif sparse_type == "wanda":
+            elif sparse_type == "unstructed":
                 new_sparse_module = sparse.UnstructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device,
                                                                 pattern = kwargs.get("pattern", None),
                                                                 sparse_group = kwargs.get("group", -1))
@@ -373,13 +371,15 @@ class LinearQuantizedSparse(LinearQuantized):
             
             sparse_modules.append(new_sparse_module)
         
-        self.sparse_modules = nn.ModuleList(sparse_modules)
+        self.sparse_modules:nn.ModuleList[sparse.SparseParent] = nn.ModuleList(sparse_modules)
         self.sparsed = True
         self.sparse_after_norm = False
         
         
     def sparsify(self,
-                 sparse_types:List[Literal["hessian","dim_0","dim_1","unstructed"]],
+                 sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
+                 sparse_criterions:Union[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"],
+                                         List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
                  remaining_error:Optional[torch.FloatTensor] = None,
                  sparse_after_norm:bool = False,
@@ -400,22 +400,43 @@ class LinearQuantizedSparse(LinearQuantized):
                     remaining_error = self.reconstruct() - self.original_weight
             
             self.initalize_sparse(sparse_types, frac_sparse, **kwargs)
-                
+            
+            if isinstance(sparse_criterions,str):
+                sparse_criterions = [sparse_criterions]*len(sparse_types)
                 
             for i,sparse_type in enumerate(sparse_types):
+                sparse_criterion = sparse_criterions[i]
                 if self.sparse_modules[i] is None:
                     print("skipping because of 0 sparsity")
                     continue
-                if sparse_type == "hessian":
-                    self.sparse_modules[i].update_sparse_hessian_importance(remaining_error, torch.norm(self.hessian, dim = 1))
-                elif sparse_type == "dim_0":
-                    self.sparse_modules[i].update_sparse_norm(remaining_error)
-                elif sparse_type == "dim_1":
-                    self.sparse_modules[i].update_sparse_norm(remaining_error)
-                elif sparse_type == "wanda":
-                    self.sparse_modules[i].update_wanda_like(remaining_error, torch.diag(self.hessian))
-                else:
-                    raise NotImplementedError
+                if sparse_criterion == "hessian":
+                    assert sparse_type == "dim_1", "hessian sparsity is only makes sense for dim_1 sparsity"
+                    self.sparse_modules[i].update(self.hessian,
+                                                  -remaining_error,
+                                                  lambda x: torch.norm(x, dim=0))
+                elif "norm" in sparse_criterion:
+                    if "dim" in sparse_type:
+                        self.sparse_modules[i].update_sparse_norm(remaining_error,
+                                                                  -remaining_error,
+                                                                    lambda x: torch.norm(x, dim=int(sparse_type.split("_")[-1]),
+                                                                                         p = int(sparse_criterion.split("_")[-1]) if sparse_criterion != "norm_inf" else float("inf")))
+                    else:
+                        raise NotImplementedError(f"sparse_type {sparse_type} not implemented for {sparse_criterion}")
+                        
+                elif sparse_criterion == "wanda": 
+
+                    importances = remaining_error**2 * torch.diag(self.hessian).unsqueeze(0)
+
+                    if "dim" in sparse_type:
+                        self.sparse_modules[i].update_sparse_norm(importances,
+                                                                  -remaining_error,
+                                                                    lambda x: torch.norm(x, dim=int(sparse_type.split("_")[-1])))
+                    elif sparse_type == "unstructed":
+                        self.sparse_modules[i].update_sparse_norm(importances,
+                                                                  -remaining_error)
+                    else:
+                        raise NotImplementedError(f"sparse_type {sparse_type} not implemented")
+
                 
                 # print(self.sparse_modules[i].reconstruct()[:,self.sparse_modules[i].sparse_mask])
                 

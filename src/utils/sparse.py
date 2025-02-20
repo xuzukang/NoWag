@@ -13,6 +13,12 @@ class SparseParent(nn.Module):
         self.n_in = n_in
         self.device = device
     
+    def sparse(self, importances:torch.Tensor, remaining_weight:torch.Tensor, *args):
+        raise NotImplementedError   
+    
+    def update_fixed_mask(self, remaining_weight:torch.Tensor):
+        raise NotImplementedError
+    
     def reconstruct(self)->torch.Tensor:
         raise NotImplementedError
 
@@ -76,9 +82,9 @@ class Dim0_StructuredSparse(SparseParent):
     def get_n_bits(self):
         return self.sparse_values.numel()*16 + self.sparse_mask.numel()
     
-    def update_fixed_mask(self, remaining_error:torch.FloatTensor):
+    def update_fixed_mask(self, remaining_weight:torch.FloatTensor):
         
-        self.sparse_values.data = -remaining_error[:, self.sparse_mask]
+        self.sparse_values.data = remaining_weight[:, self.sparse_mask]
 
 
 class Dim1_StructuredSparse(SparseParent):
@@ -137,9 +143,9 @@ class Dim1_StructuredSparse(SparseParent):
     def get_n_bits(self):
         return self.sparse_values.numel()*16 + self.sparse_mask.numel()
     
-    def update_fixed_mask(self, remaining_error:torch.FloatTensor):
+    def update_fixed_mask(self, remaining_weight:torch.FloatTensor):
         
-        self.sparse_values.data = -remaining_error[self.sparse_mask]
+        self.sparse_values.data = remaining_weight[self.sparse_mask]
     
                                          
         
@@ -213,6 +219,7 @@ class UnstructuredSparse(nn.Module):
     
         
     def sparse(self, importances:torch.FloatTensor, # importance of shape (n_out, n_in)
+                remaining_weight:torch.FloatTensor, # importance of shape (n_out, n_in)
                           ):
         
         
@@ -231,11 +238,11 @@ class UnstructuredSparse(nn.Module):
         
         self.register_buffer('sparse_mask', new_mask)
         
-        self.sparse_values.data = -remaining_error[new_mask]
+        self.sparse_values.data = remaining_weight[new_mask]
         
-    def update_fixed_mask(self, remaining_error:torch.FloatTensor):
+    def update_fixed_mask(self, remaining_weight:torch.FloatTensor):
         # print("remaining_error", remaining_error)
-        self.sparse_values.data = -remaining_error[self.sparse_mask]
+        self.sparse_values.data = remaining_weight[self.sparse_mask]
         
         
         
