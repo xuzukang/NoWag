@@ -15,11 +15,8 @@ import tqdm
 # from quant import *
 import random
 import numpy as np
-import src.quantizers.vector_quantizer as vector_quantizer
-import src.quantizers.vq2 as vector_quantizer_2
-import src.linear_compress as linear_compress
-import src.tensor_compress as tensor_compress
-import src.joint_compress as joint_compress
+
+
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 from src.utils.quantized_model import load_model_from_checkpoints
 import src.data as data
@@ -190,8 +187,10 @@ if __name__ == "__main__":
                                                         model,
                                             log_wandb=args.log_wandb,
                                             device = args.device,
-                                            cache_reconstruct = True
+                                            cache_reconstruct = False
         )
+        utils.recursive_apply(model, "change_otf_denormalize", {"otf_denormalize": True})
+        utils.recursive_apply(model, "cache_non_normalized")
         print("bits", n_bits, "params", n_vals)
         print("bps", n_bits/n_vals)
         if args.log_wandb:

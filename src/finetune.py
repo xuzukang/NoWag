@@ -15,6 +15,7 @@ import wandb
 import gc
 
 import src.utils.shard as shard
+import src.utils.utils as utils
 
 
 class NANError(Exception):
@@ -279,9 +280,9 @@ def finetune_end_to_end(
 @torch.no_grad()
 def val_once(model:Union[llama.LlamaForCausalLM, shard.ShardTransformer],
              val_loader:torch.utils.data.DataLoader,
-             loss_fn:Callable,
-             position_ids:torch.Tensor=None,
-            attention_mask:torch.Tensor=None):
+             position_ids:torch.Tensor,
+            attention_mask:torch.Tensor,
+            loss_fn:Callable) -> float:
     
     model.eval()
     total_loss = 0
@@ -292,7 +293,7 @@ def val_once(model:Union[llama.LlamaForCausalLM, shard.ShardTransformer],
                 source,
                 position_ids=position_ids,
                 attention_mask=attention_mask.float())[:, :-1].contiguous()
-            total_loss += loss_fn(
+            total_loss += nn.CrossEntropyLoss()(
                 output.view(-1, output.shape[-1]),
                 target.to(0).view(-1, target.shape[-1]),
             )
@@ -319,39 +320,67 @@ def finetune_end_to_end_amp(
     """finetune the model for one epoch"""
     # move everything to cpu first
     # assert model.seqlen % update_every_n_tokens == 0, "update_every_n_tokens must be a multiple of the sequence length"
-
-    scaler = amp.GradScaler(enabled=True)
+    model.float()
+    utils.recursive_apply(model, "cache_non_normalized")
+    scaler = amp.GradScaler(enabled=True,
+                            device = "cuda",
+                            growth_factor=1.1,
+                            backoff_factor=0.5)
 
     loss_fn = nn.CrossEntropyLoss()
 
     best_loss = val_once(model, val_loader,
                          position_ids, attention_mask,
                          loss_fn)
+    print(f"initial val loss: {best_loss}")
     
     patience_used = 0
 
     for epoch in tqdm.tqdm(range(epochs), disable=not use_tqdm):
         count = 0
         train_loss = 0
-        for source, target in tqdm.tqdm(train_loader, disable=not use_tqdm, desc=f"epoch {epoch}"):
+        for i,(source, target) in enumerate(tqdm.tqdm(train_loader, disable=not use_tqdm, desc=f"epoch {epoch}")):
+            tqdm.tqdm.write(f"batch {i}")
+            tqdm.tqdm.write(f"source: {source}")
             with amp.autocast(device_type="cuda",
                                  dtype=torch.float16,
                                  enabled=True):
+                 tqdm.tqdm.write("model call")
                  output = model(
                       source,
                       position_ids=position_ids,
                       attention_mask=attention_mask,
                  )[:, :-1].contiguous()
-                 loss = loss_fn(output.view(-1, output.shape[-1]),
+                 tqdm.tqdm.write("model call done")
+                 tqdm.tqdm.write(f"output: {output}")
+                 tqdm.tqdm.write(f"target: {target}")
+                 loss = nn.CrossEntropyLoss()(output.view(-1, output.shape[-1]),
                                  target.to(0).view(-1, target.shape[-1]))
+            # train_loss += loss.item()
+            tqdm.tqdm.write(f"loss: {loss}")
+            tqdm.tqdm.write("count: " + str(count))
+            tqdm.tqdm.write("="*20)
             scaler.scale(loss).backward()
-            train_loss += loss.item()
             count += 1
-
             if count % update_freq == update_freq - 1 or count == len(train_loader) - 1:
+                tqdm.tqdm.write("updating")
+                utils.recursive_apply(model, "propagate_gradients")
                 scaler.step(optimizer)
                 scaler.update()
+                utils.recursive_apply(model, "cache_non_normalized")
                 optimizer.zero_grad()
+
+                #for each gpu
+                for gpu in range(torch.cuda.device_count()):
+                    tqdm.tqdm.write(f"GPU {gpu}: {utils.get_gpu_memory(gpu, return_str=True)}")
+
+
+
+                tqdm.tqdm.write(f"codebook_grad {model.shards[0].layers[0].self_attn.q_proj.quantizer.codebook.grad}")
+                tqdm.tqdm.write(f"cached_non_normalized {model.shards[0].layers[0].self_attn.q_proj.quantizer.cached_non_normalized.grad}")
+                # raise ValueError
+
+        raise ValueError
         
         print(f"epoch {epoch} train loss: {train_loss/count}")
         if log_wandb:
@@ -373,4 +402,5 @@ def finetune_end_to_end_amp(
                 if patience_used == patience:
                     print("early stopping")
                     break
+
             

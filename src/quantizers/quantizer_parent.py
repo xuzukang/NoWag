@@ -6,7 +6,7 @@ import src.utils.compress_parent as compress_parent
 from typing import Union, Tuple, Optional, List
 
 
-class QuantizerParent(compress_parent.CompressorParent):
+class QuantizerParent(nn.Module):
     def __init__(
         self,
         codes: torch.LongTensor,
@@ -15,7 +15,7 @@ class QuantizerParent(compress_parent.CompressorParent):
         reference_weight: Optional[torch.FloatTensor],
         additional_attributes: Optional[dict] = None,
     ):
-        super(QuantizerParent, self).__init__(additional_attributes)
+        super(QuantizerParent, self).__init__()
         self.register_buffer("codes", codes)
         self.codebook = nn.Parameter(codebook)
         self.reconstructed_shape = reconstructed_shape

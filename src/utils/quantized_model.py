@@ -12,11 +12,10 @@ import tqdm
 # from quant import *
 import random
 import numpy as np
-import src.quantizers.vector_quantizer as vector_quantizer
-import src.quantizers.vq2 as vector_quantizer_2
-import src.linear_compress as linear_compress
-import src.tensor_compress as tensor_compress
-import src.joint_compress as joint_compress
+
+import src.compression_parent as compression_parent
+import src.quantize_compress as qc
+
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 import src.data as data
 import src.utils.utils as utils
@@ -50,7 +49,8 @@ def load_layer_from_checkpoint(
                                 quantizer_type:str = "",
                                 clean:bool = True,
                                 device:str = "cpu",
-                                cache_reconstruct:bool = False):
+                                cache_reconstruct:bool = False,
+                                load_checkpoints:bool = True):
     
     sublayer_names = [
         "self_attn.q_proj",
@@ -71,8 +71,9 @@ def load_layer_from_checkpoint(
             
         original_dtype = next(iter(module.parameters())).dtype
 
-
-        module.to(device)   
+        if device is not None:
+            # device = original_device
+            module.to(device)   
 
         sublayer_full_name = f"{base_model}/layer_{layer_idx}/{name}"
         if sublayer_full_name not in checkpoints:
@@ -95,77 +96,29 @@ def load_layer_from_checkpoint(
         if not hasattr(module, "weight"):
             module.weight = module.reconstruct()
         
-        if compression_type == "quantized":
-            new_layer = linear_compress.LinearQuantized(
+        if "LinearVQ" in compression_type:
+            new_layer = qc.LinearVQ(
                 module.weight, module.bias, add_bias
             )
+            new_layer.blank_recreate(**checkpoint_args["quantizer_kwargs"])
+        
             
-            if checkpoint_args.get("quantizer_type","not") == "1st_order" or quantizer_type == "1st_order":
-                new_layer.blank_recreate(
-                    vector_quantizer_2.VectorQuantizer_1st_order
-                    , **checkpoint_args["quantizer_kwargs"]
-                )
-                # print("using 1st order")
-                # assert(isinstance(new_layer.quantizer, vector_quantizer_2.VectorQuantizer_1st_order))
-            else:
-                new_layer.blank_recreate(
-                    vector_quantizer.VectorQuantizer
-                    , **checkpoint_args["quantizer_kwargs"]
-                )
-
-        elif compression_type == "sparse":
-            new_layer = linear_compress.LinearQuantizedSparse(
-                module.weight, module.bias, add_bias
-            )
-            
-            if checkpoint_args.get("quantizer_type","not") == "1st_order" or quantizer_type == "1st_order":
-                quantizer_class = vector_quantizer_2.VectorQuantizer_1st_order
-                # print("using 1st order")
-                # assert(isinstance(new_layer.quantizer, vector_quantizer_2.VectorQuantizer_1st_order))
-            else:
-                quantizer_class = vector_quantizer.VectorQuantizer
-
-            new_layer.blank_recreate(
-                quantizer_class, checkpoint_args["quantizer_args"]["quantizer_kwargs"],
-                checkpoint_args["sparsify_kwargs"])
-            
-        if compression_type == "tensorized":
-            tensorized_kwargs = checkpoint_args["tensorize_kwargs"]
-            if tensorized_kwargs["sparse_frac"] > 0:
-                new_layer = tensor_compress.LinearTensorizedWithSparse(
-                    module.weight, module.bias, add_bias
-                )
-            else:
-                new_layer = tensor_compress.LinearTensorized(
-                    module.weight, module.bias, add_bias
-                )
-            new_layer.blank_recreate(
-                **checkpoint_args["tensorize_kwargs"]
-            )
-        elif compression_type == "joint":
-            new_layer = joint_compress.JointCompressor(
-                module.weight, module.bias, add_bias
-            )
-            checkpoint_args["quantizer_kwargs"]["quantizer_class"] = vector_quantizer.VectorQuantizer
-            new_layer.blank_recreate(
-                linear_compress.LinearQuantized, checkpoint_args["quantizer_kwargs"],
-                tensor_compress.LinearTensorizedWithSparse if checkpoint_args["tensorize_kwargs"]["sparse_frac"] > 0 else tensor_compress.LinearTensorized,
-                checkpoint_args["tensorize_kwargs"],
-            )
-            new_layer.tensor_compressor.safe_forward = False
             # print(new_layer.tensor_compressor.gates[0]) 
         # print(new_layer.original_weight) 
         if clean:          
             new_layer.clean()
-        try:
-            new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device)
-                                             ), strict=False)
-        except RuntimeError:
-            new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False
-                                             ), strict=False)
         
-        if cache_reconstruct:
-            new_layer.cache_reconstruct()
+        if load_checkpoints:
+            try:
+                new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device) if device is not None else original_device
+                                                ), strict=False)
+            except RuntimeError:
+                new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False
+                                                ), strict=False)
+                
+            if cache_reconstruct:
+                new_layer.cache_reconstruct()
+        
         new_layer.to(original_dtype)
         new_layer.to(original_device)
             # print("new_layer.quantization_compressor.
@@ -190,8 +143,8 @@ def load_model_from_checkpoints(
                                 quantizer_type:Optional[str] = "",
                                 clean:Optional[bool] = True,
                                 device:Optional[str] = "cpu",
-                                cache_reconstruct:Optional[bool] = False
-                                
+                                cache_reconstruct:Optional[bool] = False,
+                                load_checkpoints:Optional[bool] = True
                                 ) -> Tuple[llama.LlamaForCausalLM, float, int]:
     """
     Load a model from a checkpoint of each individual layer.
@@ -203,6 +156,7 @@ def load_model_from_checkpoints(
 
     """
     print("disable_tqdm", disable_tqdm)
+    print("load_checkpoints", load_checkpoints)
     # args = args_load(os.path.join(checkpoint_path, "args.yaml"))
     # if not hasattr(args,"compression_type"):
     #     #assume that the model is quantized
@@ -235,7 +189,8 @@ def load_model_from_checkpoints(
             quantizer_type = quantizer_type,
             clean = clean,
             device = device,
-            cache_reconstruct = cache_reconstruct
+            cache_reconstruct = cache_reconstruct,
+            load_checkpoints = load_checkpoints
         )
         n_bits += layer_n_bits
         n_params += layer_n_params

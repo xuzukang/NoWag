@@ -31,7 +31,7 @@ class Normalizer(nn.Module):
 
         self.original_shape = shape
         
-    def denormalize_inplace(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
+    def denormalize(self, normalized_weight:torch.FloatTensor, debias = True)->torch.FloatTensor:
 
         reversed_norm_order = [1,0]
         # print("reversed_norm_order", reversed_norm_order)
@@ -45,84 +45,39 @@ class Normalizer(nn.Module):
                 # print(self.norms[i].shape)
                 # print(normalized_weight.shape[reversed_norm_order[i]])
                 # print(self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i).shape)
-                normalized_weight *= self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
-            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
-                normalized_weight += self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+                normalized_weight = normalized_weight * self.norms[i].unsqueeze(i)
+            if self.zeros[i] is not None and self.zeros[i].numel() > 0 and debias:
+                normalized_weight = normalized_weight + self.zeros[i].unsqueeze(i)
             
         return normalized_weight
-
-
-    def denormalize(self, normalized_weight:torch.FloatTensor)->torch.FloatTensor:
-        """denormalize the input weight matrix"""
-        # print("denormalize")
-        #we have to do this in reverse
-        denormalized_weight = normalized_weight.clone()
-        reversed_norm_order = [1,0]
-        for i in reversed(self.norm_order):
-            if self.norms[i] is not None and self.norms[i].numel() > 0:
-                denormalized_weight = denormalized_weight * self.norms[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
-            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
-                # print(self.zeros[i].shape)
-                denormalized_weight = denormalized_weight + self.zeros[i][:normalized_weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+    
+    def denormalize_otf_in(self, input_activation:torch.FloatTensor)->torch.FloatTensor:
+        if 0 in self.norm_order:
+            idx = self.norm_order.index(0)
+            if self.norms[idx] is not None and self.norms[idx].numel() > 0:
+                input_activation = input_activation * self.norms[idx]
+        return  input_activation
+    
+    def denormalize_otf_out(self, output_activation:torch.FloatTensor)->torch.FloatTensor:
+        if 1 in self.norm_order:
+            idx = self.norm_order.index(1)
+            if self.norms[idx] is not None and self.norms[idx].numel() > 0:
+                output_activation = output_activation * self.norms[idx]
+            if self.zeros[idx] is not None and self.zeros[idx].numel() > 0:
+                raise ValueError("not implemented")
             
-        return denormalized_weight
-
-    def denormalize_codebook(self, normalized_codebook:torch.FloatTensor, subblock:list[list[int]])->torch.FloatTensor:
-        """denormalize the input codebook
-
-        Args:
-            normalized_codebook (torch.FloatTensor): tensor of shape (1, d, n_codes)
-            subblock (list[list[int]]): list of the sublock dimensions of shape 
-            [[i_start, i_end], [j_start, j_end], ...]
-
-        Returns:
-            torch.FloatTensor: _description_
-        """
-        denormalized_subblock = normalized_codebook.clone()
-        # print(normalized_codebook.shape)
-        # print("subblock", subblock)
-        subblock = subblock[::-1]
-        for i in reversed(self.norm_order):
-            # print("i", i)
-            idx_start, idx_end = subblock[i]
-            # print("idx_start, idx_end", idx_start, idx_end)
-            if self.norms[i] is not None and self.norms[i].numel() > 0:
-                denormalized_subblock = denormalized_subblock * self.norms[i][idx_start:idx_end].unsqueeze(i).unsqueeze(-1)
-            if self.zeros[i] is not None and self.zeros[i].numel() > 0:
-                denormalized_subblock = denormalized_subblock + self.zeros[i][idx_start:idx_end].unsqueeze(i).unsqueeze(-1)
-            
-        return denormalized_subblock
+        return output_activation
     
     def normalize(self, weight:torch.FloatTensor)->torch.FloatTensor:
         """normalize the input weight matrix"""
         normalized_weight = weight.clone()
-        reversed_norm_order = self.norm_order[::-1]
         for i in self.norm_order:
             if self.zeros[i] is not None and self.zeros[i].numel() > 0:
-                normalized_weight = normalized_weight - self.zeros[i][:weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+                normalized_weight = normalized_weight - self.zeros[i].unsqueeze(i)
             if self.norms[i] is not None and self.norms[i].numel() > 0:
-                normalized_weight = normalized_weight / self.norms[i][:weight.shape[reversed_norm_order[i]]].unsqueeze(i)
+                normalized_weight = normalized_weight / self.norms[i].unsqueeze(i)
         
         return normalized_weight
-
-    def normalizer_and_potentially_pad(self,weight:torch.FloatTensor)->torch.FloatTensor:
-
-        reversed_norm_order = self.norm_order[::-1]
-        for i in self.norm_order:
-            if weight.shape[reversed_norm_order[i]] != self.original_shape[reversed_norm_order[i]]:
-                
-                #check that the shape is LARGER
-                assert weight.shape[reversed_norm_order[i]] > self.original_shape[reversed_norm_order[i]]
-                
-                #pad the zeros
-                if self.zeros[i] is not None and self.zeros[i].numel() > 0:
-                    self.zeros[i] = F.pad(self.zeros[i], (0, weight.shape[reversed_norm_order[i]] - self.original_shape[reversed_norm_order[i]]), mode='constant', value=0)
-                #pad the norms
-                if self.norms[i] is not None and self.norms[i].numel() > 0:
-                    self.norms[i] = F.pad(self.norms[i], (0, weight.shape[reversed_norm_order[i]] - self.original_shape[reversed_norm_order[i]]), mode='constant', value=1)
-                
-        return self.normalize(weight)
-
 
     @staticmethod
     def normalize_init(weight:torch.FloatTensor, 
@@ -130,7 +85,8 @@ class Normalizer(nn.Module):
                   zero:list[bool]= [True, True],
                   eps:float = 1e-5,
                   norm_rescale:float = True,
-                  powers:float = 1
+                  powers:float = 1,
+                  p:float = 2
                   )->Tuple[Normalizer, torch.FloatTensor]:
         
         norms = [None] * len(weight.shape)
@@ -146,7 +102,8 @@ class Normalizer(nn.Module):
                 if norm_rescale:
                     weight = weight - zeros[dim].unsqueeze(dim)
                 # weight = weight - zeros[dim].unsqueeze(dim)
-            norms[dim] = torch.norm(weight, dim=dim)**powers + eps
+            norms[dim] = torch.norm(weight, dim=dim, p = p
+                                    )**powers + eps
             if norm_rescale:
                 weight = weight / norms[dim].unsqueeze(dim)
             assert torch.all(torch.isfinite(weight))
@@ -158,6 +115,25 @@ class Normalizer(nn.Module):
             weight = normalizer.normalize(weight)
         
         return normalizer, weight
+    
+    @staticmethod
+    def blank_recreate(weight,
+                       norm_order:List[int] = [0, 1], 
+                        zero:List[bool] = [False, False]):
+        
+        norms = [None] * len(weight.shape)
+        zeros = [None] * len(weight.shape)
+
+        n_out, n_in = weight.shape
+
+        for dim in norm_order:
+            shape = [s for i,s in enumerate(weight.shape) if i != dim]
+            if zero[dim]:
+                zeros[dim] = torch.zeros(shape).to(weight.device)
+            norms[dim] = torch.ones(shape).to(weight.device)
+        
+        return Normalizer(norms, zeros, norm_order, (n_out, n_in))
+    
     
     def get_n_bits(self):
         n_bits = 0
