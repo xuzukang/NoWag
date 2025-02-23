@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import copy
 from typing import Tuple, Optional, Union, List
-import src.utils.compress_parent as compress_parent
+# import src.compression_parent as compress_parent
 import warnings
 import tqdm
 import wandb    
@@ -63,7 +63,7 @@ def initialize_optimizer(compression_module, lr, lr_multiplier, patience_schedul
 
 @torch.enable_grad()
 def align(
-    compression_module: compress_parent.CompressorParent,
+    compression_module,
     original_weights: torch.FloatTensor,
     train_hessian: torch.FloatTensor,
     val_hessian: Optional[torch.FloatTensor] = None,
@@ -83,7 +83,7 @@ def align(
     discrete_update_kwargs: Optional[dict] = {},
     n_discrete_updates: int = 1,
     log_wandb: bool = False,
-) -> compress_parent.CompressorParent:
+):
     """aligns the compression module to the hessian of the training dataset
 
     Args:

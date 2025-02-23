@@ -16,7 +16,7 @@ from src.quantizers.quantizer_parent import QuantizerParent
 import src.alignment.hessian_general_align as hessian_general_align
 import src.alignment.weight_align as weight_align
 import src.linear_compress as lc
-import src.utils.quantizer as quantizer_utils
+import src.utils.normalizer as quantizer_utils
 
 import itertools
 import opt_einsum as oe

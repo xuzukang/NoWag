@@ -12,7 +12,7 @@ import numpy as np
 from typing import Tuple, Optional, Union, List, Literal
 import src.utils.sparse as sparse_utils
 import src.compression_parent as compression_parent
-import src.utils.quantizer as quantizer_utils
+import src.utils.normalizer as normalizer
 import src.utils.utils as utils 
 
 from torch import jit
@@ -126,7 +126,7 @@ class LinearVQ(compression_parent.CompressedLinear):
                         n_iter:int = 100,
                         ignore_norms = True,
                         normalizer_kwargs:dict = {},
-                        normalizer:quantizer_utils.Normalizer = None,
+                        normalizer:normalizer.Normalizer = None,
                         **kwargs):
         """Quantize the weight matrix using K-means VQ
 
@@ -137,7 +137,7 @@ class LinearVQ(compression_parent.CompressedLinear):
             n_iter (int, optional): number of iterations for K-means. Defaults to 100.
             ignore_norms (bool, optional): whether to ignore the norms for k-means. Defaults to True.
             normalizer_kwargs (dict, optional): normalizer kwargs to create a normalizer. Defaults to {}.
-            normalizer (quantizer_utils.Normalizer, optional): normalizer that was passed in. Defaults to None.
+            normalizer (normalizer.Normalizer, optional): normalizer that was passed in. Defaults to None.
         """
 
         normalized_weight = self.initialize_normalizer(normalizer=normalizer, normalizer_kwargs=normalizer_kwargs)
@@ -214,7 +214,7 @@ class LinearVQ(compression_parent.CompressedLinear):
                         n_iter:int = 100,
                         ignore_norms = True,
                         normalizer_kwargs:dict = {},
-                        normalizer:quantizer_utils.Normalizer = None,
+                        normalizer:normalizer.Normalizer = None,
                         **kwargs):
         self.compressed = True
         self.quantize_(d = d,
@@ -264,13 +264,13 @@ class LinearVQ(compression_parent.CompressedLinear):
     def blank_recreate(self, d:int = 4,
                         n_bits:Union[int, float] = 2,
                         normalizer_kwargs:dict = {},
-                        normalizer:quantizer_utils.Normalizer = None,
+                        normalizer:normalizer.Normalizer = None,
                         **kwargs):
         
         if normalizer is not None:
             self.normalizer = normalizer
         else:
-            self.normalizer = quantizer_utils.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
+            self.normalizer = normalizer.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
 
         self.codebook = nn.Parameter(torch.zeros((2**(int(n_bits * d)), d), device=self.original_weight.device,
                                     dtype=self.original_weight.dtype))
@@ -315,7 +315,7 @@ class LinearVQ_Halving(LinearVQ):
                         max_iters:int = 100,
                         ignore_norms = True,
                         normalizer_kwargs:dict = {},
-                        normalizer:quantizer_utils.Normalizer = None,
+                        normalizer:normalizer.Normalizer = None,
                         **kwargs):
         """Quantize the weight matrix using K-means VQ
 
@@ -326,7 +326,7 @@ class LinearVQ_Halving(LinearVQ):
             n_iter (int, optional): number of iterations for K-means. Defaults to 100.
             ignore_norms (bool, optional): whether to ignore the norms for k-means. Defaults to True.
             normalizer_kwargs (dict, optional): normalizer kwargs to create a normalizer. Defaults to {}.
-            normalizer (quantizer_utils.Normalizer, optional): normalizer that was passed in. Defaults to None.
+            normalizer (normalizer.Normalizer, optional): normalizer that was passed in. Defaults to None.
         """
 
         normalized_weight = self.initialize_normalizer(normalizer=normalizer, normalizer_kwargs=normalizer_kwargs)
@@ -435,7 +435,7 @@ class LinearVQ_Halving(LinearVQ):
                         n_iter_before_halving:int = 10,
                         ignore_norms = True,
                         normalizer_kwargs:dict = {},
-                        normalizer:quantizer_utils.Normalizer = None,
+                        normalizer:normalizer.Normalizer = None,
                         **kwargs):
         self.compressed = True
         self.quantize_(d = d,

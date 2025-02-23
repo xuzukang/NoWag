@@ -7,9 +7,8 @@ import numpy as np
 import os
 from typing import Tuple, Optional, Union, List, Literal
 import src.utils.compress as compress_utils
-from src.utils.quantizer import Normalizer
+from src.utils.normalizer import Normalizer
 import src.alignment.hessian_general_align as hessian_general_align
-import src.utils.compress_parent as compress_parent
 import src.utils.utils as utils
 
 

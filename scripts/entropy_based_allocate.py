@@ -13,7 +13,7 @@ if __name__ == "__main__":
     print(os.getcwd())
     sys.path.append(os.getcwd())
 
-import src.utils.quantizer as quantizer
+import src.utils.normalizer as normalizer
 import src.utils.sparse as sparse
 import cvxpy as cp
 import yaml
@@ -140,7 +140,7 @@ with torch.no_grad():
         # print(f"Processing {w_path}")
         w = torch.load(w_path, weights_only=True, map_location=device
                     )["weight"].to(torch.float32)
-        _,w = quantizer.Normalizer.normalize_init(w,**normalizer_kwargs)
+        _,w = normalizer.Normalizer.normalize_init(w,**normalizer_kwargs)
         
         diag_weigths = torch.diag(torch.load(w_path.replace(weight_dir, hessians_dir), weights_only=True, map_location=device)["hessian"]).to(torch.float32)
 

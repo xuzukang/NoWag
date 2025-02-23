@@ -1,1 +1,0 @@
-python -u  llama.py meta-llama/Llama-2-7b-hf wikitext2 --quantize --device cuda:6 --subvector_dim 4 --n_bits_per_value 2 --save ./models/llama2_20_bit_fine_tune --lr 0.001 --fine_tune  --finetune_lr 1e-5 --add_bias --nsamples_val 0 --update_discrete_finetune

@@ -7,7 +7,7 @@ import numpy as np
 import os
 from typing import Tuple, Optional, Union, List, Literal
 import src.utils.sparse as sparse_utils
-import src.utils.quantizer as quantizer_utils
+import src.utils.normalizer as normalizer
 import src.compression_parent as compression_parent
 
 class SparseLinear(compression_parent.CompressedLinear):
@@ -59,7 +59,7 @@ class SparseLinear(compression_parent.CompressedLinear):
                                          List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
                  normalizer_kwargs:Optional[dict] = None,
-                 normalizer:Optional[quantizer_utils.Normalizer] = None,
+                 normalizer:Optional[normalizer.Normalizer] = None,
                     **kwargs):
         """create a sparse compensator
 
@@ -126,7 +126,7 @@ class SparseLinear(compression_parent.CompressedLinear):
                                          List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
                  normalizer_kwargs:Optional[dict] = None,
-                 normalizer:Optional[quantizer_utils.Normalizer] = None,
+                 normalizer:Optional[normalizer.Normalizer] = None,
                     **kwargs):
         self.compressed = True
         return self.sparsify(sparse_types=sparse_types, 
@@ -164,13 +164,13 @@ class SparseLinear(compression_parent.CompressedLinear):
                        sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
                         frac_sparse:Union[float,List[float]] = 0.1,
                         normalizer_kwargs:Optional[dict] = None,
-                        normalizer:Optional[quantizer_utils.Normalizer] = None,
+                        normalizer:Optional[normalizer.Normalizer] = None,
                         **kwargs):
         
         if normalizer is not None:
             self.normalizer = normalizer
         else:
-            self.normalizer = quantizer_utils.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
+            self.normalizer = normalizer.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
 
         self.initalize_sparse(sparse_types, frac_sparse, **kwargs)
 

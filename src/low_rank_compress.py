@@ -10,8 +10,7 @@ import sys
 if __name__ == "__main__":
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from typing import Tuple, Optional, Union, List, Literal
-from src.quantizers.quantizer_parent import QuantizerParent
-from src.utils.quantizer import Normalizer
+from src.utils.normalizer import Normalizer
 from src.compression_parent import CompressedLinear
 
 
