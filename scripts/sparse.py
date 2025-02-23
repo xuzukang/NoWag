@@ -7,7 +7,7 @@ if __name__ == "__main__":
     print(os.path.dirname(os.path.realpath(__file__)))
     sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-import src.linear_compress as lc
+import src.sparse_compress as sparse
 import wandb 
 import perplexity_eval as ppl_eval
 import torch.nn as nn
@@ -46,12 +46,12 @@ def sparse_layer(
         original_dtype = module.weight.dtype
         module.to(torch.float32)
 
-        new_layer = lc.LinearQuantizedSparse(module.weight, module.bias)
+        new_layer = sparse.SparseLinear(module.weight, module.bias)
         
         hessian = torch.load(f"{hessian_path}/{name}.pt", map_location = torch.device(device))["hessian"]
         new_layer.hessian = hessian
 
-        new_layer.sparse_only(**sparse_kwargs)
+        new_layer.compress(**sparse_kwargs)
 
         del new_layer.hessian
         # del new_layer.original_weight
@@ -66,6 +66,7 @@ def sparse_layer(
         # new_layer(torch.randn(1, new_layer.in_features).to(device))
         
         module.weight.data = new_layer.reconstruct()
+
         module.to(original_device).to(original_dtype)
         setattr(parent_module, name.split(".")[1], module)
         del new_layer
@@ -170,7 +171,7 @@ if __name__ == "__main__":
     # print(checkpoints)
     model = sparse_model(model,
                             hessian_path = args.hessian_dir.replace("{model_name}", model_name),
-                            sparse_kwargs = yaml.load(open(args.sparse_kwargs_path, "r"), Loader=yaml.FullLoader),
+                            sparse_kwargs = yaml.load(open(args.sparse_kwargs_path, "r"), Loader=yaml.FullLoader)["sparse_kwargs"],
                                         device = args.device,
                                         device_store = "cpu",
                                         cache_reconstruct = True

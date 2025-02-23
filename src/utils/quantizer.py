@@ -85,7 +85,8 @@ class Normalizer(nn.Module):
                   zero:list[bool]= [True, True],
                   eps:float = 1e-5,
                   norm_rescale:float = True,
-                  powers:float = 1
+                  powers:float = 1,
+                  p:float = 2
                   )->Tuple[Normalizer, torch.FloatTensor]:
         
         norms = [None] * len(weight.shape)
@@ -101,7 +102,8 @@ class Normalizer(nn.Module):
                 if norm_rescale:
                     weight = weight - zeros[dim].unsqueeze(dim)
                 # weight = weight - zeros[dim].unsqueeze(dim)
-            norms[dim] = torch.norm(weight, dim=dim)**powers + eps
+            norms[dim] = torch.norm(weight, dim=dim, p = p
+                                    )**powers + eps
             if norm_rescale:
                 weight = weight / norms[dim].unsqueeze(dim)
             assert torch.all(torch.isfinite(weight))
@@ -125,9 +127,10 @@ class Normalizer(nn.Module):
         n_out, n_in = weight.shape
 
         for dim in norm_order:
+            shape = [s for i,s in enumerate(weight.shape) if i != dim]
             if zero[dim]:
-                zeros[dim] = torch.zeros(n_in).to(weight.device)
-            norms[dim] = torch.ones(n_in).to(weight.device)
+                zeros[dim] = torch.zeros(shape).to(weight.device)
+            norms[dim] = torch.ones(shape).to(weight.device)
         
         return Normalizer(norms, zeros, norm_order, (n_out, n_in))
     

@@ -12,11 +12,10 @@ import tqdm
 # from quant import *
 import random
 import numpy as np
-import src.quantizers.vector_quantizer as vector_quantizer
-import src.quantizers.vq2 as vector_quantizer_2
-import src.linear_compress as linear_compress
-import src.tensor_compress as tensor_compress
-import src.joint_compress as joint_compress
+
+import src.compression_parent as compression_parent
+import src.quantize_compress as qc
+
 from src.utils.model_utils import find_layers, get_llama, inference_layer
 import src.data as data
 import src.utils.utils as utils
@@ -97,64 +96,13 @@ def load_layer_from_checkpoint(
         if not hasattr(module, "weight"):
             module.weight = module.reconstruct()
         
-        if compression_type == "quantized":
-            new_layer = linear_compress.LinearQuantized(
+        if "LinearVQ" in compression_type:
+            new_layer = qc.LinearVQ(
                 module.weight, module.bias, add_bias
             )
+            new_layer.blank_recreate(**checkpoint_args["quantizer_kwargs"])
+        
             
-            if checkpoint_args.get("quantizer_type","not") == "1st_order" or quantizer_type == "1st_order":
-                new_layer.blank_recreate(
-                    vector_quantizer_2.VectorQuantizer_1st_order
-                    , **checkpoint_args["quantizer_kwargs"]
-                )
-                # print("using 1st order")
-                # assert(isinstance(new_layer.quantizer, vector_quantizer_2.VectorQuantizer_1st_order))
-            else:
-                new_layer.blank_recreate(
-                    vector_quantizer.VectorQuantizer
-                    , **checkpoint_args["quantizer_kwargs"]
-                )
-
-        elif compression_type == "sparse":
-            new_layer = linear_compress.LinearQuantizedSparse(
-                module.weight, module.bias, add_bias
-            )
-            
-            if checkpoint_args.get("quantizer_type","not") == "1st_order" or quantizer_type == "1st_order":
-                quantizer_class = vector_quantizer_2.VectorQuantizer_1st_order
-                # print("using 1st order")
-                # assert(isinstance(new_layer.quantizer, vector_quantizer_2.VectorQuantizer_1st_order))
-            else:
-                quantizer_class = vector_quantizer.VectorQuantizer
-
-            new_layer.blank_recreate(
-                quantizer_class, checkpoint_args["quantizer_args"]["quantizer_kwargs"],
-                checkpoint_args["sparsify_kwargs"])
-            
-        if compression_type == "tensorized":
-            tensorized_kwargs = checkpoint_args["tensorize_kwargs"]
-            if tensorized_kwargs["sparse_frac"] > 0:
-                new_layer = tensor_compress.LinearTensorizedWithSparse(
-                    module.weight, module.bias, add_bias
-                )
-            else:
-                new_layer = tensor_compress.LinearTensorized(
-                    module.weight, module.bias, add_bias
-                )
-            new_layer.blank_recreate(
-                **checkpoint_args["tensorize_kwargs"]
-            )
-        elif compression_type == "joint":
-            new_layer = joint_compress.JointCompressor(
-                module.weight, module.bias, add_bias
-            )
-            checkpoint_args["quantizer_kwargs"]["quantizer_class"] = vector_quantizer.VectorQuantizer
-            new_layer.blank_recreate(
-                linear_compress.LinearQuantized, checkpoint_args["quantizer_kwargs"],
-                tensor_compress.LinearTensorizedWithSparse if checkpoint_args["tensorize_kwargs"]["sparse_frac"] > 0 else tensor_compress.LinearTensorized,
-                checkpoint_args["tensorize_kwargs"],
-            )
-            new_layer.tensor_compressor.safe_forward = False
             # print(new_layer.tensor_compressor.gates[0]) 
         # print(new_layer.original_weight) 
         if clean:          

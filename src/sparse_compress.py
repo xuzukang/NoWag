@@ -7,12 +7,13 @@ import numpy as np
 import os
 from typing import Tuple, Optional, Union, List, Literal
 import src.utils.sparse as sparse_utils
+import src.utils.quantizer as quantizer_utils
 import src.compression_parent as compression_parent
 
 class SparseLinear(compression_parent.CompressedLinear):
     name = "SparseLinear"
     def initalize_sparse(self,
-                 sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
+                 sparse_types:List[Literal["dim_0","dim_1","unstructured"]],
                  frac_sparse:Union[float,List[float]] = 0.1,
                     **kwargs):
         """create a sparse compensator
@@ -35,10 +36,12 @@ class SparseLinear(compression_parent.CompressedLinear):
                 new_sparse_module = sparse_utils.Dim0_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
             elif sparse_type == "dim_1":
                 new_sparse_module = sparse_utils.Dim1_StructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device)
-            elif sparse_type == "unstructed":
+            elif sparse_type == "unstructured":
                 new_sparse_module = sparse_utils.UnstructuredSparse(self.out_features, self.in_features, frac_sparse[i], self.original_weight.device,
                                                                 pattern = kwargs.get("pattern", None),
-                                                                sparse_group = kwargs.get("group", -1))
+                                                                sparse_group = kwargs.get("group", -1),
+                                                                stochastic=kwargs.get("stochastic", False),
+                                                                temp = kwargs.get("temp", 1.0))
             else:
                 raise NotImplementedError
             
@@ -51,13 +54,12 @@ class SparseLinear(compression_parent.CompressedLinear):
 
     @torch.no_grad()    
     def sparsify(self,
-                 sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
+                 sparse_types:List[Literal["dim_0","dim_1","unstructured"]],
                  sparse_criterions:Union[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"],
                                          List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
-                 remaining_error:Optional[torch.FloatTensor] = None,
                  normalizer_kwargs:Optional[dict] = None,
-                 normalizer:Optional[sparse_utils.Normalizer] = None,
+                 normalizer:Optional[quantizer_utils.Normalizer] = None,
                     **kwargs):
         """create a sparse compensator
 
@@ -105,9 +107,11 @@ class SparseLinear(compression_parent.CompressedLinear):
                     self.sparse_modules[i].sparse(importances,
                                                 normalized_weight,
                                                 lambda x: torch.norm(x, dim=int(sparse_type.split("_")[-1])))
-                elif sparse_type == "unstructed":
+                elif sparse_type == "unstructured":
+                    # print("here")
                     self.sparse_modules[i].sparse(importances,
                                                 normalized_weight)
+                    # raise Exception("Stop here")
                 else:
                     raise NotImplementedError(f"sparse_type {sparse_type} not implemented")
 
@@ -117,16 +121,19 @@ class SparseLinear(compression_parent.CompressedLinear):
             # print(remaining_error[:,self.sparse_modules[i].sparse_mask])
             normalized_weight = normalized_weight - self.sparse_modules[i].reconstruct()
 
-    def compress(self, sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
+    def compress(self, sparse_types:List[Literal["dim_0","dim_1","unstructured"]],
                  sparse_criterions:Union[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"],
                                          List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
-                 remaining_error:Optional[torch.FloatTensor] = None,
                  normalizer_kwargs:Optional[dict] = None,
-                 normalizer:Optional[sparse_utils.Normalizer] = None,
+                 normalizer:Optional[quantizer_utils.Normalizer] = None,
                     **kwargs):
         self.compressed = True
-        return self.sparsify(sparse_types, sparse_criterions, frac_sparse, remaining_error, normalizer_kwargs, normalizer, **kwargs)
+        return self.sparsify(sparse_types=sparse_types, 
+                             sparse_criterions=sparse_criterions, 
+                             frac_sparse=frac_sparse, 
+                             normalizer_kwargs=normalizer_kwargs, 
+                             normalizer=normalizer, **kwargs)
 
         
     def _no_checkpoint_forward(self, x: torch.FloatTensor):
@@ -157,24 +164,29 @@ class SparseLinear(compression_parent.CompressedLinear):
                        sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
                         frac_sparse:Union[float,List[float]] = 0.1,
                         normalizer_kwargs:Optional[dict] = None,
-                        normalizer:Optional[sparse_utils.Normalizer] = None,
+                        normalizer:Optional[quantizer_utils.Normalizer] = None,
                         **kwargs):
         
         if normalizer is not None:
             self.normalizer = normalizer
         else:
-            self.normalizer = sparse_utils.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
+            self.normalizer = quantizer_utils.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
 
         self.initalize_sparse(sparse_types, frac_sparse, **kwargs)
 
             
         
-    def reconstruct_(self) -> torch.FloatTensor:
+    def reconstruct_(self,denormalize:bool = True
+                     ) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the quantized version"""
         # print("reconstructing")
         reconstructed = self.sparse_modules[0].reconstruct()
         for sparse_module in self.sparse_modules[1:]:
             if sparse_module is not None:
                 reconstructed = reconstructed + sparse_module.reconstruct()
+        
+        if denormalize:
+            reconstructed = self.normalizer.denormalize(reconstructed)
+
         return reconstructed
 

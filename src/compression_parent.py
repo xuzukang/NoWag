@@ -75,7 +75,7 @@ class CompressedLinear(nn.Module):
             self.normalizer = normalizer
             normalized_weight = self.normalizer.normalize(self.original_weight)
         else:
-            print("normalizer_kwargs", normalizer_kwargs)
+            # print("normalizer_kwargs", normalizer_kwargs)
             if normalizer_kwargs is None:
                 print("Warning: normalizer_kwargs is None, using default")
                 normalizer_kwargs = {}

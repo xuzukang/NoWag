@@ -147,6 +147,7 @@ class LinearVQ(compression_parent.CompressedLinear):
         k_mean_weights = self.get_hessianDiag().unsqueeze(0).repeat(self.out_features, 1) #shape of (out_features, in_features)
         if not ignore_norms:
             k_mean_weights *= self.normalizer.denormalize(torch.ones_like(self.original_weight), debias=False) ** 2
+            k_mean_weights /= torch.mean(k_mean_weights).item()
         
 
         #padding, check if we need to pad
@@ -263,7 +264,8 @@ class LinearVQ(compression_parent.CompressedLinear):
     def blank_recreate(self, d:int = 4,
                         n_bits:Union[int, float] = 2,
                         normalizer_kwargs:dict = {},
-                        normalizer:quantizer_utils.Normalizer = None):
+                        normalizer:quantizer_utils.Normalizer = None,
+                        **kwargs):
         
         if normalizer is not None:
             self.normalizer = normalizer
@@ -284,6 +286,7 @@ class LinearVQ(compression_parent.CompressedLinear):
             self.padded_in_features = self.in_features
         
         self.register_buffer("assignments", torch.zeros(n_subvectors, dtype=torch.long, device=self.original_weight.device))
+        self.compressed = True
     
 
 
@@ -292,6 +295,7 @@ class PlaceHolderKMeans:
         self.assignments = assignments
         self.centroids = centroids
         self.done = False
+        self.n_iters = 0
     
     def to(self, device):
         self.assignments = self.assignments.to(device)
@@ -300,7 +304,7 @@ class PlaceHolderKMeans:
 
 
 class LinearVQ_Halving(LinearVQ):
-    """K-means VQ quantizer with halving"""
+    """K-means VQ quantizer with Halving for bad initializations"""
     name = "LinearVQ_Halving"
 
     @torch.no_grad()
@@ -308,6 +312,7 @@ class LinearVQ_Halving(LinearVQ):
                         n_bits:Union[int, float] = 2,
                         n_inits:int = 8,
                         n_iter_before_halving:int = 10,
+                        max_iters:int = 100,
                         ignore_norms = True,
                         normalizer_kwargs:dict = {},
                         normalizer:quantizer_utils.Normalizer = None,
@@ -370,20 +375,22 @@ class LinearVQ_Halving(LinearVQ):
 
         active_kmeans = list(k_means.keys())
 
-        total_iter = n_iter_before_halving * math.log2(n_inits)
+        # total_iter = n_iter_before_halving * math.log2(n_inits)
 
         while True:
-    
-            for i in active_kmeans:
+            if self.verbose:
+                print("n_active_kmeans: ", len(active_kmeans),"additional iterations: ", n_iter_before_halving if len(active_kmeans) > 1 else max(max_iters - k_mean_use.n_iters, 0))
+            for i in tqdm.tqdm(active_kmeans, desc="Iterating K-means", disable=not self.verbose):
                 k_mean_use = k_means[i].to(weight_subvectors.device)
                 if k_mean_use.done:
                     continue
 
-                for j in tqdm.tqdm(range(n_iter_before_halving)):
+                for j in range(n_iter_before_halving if len(active_kmeans) > 1 else max(max_iters - k_mean_use.n_iters, 0)):
                     k_mean_use.centroids = weighted_kmeans_update(weight_subvectors, k_mean_weights,k_mean_use.assignments, n_centriods)
                     k_mean_use.assignments,loss = weighted_kmeans_assign(weight_subvectors, k_mean_weights, k_mean_use.centroids, verbose = self.verbose)
                     # tqdm.tqdm.write("Loss: {}".format(loss))
                     k_mean_use.losses.append(loss)
+                    k_mean_use.n_iters += 1
                     if j > 0:
                         if torch.all(k_mean_use.assignments == assignments_old):
                             k_mean_use.done = True
@@ -406,17 +413,17 @@ class LinearVQ_Halving(LinearVQ):
             active_kmeans = [active_kmeans[i] for i in idxs[:len(active_kmeans)//2]]
             n_iter_before_halving *= 2
                 
-        if self.verbose:
-            #plot the losses
-            import matplotlib.pyplot as plt
-            for i in k_means.keys():
-                plt.plot(k_means[i].losses, label = i)
-            plt.legend()
-            #log log
-            plt.yscale("log")
-            plt.xscale("log")
-            plt.savefig("losses.png")
-            plt.close()
+        # if self.verbose:
+        #     #plot the losses
+        #     import matplotlib.pyplot as plt
+        #     for i in k_means.keys():
+        #         plt.plot(k_means[i].losses, label = i)
+        #     plt.legend()
+        #     #log log
+        #     plt.yscale("log")
+        #     plt.xscale("log")
+        #     plt.savefig("losses.png")
+        #     plt.close()
 
         k_means[best_k_means].to(weight_subvectors.device)
         self.codebook = nn.Parameter(k_means[best_k_means].centroids)
@@ -487,7 +494,7 @@ if __name__ == "__main__":
     quantizer_state_dict = copy.deepcopy(quantizer.state_dict())
 
     new_quantizer = LinearVQ(weight=weight,verbose = True)
-    new_quantizer.blank_recreate(d=5, n_bits=2, normalizer_kwargs={"norm_order":[0,1], "zero":[False, False]},
+    new_quantizer.blank_recreate(d=12, n_bits=1, normalizer_kwargs={"norm_order":[0,1], "zero":[False, False]},
                                  normalizer=None)
     
     # print("new quantizer state_dict keys: ", new_quantizer.state_dict())

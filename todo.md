@@ -3,7 +3,8 @@
 ## Refactoring
 - [x] Make a parent class for all compression algorithms
 - [x] Move Sparse and Quantization to their own files
-- [ ] Fix the layer by layer code
+- [x] Fix the layer by layer code (fixed for quantization only)
+- [x] Fix the Sparse code
 - [ ] Make a joint class that works
 
 ## Zero-shot Compression

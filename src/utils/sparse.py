@@ -149,7 +149,49 @@ class Dim1_StructuredSparse(SparseParent):
     
                                          
         
-    
+
+def stochastic_sparse(importances:torch.FloatTensor, n_sparse:int, temp:float = 1.0):
+    print("="*100)
+    print("importances", importances.shape)
+    probs = torch.softmax(importances.flatten()/temp, dim=0)
+    print("probs", probs.shape, torch.sum(probs))
+    # print(probs.shape)
+    new_mask = torch.zeros_like(probs, dtype=torch.bool)
+    frac_sparse = n_sparse/importances.numel()
+    n_sparsed = 0
+    idxs = torch.randperm(probs.numel())
+
+    for i in range(0,probs.shape[0],2**24):
+        print(i)
+        idx_section = idxs[i:i+2**24]
+        probs_section = probs[idx_section]
+        new_mask_section = new_mask[idx_section]
+        print("probs_section", probs_section.shape)
+        if probs_section.shape[0] == 0:
+            continue
+        print("torch.sum(probs_section)", torch.sum(probs_section))
+        n_sparse_section = int(torch.sum(probs_section)*n_sparse) if i + 2**24 < probs.shape[0] else n_sparse - n_sparsed
+        if n_sparse_section == 0:
+            continue
+        if n_sparse_section > probs_section.shape[0]:
+            n_sparse_section = probs_section.shape[0]
+            new_mask_section[:] = True
+            #add eps to the probabilities beyond 
+            probs[idxs[i+2**24:]] += 1e-8
+        else:
+            print("n_sparse_section", n_sparse_section)
+            new_mask_section[torch.multinomial(probs_section, n_sparse_section)] = True
+        new_mask[idx_section] = new_mask_section
+        n_sparsed += n_sparse_section
+
+
+    # new_mask[torch.multinomial(probs, n_sparse)] = True
+    print(torch.sum(new_mask)/importances.numel())
+    assert torch.sum(new_mask) == n_sparse, f"torch.sum(new_mask) != n_sparse, {torch.sum(new_mask)} != {n_sparse}"
+
+    return new_mask.reshape(importances.shape)
+
+
 class UnstructuredSparse(nn.Module):
     #completely unstructured sparse and a parent class
     sparse_mask:torch.BoolTensor
@@ -160,7 +202,10 @@ class UnstructuredSparse(nn.Module):
                  frac_sparse:float,
                  device:torch.device,
                  pattern:Optional[Tuple[int,int]] = None,
-                 sparse_group:Union[int, Literal["n_in"]] = -1):
+                 sparse_group:Union[int, Literal["n_in"]] = -1,
+                 stochastic:bool = False,
+                 temp:float = 1.0,
+    ):
 
         
         super(UnstructuredSparse, self).__init__()
@@ -175,7 +220,8 @@ class UnstructuredSparse(nn.Module):
 
         self.sparse_pattern = pattern
         self.sparse_group = sparse_group if sparse_group != "n_in" else n_in
-        
+        self.stochastic = stochastic
+        self.temp = temp
         
         self.register_buffer('sparse_mask', sparse_mask)
         self.sparse_values = nn.Parameter(torch.zeros(self.n_sparse, device=device))
@@ -183,12 +229,18 @@ class UnstructuredSparse(nn.Module):
         
     @staticmethod
     def generate_mask(importances:torch.FloatTensor,
-                      n_sparse:int):
-        idxs_sorted = torch.argsort(importances.flatten(), descending=True)
-        idx0, idx1 = idxs_sorted//importances.shape[1], idxs_sorted%importances.shape[1]
-        new_mask = torch.zeros_like(importances, dtype=torch.bool)
-        new_mask[idx0[:n_sparse], idx1[:n_sparse]] = True
-        return new_mask
+                      n_sparse:int,
+                      stochastic:bool = False,
+                        temp:float = 1.0,
+                        ):
+        if stochastic:
+            return stochastic_sparse(importances, n_sparse, temp)
+        else:
+            idxs_sorted = torch.argsort(importances.flatten(), descending=True)
+            idx0, idx1 = idxs_sorted//importances.shape[1], idxs_sorted%importances.shape[1]
+            new_mask = torch.zeros_like(importances, dtype=torch.bool)
+            new_mask[idx0[:n_sparse], idx1[:n_sparse]] = True
+            return new_mask
     
     @staticmethod
     def generate_mask_grouped(importances:torch.FloatTensor,
@@ -214,6 +266,8 @@ class UnstructuredSparse(nn.Module):
         mask_unshaped = torch.zeros_like(importances.reshape(-1,n_pattern), dtype=torch.bool, device=importances.device)
         mask_unshaped[torch.arange(mask_unshaped.shape[0]).unsqueeze(1), idxs_sorted[:,:n_zero]] = True
         return mask_unshaped.reshape(importances.shape)
+    
+
 
         
     
@@ -228,14 +282,14 @@ class UnstructuredSparse(nn.Module):
         elif self.sparse_group > 0:
             new_mask = self.generate_mask_grouped(importances, self.frac_sparse, self.sparse_group)
         else:
-            new_mask = self.generate_mask(importances, self.n_sparse)
+            new_mask = self.generate_mask(importances, self.n_sparse,self.stochastic, self.temp)
         # #sort the importances
         # idxs_sorted = torch.argsort(importances.flatten(), descending=True)
         # idx0, idx1 = idxs_sorted//self.n_in, idxs_sorted%self.n_in
         
         # new_mask = torch.zeros_like(self.sparse_mask)
         # new_mask[idx0[:self.n_sparse], idx1[:self.n_sparse]] = True
-        
+        # print("sparse_mask", torch.sum(new_mask)/new_mask.numel())
         self.register_buffer('sparse_mask', new_mask)
         
         self.sparse_values.data = remaining_weight[new_mask]

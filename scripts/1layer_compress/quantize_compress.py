@@ -25,7 +25,7 @@ parser.add_argument("--weights_path", type=str, default="/data/lliu/huffman/mode
 parser.add_argument("--save_path", type=str, default="/data/lliu/huffman/test/save_self_attn.q_proj.pt")
 parser.add_argument("--device", type = str, default = "cuda:2",
                     help = "device to use for training")
-parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/scripts/1layer_compress/quantizer_args.yaml")
+parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/yamls/quantizer/quantizer_args.yaml")
 # parser.add_argument("--d", type = int, default = 4,
 #                     help = "subvector dimension")
 # parser.add_argument("--n_bits", type = float, default = 2)
@@ -73,10 +73,12 @@ original_dtype = weight.dtype
 if kwargs["quantizer_type"] == "LinearVQ":
     compression_module = qc.LinearVQ(
         weight.to(args.device).to(dtype),
+        verbose=True
     )
 elif kwargs["quantizer_type"] == "LinearVQ_Halving":
     compression_module = qc.LinearVQ_Halving(
         weight.to(args.device).to(dtype),
+        verbose=True
     )
 else: 
     raise ValueError("quantizer type not recognized")
@@ -133,7 +135,7 @@ print("initial loss",compression_module.get_reconstruction_error(compression_mod
 if "alignment_kwargs" in kwargs:
     raise ValueError("alignment not implemented")
 else:
-    print("best_loss",compression_module.get_reconstruction_error().item())
+    print("best_loss",compression_module.get_reconstruction_error(compression_module.hessian if hasattr(compression_module, "hessian") else compression_module.hessianDiag).item())
 print("n_params", compression_module.get_n_original_parameters())
 print("n_bits", compression_module.get_n_bits())
 print("bpv", compression_module.get_n_bits()/compression_module.get_n_original_parameters())
@@ -150,7 +152,7 @@ args_save_path = args.save_path[:args.save_path.rfind(".")] + "_args.yaml"
 #save the args as a yaml file
 with open(args_save_path, "w") as f:
     #add a arg that these are quantized weights
-    kwargs["compression_type"] = "quantized"
+    kwargs["compression_type"] = str(compression_module)
     yaml.dump(kwargs, f)
 
 #try to creat a 
