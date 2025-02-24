@@ -3,7 +3,7 @@ print("pid", os.getpid())
 
 CUDA_LAUNCH_BLOCKING = 1
 import time
-
+import gc
 import torch
 import random
 import torch.nn as nn
@@ -38,6 +38,7 @@ except:
 @torch.no_grad()
 def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
                offload_activations: bool = False, batch_size: int = 8,
+               ram_batch_size:int = -1,
                base_model: str = "llama",
                results_log_path: str = None,
                disable_tqdm: bool = False) -> float:
@@ -45,92 +46,101 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
 
     testenc = testenc.input_ids
     nsamples = testenc.numel() // model.seqlen
+    n_samples_at_once = ram_batch_size if ram_batch_size > 0 else nsamples
     print("nsamples", nsamples)
     print("testenc.numel()", testenc.numel())
     use_cache = model.config.use_cache
     model.config.use_cache = False
     layers = model.model.layers
 
-    model.model.embed_tokens = model.model.embed_tokens.to(dev)
-    model.model.rotary_emb = model.model.rotary_emb.to(dev)
-    model.model.norm = model.model.norm.to(dev)
-
-    layers[0] = layers[0].to(dev)
-
-    dtype = next(iter(model.parameters())).dtype
-    inps = torch.zeros(
-        (nsamples, model.seqlen, model.config.hidden_size), dtype=dtype, device=dev if not offload_activations else "cpu"
-    )
-    cache = {"i": 0, "kwargs": None}
-
-    class Catcher(nn.Module):
-        def __init__(self, module):
-            super().__init__()
-            self.module = module
-
-        def forward(self, inp, **kwargs):
-            inps[cache["i"]] = inp if not offload_activations else inp.cpu()
-            cache["i"] += 1
-            cache["kwargs"] = kwargs
-            raise ValueError
-
-    layers[0] = Catcher(layers[0])
-    for i in range(nsamples):
-        batch = testenc[:, (i * model.seqlen) : ((i + 1) * model.seqlen)].to(dev)
-        try:
-            model(batch)
-        except ValueError:
-            pass
-    
-    kwargs = cache["kwargs"]
-    layers[0] = layers[0].module
-
-    layers[0] = layers[0].cpu()
-    # print("inps", inps)
-    model.model.embed_tokens = model.model.embed_tokens.cpu()
-    model.model.rotary_emb = model.model.rotary_emb.cpu()
-    model.model.norm = model.model.norm.cpu()
-    torch.cuda.empty_cache()
-
-    outs = torch.zeros_like(inps)
-    for name in kwargs:
-        if isinstance(kwargs[name], torch.Tensor):
-            kwargs[name] = kwargs[name].to(dev)
-
-    for i in tqdm.tqdm(range(len(layers)), desc="Inference", disable=disable_tqdm):
-        # print(i)
-        layer = layers[i].to(dev)
-        outs = inference_layer(layer, inps, outs, kwargs, dev, offload_activations, batch_size,
-                               disable_tqdm=True)
-        layers[i] = layer.cpu()
-        del layer
-        torch.cuda.empty_cache()
-        inps, outs = outs, inps
-        # break
-
-    if model.model.norm is not None:
-        model.model.norm = model.model.norm.to(dev)
-    model.lm_head = model.lm_head.to(dev)
-
-    testenc = testenc.to(dev)
     nlls = []
-    for i in range(nsamples):
-        hidden_states = inps[i].unsqueeze(0) if not offload_activations else inps[i].unsqueeze(0).to(dev)
-        if model.model.norm is not None:
-            hidden_states = model.model.norm(hidden_states)
-        lm_logits = model.lm_head(hidden_states)
-        # print(lm_logits)
-        shift_logits = lm_logits[:, :-1, :].contiguous()
-        shift_labels = testenc[:, (i * model.seqlen) : ((i + 1) * model.seqlen)][:, 1:]
-        # print(shift_labels)
-        # raise Exception("stop")
-        loss_fct = nn.CrossEntropyLoss()
-        loss = loss_fct(
-            shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1)
+    for j in tqdm.tqdm(range(0,nsamples,n_samples_at_once),desc="big_loop"):
+        model.model.embed_tokens = model.model.embed_tokens.to(dev)
+        model.model.rotary_emb = model.model.rotary_emb.to(dev)
+        model.model.norm = model.model.norm.to(dev)
+        layers[0] = layers[0].to(dev)
+
+        dtype = next(iter(model.parameters())).dtype
+        inps = torch.zeros(
+            (n_samples_at_once, model.seqlen, model.config.hidden_size), dtype=dtype, device=dev if not offload_activations else "cpu"
         )
-        # print("loss", loss)
-        neg_log_likelihood = loss.float() * model.seqlen
-        nlls.append(neg_log_likelihood)
+        cache = {"i": 0, "kwargs": None}
+
+        class Catcher(nn.Module):
+            def __init__(self, module):
+                super().__init__()
+                self.module = module
+
+            def forward(self, inp, **kwargs):
+                inps[cache["i"]] = inp if not offload_activations else inp.cpu()
+                cache["i"] += 1
+                cache["kwargs"] = kwargs
+                raise ValueError
+
+        layers[0] = Catcher(layers[0])
+        for i in range(n_samples_at_once):
+            batch = testenc[:, ((j+i) * model.seqlen) : ((j+i + 1) * model.seqlen)].to(dev)
+            try:
+                model(batch)
+            except ValueError:
+                pass
+    
+        kwargs = cache["kwargs"]
+        layers[0] = layers[0].module
+        layers[0] = layers[0].cpu()
+        #print("-----------inps------------", inps)
+        # print("----------------model---------------", model)
+        #print("-----------layers-------------", layers)
+        model.model.embed_tokens = model.model.embed_tokens.cpu()
+        model.model.rotary_emb = model.model.rotary_emb.cpu()
+        model.model.norm = model.model.norm.cpu()
+        # print("-----------rotary_emb------------", model.model.rotary_emb)
+        # print("-----------norm------------", model.model.norm)
+        torch.cuda.empty_cache()
+
+        # outs = torch.zeros_like(inps)
+        outs = None
+        for name in kwargs:
+            if isinstance(kwargs[name], torch.Tensor):
+                kwargs[name] = kwargs[name].to(dev)
+
+        for i in tqdm.tqdm(range(len(layers)), desc="Inference", disable=disable_tqdm):
+            # print(i)
+            inps = inference_layer(layers[i], inps, outs, kwargs, dev, offload_activations, batch_size,
+                                disable_tqdm=True)
+            # layers[i] = layer.cpu()
+            # del layer
+            torch.cuda.empty_cache()
+            gc.collect()
+            # inps = outs
+            # break
+
+        if model.model.norm is not None:
+            model.model.norm = model.model.norm.to(dev)
+        model.lm_head = model.lm_head.to(dev)
+        torch.cuda.empty_cache()
+        testenc_use = testenc[:,j*model.seqlen:(j+n_samples_at_once)*model.seqlen].to(dev)
+        print("shapes",testenc_use.shape,j)
+        for i in range(n_samples_at_once):
+            hidden_states = inps[i].unsqueeze(0) if not offload_activations else inps[i].unsqueeze(0).to(dev)
+            if model.model.norm is not None:
+                hidden_states = model.model.norm(hidden_states)
+            lm_logits = model.lm_head(hidden_states)
+            # print(lm_logits)
+            shift_logits = lm_logits[:, :-1, :].contiguous()
+            shift_labels = testenc_use[:, (i * model.seqlen) : ((i + 1) * model.seqlen)][:, 1:]
+            # print(shift_labels)
+            # raise Exception("stop")
+            loss_fct = nn.CrossEntropyLoss()
+            loss = loss_fct(
+                shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1)
+            )
+            # print("loss", loss)
+            neg_log_likelihood = loss.float() * model.seqlen
+            nlls.append(neg_log_likelihood)
+            del lm_logits
+            del shift_labels
+            del shift_logits
     ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
     print(f"Perplexity: {ppl.item():3f}")
     if log_wandb:

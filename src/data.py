@@ -8,6 +8,7 @@ from datasets import load_dataset
 from torch import nn
 from tqdm import trange
 import tqdm
+import sys
 
 
 def set_seed(seed):
@@ -122,6 +123,16 @@ def get_c4(nsamples, seed, seqlen, model, train_test: str = "train"):
             data_files={"validation": "en/c4-validation.00000-of-00008.json.gz"},
             split="validation",
         )
+    # print("---------------data type-----------------")
+    # print(type(data))
+    # print(data.shape)
+    # print("----------------seqlen---------")
+    # print(seqlen)
+    # print("----------nsamples-----------")
+    # print(nsamples)
+    # print("---------data sample-----------")
+    # print(data[0])
+
     from transformers import AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
@@ -153,12 +164,19 @@ def get_c4(nsamples, seed, seqlen, model, train_test: str = "train"):
             while True:
                 i = random.randint(0, len(data) - 1)
                 tmp = tokenizer(data[i]["text"], return_tensors="pt")
+                #print("--------LEN---------")
+                #print(tmp.input_ids.shape[1] - seqlen - 1)
                 if tmp.input_ids.shape[1] >= seqlen:
                     break
             i = random.randint(0, tmp.input_ids.shape[1] - seqlen - 1)
             j = i + seqlen
+            # print("-------------------J-----------------------")
+            # print(j)
             valenc.append(tmp.input_ids[:, i:j])
+        # print("------------VALENC-----------------")
+        # print(f"{sys.getsizeof(valenc)} bytes")
         valenc = torch.hstack(valenc)
+        print("loaded valenc")
         print(valenc.shape)
 
         class TokenizerWrapper:

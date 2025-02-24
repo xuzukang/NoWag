@@ -68,20 +68,25 @@ def inference_layer(layer:nn.Module,
                     disable_tqdm:bool = False,
                     )->torch.FloatTensor:
     """Inference a single layer"""
-    assert len(inps) == len(outs), "The number of inputs and outputs should be the same"
+    # assert len(inps) == len(outs), "The number of inputs and outputs should be the same"
+    # print("-------inps-------")
+    # print(len(inps))
+    # print("----------outs-------")
+    # print(outs)
     # assert len(inps)%batch_size == 0, "The number of inputs should be divisible by the batch size"
     #check that the inps have the same 
     # print(inps.shape, "batch size", batch_size)
+    layer.to(dev)
     for j in tqdm.tqdm(range(0, len(inps), batch_size), desc="Inference", miniters=len(inps)//100,
                           disable=disable_tqdm):
         # print(j, j+batch_size)
         if offload_activations:
-            outs[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
+            inps[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
                             **layer_kwargs)[0].cpu()
         else:
-            outs[j:j+batch_size] = layer(inps[j:j+batch_size], **layer_kwargs)[0]
-
-    return outs
+            inps[j:j+batch_size] = layer(inps[j:j+batch_size], **layer_kwargs)[0]
+    layer.cpu()
+    return inps
 
 
 # @torch.no_grad()
