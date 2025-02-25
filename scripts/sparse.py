@@ -48,12 +48,27 @@ def sparse_layer(
 
         new_layer = sparse.SparseLinear(module.weight, module.bias)
         
-        hessian = torch.load(f"{hessian_path}/{name}.pt", map_location = torch.device(device))["hessian"]
-        new_layer.hessian = hessian
+        if hessian_path != "None":
+            # print(f"loading hessian for {name}")
+            hessian = torch.load(f"{hessian_path}/{name}.pt", map_location = torch.device(device))
+            if "hessian" in hessian:
+                hessian = hessian["hessian"]
+                new_layer.hessian = hessian
+            elif "hessianDiag" in hessian:
+                hessianDiag = hessian["hessianDiag"]
+                new_layer.hessianDiagnostic = hessianDiag
+            else:
+                raise ValueError(f"hessian not found in the hessian file, keys: {hessian.keys()}")
+        else:
+            hessianDiag = torch.ones(module.weight.shape[1], device = device)
+            new_layer.hessianDiag = hessianDiag
+            
 
         new_layer.compress(**sparse_kwargs)
-
-        del new_layer.hessian
+        if hasattr(new_layer, "hessian"):
+            del new_layer.hessian
+        if hasattr(new_layer, "hessianDiag"):
+            del new_layer.hessianDiag
         # del new_layer.original_weight
         if clean:
             new_layer.clean()
@@ -64,13 +79,14 @@ def sparse_layer(
             raise ValueError("cache_reconstruct must be True")
 
         # new_layer(torch.randn(1, new_layer.in_features).to(device))
-        
+        # print(new_layer.reconstruct())
+        # print("original", module.weight)   
+        # raise ValueError("stop here")
         module.weight.data = new_layer.reconstruct()
 
         module.to(original_device).to(original_dtype)
         setattr(parent_module, name.split(".")[1], module)
         del new_layer
-        del hessian
         # getattr(parent_module, name.split(".")[1]).to(device_store)
 
         torch.cuda.empty_cache()
@@ -105,7 +121,7 @@ def sparse_model(model,
     for i in tqdm.tqdm(range(len(layers)), desc="Sparsifying",disable=False):
         layer = sparse_layer(
             layer = layers[i],
-            hessian_path = f"{hessian_path}/layer_{i}",
+            hessian_path = f"{hessian_path}/layer_{i}" if hessian_path != "None" else "None",
             sparse_kwargs = sparse_kwargs,
             clean = clean,
             device = device,

@@ -54,7 +54,7 @@ class SparseLinear(compression_parent.CompressedLinear):
 
     @torch.no_grad()    
     def sparsify(self,
-                 sparse_types:List[Literal["dim_0","dim_1","unstructured"]],
+                 sparse_types:List[Literal["dim_0","dim_1","unstructured"]] = ["unstructured"],
                  sparse_criterions:Union[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"],
                                          List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
@@ -121,7 +121,7 @@ class SparseLinear(compression_parent.CompressedLinear):
             # print(remaining_error[:,self.sparse_modules[i].sparse_mask])
             normalized_weight = normalized_weight - self.sparse_modules[i].reconstruct()
 
-    def compress(self, sparse_types:List[Literal["dim_0","dim_1","unstructured"]],
+    def compress(self, sparse_types:List[Literal["dim_0","dim_1","unstructured"]] = ["unstructured"],
                  sparse_criterions:Union[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"],
                                          List[Literal["wanda","hessian","norm_1", "norm_2", "norm_inf"]]] = "wanda",
                  frac_sparse:Union[float,List[float]] = 0.1,
@@ -161,7 +161,7 @@ class SparseLinear(compression_parent.CompressedLinear):
         return n_bits
     
     def blank_recreate(self,
-                       sparse_types:List[Literal["dim_0","dim_1","unstructed"]],
+                       sparse_types:List[Literal["dim_0","dim_1","unstructed"]] = ["unstructured"],
                         frac_sparse:Union[float,List[float]] = 0.1,
                         normalizer_kwargs:Optional[dict] = None,
                         normalizer:Optional[normalizer.Normalizer] = None,

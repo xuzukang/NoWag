@@ -56,7 +56,7 @@ class CompressedLinear(nn.Module):
         self.verbose = verbose
         self.denormalization_method: Literal["otf", "reconstruct", "ignore"] = "reconstruct"
         self.forward_method: Literal["reconstruct", "otf"] = "reconstruct"
-    def compress(self, **kwargs):
+    def compress(self, normalizer_kwargs: Optional[dict] = None, normalizer: Optional[Normalizer] = None, **kwargs):
         """compress the weights, this is the main function to be implemented by the child classes"""
         self.compressed = True
         raise NotImplementedError
