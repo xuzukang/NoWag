@@ -1,21 +1,23 @@
 # To-Do List
 
-## Refactoring
+## [x] Refactoring
 - [x] Make a parent class for all compression algorithms
 - [x] Move Sparse and Quantization to their own files
 - [x] Fix the layer by layer code (fixed for quantization only)
 - [x] Fix the Sparse code
-- [ ] Make a joint class that works
+- [x] Make a joint class that works
 
-## Zero-shot Compression
-- [ ] Low Rank to work
-- [ ] Structured FFN to work
-- [ ] non-determnistic pruning to work
-- [ ] Convert hessian generation to importance generation (diagonal only)
-- [ ] 70B model 7d quantization, talk to GT to split up the weights
+## [ ] Zero-shot Compression
+- [x] Low Rank to work
+- [x] Structured FFN to work
+- [ ] Replicate LoRAP results
+- [x] non-determnistic pruning to work (does not work)
+- [x] Convert hessian generation to importance generation (diagonal only)
+- [x] 70B model 7d quantization
+    - [ ] talk to GT about splitting up the weights (may not be necessary)
 - [ ] Trellis Quantization
+- [ ] Dynamic Allocation
 
-## 
 
 ## Fine-tuning
 - [ ] Get finetuning script to work

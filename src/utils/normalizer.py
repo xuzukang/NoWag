@@ -81,8 +81,8 @@ class Normalizer(nn.Module):
 
     @staticmethod
     def normalize_init(weight:torch.FloatTensor, 
-                  norm_order:list[int] = [0, 1],
-                  zero:list[bool]= [True, True],
+                  norm_order:list[int] = [],
+                  zero:list[bool]= [],
                   eps:float = 1e-5,
                   norm_rescale:float = True,
                   powers:float = 1,

@@ -81,9 +81,9 @@ def get_ptb(nsamples, seed, seqlen, model, train_test: str = "train"):
     from datasets import load_dataset
 
     if train_test == "train":
-        data = load_dataset("ptb_text_only", "penn_treebank", split="train")
+        data = load_dataset("ptb_text_only", "penn_treebank", split="train",trust_remote_code=True)
     else:
-        data = load_dataset("ptb_text_only", "penn_treebank", split="validation")
+        data = load_dataset("ptb_text_only", "penn_treebank", split="validation",trust_remote_code=True)
 
     from transformers import AutoTokenizer
 
