@@ -133,7 +133,8 @@ class Normalizer(nn.Module):
     @staticmethod
     def blank_recreate(weight,
                        norm_order:List[int] = [0, 1], 
-                        zero:List[bool] = [False, False]):
+                        zero:List[bool] = [False, False],
+                        **kwargs)->Normalizer:
         
         norms = [None] * len(norm_order)
         zeros = [None] * len(norm_order)

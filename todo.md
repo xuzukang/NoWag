@@ -1,5 +1,7 @@
 # To-Do List
-
+- [ ] CUDA to for VQ (inesh)
+- [ ] Trellis Quantization (inesh)
+- [ ] Finetuning (lawrence)
 ## [x] Refactoring
 - [x] Make a parent class for all compression algorithms
 - [x] Move Sparse and Quantization to their own files
@@ -24,7 +26,7 @@
 - [ ] LoRA finetuning for 
 - [ ] Pruned finetuning 
 
-## Overall
+## Other Models
 - [ ] Compress Deepseek
 - [ ] Llama 3.1
 - [ ] Mistral?

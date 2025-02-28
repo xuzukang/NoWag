@@ -38,9 +38,26 @@ def low_rank_mha(
         "o_proj",
     ]
     vo_qk_ratio = kwargs.get("vo_qk_ratio", 1)
-    for name in tqdm.tqdm(sublayer_names, leave=True, disable=True):
 
+    layer_compression_ratios = {}
+    layer_compression_ratios["vo"] = min((2 * kwargs["compression_ratio"]/(vo_qk_ratio + 1)) * vo_qk_ratio, 1)
+    layer_compression_ratios["qk"] = min((2 * kwargs["compression_ratio"] - layer_compression_ratios["vo"], 1))
+    # print("layer_compression_ratios", layer_compression_ratios)
+    n_params_old = 0
+    n_params_new = 0
+    for name in tqdm.tqdm(sublayer_names, leave=True, disable=True):
+        if name == "q_proj" or name == "k_proj":
+            compression_ratio = layer_compression_ratios["qk"]
+        else:
+            compression_ratio = layer_compression_ratios["vo"]
+        
+        if compression_ratio >= 1:
+            n_params_old += getattr(mha_layer, name).weight.numel()
+            n_params_new += getattr(mha_layer, name).weight.numel()
+            # print("skipping", name)
+            continue
         module = getattr(mha_layer, name)
+        n_params_old += module.weight.numel()
         original_device = module.weight.device
         module.to(device)
         original_dtype = module.weight.dtype
@@ -49,12 +66,11 @@ def low_rank_mha(
         new_layer = low_rank.LowRankLinear(module.weight, module.bias)
         
         low_rank_kwargs = copy.deepcopy(kwargs["low_rank_kwargs"])
+        low_rank_kwargs["normalizer_kwargs"] = kwargs.get("normalizer_kwargs", {})
         low_rank_kwargs["rank"] = int(
-            module.weight.shape[0] * (kwargs["compression_ratio"]/(vo_qk_ratio + 1)) \
-            * (vo_qk_ratio if name == "o_proj" or name == "v_proj" else 1))
-        
-        print(module.weight.shape[0] * (kwargs["compression_ratio"]/(vo_qk_ratio + 1)))
-        print("rank for", name, "rank", low_rank_kwargs["rank"], "original dim", module.weight.shape)
+            module.weight.shape[0] * compression_ratio/2)
+    
+        # print("rank for", name, "rank", low_rank_kwargs["rank"], "original dim", module.weight.shape)
         if hessian_path != "None":
             # print(f"loading hessian for {name}")
             hessian = torch.load(f"{hessian_path}.{name}.pt", map_location = torch.device(device))
@@ -70,8 +86,8 @@ def low_rank_mha(
             hessianDiag = torch.ones(module.weight.shape[1], device = device)
             new_layer.hessianDiag = hessianDiag
             
-
         new_layer.compress(**low_rank_kwargs)
+        n_params_new += new_layer.A.numel() + new_layer.B.numel()
         if hasattr(new_layer, "hessian"):
             del new_layer.hessian
         if hasattr(new_layer, "hessianDiag"):
@@ -109,17 +125,18 @@ def low_rank_mha(
         #         pass
         # print("--------")
         # raise ValueError("stop here")
-
-    return mha_layer
+    # print("compression ratio", n_params_new / n_params_old)
+    return mha_layer, n_params_new, n_params_old
 
 def structure_prune_fnn(fnn:llama.LlamaMLP, 
                         hessian_path:str, 
                         LoRAP_kwargs:dict):
     
     new_fnn = structured_fnn.StructuredMLP.from_llama_mlp(fnn)
-
+    n_params_old = new_fnn.get_n_params()
     structured_prune_kwargs = copy.deepcopy(LoRAP_kwargs["structured_prune_kwargs"])
     structured_prune_kwargs["frac_keep"] = LoRAP_kwargs["compression_ratio"]
+    structured_prune_kwargs["normalizer_kwargs"] = LoRAP_kwargs.get("normalizer_kwargs", None)
 
     device = next(new_fnn.parameters()).device
     
@@ -137,7 +154,9 @@ def structure_prune_fnn(fnn:llama.LlamaMLP,
 
 
     new_fnn.prune(**structured_prune_kwargs)
-    return new_fnn
+    n_params_new = new_fnn.get_n_params()
+    # print("fnn compression ratio", n_params_new / n_params_old)
+    return new_fnn, n_params_new, n_params_old
 
 def LoRAP_model(model, 
                  hessian_path:str, 
@@ -151,9 +170,12 @@ def LoRAP_model(model,
     layers = model.model.layers
     original_dtype = next(iter(model.parameters())).dtype
 
+    n_params_orig = 0
+    n_params_new = 0
+
     for i in tqdm.tqdm(range(len(layers)), desc="Sparsifying",disable=False):
         layer = layers[i].to(working_dtype)
-        layer.self_attn = low_rank_mha(
+        layer.self_attn,self_attn_new_params, self_attn_orig_params = low_rank_mha(
             mha_layer = layer.self_attn,
             hessian_path = f"{hessian_path}/layer_{i}" if hessian_path != "None" else "None",
             kwargs = LoRAP_kwargs,
@@ -162,21 +184,22 @@ def LoRAP_model(model,
             device_store = device_store,
             cache_reconstruct = cache_reconstruct
         )
-        layer.mlp = structure_prune_fnn(
+        layer.mlp,mlp_new_params, mlp_orig_params = structure_prune_fnn(
             fnn = layer.mlp,
             hessian_path = f"{hessian_path}/layer_{i}" if hessian_path != "None" else "None",
             LoRAP_kwargs = LoRAP_kwargs
         )
         layer.to(original_dtype)
-        
+        n_params_orig += self_attn_orig_params + mlp_orig_params
+        n_params_new += self_attn_new_params + mlp_new_params
         layers[i] = layer
         del layer
         torch.cuda.empty_cache()
         #print the memory usage
         # print(torch.cuda.memory_allocated(device)/1024**3)
-
+    
     model.to(original_dtype)
-
+    print("compression ratio", n_params_new / n_params_orig)
     return model    
 
 if __name__ == "__main__":

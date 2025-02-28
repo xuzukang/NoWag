@@ -1,11 +1,10 @@
 dtype: float32
 quantizer_kwargs:
-  d: 6
+  d: 4
   ignore_norms: true
-  max_iters: 150
   n_bits: 2
-  n_inits: 8
-  n_iter_before_halving: 10
+  n_inits: 1
+  n_iters: 100
   normalizer_kwargs:
     norm_order:
     - 0
@@ -13,5 +12,6 @@ quantizer_kwargs:
     zero:
     - false
     - false
-quantizer_type: LinearVQ_Halving
+    p: 0.5
+quantizer_type: LinearVQ
 seed: 1234
