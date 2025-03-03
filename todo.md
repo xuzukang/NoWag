@@ -2,6 +2,8 @@
 - [ ] CUDA to for VQ (inesh)
 - [ ] Trellis Quantization (inesh)
 - [ ] Finetuning (lawrence)
+- [ ] Sequence Compression for Sparse (lawrence)\
+- [ ] E8P VQ (lawrence)
 ## [x] Refactoring
 - [x] Make a parent class for all compression algorithms
 - [x] Move Sparse and Quantization to their own files
