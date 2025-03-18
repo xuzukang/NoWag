@@ -5,6 +5,7 @@ import transformers
 import math
 import numpy as np
 import os
+import tqdm
 from typing import Tuple, Optional, Union, List, Literal
 import src.utils.sparse as sparse_utils
 import src.utils.normalizer as normalizer
@@ -101,8 +102,9 @@ class SparseLinear(compression_parent.CompressedLinear):
                 
                 #compute the importances
                 hessianDiag = self.get_hessianDiag()
+                # tqdm.tqdm.write(f"device of normalized_weight {normalized_weight.device}, device of hessianDiag {hessianDiag.device}")
                 importances = normalized_weight**2 * hessianDiag.unsqueeze(0)
-
+                
                 if "dim" in sparse_type:
                     self.sparse_modules[i].sparse(importances,
                                                 normalized_weight,
@@ -142,6 +144,7 @@ class SparseLinear(compression_parent.CompressedLinear):
                 y = F.linear(self.normalizer.denormalize_otf_in(x), self.reconstruct(denormalize = False))
                 y = self.normalizer.denormalize_otf_out(y) + (self.bias if self.bias is not None else 0)
             else:
+                # tqdm.tqdm.write(f"x dtype {x.dtype}, denormalize dtype {self.reconstruct(denormalize = self.denormalization_method == 'reconstruct').dtype}")
                 y = F.linear(x, self.reconstruct(denormalize = self.denormalization_method == "reconstruct"), self.bias)
         else:
             assert self.denormalization_method == "otf", "on the fly denormalization is only supported for on the fly sparsity"

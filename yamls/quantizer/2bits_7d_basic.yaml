@@ -12,5 +12,6 @@ quantizer_kwargs:
     zero:
     - false
     - false
+    p: 1
 quantizer_type: LinearVQ
 seed: 1234

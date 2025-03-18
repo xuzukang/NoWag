@@ -103,14 +103,14 @@ class CompressedLinear(nn.Module):
                                **kwargs):
         """enable hessian logging"""
         if hessian is not None:
-            self.hessian = hessian
+            self.register_buffer("hessian", hessian)
         else:
-            self.hessian = torch.zeros(
+            self.register_buffer("hessian", torch.zeros(
                 self.in_features,
                 self.in_features,
                 device=self.original_weight.device,
                 dtype=torch.float32,
-            )
+            ))
         if logging_type == "mean":
             self.n_samples = kwargs.get("n_samples", 0) #allows us to continue logging
             self.hessian_handle = self.register_forward_pre_hook(compress_utils.hessian_mean_logging)
@@ -128,11 +128,11 @@ class CompressedLinear(nn.Module):
         hessianDiag are just the diagonal of the hessian
         """
         if hessianDiag is not None:
-            self.hessianDiag = hessianDiag
+            self.register_buffer("hessianDiag", hessianDiag)
         else:
-            self.hessianDiag = torch.zeros(
+            self.register_buffer("hessianDiag", torch.zeros(
                 self.in_features, device=self.original_weight.device, dtype=torch.float32
-            )
+            ))
         
         if logging_type == "mean":
             self.n_samples = kwargs.get("n_samples", 0)
@@ -170,7 +170,8 @@ class CompressedLinear(nn.Module):
             torch.FloatTensor: the importances
         """
         hessianDiag = self.hessianDiag.clone()
-        self.log_hessianDiag_flag = False
+        self.hessianDiag_handle.remove()
+        del self.hessianDiag_handle
         del self.hessianDiag
         del self.n_samples
         return [hessianDiag]  # returning a list for consistency with the low rank sparse
@@ -295,11 +296,9 @@ class CompressedLinear(nn.Module):
         if hasattr(self, "original_weight"):
             del self.original_weight
         if hasattr(self, "hessian"):
-            print("Warning: hessian was not dumped, deleting it")
-            del self.hessian
+            self.dump_hessian()
         if hasattr(self, "hessianDiag"):
-            print("Warning: hessianDiag was not dumped, deleting it")
-            del self.hessianDiag
+            self.dump_hessianDiag()
         utils.recursive_apply(self, "clean")
 
     def get_n_original_parameters(self):

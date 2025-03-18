@@ -8,7 +8,8 @@ DEV = torch.device("cuda:0")
 
 
 def get_llama(model: str, model_path: Optional[str] = None,
-              device_map: Optional[str] = None
+              device_map: Optional[str] = None,
+              dtype: Optional[str] = None,
               ) -> Any:
     import torch
 
@@ -25,10 +26,10 @@ def get_llama(model: str, model_path: Optional[str] = None,
         import transformers
         model = transformers.AutoModelForCausalLM.from_pretrained(
             model if model_path is None else model_path,
-            torch_dtype="auto",
+            torch_dtype="auto" if dtype is None else dtype,
              low_cpu_mem_usage=True,
             attn_implementation='sdpa',
-            device_map = device_map
+            device_map = device_map,
         )
     else:
         import transformers
@@ -66,27 +67,39 @@ def inference_layer(layer:nn.Module,
                     offload_activations:bool=False,
                     batch_size:int = 8,
                     disable_tqdm:bool = False,
+                    inplace:bool = True
                     )->torch.FloatTensor:
     """Inference a single layer"""
-    # assert len(inps) == len(outs), "The number of inputs and outputs should be the same"
-    # print("-------inps-------")
-    # print(len(inps))
-    # print("----------outs-------")
-    # print(outs)
-    # assert len(inps)%batch_size == 0, "The number of inputs should be divisible by the batch size"
-    #check that the inps have the same 
-    # print(inps.shape, "batch size", batch_size)
-    layer.to(dev)
+    # layer.to(dev)
+    if offload_activations:
+        inps = inps.cpu()
+        outs = outs.cpu()
+    else:
+        inps = inps.to(dev)
+        outs = outs.to(dev)
+    
+    # tqdm.tqdm.write("inps device: "+str(inps.device))
     for j in tqdm.tqdm(range(0, len(inps), batch_size), desc="Inference", miniters=len(inps)//100,
                           disable=disable_tqdm):
         # print(j, j+batch_size)
         if offload_activations:
-            inps[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
+            if inplace:
+                inps[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
+                            **layer_kwargs)[0].cpu()
+            else:
+                outs[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
                             **layer_kwargs)[0].cpu()
         else:
-            inps[j:j+batch_size] = layer(inps[j:j+batch_size], **layer_kwargs)[0]
-    layer.cpu()
-    return inps
+            if inplace:
+                inps[j:j+batch_size] = layer(inps[j:j+batch_size], 
+                            **layer_kwargs)[0]
+            else:
+                outs[j:j+batch_size] = layer(inps[j:j+batch_size], 
+                            **layer_kwargs)[0]
+    # layer.cpu()
+    if inplace:
+        return inps
+    return outs
 
 
 # @torch.no_grad()

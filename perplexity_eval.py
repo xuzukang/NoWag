@@ -136,11 +136,22 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
     if log_wandb:
         print({f"/perplexity/{base_model}/{dataset}": ppl.item()})
         wandb.log({f"/perplexity/{base_model}/{dataset}": ppl.item()})
-    # if results_log_path is not None:
-    #     #assume that it is a yaml file
-    #     results = yaml.load(open(results_log_path, "r"), Loader = yaml.FullLoader)
+    if results_log_path is not None:
+        #assume that it is a yaml file
+        #if it exits
+        if os.path.exists(results_log_path):
+            results = yaml.load(open(results_log_path, "r"), Loader = yaml.FullLoader)
+        else:
+            results = {}
         
-    #     results[f"{base_model}/{dataset}"] = ppl.item()
+        #if we don't have a ppl key, we create it
+        if "ppl" not in results:
+            results["ppl"] = {}
+        results["ppl"][dataset] = ppl.item()
+        
+        with open(results_log_path, "w") as f:
+            yaml.dump(results, f)
+        
 
     model.config.use_cache = use_cache
     return ppl.item()
@@ -166,7 +177,7 @@ if __name__ == "__main__":
     parser.add_argument("--offload_activations", action="store_true")
     parser.add_argument("--batch_size", type=int, default=4, 
                         help = "batch size for the activations, if not specified, we will perform a binary search to fine the optimal batch size")
-    parser.add_argument("--results_log_path", type=str, default = None)
+    parser.add_argument("--not_log_results", action="store_true")
 
     args = parser.parse_args()
 
@@ -206,10 +217,13 @@ if __name__ == "__main__":
         testloader = data.get_loaders(
             dataset, nsamples = 0, seqlen = model.seqlen, model = model_name,
             train_test = "test")
+
+        
         
         llama_eval(model, testloader, args.device, dataset, args.log_wandb,
                      args.offload_activations, args.batch_size,
                      base_model = args.base_model,
-                     results_log_path = args.results_log_path)
+                     results_log_path = None if args.not_log_results else f"{os.path.dirname(args.checkpoint_list_path)}/eval_results.yaml")
+        
 
     

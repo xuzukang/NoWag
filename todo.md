@@ -2,7 +2,9 @@
 - [ ] CUDA to for VQ (inesh)
 - [ ] Trellis Quantization (inesh)
 - [ ] Finetuning (lawrence)
-- [ ] Sequence Compression for Sparse (lawrence)\
+- [x] Sequence Compression for Sparse (lawrence) DOESNT FUCKING WORK
+- [ ] Replicate and Evaluate Wanda and SparseGPT on C4 and for Llama 3 70B etc
+- [ ] Replicate QuIP# with no fine tuning and maybe VPTQ without any finetuning, and for Llama 3 70B
 - [ ] E8P VQ (lawrence)
 ## [x] Refactoring
 - [x] Make a parent class for all compression algorithms

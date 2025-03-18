@@ -12,6 +12,5 @@ sparse_kwargs:
     - false
     - false
     p: 2
-    std_norm: True
   stochastic: False
   temp: 0.01

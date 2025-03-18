@@ -44,7 +44,7 @@ parser.add_argument("--run_name", type = str, default = None)
 parser.add_argument("--no_config_update", action = "store_true", help = "if provided will not update the wandb config")
 parser.add_argument("--ppl_eval", action = "store_true", help = "if provided will run perplexity eval")
 args = parser.parse_args()
-print(args)
+print("args", args)
 
 temp_yaml_path = "tmp/"
 
@@ -175,9 +175,9 @@ def read_log(log_path:str,wandb_log_prefix:str = "")->bool:
                     for line in log:
                         if "best_loss" in line:
                             best_loss = float(line.split(" ")[-1])
-                            if best_loss <= 1e-5:
-                                print("best_loss less than 1e-5")
-                                return False
+                            # if best_loss <= 1e-5:
+                            #     print("best_loss less than 1e-5")
+                            #     return False
                         if "n_params" in line:
                             TOTAL_PARAMS += float(line.split(" ")[-1])
                         if "n_bits" in line:

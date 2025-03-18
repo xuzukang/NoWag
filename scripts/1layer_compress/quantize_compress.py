@@ -87,13 +87,14 @@ else:
 #load the hessian
 hessian = torch.load(args.hessian_path,
                     map_location = torch.device(args.device)
-                     )
+                     )  
+# print("hessian.keys()", hessian.keys(), "hessianDiag in hessian", "hessianDiag" in hessian.keys())
 if "hessian" in hessian:
     compression_module.hessian = hessian["hessian"].to(dtype)
     if kwargs.get("hessian_regularization", 0) > 0:
         diag_mean = compression_module.hessian.diag().mean()
         compression_module.hessian += kwargs["hessian_regularization"] * torch.eye(compression_module.hessian.size(0)).to(args.device) * diag_mean
-elif "hessiaDiag" in hessian:
+elif "hessianDiag" in hessian:
     compression_module.hessianDiag = hessian["hessianDiag"].to(dtype)
     if kwargs.get("hessian_regularization", 0) > 0:
         diag_mean = compression_module.hessianDiag.mean()

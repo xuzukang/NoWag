@@ -1,6 +1,6 @@
 import torch 
 import torch.nn as nn
-
+import math
 
 
 
@@ -8,7 +8,7 @@ def hessian_mean_logging(module, input):
     """updates the mean of the hessian"""
 
 
-    input_flattened = input.reshape(-1, module.in_features).to(torch.float32)
+    input_flattened = input[0].reshape(-1, module.in_features).to(torch.float32)
     n_new_samples = input_flattened.shape[0]
     # print(n_new_samples)
     # multiply the hessian by:
@@ -22,7 +22,7 @@ def hessian_mean_logging(module, input):
 
 def hessian_ema_logging(module,input):
 
-    input_flattened = input.reshape(-1, module.in_features).to(torch.float32)
+    input_flattened = input[0].reshape(-1, module.in_features).to(torch.float32)
     n_new_samples = input_flattened.shape[0]
 
     #rescale the inputs
@@ -33,8 +33,7 @@ def hessian_ema_logging(module,input):
 
 def hessianDiag_mean_logging(module, input):
     """updates the mean of the hessian diagonal"""
-
-    input_flattened = input.reshape(-1, module.in_features).to(torch.float32)
+    input_flattened = input[0].reshape(-1, module.in_features).to(torch.float32)
     n_new_samples = input_flattened.shape[0]
 
     # multiply the hessian by:
@@ -48,7 +47,7 @@ def hessianDiag_mean_logging(module, input):
 def hessianDiag_ema_logging(module, input):
     """updates the mean of the hessian diagonal"""
 
-    input_flattened = input.reshape(-1, module.in_features).to(torch.float32)
+    input_flattened = input[0].reshape(-1, module.in_features).to(torch.float32)
     n_new_samples = input_flattened.shape[0]
 
     # multiply the hessian by:
