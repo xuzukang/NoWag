@@ -14,7 +14,6 @@ import torch.nn as nn
 import tqdm
 import torch
 import gc
-import zero_shot as zs
 
 @torch.no_grad()
 def sparse_layer(
@@ -51,12 +50,13 @@ def sparse_layer(
         if hessian_path != "None":
             # print(f"loading hessian for {name}")
             hessian = torch.load(f"{hessian_path}/{name}.pt", map_location = torch.device(device))
+            # print("hessian keys", hessian.keys())   
             if "hessian" in hessian:
                 hessian = hessian["hessian"]
                 new_layer.hessian = hessian
             elif "hessianDiag" in hessian:
                 hessianDiag = hessian["hessianDiag"]
-                new_layer.hessianDiagnostic = hessianDiag
+                new_layer.hessianDiag = hessianDiag
             else:
                 raise ValueError(f"hessian not found in the hessian file, keys: {hessian.keys()}")
         else:
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     parser.add_argument("--base_model", type=str, help = "the base model")
     parser.add_argument("--sparse_kwargs_path", type=str, help = "the path to the sparse kwargs")
     parser.add_argument("--hessian_dir", type=str, help = "the path to the hessian_dir",
-                        default = "/data/lliu/huffman/models/{model_name}/hessians_new/seed_0/pajama/128")
+                        default = "/data/lliu/huffman/models/{model_name}/hessianDiags/seed_0/pajama/128")
     parser.add_argument("--ppl_datasets", type=str, nargs="+",
                         choices=["wikitext2", "c4", "ptb"],
                         help="The datasets to evaluate on.",
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     parser.add_argument("--wandb_id", type=str, default=None,
                         help = "the wandb id so we can resume the run to link it with the compression run")
     parser.add_argument("--device", type=str, default="cuda:0")
-    parser.add_argument("--seqlen", type=int, default=4096)
+    parser.add_argument("--seqlen", type=int, default=-1)
     parser.add_argument("--offload_activations", action="store_true")
     parser.add_argument("--batch_size", type=int, default=4, 
                         help = "batch size for the activations, if not specified, we will perform a binary search to fine the optimal batch size")
@@ -180,7 +180,9 @@ if __name__ == "__main__":
         wandb.init(project=args.wandb_project, id=args.wandb_id, resume="allow")
 
     model = ppl_eval.get_llama(args.base_model)
+    args.seqlen = args.seqlen if args.seqlen != -1 else model.config.max_position_embeddings
     model.seqlen = args.seqlen
+    print("seqlen", model.seqlen)
     model_name = args.base_model
 
     model = model.to("cpu")
@@ -225,6 +227,7 @@ if __name__ == "__main__":
 
 
     if "None" not in args.zero_shot_tasks:
+        import zero_shot as zs
         results["zero_shot"] = zs.zero_shot(args.base_model, model, device = args.device,
                                             tasks = args.zero_shot_tasks)
         

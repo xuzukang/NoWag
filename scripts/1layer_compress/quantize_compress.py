@@ -20,12 +20,12 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--hessian_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_0/self_attn.q_proj.pt")
+parser.add_argument("--hessian_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessianDiags/seed_0/pajama/128/layer_0/self_attn.q_proj.pt")
 parser.add_argument("--weights_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights")
 parser.add_argument("--save_path", type=str, default="/data/lliu/huffman/test/save_self_attn.q_proj.pt")
 parser.add_argument("--device", type = str, default = "cuda:2",
                     help = "device to use for training")
-parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/yamls/quantizer/quantizer_args.yaml")
+parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/yamls/quantizer/2bits_6d_basic.yaml")
 # parser.add_argument("--d", type = int, default = 4,
 #                     help = "subvector dimension")
 # parser.add_argument("--n_bits", type = float, default = 2)

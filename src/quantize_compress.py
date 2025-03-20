@@ -21,6 +21,66 @@ import tqdm
 import time
 
 
+def weighted_min_distance(data, centroids, weights):
+    """
+    Calculate the weighted distance between data and centroids.
+    
+    Args:
+        data (torch.Tensor): Input data of shape (n, d)
+        centroids (torch.Tensor): Current centroids of shape (n_clusters, d)
+        weights (torch.Tensor): Weights for each data point of shape (n, d)
+    
+    Returns:
+        torch.Tensor: Weighted distances of shape (n, n_clusters)
+    
+    """
+    try:
+        dist = weights @ (centroids **2).T - 2*(data*weights) @ (centroids).T 
+        #dist of shape (n, n_clusters)
+        #get the min distance
+        return torch.min(dist, dim=1)[0] + torch.norm(data * torch.sqrt(weights),dim=1)**2
+    except torch.OutOfMemoryError:
+        #try to divided it into 2 batches
+        return torch.cat((weighted_min_distance(data[:data.shape[0]//2], centroids, weights[:data.shape[0]//2]),
+                          weighted_min_distance(data[data.shape[0]//2:], centroids, weights[data.shape[0]//2:])), dim=0)
+
+@torch.no_grad()
+def K_means_pp_init(data:torch.FloatTensor, n_clusters:int, weights:torch.FloatTensor = None,
+                    deterministic:bool = False, multiple_each_time:float = 1.0,
+                    )->torch.FloatTensor:
+    """K-means ++ initialization for centroids. with some changes,
+    to speed up initilization, for each centrioid, we only select a fraction of the data to select the next centroid.
+    """
+    
+    centriods = torch.empty((n_clusters, data.shape[1]), device=data.device)
+    # Randomly select the first centroid
+    centriods[0] = data[torch.randint(0, data.shape[0], (1,))]
+    
+    #for each centroid
+    for i in tqdm.tqdm(range(1, n_clusters), desc="K-means++ Initialization", disable=False):
+        
+        idxs_use = torch.randint(0, data.shape[0], (int(n_clusters * multiple_each_time),))
+        data_use = data[idxs_use]
+        
+        distances = weighted_min_distance(data_use, centriods[:i], weights[idxs_use])
+        
+        # print("distances", distances)
+        #if deterministic, then we just select the furthest point
+        if deterministic:
+            next_centroid_idx = torch.argmax(distances)
+        else:
+            next_centroid_idx = torch.multinomial(torch.clip(distances, 0, 1), 1)[0]
+        #add the new centroid
+        centriods[i] = data_use[next_centroid_idx]
+        
+        
+    return centriods
+        
+        
+    
+    
+    
+
 # @jit.script
 def weighted_kmeans_assign(data:torch.FloatTensor,
                            weights:torch.FloatTensor,
@@ -46,8 +106,7 @@ def weighted_kmeans_assign(data:torch.FloatTensor,
     try:
 
         #distances (x-c)\diag(w) (x-c) = x^T w x - 2x^T w c + c^T w c
-        distances = torch.norm(data * torch.sqrt(weights),dim=1).unsqueeze(1)**2 \
-            + weights @ (centroids **2).T \
+        distances = weights @ (centroids **2).T \
                 - 2*(data*weights) @ (centroids).T
         
         min_distances, assignments = torch.min(distances, dim=1)
@@ -127,6 +186,8 @@ class LinearVQ(compression_parent.CompressedLinear):
                         ignore_norms = True,
                         normalizer_kwargs:dict = {},
                         normalizer:normalize.Normalizer = None,
+                        initialize_method:str = "random",
+                        initialize_kwargs:dict = {},
                         **kwargs):
         """Quantize the weight matrix using K-means VQ
 
@@ -176,10 +237,16 @@ class LinearVQ(compression_parent.CompressedLinear):
         
         assign_time = []
         update_time = []
-        for i in tqdm.tqdm(range(n_inits), desc="Initializing K-means", disable=not self.verbose):
-            #initialize the codebook by randomly selecting n_centriods vectors from the data set
-            codebook = weight_subvectors[torch.from_numpy(
-                        np.random.choice(weight_subvectors.shape[0], n_centriods, replace=False))]
+        for i in tqdm.tqdm(range(n_inits), desc="N Initilizations", disable=not self.verbose):
+            if initialize_method == "kmeans++":
+                tqdm.tqdm.write("Using kmeans++ initialization")
+                codebook = K_means_pp_init(weight_subvectors, n_centriods, k_mean_weights, **initialize_kwargs)
+            elif initialize_method == "random":
+                #initialize the codebook by randomly selecting n_centriods vectors from the data set
+                codebook = weight_subvectors[torch.from_numpy(
+                            np.random.choice(weight_subvectors.shape[0], n_centriods, replace=False))]
+            else:
+                raise ValueError("Unknown initialization method: {}".format(initialize_method))
             
             for j in tqdm.tqdm(range(n_iter), desc="Iterating K-means", disable=not self.verbose):
                 start = time.time()
@@ -307,146 +374,10 @@ class LinearVQ_Halving(LinearVQ):
     """K-means VQ quantizer with Halving for bad initializations"""
     name = "LinearVQ_Halving"
 
-    @torch.no_grad()
-    def quantize_(self, d:int = 4,
-                        n_bits:Union[int, float] = 2,
-                        n_inits:int = 8,
-                        n_iter_before_halving:int = 10,
-                        max_iters:int = 100,
-                        ignore_norms = True,
-                        normalizer_kwargs:dict = {},
-                        normalizer:normalize.Normalizer = None,
-                        **kwargs):
-        """Quantize the weight matrix using K-means VQ
-
-        Args:
-            d (int, optional): subvector dimension. Defaults to 4.
-            n_bits (Union[int, float], optional): number of bits per subvector. Defaults to 8. d*n_bits must be an integer.
-            n_inits (int, optional): number of initializations for K-means. Defaults to 1.
-            n_iter (int, optional): number of iterations for K-means. Defaults to 100.
-            ignore_norms (bool, optional): whether to ignore the norms for k-means. Defaults to True.
-            normalizer_kwargs (dict, optional): normalizer kwargs to create a normalizer. Defaults to {}.
-            normalizer (normalize.Normalizer, optional): normalizer that was passed in. Defaults to None.
-        """
-
-        normalized_weight = self.initialize_normalizer(normalizer=normalizer, normalizer_kwargs=normalizer_kwargs)
-
-        normalized_weight_use = normalized_weight.clone()
-
-        k_mean_weights = self.get_hessianDiag().unsqueeze(0).repeat(self.out_features, 1) #shape of (out_features, in_features)
-        if not ignore_norms:
-            k_mean_weights *= self.normalizer.denormalize(torch.ones_like(self.original_weight), debias=False) ** 2
-        
-
-        #padding, check if we need to pad
-        if self.in_features % d != 0:
-            #we must pad the input
-            print("Padding input to make it divisible by d")
-            pad_size = d - self.in_features % d
-            print("Pad size: ", pad_size)
-            normalized_weight_use = F.pad(normalized_weight_use, (0, pad_size), value = torch.mean(normalized_weight_use).item())
-            k_mean_weights = F.pad(k_mean_weights, (0, pad_size), value = 0)
-            self.padded_in_features = normalized_weight_use.shape[1]
-        else:
-            self.padded_in_features = self.in_features
-
-        #check that the number of bits is an integer
-        assert d*n_bits == int(d*n_bits), "d*n_bits must be an integer"
-
-        n_centriods = 2**(int(n_bits * d))
-        print("Number of centriods: ", n_centriods)
-        weight_subvectors = normalized_weight_use.reshape(-1, d)
-
-        best_loss = float('inf')
-
-        #reshape k_mean_weights to be the same shape as weight_subvectors
-        k_mean_weights = k_mean_weights.reshape(-1, d)
-        
-        k_means = {}
-        active_kmeans = []
-        for i in range(n_inits):
-            #initialize the codebook by randomly selecting n_centriods vectors from the data set
-            codebook = weight_subvectors[torch.from_numpy(
-                        np.random.choice(weight_subvectors.shape[0], n_centriods, replace=False))]
-                    
-            assignments, initial_loss = weighted_kmeans_assign(weight_subvectors, k_mean_weights, codebook, verbose = self.verbose)
-            k_means[i] = PlaceHolderKMeans(assignments, codebook).to("cpu") #move to cpu to save memory
-            k_means[i].losses = [initial_loss]
-
-        active_kmeans = list(k_means.keys())
-
-        # total_iter = n_iter_before_halving * math.log2(n_inits)
-
-        while True:
-            if self.verbose:
-                print("n_active_kmeans: ", len(active_kmeans),"additional iterations: ", n_iter_before_halving if len(active_kmeans) > 1 else max(max_iters - k_mean_use.n_iters, 0))
-            for i in tqdm.tqdm(active_kmeans, desc="Iterating K-means", disable=not self.verbose):
-                k_mean_use = k_means[i].to(weight_subvectors.device)
-                if k_mean_use.done:
-                    continue
-
-                for j in range(n_iter_before_halving if len(active_kmeans) > 1 else max(max_iters - k_mean_use.n_iters, 0)):
-                    k_mean_use.centroids = weighted_kmeans_update(weight_subvectors, k_mean_weights,k_mean_use.assignments, n_centriods)
-                    k_mean_use.assignments,loss = weighted_kmeans_assign(weight_subvectors, k_mean_weights, k_mean_use.centroids, verbose = self.verbose)
-                    # tqdm.tqdm.write("Loss: {}".format(loss))
-                    k_mean_use.losses.append(loss)
-                    k_mean_use.n_iters += 1
-                    if j > 0:
-                        if torch.all(k_mean_use.assignments == assignments_old):
-                            k_mean_use.done = True
-                            break
-                    
-                    assignments_old = k_mean_use.assignments.clone()
-                
-                k_mean_use.to("cpu")
-                utils.clean()
-            
-            #check the losses
-            losses = [k_means[i].losses[-1] for i in active_kmeans]
-            #if we have only one active kmeans, we are done
-            if len(active_kmeans) == 1:
-                best_k_means = active_kmeans[0]
-                break
-            
-            #else find the best kmeans
-            idxs = np.argsort(losses)
-            active_kmeans = [active_kmeans[i] for i in idxs[:len(active_kmeans)//2]]
-            n_iter_before_halving *= 2
-                
-        # if self.verbose:
-        #     #plot the losses
-        #     import matplotlib.pyplot as plt
-        #     for i in k_means.keys():
-        #         plt.plot(k_means[i].losses, label = i)
-        #     plt.legend()
-        #     #log log
-        #     plt.yscale("log")
-        #     plt.xscale("log")
-        #     plt.savefig("losses.png")
-        #     plt.close()
-
-        k_means[best_k_means].to(weight_subvectors.device)
-        self.codebook = nn.Parameter(k_means[best_k_means].centroids)
-        self.register_buffer("assignments", k_means[best_k_means].assignments)
-
-    def compress(self, d:int = 4,
-                        n_bits:Union[int, float] = 2,
-                        n_inits:int = 1,
-                        n_iter_before_halving:int = 10,
-                        ignore_norms = True,
-                        normalizer_kwargs:dict = {},
-                        normalizer:normalize.Normalizer = None,
-                        **kwargs):
-        self.compressed = True
-        self.quantize_(d = d,
-                        n_bits = n_bits,
-                        n_inits = n_inits,
-                        n_iter_before_halving = n_iter_before_halving,
-                        ignore_norms = ignore_norms,
-                        normalizer_kwargs = normalizer_kwargs,
-                        normalizer = normalizer,
-                        **kwargs)
-
+    #deprecated
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        raise NotImplementedError("This class is deprecated, use LinearVQ instead")
     
 
 if __name__ == "__main__":

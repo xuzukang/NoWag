@@ -1,0 +1,16 @@
+sparse_kwargs:
+  frac_sparse: 0.5
+  sparse_types:
+  - 4:8
+  sparse_criterions:
+  - wanda
+  normalizer_kwargs:
+    norm_order:
+    - 0
+    - 1
+    zero:
+    - false
+    - false
+    p: 2
+  stochastic: False
+  temp: 0.01

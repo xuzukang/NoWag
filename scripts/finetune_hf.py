@@ -21,14 +21,12 @@ import src.finetune as finetune
 import src.utils.utils as utils
 import src.data as data
 import src.utils.model_utils as model_utils
-import src.utils.shard as shard
 import src.utils.quantized_model as quantized_model
 import transformers.models.llama.modeling_llama as llama
 import glob
 import tqdm
 import os
 import yaml
-import lightning as L
 
 try:
     import wandb
@@ -39,6 +37,9 @@ except:
 import transformers
 
 
+
+
+#finetune the model with huggingface trainer
 
 @torch.no_grad()
 def get_target_model_outputs(
@@ -83,7 +84,7 @@ class SimpleDataset(Dataset):
     def __getitem__(self, idx):
         return self.X[idx], self.Y[idx]
     
-def make_loaders(X:torch.FloatTensor, Y:torch.FloatTensor, n_val:int, batch_size:int,
+def make_datasets(X:torch.FloatTensor, Y:torch.FloatTensor, n_val:int, batch_size:int,
                  pin_memory:bool = True)->Tuple[DataLoader, DataLoader]:
     
     print("X", X.shape, "Y", Y.shape)
@@ -93,17 +94,18 @@ def make_loaders(X:torch.FloatTensor, Y:torch.FloatTensor, n_val:int, batch_size
 
     train_ds = SimpleDataset(X[train_idxs], Y[train_idxs])
     valid_ds = SimpleDataset(X[idxs[-n_val:]], Y[idxs[-n_val:]])
+    return train_ds, valid_ds
 
-    train_dl = DataLoader(train_ds,
-                            batch_size=batch_size,
-                            pin_memory=pin_memory,
-                            shuffle=True)
-    val_dl = DataLoader(valid_ds,
-                            batch_size=batch_size,
-                            pin_memory=pin_memory,
-                            shuffle=False)
+    # train_dl = DataLoader(train_ds,
+    #                         batch_size=batch_size,
+    #                         pin_memory=pin_memory,
+    #                         shuffle=True)
+    # val_dl = DataLoader(valid_ds,
+    #                         batch_size=batch_size,
+    #                         pin_memory=pin_memory,
+    #                         shuffle=False)
 
-    return train_dl, val_dl
+    # return train_dl, val_dl
 
 def llama_arg_fn(output, args, kwargs):
     return (output[0], *args[1:]), kwargs
@@ -146,65 +148,27 @@ def save_finetuned_model_as_checkpoints(model:llama.LlamaForCausalLM,
             checkpoints_yaml_new[f"{base_model}/layer_{layer_idx}/{sublayer_name}"] = save_path
         layer_idx += 1
 
-    yaml.safe_dump(checkpoints_yaml_new, open(os.path.join(save_dir, "checkpoints.yaml"), "w")) 
-
-
-class LightningLLM(L.LightningModule):
-
-    def __init__(self, model: llama.LlamaForCausalLM,
-                 position_ids: torch.LongTensor,
-                 attention_mask: torch.FloatTensor,
-                 lr: float = 1e-5,
-                 optimizer_kwargs: dict = {},
-                 lr_scheduler_name: str = "none",
-                lr_scheduler_kwargs: dict = {},
-    ):
+    yaml.safe_dump(checkpoints_yaml_new, open(os.path.join(save_dir, "checkpoints.yaml"), "w"))
+    
+#model wrapper that outputs the kl divergence loss
+class Model_Wrapper(nn.Module):
+    def __init__(self, model:llama.LlamaForCausalLM, position_ids:torch.LongTensor, attention_mask:torch.LongTensor):
         super().__init__()
         self.model = model
         self.position_ids = position_ids
         self.attention_mask = attention_mask
-        self.logger: L.loggers.WandbLogger  
-
-        self.lr = lr
-        self.optimizer_kwargs = optimizer_kwargs
-        self.lr_scheduler_name = lr_scheduler_name
-        self.lr_scheduler_kwargs = lr_scheduler_kwargs
-
-
-    def forward(self, inputs):  
-        #return the inputs
-        logits = self.model(inputs, position_ids=self.position_ids, attention_mask=self.attention_mask)['logits']
-        return logits
     
-
-    def step_(self, batch, mode:str):
-        inputs, targets = batch
-        logits = self(inputs)
-        loss = nn.CrossEntropyLoss()(logits.view(-1, logits.size(-1)), targets.view(-1))
-        self.log({f"{mode}_loss": loss})
+    def forward(self, x:torch.FloatTensor, y:torch.FloatTensor):
+        
+        out = self.model(x, position_ids = self.position_ids, attention_mask = self.attention_mask)
+        
+        logits = out[0][:, :-1].contiguous().softmax(dim=-1).float()
+        
+        #calculate the kl divergence loss
+        loss = torch.nn.functional.kl_div(logits.log(), y, reduction = "batchmean")
+        
         return loss
     
-    def training_step(self, batch, batch_idx):
-        return self.step_(batch, "train")
-
-    def validation_step(self, batch, batch_idx):
-        return self.step_(batch, "val")
-
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, **self.optimizer_kwargs)
-        if self.lr_scheduler_name == "none":
-            return {"optimizer": optimizer}
-        else:
-            scheduler = getattr(torch.optim.lr_scheduler, self.lr_scheduler_name)(optimizer, **self.lr_scheduler_kwargs)
-            return {"optimizer": optimizer, "lr_scheduler": scheduler}
-    
-    #custom save and load function using save_sharded_model_as_checkpoints
-    def on_save_checkpoint(self, checkpoint):
-        print(checkpoint.keys())
-        raise NotImplementedError("on_save_checkpoint not implemented")
-        
-
-
 
 
 
@@ -247,25 +211,6 @@ if __name__ == "__main__":
                         type=int,
                         help="Number of samples to validate on.",
                         default=128)
-    parser.add_argument("--ft_epochs",
-                        type=int,
-                        help="Number of epochs to fine tune for.",
-                        default=5),
-    parser.add_argument("--ft_update_freq",
-                        type=int,
-                        help="Update the model every n batches.",
-                        default=1)
-    parser.add_argument("--ft_batch_size",
-                        type=int,
-                        help="Batch size for fine tuning.",
-                        default=8)
-    parser.add_argument("--ft_lr",
-                        type=float,
-                        help="Learning rate for fine tuning.",
-                        default=1e-5)
-    parser.add_argument("--ft_grad_checkpoint",
-                        action="store_true",
-                        help="Use gradient checkpointing for fine tuning.")
     parser.add_argument("--seed",
                         type=int,
                         help="Seed for fine tuning.",
@@ -276,10 +221,17 @@ if __name__ == "__main__":
     parser.add_argument("--debug",
                         action="store_true",
                         help="Debug mode.")
+    parser.add_argument("--seed",
+                        type=int,
+                        help="Seed for fine tuning.",
+                        default=0)
     args = parser.parse_args()
 
     torch.set_grad_enabled(False)
-    L.seed_everything(args.seed)
+    
+    utils.seed(args.seed)
+    
+    
 
     #change the paths
     args.compressed_model_path = args.compressed_model_path.replace("{base_model}", args.base_model).replace("{run_name}", args.compressed_run_name)
@@ -297,7 +249,7 @@ if __name__ == "__main__":
 
 
     #load and get the original model
-    orig_model = model_utils.get_llama(args.base_model,device_map = "auto")
+    orig_model = model_utils.get_llama(args.base_model,device_map = "auto", dtype = torch.float32)
 
     #get the data
     train_data:list[torch.FloatTensor] = data.get_loaders(args.ft_dataset, nsamples = args.ft_n_train+args.ft_n_val
@@ -320,7 +272,7 @@ if __name__ == "__main__":
     compressed_model, n_bits, n_values = quantized_model.load_model_from_checkpoints(checkpoints,
                                                                    args.base_model,
                                                                    add_bias = True,
-                                                                   device="cpu",
+                                                                   device=None,
                                                                    cache_reconstruct=False,
                                                                    load_checkpoints= not (args.debug and os.path.exists(deug_model_path)))
     
@@ -336,27 +288,46 @@ if __name__ == "__main__":
     print("position_ids", position_ids.shape)
     print("attention_mask", attention_mask.shape)  
 
-    output_layer = {
-        'layer': nn.Sequential(compressed_model.model.norm, compressed_model.lm_head),
-        'fn': get_emb
-    }
 
 
-    trainloader,valloader = make_loaders(emb, target_out, args.ft_n_val, args.ft_batch_size)
+    trainset, valeset = make_datasets(emb, target_out, args.ft_n_val, args.ft_batch_size)
 
+    #get one entry
+    for item in trainset[0]:
+        print("item", item.shape)
+        
+
+    #print the class of the model
+    print(compressed_model)
+    print("type(compressed_model)", type(compressed_model))
     torch.set_grad_enabled(True)
-    model = LightningLLM(compressed_model, position_ids, attention_mask, args.ft_lr)
-    trainer = L.Trainer( logger = None,
-                        accelerator = "gpu",
-                        # devices = 4,
-                        strategy = "fsdp",
-                        precision="bf16-mixed",
-                        gradient_clip_val=1.0,
-                        gradient_clip_algorithm="norm",
-                        accumulate_grad_batches = args.ft_update_freq,
-    )
-    trainer.fit(model, trainloader, valloader)
+    
+    #wrap the model
+    model = Model_Wrapper(compressed_model, position_ids, attention_mask)
 
+    trainer = transformers.Trainer(
+        model=model,
+        args=transformers.TrainingArguments(
+            output_dir=args.finetune_save_path,
+            per_device_train_batch_size=args.ft_batch_size,
+            per_device_eval_batch_size=args.ft_batch_size,
+            num_train_epochs=1,
+            save_strategy="epoch",
+            evaluation_strategy="epoch",
+            logging_strategy="epoch",
+            save_total_limit=1,
+            load_best_model_at_end=True,
+            remove_unused_columns=False,
+            fp16=True,
+            report_to="wandb" if args.use_wandb else "none",
+            disable_tqdm=args.debug,
+            logging_dir=os.path.join(args.finetune_save_path, "logs"),
+        ),
+    )
+    
+    #train the model
+    trainer.train(train_dataset=trainset, eval_dataset=valeset)
+    
                                      
                                      
                                      

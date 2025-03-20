@@ -1,0 +1,19 @@
+sparse_kwargs:
+  frac_sparse: 0.5
+  sparse_types:
+  - unstructured
+  pattern: 
+  - 2
+  - 4
+  sparse_criterions:
+  - wanda
+  normalizer_kwargs:
+    norm_order:
+    - 0
+    - 1
+    zero:
+    - false
+    - false
+    p: 1
+  stochastic: False
+  temp: 0.01

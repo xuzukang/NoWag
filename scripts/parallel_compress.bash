@@ -5,30 +5,32 @@ echo "PID: $$"
 
 CONDA_ENV="NoWAC-VQ"
 
-models=("meta-llama/Llama-2-7b-hf"
+models=(
+        "meta-llama/Llama-2-7b-hf"
         "meta-llama/Llama-2-13b-hf"
         "meta-llama/Llama-2-70b-hf"
         "meta-llama/Meta-Llama-3-8B"
         "meta-llama/Meta-Llama-3-70B"
         )
-bits=(2
-        3
-        4
+bits=(
+    2
+    3
         )
 
 #loop through models
-for model in "${models[@]}"; do
-    for bit in "${bits[@]}"; do
+for bit in "${bits[@]}"; do
+    for model in "${models[@]}"; do
         echo "====================="
         echo "Compressing $model with $bit bits"
         config_file="/data/lliu/huffman/yamls/quantizer" #path to the config file
         # rules for the config file to use, 
 
-        #hard coded skipping for Llama-2 7b 2 and 3 bits
-        if [[ $model == *"Llama-2-7b"* ]] && [[ $bit -lt 4 ]]; then
-            echo "Skipping Llama-2-7b with $bit bits"
-            continue
-        fi
+        # #hard coded skipping for Llama-2 7b 2 and 3 bits
+        # if [[ $model == *"Llama-2-7b"* ]] && [[ $bit -lt 4 ]]; then
+        #     echo "Skipping Llama-2-7b with $bit bits"
+        #     continue
+        # fi
+
 
         #if we are doing 2 bits
         if [[ $bit == 2 ]]; then
@@ -66,13 +68,13 @@ for model in "${models[@]}"; do
             --hessian_path /data/lliu/huffman/models/{model_name}/hessianDiags/seed_0/pajama/128 \
             --self_attn_compression_algorithm "quantize" \
             --mlp_compression_algorithm "quantize" \
-            --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" \
+            --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2"\
             --yaml_path $config_file \
             --ppl_eval"
 
         echo "Running command: $cmd"
         mkdir -p /data/lliu/huffman/logs/compression_logs
-        conda run -n $CONDA_ENV --live-stream $cmd > /data/lliu/huffman/logs/compression_logs/${model//\//_}_compression_${bit}bits.log 2>&1
+        conda run -n $CONDA_ENV --live-stream $cmd #> /data/lliu/huffman/logs/compression_logs/${model//\//_}_compression_${bit}bits.log 2>&1
         # break
         echo "====================="
     done
