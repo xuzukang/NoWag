@@ -10,8 +10,15 @@ import src.utils.compress as compress_utils
 from src.utils.normalizer import Normalizer
 import src.alignment.hessian_general_align as hessian_general_align
 import src.utils.utils as utils
+from typing import Optional, Union
+from dataclasses import dataclass
 
-
+@dataclass
+class PlaceholderOrigWeight:
+    shape: Tuple[int, int]
+    device: Optional[Union[str, torch.device]] = None
+    dtype: Optional[torch.dtype] = None
+      
 class CompressedLinear(nn.Module):
     """Parent class of all compression algorithms for linear layers
     """
@@ -56,6 +63,7 @@ class CompressedLinear(nn.Module):
         self.verbose = verbose
         self.denormalization_method: Literal["otf", "reconstruct", "ignore"] = "reconstruct"
         self.forward_method: Literal["reconstruct", "otf"] = "reconstruct"
+        
     def compress(self, normalizer_kwargs: Optional[dict] = None, normalizer: Optional[Normalizer] = None, **kwargs):
         """compress the weights, this is the main function to be implemented by the child classes"""
         self.compressed = True
@@ -92,10 +100,28 @@ class CompressedLinear(nn.Module):
     def blank_recreate(self, **kwargs):
         """recreates the compressed layer without any compression"""
         raise NotImplementedError
+
     
     def get_n_bits(self) -> int:
         """returns the number of bits needed to store the compressed layer"""
         raise NotImplementedError
+    
+    # ================ Another Initialization Fns =================
+    @classmethod 
+    def blank_init(cls, n_in:int, n_out:int,
+                   add_bias:bool = False,
+                   dtype: Optional[torch.dtype] = None,
+                   device: Optional[Union[str, torch.device]] = None,
+                     **kwargs):
+        
+        """creates a blank layer with the same shape as the original layer"""
+        print("device", device,"dtype", dtype)
+        placeholder_weight = PlaceholderOrigWeight((n_out, n_in), device=device, dtype=dtype)
+        layer = cls(placeholder_weight,add_bias = add_bias)
+        print("kwargs", kwargs)
+        layer.blank_recreate(**kwargs)
+        return layer
+        
     
     # ================= Importance/Logging Fns =================
     def enable_hessian_logging(self, hessian: Optional[torch.FloatTensor] = None,
@@ -312,4 +338,5 @@ class CompressedLinear(nn.Module):
 
     def __str__(self):
         return self.name
+    
 

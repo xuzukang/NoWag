@@ -6,11 +6,11 @@ echo "PID: $$"
 CONDA_ENV="NoWAC-VQ"
 
 models=(
-        "meta-llama/Llama-2-7b-hf"
-        "meta-llama/Llama-2-13b-hf"
-        "meta-llama/Llama-2-70b-hf"
+        # "meta-llama/Llama-2-7b-hf"
+        # "meta-llama/Llama-2-13b-hf"
+        # "meta-llama/Llama-2-70b-hf"
         "meta-llama/Meta-Llama-3-8B"
-        "meta-llama/Meta-Llama-3-70B"
+        # "meta-llama/Meta-Llama-3-70B"
         )
 bits=(
     2

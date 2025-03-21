@@ -173,7 +173,7 @@ class SparseLinear(compression_parent.CompressedLinear):
         if normalizer is not None:
             self.normalizer = normalizer
         else:
-            self.normalizer = normalizer.Normalizer.blank_recreate(self.original_weight, **normalizer_kwargs)
+            self.normalizer = normalizer.Normalizer.blank_recreate(self.original_weight.shape, **normalizer_kwargs)
 
         self.initalize_sparse(sparse_types, frac_sparse, **kwargs)
 

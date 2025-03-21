@@ -163,6 +163,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--base_model", type=str, help = "the base model")
+    parser.add_argument("--quantized_model_path", type=str, 
+                        help = "the path to the quantized model", default=None)
     parser.add_argument("--checkpoint_list_path", type=str, default=None)
     parser.add_argument("--datasets", type=str, nargs="+",
                         choices=["wikitext2", "c4", "ptb"],
@@ -178,16 +180,26 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=4, 
                         help = "batch size for the activations, if not specified, we will perform a binary search to fine the optimal batch size")
     parser.add_argument("--not_log_results", action="store_true")
+    parser.add_argument("--load_quantized", action="store_true")
 
     args = parser.parse_args()
 
     if args.log_wandb:
         wandb.init(project=args.wandb_project, id=args.wandb_id, resume="allow")
 
-    model = get_llama(args.base_model)
-    model.seqlen = args.seqlen
-    model_name = args.base_model
-    model.to("cpu")
+    if args.quantized_model_path:
+        from src.model.llama import LlamaForCausalLM
+        model = LlamaForCausalLM.from_pretrained(args.quantized_model_path)
+        model.to(torch.float16)
+        #get the name of the model
+        model_name = args.base_model
+        model.seqlen = args.seqlen
+        model.to("cpu")
+    else:
+        model = get_llama(args.base_model)
+        model.seqlen = args.seqlen
+        model_name = args.base_model
+        model.to("cpu")
     if args.checkpoint_list_path:
         
         checkpoints = yaml.load(open(args.checkpoint_list_path,"r"), Loader=yaml.FullLoader)

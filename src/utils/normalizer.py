@@ -131,7 +131,7 @@ class Normalizer(nn.Module):
         return normalizer, weight
     
     @staticmethod
-    def blank_recreate(weight,
+    def blank_recreate(weight:torch.FloatTensor,
                        norm_order:List[int] = [0, 1], 
                         zero:List[bool] = [False, False],
                         **kwargs)->Normalizer:
@@ -139,15 +139,15 @@ class Normalizer(nn.Module):
         norms = [None] * len(norm_order)
         zeros = [None] * len(norm_order)
 
-        n_out, n_in = weight.shape
 
         for i,dim in enumerate(norm_order):
             shape = [s for i,s in enumerate(weight.shape) if i != dim]
             if zero[dim]:
-                zeros[i] = torch.zeros(shape).to(weight.device)
-            norms[i] = torch.ones(shape).to(weight.device)
+                zeros[i] = torch.zeros(shape, dtype=weight.dtype, device=weight.device)
+            norms[i] = torch.ones(shape, dtype=weight.dtype, device=weight.device)
         
-        return Normalizer(norms, zeros, norm_order, (n_out, n_in))
+        normalizer =  Normalizer(norms, zeros, norm_order, weight)
+        return normalizer
     
     
     def get_n_bits(self):

@@ -299,6 +299,7 @@ class LinearVQ(compression_parent.CompressedLinear):
         Args:
             denormalize (bool, optional): whether to denormalize the weight matrix. Defaults to True.
         """
+        # print("here")
         weight_subvectors = self.codebook[self.assignments]
         weight = weight_subvectors.reshape(self.out_features, self.padded_in_features)
         weight = weight[:, :self.in_features]
@@ -312,8 +313,9 @@ class LinearVQ(compression_parent.CompressedLinear):
 
         if self.denormalization_method == "otf":
             x = self.normalizer.denormalize_otf_in(x)
-        
-        y = F.linear(x, self.reconstruct_(denormalize=self.denormalization_method == "reconstruct"
+        # print(x.dtype, self.reconstruct_(denormalize=True).dtype)
+        # print("here")
+        y = F.linear(x, self.reconstruct(denormalize=self.denormalization_method == "reconstruct"
                                           ), bias=self.bias)
         
         if self.denormalization_method == "otf":
@@ -333,7 +335,7 @@ class LinearVQ(compression_parent.CompressedLinear):
                         normalizer_kwargs:dict = {},
                         normalizer:normalize.Normalizer = None,
                         **kwargs):
-        
+
         if normalizer is not None:
             self.normalizer = normalizer
         else:
@@ -341,6 +343,7 @@ class LinearVQ(compression_parent.CompressedLinear):
 
         self.codebook = nn.Parameter(torch.zeros((2**(int(n_bits * d)), d), device=self.original_weight.device,
                                     dtype=self.original_weight.dtype))
+        print("codebook shape: ", self.codebook.shape,"device: ", self.codebook.device, "dtype: ", self.codebook.dtype)
         
         if self.in_features % d != 0:
             #we must pad the input
@@ -354,6 +357,8 @@ class LinearVQ(compression_parent.CompressedLinear):
         
         self.register_buffer("assignments", torch.zeros(n_subvectors, dtype=torch.long, device=self.original_weight.device))
         self.compressed = True
+        
+    
     
 
 
