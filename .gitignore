@@ -9,3 +9,4 @@ logs/parallel_compress/*
 tmp/*
 temp/*
 *.log
+output/*

@@ -115,10 +115,9 @@ class CompressedLinear(nn.Module):
                      **kwargs):
         
         """creates a blank layer with the same shape as the original layer"""
-        print("device", device,"dtype", dtype)
+        # print("device", device,"dtype", dtype)
         placeholder_weight = PlaceholderOrigWeight((n_out, n_in), device=device, dtype=dtype)
         layer = cls(placeholder_weight,add_bias = add_bias)
-        print("kwargs", kwargs)
         layer.blank_recreate(**kwargs)
         return layer
         
@@ -225,6 +224,9 @@ class CompressedLinear(nn.Module):
                     ) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the quantized version"""
         if hasattr(self, "cached_reconstruct"):
+            # print("current kwargs", kwargs)
+            # print("reconstruct kwargs", self.reconstruct_kwargs)
+            # raise ValueError("stop here")
             # print("returning cached")
             #check that the kwargs are the same
             if self.reconstruct_kwargs == kwargs:

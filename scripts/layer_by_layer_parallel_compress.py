@@ -100,6 +100,16 @@ else:
     # raise ValueError("stop here")
     args.save_path = os.path.join(args.save_path,  run_name)
     temp_yaml_path = os.path.join(temp_yaml_path, run_name)
+    print("save_path", args.save_path)
+    #if this save path exists
+    if os.path.exists(args.save_path.replace("{model_name}", args.models_to_compress[0])):
+        print("save path already exists")
+        if args.use_already_done:
+            print("using already done")
+        else:
+            print("Warning: save path already exists, using already done")
+            args.use_already_done = True
+    # raise ValueError("stop here")
     
 os.makedirs(temp_yaml_path, exist_ok = True)
 if args.yaml_path is not None:

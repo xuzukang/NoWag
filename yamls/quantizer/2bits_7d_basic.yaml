@@ -5,6 +5,10 @@ quantizer_kwargs:
   n_bits: 2
   n_inits: 1
   n_iters: 100
+  initialize_method: kmeans++
+  initialize_kwargs:
+    deterministic: False
+    multiple_each_time: 1.0
   normalizer_kwargs:
     norm_order:
     - 0

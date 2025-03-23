@@ -343,7 +343,7 @@ class LinearVQ(compression_parent.CompressedLinear):
 
         self.codebook = nn.Parameter(torch.zeros((2**(int(n_bits * d)), d), device=self.original_weight.device,
                                     dtype=self.original_weight.dtype))
-        print("codebook shape: ", self.codebook.shape,"device: ", self.codebook.device, "dtype: ", self.codebook.dtype)
+        # print("codebook shape: ", self.codebook.shape,"device: ", self.codebook.device, "dtype: ", self.codebook.dtype)
         
         if self.in_features % d != 0:
             #we must pad the input

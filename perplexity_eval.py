@@ -189,12 +189,17 @@ if __name__ == "__main__":
 
     if args.quantized_model_path:
         from src.model.llama import LlamaForCausalLM
-        model = LlamaForCausalLM.from_pretrained(args.quantized_model_path)
-        model.to(torch.float16)
+        model = LlamaForCausalLM.from_pretrained(args.quantized_model_path,
+                                                torch_dtype=torch.float16,
+                                                low_cpu_mem_usage=True,
+                                                device_map="cpu",
+                                                attn_implementation="sdpa")
+        utils.recursive_apply(model, "cache_reconstruct", {'denormalize': True})
         #get the name of the model
+        model.to(torch.float16)
         model_name = args.base_model
         model.seqlen = args.seqlen
-        model.to("cpu")
+        # model.to("cpu")
     else:
         model = get_llama(args.base_model)
         model.seqlen = args.seqlen
@@ -209,7 +214,7 @@ if __name__ == "__main__":
                                                         # lambda x: "joint2" if "self_attn" in x else "quantize",
                                                         model,
                                             log_wandb=args.log_wandb,
-                                            device = args.device,
+                                            device = "cpu",
                                             cache_reconstruct = False
         )
         utils.recursive_apply(model, "change_otf_denormalize", {"otf_denormalize": True})

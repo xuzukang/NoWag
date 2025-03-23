@@ -23,7 +23,11 @@ def main():
     add_bias = args.add_bias
 
     orig_config = AutoConfig.from_pretrained(base_model)
-
+    orig_model = OrigLlama.from_pretrained(base_model, config=orig_config,
+                                            torch_dtype="auto",
+                                            low_cpu_mem_usage=True,
+                                            device_map="cpu",
+                                            attn_implementation="sdpa")
 
     checkpoints_dict = yaml.load(open(checkpoints_path, "r"), Loader=yaml.FullLoader)
 
