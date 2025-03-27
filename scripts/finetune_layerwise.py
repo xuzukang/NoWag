@@ -342,6 +342,7 @@ def main(cfg: DictConfig):
                 dev = "cuda",
                 batch_size = cfg.ft_args.batch_size_val,
                 inplace = False,
+                offload_activations=True
             )
             quantized_layer.cpu()
         utils.clean()

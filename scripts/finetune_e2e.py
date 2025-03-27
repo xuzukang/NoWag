@@ -20,50 +20,97 @@ import hydra
 from hydra.utils import get_original_cwd, instantiate
 from omegaconf import DictConfig, ListConfig, OmegaConf
 from torch.utils.data import Dataset
-from typing import Tuple
+from typing import Tuple, List
 import torch.nn as nn
 import wandb
+import shutil
 
 
 
 class SimpleDataset(Dataset):
 
-    def __init__(self, inputs, soft_labels):
-        self.inputs = inputs
-        self.soft_labels = soft_labels
+    def __init__(self, paths:List[str],
+                 load_device:str = "cpu"):
+        self.paths = paths
+        self.load_device = load_device
     
 
     def __len__(self):
-        return len(self.inputs)
+        return len(self.paths)
 
     def __getitem__(self, idx):
-        return {
-            'input_ids': self.inputs[idx],
-            'labels': self.soft_labels[idx],
-        }
+        return torch.load(self.paths[idx], map_location=self.load_device)   
     
-def make_datasets(X:torch.FloatTensor, Y:torch.FloatTensor, n_val:int) -> Tuple[Dataset, Dataset]:
+def make_datasets(paths:List[str], n_val:int) -> Tuple[Dataset, Dataset]:
     
 
     #make the indices
-    idxs = torch.randperm(len(X))
+    idxs = torch.randperm(len(paths))
     train_idxs = idxs[:-n_val]
 
-    train_ds = SimpleDataset(X[train_idxs], Y[train_idxs])
-    valid_ds = SimpleDataset(X[idxs[-n_val:]], Y[idxs[-n_val:]])
+    train_ds = SimpleDataset([p[i] for i in train_idxs])
+    valid_ds = SimpleDataset([p[i] for i in idxs[-n_val:]])
     return train_ds, valid_ds
 
 
 
 @torch.no_grad()
-def calculate_logits(model: llama.LlamaForCausalLM, devset, batch_size):
-    logits = []
-    for i in tqdm.tqdm(range(len(devset) // batch_size), desc = "Calculating logits"):
-        logits.append(
-            model(devset[i * batch_size:(i + 1) *
-                         batch_size].cuda())['logits'].cpu())
-    logits = torch.concat(logits, dim=0)
-    return logits
+def make_dataset(cfg:DictConfig):
+    
+    base_model = cfg.model.base_model
+    seqlen = cfg.model.seqlen #this can be -1, in which case we switch to using the model's full sequence length
+
+    save_dir = os.path.join(cfg.dataset.cache_dir, f"{cfg.dataset.ft_n_train + cfg.dataset.ft_n_val}")
+    print("using save_dir: ", save_dir)
+    if os.path.exists(save_dir) and not cfg.dataset.overwrite:
+        #get every single file in the directory
+        paths = [os.path.join(save_dir, _) for _ in os.listdir(save_dir)]
+        return paths
+    else:
+        #delete and remake the directory
+        if os.path.exists(save_dir):
+            shutil.rmtree(save_dir)
+        os.makedirs(save_dir, exist_ok=True)
+        
+        
+    
+    base_model = OrigLlama.from_pretrained(base_model,
+                                    device_map="auto", torch_dtype=torch.float16)
+    if seqlen <= 0:
+        seqlen = base_model.config.max_position_embeddings
+        print(f"Using sequence length: {seqlen}")
+        
+    #load the overall data, we expect the config to have a dataset section with the name of the dataset
+    dataset_cfg = cfg.dataset
+    overall_data:list[torch.FloatTensor] = data.get_loaders(dataset_cfg.name, 
+                                                            nsamples = dataset_cfg.ft_n_train + dataset_cfg.ft_n_val,
+                                                            model = base_model.config.name_or_path,
+                                                            train_test = "train",
+                                                            seqlen=seqlen)
+    
+    overall_data = torch.stack([_[0][0] for _ in overall_data])
+    #if we are doing hard labels we can just save the data
+    if not cfg.soft_labels:
+        print("not using soft labels")
+        for i, d in enumerate(overall_data):
+            torch.save({"input_ids": d,"labels": d}, os.path.join(save_dir, f"data_{i}.pt"))
+        return [os.path.join(save_dir, f"data_{i}.pt") for i in range(len(overall_data))]
+    
+    
+    idx = 0
+    paths = []
+    for i in tqdm.tqdm(range(len(overall_data) // cfg.dataset.logits_batch_size), desc = "Calculating logits"):
+        logits = base_model(overall_data[i * cfg.dataset.logits_batch_size:(i + 1) *
+                         cfg.dataset.logits_batch_size].cuda())['logits'].cpu()
+        logits = logits[:, :-1].contiguous().to(torch.float32).softmax(dim=-1).float()
+        
+        for j, logit in enumerate(logits):
+            torch.save({"input_ids": overall_data[idx],
+                        "labels": logit},
+                       os.path.join(save_dir, f"data_{idx}.pt"))
+            paths.append(os.path.join(save_dir, f"data_{idx}.pt"))
+            idx += 1
+    return paths
 
 #custom kld loss
 def custom_kld_loss(outputs, labels, num_items_in_batch):
@@ -90,30 +137,7 @@ def main(cfg: DictConfig):
     quantized_model_path = cfg.model.quantized_model_path
     seqlen = cfg.model.seqlen #this can be -1, in which case we switch to using the model's full sequence length
 
-    base_model = OrigLlama.from_pretrained(base_model,
-                                    device_map="auto", torch_dtype=torch.float16)
-    if seqlen <= 0:
-        seqlen = base_model.config.max_position_embeddings
-        print(f"Using sequence length: {seqlen}")
-        
-    #load the overall data, we expect the config to have a dataset section with the name of the dataset
-    dataset_cfg = cfg.dataset
-    overall_data:list[torch.FloatTensor] = data.get_loaders(dataset_cfg.name, 
-                                                            nsamples = dataset_cfg.ft_n_train + dataset_cfg.ft_n_val,
-                                                            model = base_model.config.name_or_path,
-                                                            train_test = "train",
-                                                            seqlen=seqlen)
-    
-
-    overall_data = torch.stack([_[0][0] for _ in overall_data])
-
-    if cfg.soft_labels:
-        overall_out = calculate_logits(base_model,overall_data, cfg.logits_batch_size)
-        print(overall_out)
-
-
-        overall_out = overall_out[:, :-1].contiguous().to(torch.float32).softmax(dim=-1).float()
-        print("overall_out\n",overall_out)
+    paths = make_dataset(cfg)
     del base_model
     utils.clean()
     
@@ -135,15 +159,10 @@ def main(cfg: DictConfig):
         
     print(f"Total number of parameters: {n_params}")
     
-    if cfg.soft_labels:
-        trainset,valset = make_datasets(overall_data,
-                                    overall_out,
-                                    dataset_cfg.ft_n_val)
-    else:
-        trainset,valset = make_datasets(overall_data,
-                                    overall_data,
-                                    dataset_cfg.ft_n_val
-                                    )
+    
+    trainset,valset = make_datasets(paths,
+                                    cfg.dataset.ft_n_val)
+    
     
     print(f"len(trainset): {len(trainset)}, len(valset): {len(valset)}")
     # wandb.init(project="llama-post_quantization_ft", name="llama-2-7b-hf-soft", config=cfg)

@@ -1,13 +1,15 @@
 seed: 0
-logits_batch_size: 8
 output_dir: /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/ft_results/run_38
-lr: 1.0e-5
+lr: 5.0e-5
 soft_labels: True
 
 dataset:
   name: pajama
   ft_n_train: 96
   ft_n_val: 32
+  cache_dir: ./temp/${seed}/${dataset.name}/${soft_labels}
+  overwrite: True
+  logits_batch_size: 8
 
 model:
   base_model: meta-llama/Llama-2-7b-hf
@@ -20,9 +22,9 @@ ft_args:
   _target_: transformers.TrainingArguments
   fp16: True
   gradient_checkpointing: True
-  per_device_train_batch_size: 4
+  per_device_train_batch_size: 1
   per_device_eval_batch_size: 4
-  max_grad_norm: 1.0
+  max_grad_norm: 1e8
   num_train_epochs: 3
   evaluation_strategy: epoch
   save_strategy: epoch
