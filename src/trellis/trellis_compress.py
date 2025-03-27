@@ -1,4 +1,4 @@
- import os
+import os
 import sys
 import math
 import warnings
@@ -73,7 +73,7 @@ class LinearTrellis(compression_parent.CompressedLinear):
         self.td_x = td_x
         self.td_y = td_y
         
-        # Get Hessian diagonal 
+        # Get kmean weights from hessian
         k_mean_weights = self.get_hessianDiag().unsqueeze(0).repeat(self.out_features, 1)  # shape (out_features, in_features)
         if not ignore_norms:
             k_mean_weights *= self.normalizer.denormalize(torch.ones_like(self.original_weight), debias=False) ** 2
