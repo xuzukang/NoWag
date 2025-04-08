@@ -313,7 +313,6 @@ class LinearVQ(compression_parent.CompressedLinear):
 
         if self.denormalization_method == "otf":
             x = self.normalizer.denormalize_otf_in(x)
-        # print(x.dtype, self.reconstruct_(denormalize=True).dtype)
         # print("here")
         y = F.linear(x, self.reconstruct(denormalize=self.denormalization_method == "reconstruct"
                                           ), bias=self.bias)

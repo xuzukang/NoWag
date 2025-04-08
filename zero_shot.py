@@ -3,6 +3,7 @@ from lm_eval import evaluator, tasks
 from src.utils.lm_eval_adaptor import LMEvalAdaptor
 import argparse
 from src.utils.model_utils import find_layers, get_llama, inference_layer
+from src.model.llama import LlamaForCausalLM
 from transformers import AutoTokenizer
 from perplexity_eval import load_model_from_checkpoints
 import random
@@ -10,7 +11,7 @@ import torch
 import yaml
 import os
 import json
-
+from src.utils import utils
 
 def zero_shot(base_model, model, 
               device = "cuda:0",
@@ -44,7 +45,10 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--base_model", type=str, help = "the hf base model to use",
                       default = "meta-llama/Llama-2-7b-hf")
-  parser.add_argument("--quantized_weight_yaml", type=str, help = "the path to the quantized weight")
+  parser.add_argument("--quantized_weight_yaml", type=str, help = "the path to the quantized weight",
+                      default = None)
+  parser.add_argument("--quantized_weight_hf", type=str, help = "the path to the quantized weight",
+                      default = None)
   parser.add_argument("--seed", type=int, default=0)
   parser.add_argument("--device", type=str, help = "the device to run the compression on", default = "cuda:0")
   parser.add_argument('--batch_size', type=int, default=1, help='batch size')
@@ -71,77 +75,76 @@ if __name__ == "__main__":
   random.seed(args.seed)
   torch.random.manual_seed(args.seed)
 
-  model = get_llama(args.base_model,
-                    device_map="auto")
+  # model = get_llama(args.base_model,
+  #                   device_map="auto",
+  #                   dtype=torch.float16)
   # model = model.to(args.device)
 
   if args.quantized_weight_yaml is not None:
+    model = get_llama(args.base_model,
+                    device_map="balanced",
+                    dtype=torch.float16)
     checkpoints_paths = yaml.load(open(args.quantized_weight_yaml, "r"), Loader=yaml.FullLoader)
-    model, _, _ = load_model_from_checkpoints(checkpoints = checkpoints_paths,
+    
+    
+    model, n_bits, n_params = load_model_from_checkpoints(checkpoints = checkpoints_paths,
                                         base_model = args.base_model,
                                         model = model,
                                         device = None,
                                         cache_reconstruct=True)
+    print(f"Loaded model with {n_bits} bits and {n_params} parameters")
+  elif args.quantized_weight_hf is not None:
+    
+    model = LlamaForCausalLM.from_pretrained(args.quantized_weight_hf,
+                                      torch_dtype=torch.float16,
+                                      low_cpu_mem_usage=True,
+                                      attn_implementation='sdpa',
+                                      device_map = "auto")
+    
+    utils.recursive_apply(model, "cache_reconstruct", {'denormalize': True,
+                                                       'offload':True})
+  else:
+    print("no compressed model was provided")
+    model = get_llama(args.base_model,
+                    device_map="auto",
+                    dtype=torch.float16)
+    
+    
     
   results = zero_shot(args.base_model, model,
                       device=args.device,
                       batch_size = args.batch_size,
                       tasks = args.tasks,
                       num_fewshot = args.num_fewshot)
-  
-# tokenizer = AutoTokenizer.from_pretrained(args.base_model)
-# tokenizer.pad_token = tokenizer.eos_token
 
-
-# lm_eval_model = LMEvalAdaptor(
-#   args.base_model,
-#   model, tokenizer, batch_size=args.batch_size)
-                              
-
-# results = evaluator.simple_evaluate(
-#     model=lm_eval_model,
-#     tasks=args.tasks,
-#     batch_size=args.batch_size,
-#     no_cache=True,
-#     num_fewshot=args.num_fewshot,
-# )
-
-
-# #still have not implemented the loading a quantized weight
-
-# # lm_obj = Your_LM(model=my_model, batch_size=16)
-# lm_obj = HFLM(pretrained = model)
-
-# task_manager = lm_eval.tasks.TaskManager()
-
-# # Setting `task_manager` to the one above is optional and should generally be done
-# # if you want to include tasks from paths other than ones in `lm_eval/tasks`.
-# # `simple_evaluate` will instantiate its own task_manager if it is set to None here.
-# results = lm_eval.simple_evaluate( # call simple_evaluate
-#     model=lm_obj,
-#     tasks=args.zero_shot_tasks,
-#     num_fewshot=0,
-#     task_manager=task_manager
-# )
   if args.save:
     if args.output_path is None:
-      args.output_path = os.path.dirname(args.quantized_weight_yaml) + "/results.json"
+      if args.quantized_weight_yaml is not None:
+        args.output_path = os.path.dirname(args.quantized_weight_yaml) + "/eval_results.yaml"
+      elif args.quantized_weight_hf is not None:
+        args.output_path = os.path.dirname(args.quantized_weight_hf.replace("compressed_hf","compressed")) + "/eval_results.yaml"
+      else:
+        args.output_path = "eval_results.yaml"
+    print("Saving results to", args.output_path)
     os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
-    # results["config"]["model"] = args.base_model + " " + args.quantized_weight_yaml
+    if os.path.exists(args.output_path):
+      existing_results = yaml.load(open(args.output_path, "r"), Loader=yaml.FullLoader)
+    else:
+      existing_results = {}
+      
+    zero_shot_results = {}
+    avg = 0
+    for task in results:
+      print("task:",results[task]["acc"])
+      zero_shot_results[task] = results[task]["acc"]
+      avg += results[task]["acc"]
+    zero_shot_results["avg"] = avg/len(results)
+    existing_results["zero_shot"] = zero_shot_results
+    # existing_results["bpv"] = n_bits/n_params
+    # existing_results["n_params"] = n_params
+    # existing_results["n_bits"] = n_bits
     with open(args.output_path, "w") as f:
-      json.dump(results, f, indent=2)
+      yaml.dump(existing_results, f)
 
-
-  avg = 0
-  for task in results:
-    print(results[task], end = " & ")
-    avg += results[task]["acc"]
-  print(avg/len(results))
-# if args.output_path is not None:
-#         os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
-#         # otherwise cannot save
-#         results["config"]["model"] = args.hf_path
-#         with open(args.output_path, "w") as f:
-#             json.dump(results, f, indent=2)
-
-# print(evaluator.make_table(results))
+      
+      

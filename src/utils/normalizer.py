@@ -147,7 +147,7 @@ class Normalizer(nn.Module):
                 zeros[i] = torch.zeros(shape, dtype=weight.dtype, device=weight.device)
             norms[i] = torch.ones(shape, dtype=weight.dtype, device=weight.device)
         
-        normalizer =  Normalizer(norms, zeros, norm_order, weight)
+        normalizer =  Normalizer(norms, zeros, norm_order, weight.shape)
         return normalizer
     
     

@@ -83,12 +83,12 @@
 
 
 python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \
-            --models_to_compress "meta-llama/Llama-2-70b-hf" --seqlens 4096 \
+            --models_to_compress "meta-llama/Llama-2-7b-hf" --seqlens 4096 \
             --hessian_path /data/lliu/huffman/models/{model_name}/hessianDiags/seed_0/pajama/128 \
             --self_attn_compression_algorithm "quantize" \
             --mlp_compression_algorithm "quantize" \
-            --devices "cuda:7" "cuda:6" "cuda:5" "cuda:4" "cuda:3" "cuda:2"\
-            --yaml_path "/data/lliu/huffman/yamls/quantizer/2bits_7d_basic.yaml" \
+            --devices "cuda:5" "cuda:4" "cuda:3" "cuda:2"\
+            --yaml_path "/data/lliu/huffman/yamls/quantizer/2bits_4d_ablation.yaml" \
             --ppl_eval
 
 # python -u /data/lliu/huffman/scripts/layer_by_layer_parallel_compress.py \

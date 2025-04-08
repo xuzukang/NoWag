@@ -1,7 +1,10 @@
 sparse_kwargs:
   frac_sparse: 0.5
   sparse_types:
-  - 4:8
+  - unstructured
+  pattern: 
+  - 4
+  - 8
   sparse_criterions:
   - wanda
   normalizer_kwargs:

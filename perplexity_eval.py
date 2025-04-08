@@ -157,6 +157,56 @@ def llama_eval(model, testenc, dev, dataset: str, log_wandb: bool = False,
     return ppl.item()
 
 
+@torch.no_grad()
+def llama_eval2(model, testenc, dataset: str, log_wandb: bool = False,
+               base_model: str = "llama",
+               results_log_path: str = None,
+               disable_tqdm: bool = False) -> float:
+    print("Evaluating ...")
+
+    testenc = testenc.input_ids
+    nsamples = testenc.numel() // model.seqlen
+    nlls = []
+    for i in tqdm.tqdm(range(nsamples)):
+        batch = testenc[:, (i * model.seqlen) : ((i + 1) * model.seqlen)].cuda()
+        outs = model(batch)
+        lm_logits = outs["logits"]
+        shift_logits = lm_logits[:, :-1, :].contiguous()
+        shift_labels = testenc[:, (i * model.seqlen) : ((i + 1) * model.seqlen)][:, 1:].cuda()
+        # print(shift_labels)
+        # raise Exception("stop")
+        loss_fct = nn.CrossEntropyLoss()
+        loss = loss_fct(
+            shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1)
+        )
+        # print("loss", loss)
+        neg_log_likelihood = loss.float() * model.seqlen
+        nlls.append(neg_log_likelihood)
+    ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
+    print(f"Perplexity: {ppl.item():3f}")
+    if log_wandb:
+        print({f"/perplexity/{base_model}/{dataset}": ppl.item()})
+        wandb.log({f"/perplexity/{base_model}/{dataset}": ppl.item()})
+    if results_log_path is not None:
+        #assume that it is a yaml file
+        #if it exits
+        if os.path.exists(results_log_path):
+            results = yaml.load(open(results_log_path, "r"), Loader = yaml.FullLoader)
+        else:
+            results = {}
+        
+        #if we don't have a ppl key, we create it
+        if "ppl" not in results:
+            results["ppl"] = {}
+        results["ppl"][dataset] = ppl.item()
+        
+        with open(results_log_path, "w") as f:
+            yaml.dump(results, f)
+        
+
+    return ppl.item()
+
+
 if __name__ == "__main__":
     import argparse
 

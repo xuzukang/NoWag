@@ -96,7 +96,9 @@ def load_layer_from_checkpoint(
         if not hasattr(module, "weight"):
             module.weight = module.reconstruct()
         
-        if "LinearVQ" in compression_type:
+        print(compression_type)
+        if "LinearVQ" or "quantize" in compression_type:
+            print("here")
             new_layer = qc.LinearVQ(
                 module.weight, module.bias, add_bias
             )
@@ -109,12 +111,24 @@ def load_layer_from_checkpoint(
             new_layer.clean()
         
         if load_checkpoints:
+            
             try:
-                new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device) if device is not None else original_device
-                                                ), strict=False)
+                state_dict = torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device) if device is not None else original_device
+                                                    )
             except RuntimeError:
-                new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False
-                                                ), strict=False)
+                state_dict = torch.load(checkpoint_path, weights_only=False
+                                                )
+                
+            if "quantize" in compression_type:
+                state_dict = {s.replace("quantizer.",""):v for s,v in state_dict.items() if "reference" not in s}
+                #rename "assignments" to "codes"
+                state_dict = {s.replace("codes","assignments"):v for s,v in state_dict.items()}
+                
+                # state_dict["normalizer.original_shape"] = torch.tensor([new_layer.out_features, new_layer.in_features], dtype=torch.int32)
+                # print(state_dict["normalizer.norms.0"])
+                state_dict["normalizer.norms.0"] = state_dict["normalizer.norms.0"][:new_layer.in_features]
+                
+            new_layer.load_state_dict(state_dict, strict=True)
                 
             if cache_reconstruct:
                 new_layer.cache_reconstruct()

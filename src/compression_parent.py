@@ -236,11 +236,19 @@ class CompressedLinear(nn.Module):
             return self.reconstruct(**kwargs)
         return self.reconstruct_(**kwargs)
 
-    def cache_reconstruct(self, **kwargs):
+    def cache_reconstruct(self, offload:bool = False,**kwargs):
         # print("caching")
         self.register_buffer("cached_reconstruct", self.reconstruct_(**kwargs))
         self.reconstruct_kwargs = kwargs
-        
+        #if we offload, then we offload everything besides the cached reconstruct and bias
+        if offload:
+            original_device = self.cached_reconstruct.device
+            self.to("cpu")
+            self.cached_reconstruct = self.cached_reconstruct.to(original_device)
+            if self.bias is not None:
+                self.bias = nn.Parameter(self.bias.data.detach().clone().to(original_device))
+                
+    
     def delete_cache_reconstruct(self):
         del self.cached_reconstruct
         

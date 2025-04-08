@@ -14,6 +14,7 @@ import torch.nn as nn
 import tqdm
 import torch
 import gc
+import numpy as np
 
 @torch.no_grad()
 def sparse_layer(
@@ -21,8 +22,6 @@ def sparse_layer(
                             hessian_path:str,
                             sparse_kwargs:dict,
                             clean:bool = True,
-                            device:str = "cpu",
-                            device_store:str = "cpu",
                             cache_reconstruct:bool = False):
     
     sublayer_names = [
@@ -40,8 +39,8 @@ def sparse_layer(
 
         parent_module = getattr(layer, name.split(".")[0])
         module = getattr(parent_module, name.split(".")[1])
-        original_device = module.weight.device
-        module.to(device)
+        
+        device = next(module.parameters()).device
         original_dtype = module.weight.dtype
         module.to(torch.float32)
 
@@ -65,18 +64,6 @@ def sparse_layer(
             
 
         new_layer.compress(**sparse_kwargs)
-        if hasattr(new_layer, "hessian"):
-            del new_layer.hessian
-        if hasattr(new_layer, "hessianDiag"):
-            del new_layer.hessianDiag
-        # del new_layer.original_weight
-        if clean:
-            new_layer.clean()
-
-        if cache_reconstruct:
-            new_layer.cache_reconstruct()
-        else:
-            raise ValueError("cache_reconstruct must be True")
 
         # new_layer(torch.randn(1, new_layer.in_features).to(device))
         # print(new_layer.reconstruct())
@@ -84,7 +71,7 @@ def sparse_layer(
         # raise ValueError("stop here")
         module.weight.data = new_layer.reconstruct()
 
-        module.to(original_device).to(original_dtype)
+        module.to(original_dtype)
         setattr(parent_module, name.split(".")[1], module)
         del new_layer
         # getattr(parent_module, name.split(".")[1]).to(device_store)
@@ -111,8 +98,6 @@ def sparse_model(model,
                  hessian_path:str, 
                  sparse_kwargs:dict, 
                  clean:bool = True, 
-                 device:str = "cpu", 
-                 device_store:str = "cpu", 
                  cache_reconstruct:bool = False):
     
     layers = model.model.layers
@@ -124,8 +109,6 @@ def sparse_model(model,
             hessian_path = f"{hessian_path}/layer_{i}" if hessian_path != "None" else "None",
             sparse_kwargs = sparse_kwargs,
             clean = clean,
-            device = device,
-            device_store = device_store,
             cache_reconstruct = cache_reconstruct
         )
         layers[i] = layer
@@ -155,103 +138,91 @@ if __name__ == "__main__":
     parser.add_argument("--ppl_datasets", type=str, nargs="+",
                         choices=["wikitext2", "c4", "ptb"],
                         help="The datasets to evaluate on.",
-                        default=["wikitext2"])
+                        default=["wikitext2","c4"])
     parser.add_argument("--zero_shot_tasks", type=str, nargs="+",
                         # choices=["boolq","rte","hellaswag","winogrande", "arc_easy", "arc_challenge","openbookqa"],
                         help="The zero shot tasks to evaluate on.",
-                        default=["boolq","rte","hellaswag","winogrande", "arc_easy", "arc_challenge","openbookqa"])
+                        default=["winogrande", "rte", "piqa", "arc_easy", "arc_challenge"])
     parser.add_argument("--log_wandb", action="store_true")
     parser.add_argument("--wandb_project", type=str, default="llama")
     parser.add_argument("--wandb_id", type=str, default=None,
                         help = "the wandb id so we can resume the run to link it with the compression run")
-    parser.add_argument("--device", type=str, default="cuda:0")
     parser.add_argument("--seqlen", type=int, default=-1)
     parser.add_argument("--offload_activations", action="store_true")
     parser.add_argument("--batch_size", type=int, default=4, 
                         help = "batch size for the activations, if not specified, we will perform a binary search to fine the optimal batch size")
     parser.add_argument("--save_path", type=str, default = None)
     parser.add_argument("--save_model", action="store_true")
-    parser.add_argument("--save_and_load_model", action="store_true")
-    parser.add_argument("--save_and_load_temp_path", type=str, default = "temp/temp_model")
 
     args = parser.parse_args()
 
     if args.log_wandb:
         wandb.init(project=args.wandb_project, id=args.wandb_id, resume="allow")
 
-    model = ppl_eval.get_llama(args.base_model)
+    model = ppl_eval.get_llama(args.base_model,
+                               device_map = "balanced",
+                               dtype = torch.float16)
     args.seqlen = args.seqlen if args.seqlen != -1 else model.config.max_position_embeddings
     model.seqlen = args.seqlen
     print("seqlen", model.seqlen)
     model_name = args.base_model
-
-    model = model.to("cpu")
     # print(checkpoints)
-    model = sparse_model(model,
-                            hessian_path = args.hessian_dir.replace("{model_name}", model_name),
-                            sparse_kwargs = yaml.load(open(args.sparse_kwargs_path, "r"), Loader=yaml.FullLoader)["sparse_kwargs"],
-                                        device = args.device,
-                                        device_store = "cpu",
-                                        cache_reconstruct = True
-    )
+    if args.sparse_kwargs_path is not None:
+        model = sparse_model(model,
+                                hessian_path = args.hessian_dir.replace("{model_name}", model_name),
+                                sparse_kwargs = yaml.load(open(args.sparse_kwargs_path, "r"), Loader=yaml.FullLoader)["sparse_kwargs"],
+        )
+    else:
+        print("Warning: no sparse kwargs path provided, skipping sparsification and evaluating the model as is.")
 
     model.seqlen = args.seqlen
     model.eval()
-    #offload the model to cpu
-    model = model.to("cpu")
 
-    results = {}
+    results = {"ppl":{},
+               "zero_shot":{}}
     for dataset in args.ppl_datasets:
         print("Evaluating:", dataset)
         testloader = ppl_eval.data.get_loaders(
             dataset, nsamples = 0, seqlen = model.seqlen, model = model_name,
             train_test = "test")
         
-        ppl = ppl_eval.llama_eval(model, testloader, args.device, dataset, args.log_wandb,
-                     args.offload_activations, args.batch_size,
+        ppl = ppl_eval.llama_eval2(model, testloader, dataset, args.log_wandb,
                      base_model = args.base_model)
+        print(f"{dataset} ppl:", ppl)
         
-        results[dataset] = ppl
-
-    if args.save_and_load_model:
-        #save the model to a temp file
-        #count the number of models in the temp folder
-        # n_models = len(os.listdir("temp/temp_model"))
-        # temp_path = "temp/temp_model/model_" + str(n_models)
-        model.save_pretrained(args.save_and_load_temp_path)
-        #load the model from the temp file
-        model = ppl_eval.get_llama(args.base_model, model_path = args.save_and_load_temp_path,
-                                   device_map = "auto")
-        model.seqlen = args.seqlen
-        model.eval()
+        results["ppl"][dataset] = ppl
 
 
     if "None" not in args.zero_shot_tasks:
         import zero_shot as zs
-        results["zero_shot"] = zs.zero_shot(args.base_model, model, device = args.device,
+        zero_shot_results = zs.zero_shot(args.base_model, model,
                                             tasks = args.zero_shot_tasks)
         
         #parse the results
         print("results to add to a table:")
         avg_acc = 0
         for task in args.zero_shot_tasks:
-            print(round(results[task]["acc"] * 100,2), end = " & ")
-            avg_acc += results[task]["acc"]
+            print(task, zero_shot_results[task]["acc"])
+            acc = zero_shot_results[task]["acc"]
+            if not isinstance(acc, np.float64):
+                print("acc is not a float, converting to float")
+                acc = acc.item()
+            avg_acc += acc
+            results["zero_shot"][task] = acc
         print()
+        results["zero_shot"]["avg_acc"] = avg_acc / len(args.zero_shot_tasks)
         print("avg acc:", round(avg_acc / len(args.zero_shot_tasks) * 100,2))
         
-
+    print(results)
     if args.save_path is not None:
-        save_path = args.save_path.replace("{model_name}", model_name)
-        os.makedirs(save_path, exist_ok=True)
-
+        os.makedirs(args.save_path, exist_ok=True)
+        yaml.dump(results, open(os.path.join(args.save_path, "results.yaml"), "w"))
         
-        with open(os.path.join(save_path, "results.yaml"), "w") as f:
-            yaml.dump(results, f)
-
         if args.save_model:
-            #just use the hf save function
-            model.save_pretrained(save_path)
+            model.save_pretrained(os.path.join(args.save_path, "model"))
+            
+    
+        
     # os.system("rm -rf temp/temp_model")
 
 
