@@ -1,37 +1,7 @@
-# To-Do List
-- [ ] CUDA to for VQ (inesh)
-- [ ] Trellis Quantization (inesh)
-- [ ] Finetuning (lawrence)
-- [x] Sequence Compression for Sparse (lawrence) DOESNT FUCKING WORK
-- [ ] Replicate and Evaluate Wanda and SparseGPT on C4 and for Llama 3 70B etc
-- [ ] Replicate QuIP# with no fine tuning and maybe VPTQ without any finetuning, and for Llama 3 70B
-- [ ] E8P VQ (lawrence)
-## [x] Refactoring
-- [x] Make a parent class for all compression algorithms
-- [x] Move Sparse and Quantization to their own files
-- [x] Fix the layer by layer code (fixed for quantization only)
-- [x] Fix the Sparse code
-- [x] Make a joint class that works
-
-## [ ] Zero-shot Compression
-- [x] Low Rank to work
-- [x] Structured FFN to work
-- [ ] Replicate LoRAP results
-- [x] non-determnistic pruning to work (does not work)
-- [x] Convert hessian generation to importance generation (diagonal only)
-- [x] 70B model 7d quantization
-    - [ ] talk to GT about splitting up the weights (may not be necessary)
-- [ ] Trellis Quantization
-- [ ] Dynamic Allocation
-
-
-## Fine-tuning
-- [ ] Get finetuning script to work
-- [ ] LoRA finetuning for 
-- [ ] Pruned finetuning 
-
-## Other Models
-- [ ] Compress Deepseek
-- [ ] Llama 3.1
-- [ ] Mistral?
+# cleanup list
+- [ ] move perplexity and zero shot to their own files
+- [x] rewrite the parallel compress
+- [ ] add hydra to the sparse compress
+- [x] add hydra to the quantize compress
+- [ ] 
 

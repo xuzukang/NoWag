@@ -47,6 +47,7 @@ def weighted_min_distance(data, centroids, weights):
 @torch.no_grad()
 def K_means_pp_init(data:torch.FloatTensor, n_clusters:int, weights:torch.FloatTensor = None,
                     deterministic:bool = False, multiple_each_time:float = 1.0,
+                    verbose:bool = False,
                     )->torch.FloatTensor:
     """K-means ++ initialization for centroids. with some changes,
     to speed up initilization, for each centrioid, we only select a fraction of the data to select the next centroid.
@@ -57,7 +58,7 @@ def K_means_pp_init(data:torch.FloatTensor, n_clusters:int, weights:torch.FloatT
     centriods[0] = data[torch.randint(0, data.shape[0], (1,))]
     
     #for each centroid
-    for i in tqdm.tqdm(range(1, n_clusters), desc="K-means++ Initialization", disable=False):
+    for i in tqdm.tqdm(range(1, n_clusters), desc="K-means++ Initialization", disable=not verbose):
         
         idxs_use = torch.randint(0, data.shape[0], (int(n_clusters * multiple_each_time),))
         data_use = data[idxs_use]
@@ -214,9 +215,9 @@ class LinearVQ(compression_parent.CompressedLinear):
         #padding, check if we need to pad
         if self.in_features % d != 0:
             #we must pad the input
-            print("Padding input to make it divisible by d")
+            # print("Padding input to make it divisible by d")
             pad_size = d - self.in_features % d
-            print("Pad size: ", pad_size)
+            # print("Pad size: ", pad_size)
             normalized_weight_use = F.pad(normalized_weight_use, (0, pad_size), value = torch.mean(normalized_weight_use).item())
             k_mean_weights = F.pad(k_mean_weights, (0, pad_size), value = 0)
             self.padded_in_features = normalized_weight_use.shape[1]
@@ -227,7 +228,6 @@ class LinearVQ(compression_parent.CompressedLinear):
         assert d*n_bits == int(d*n_bits), "d*n_bits must be an integer"
 
         n_centriods = 2**(int(n_bits * d))
-        print("Number of centriods: ", n_centriods)
         weight_subvectors = normalized_weight_use.reshape(-1, d)
 
         best_loss = float('inf')
@@ -239,8 +239,9 @@ class LinearVQ(compression_parent.CompressedLinear):
         update_time = []
         for i in tqdm.tqdm(range(n_inits), desc="N Initilizations", disable=not self.verbose):
             if initialize_method == "kmeans++":
-                tqdm.tqdm.write("Using kmeans++ initialization")
-                codebook = K_means_pp_init(weight_subvectors, n_centriods, k_mean_weights, **initialize_kwargs)
+                # tqdm.tqdm.write("Using kmeans++ initialization")
+                codebook = K_means_pp_init(weight_subvectors, n_centriods, k_mean_weights, 
+                                           verbose = self.verbose, **initialize_kwargs)
             elif initialize_method == "random":
                 #initialize the codebook by randomly selecting n_centriods vectors from the data set
                 codebook = weight_subvectors[torch.from_numpy(

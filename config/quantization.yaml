@@ -1,0 +1,44 @@
+base_model: meta-llama/Llama-2-7b-hf
+seqlen: -1 # -1 means native seqlen
+
+#paths to the various files
+weight_path: ./models/${base_model}/original_weights
+hessianDiag_path: ./models/${base_model}/hessianDiags/seed_0/pajama/128
+save_path: ./models/${base_model}/compressed/test_compress
+temp_path: ./models/${base_model}/temp/test_compress
+
+seed: 0
+add_bias: False
+
+#compression parameters
+compression_kwargs:
+  d: 6
+  ignore_norms: true
+  n_bits: 2
+  n_inits: 1
+  n_iters: 100
+  initialize_method: kmeans++
+  initialize_kwargs:
+    deterministic: False
+    multiple_each_time: 1.0
+  normalizer_kwargs:
+    norm_order:
+    - 0
+    - 1
+    zero:
+    - false
+    - false
+    p: 2
+
+
+#eval stuff
+eval:
+  ppl_dataset: 
+  - wikitext2
+  - c4
+  zero_shot_tasks:
+  - winogrande
+  - piqa
+  - rte
+  - arc_easy
+  - arc_challenge

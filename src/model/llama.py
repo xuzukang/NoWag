@@ -196,7 +196,7 @@ def CreateCompressedLayerHelper(n_in, n_out, config):
         layer = LinearVQ.blank_init(n_in, n_out,
                                     add_bias=compress_config.get("add_bias", False),
                                     dtype=config.torch_dtype,
-                                    **compression_kwargs["quantizer_kwargs"])
+                                    **compression_kwargs)
     else:
         raise NotImplementedError(f"Compression type {compression_type} not supported")
 

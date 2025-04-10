@@ -83,11 +83,19 @@ def intialize_wandb(args, config: dict = None):
     wandb.init(project=project_name, name=run_name, id=run_id,
                config = config, resume = "allow")
     
-def seed(seed):
+def seed(seed, seed_all:bool=False):
     torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
+    if seed_all:
+        torch.cuda.manual_seed_all(seed)
+    else:
+        torch.cuda.manual_seed(seed)
     np.random.seed(seed)    
     random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    # torch.set_deterministic(True)
+
+
                
 def clean():
     gc.collect()
@@ -110,6 +118,15 @@ def find_run_num(save_path:str)->str:
     """counts the number of runs in a directory and returns 'run_x' where x is the next run number"""
     n_prev_runs = len(glob.glob(os.path.join(save_path, "run_*")))
     return f"run_{n_prev_runs}"
+
+#from https://stackoverflow.com/questions/579310/formatting-long-numbers-as-strings
+def human_format(num):
+    num = float('{:.3g}'.format(num))
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000.0
+    return '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
 
 if __name__ == "__main__":
 
