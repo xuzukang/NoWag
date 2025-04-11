@@ -13,16 +13,16 @@ from src.utils.normalizer import Normalizer
 
 
 class JointLinear(CompressedLinear):
-    """Jointly compresses the weight of a linear layer with multiple compression modules
-    """
+    """Jointly compresses the weight of a linear layer with multiple compression modules"""
+
     name = "JointLinear"
 
-    def compress(self,
-                 compression_kwargs: dict[str,dict],
-                 shared_normalizer: bool = False,
-                 normalizer_kwargs: dict = {},
+    def compress(
+        self,
+        compression_kwargs: dict[str, dict],
+        shared_normalizer: bool = False,
+        normalizer_kwargs: dict = {},
     ):
-        
         """
         Compress the model with multiple compression modules
         Args:
@@ -33,7 +33,7 @@ class JointLinear(CompressedLinear):
         weight = self.weight
         if shared_normalizer:
             normalizer, _ = Normalizer.normalize_init(weight, **normalizer_kwargs)
-            self.normalizer_bits = normalizer.get_n_bits()  
+            self.normalizer_bits = normalizer.get_n_bits()
         else:
             normalizer = None
             self.normalizer_bits = 0
@@ -46,10 +46,10 @@ class JointLinear(CompressedLinear):
                 new_module = SparseLinear(weight, None, False)
             else:
                 raise ValueError(f"Unknown compression module {module_name}")
-            new_module.compress(normalizer = normalizer, **kwargs)
+            new_module.compress(normalizer=normalizer, **kwargs)
             modules.append(new_module)
             weight = weight - new_module.reconstruct()
-        
+
         self.modules = nn.ModuleList(modules)
 
     def _no_checkpoint_forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -63,11 +63,11 @@ class JointLinear(CompressedLinear):
         y = self.modules[0](x)
         for module in self.modules[1:]:
             y += module(x)
-        
+
         if self.bias is not None:
             y += self.bias
         return y
-    
+
     def reconstruct_(self, **kwargs):
         """
         Reconstruct the compressed weight
@@ -77,9 +77,12 @@ class JointLinear(CompressedLinear):
             weight += module.reconstruct()
         return weight
 
-    def blank_recreate(self, compression_kwargs: dict[str,dict],
-                 shared_normalizer: bool = False,
-                 normalizer_kwargs: dict = {}):
+    def blank_recreate(
+        self,
+        compression_kwargs: dict[str, dict],
+        shared_normalizer: bool = False,
+        normalizer_kwargs: dict = {},
+    ):
         """recreates the compressed model with that of the same structure as the original model
         allows for loading of the model from a checkpoint"""
         if shared_normalizer:
@@ -88,7 +91,6 @@ class JointLinear(CompressedLinear):
         else:
             normalizer = None
             self.normalizer_bits = 0
-
 
         weight = self.original_weight
         modules = []
@@ -101,7 +103,7 @@ class JointLinear(CompressedLinear):
                 new_module = SparseLinear(weight, None, False)
             else:
                 raise ValueError(f"Unknown compression module {module_name}")
-            new_module.blank_recreate(normalizer = normalizer, **kwargs)
+            new_module.blank_recreate(normalizer=normalizer, **kwargs)
             modules.append(new_module)
             weight = weight - new_module.reconstruct()
         self.modules = nn.ModuleList(modules)
@@ -116,10 +118,7 @@ class JointLinear(CompressedLinear):
     def change_denormalization_method(self, new_method):
         for module in self.modules:
             module.change_denormalization_method(new_method)
-        
+
     def change_forward_method(self, new_method):
         for module in self.modules:
             module.change_forward_method(new_method)
-        
-
-    

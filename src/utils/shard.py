@@ -1,5 +1,5 @@
-"""Simple sharded model from QIUP # caoebook
-"""
+"""Simple sharded model from QIUP # caoebook"""
+
 # import glog
 import torch
 from torch import nn
@@ -25,15 +25,16 @@ def get_graph_wrapper(cls, device=0):
                     s = torch.cuda.Stream(device=self.graph_device)
                     s.wait_stream(torch.cuda.current_stream())
                     with torch.cuda.stream(s):
-                        super(GraphWrapper,
-                              self).forward(*self.static_args,
-                                            **self.static_kwargs)
+                        super(GraphWrapper, self).forward(
+                            *self.static_args, **self.static_kwargs
+                        )
                     torch.cuda.current_stream().wait_stream(s)
 
                     self.graph = torch.cuda.CUDAGraph()
                     with torch.cuda.graph(self.graph, stream=s):
                         self.static_output = super(GraphWrapper, self).forward(
-                            *self.static_args, **self.static_kwargs)
+                            *self.static_args, **self.static_kwargs
+                        )
 
                     self.built_graph = True
                     print("Built CUDA graph of model.")
@@ -67,8 +68,8 @@ def convert_args(args, kwargs, device, dtype):
     dev_args = []
     for i in range(len(args)):
         dev_args.append(
-            convert_tensor(args[i]) if isinstance(args[i], torch.Tensor
-                                                  ) else args[i])
+            convert_tensor(args[i]) if isinstance(args[i], torch.Tensor) else args[i]
+        )
     for i in kwargs:
         if isinstance(kwargs[i], torch.Tensor):
             kwargs[i] = convert_tensor(kwargs[i])
@@ -93,20 +94,16 @@ class Shard(nn.Module):
 
 class ShardTransformer(nn.Module):
 
-    def __init__(self,
-                 shards,
-                 output_layer,
-                 grad_ckpt,
-                 train_mode,
-                 to_float=True):
+    def __init__(self, shards, output_layer, grad_ckpt, train_mode, to_float=True):
         super().__init__()
 
         # shards is list of [(device, arg_fn, modulelist)]
 
-        self.shards = nn.ModuleList([_['shard'] for _ in shards])
-        self.devices = [_['device'] for _ in shards]
+        self.shards = nn.ModuleList([_["shard"] for _ in shards])
+        self.devices = [_["device"] for _ in shards]
 
         from src.linear_compress import LinearQuantized
+
         for name, module in self.shards.named_modules():
             if isinstance(module, LinearQuantized):
                 module.grad_ckpt = grad_ckpt
@@ -116,12 +113,11 @@ class ShardTransformer(nn.Module):
             device = self.devices[i]
             if to_float:
                 self.shards[i].float()
-            #self.shards[i] = graph_wrapper.get_graph_wrapper(Shard, device)(self.shards[i], shards[i]['arg_fn']).to(device)
-            self.shards[i] = Shard(self.shards[i],
-                                   shards[i]['arg_fn']).to(device)
+            # self.shards[i] = graph_wrapper.get_graph_wrapper(Shard, device)(self.shards[i], shards[i]['arg_fn']).to(device)
+            self.shards[i] = Shard(self.shards[i], shards[i]["arg_fn"]).to(device)
         self.dtype = torch.float32 if to_float else torch.float16
-        self.output_layer = output_layer['layer'].to(0)
-        self.output_layer_fn = output_layer['fn']
+        self.output_layer = output_layer["layer"].to(0)
+        self.output_layer_fn = output_layer["fn"]
         self.grad_ckpt = grad_ckpt
 
     def manifest(self, *args, **kwargs):
@@ -136,9 +132,9 @@ class ShardTransformer(nn.Module):
         return self.shards[i](*args, **kwargs)
 
     def ckpt_shard(self, i, *args, **kwargs):
-        return torch.utils.checkpoint.checkpoint(self.shard_wrapper,
-                                                 (i, args, kwargs),
-                                                 use_reentrant=False)
+        return torch.utils.checkpoint.checkpoint(
+            self.shard_wrapper, (i, args, kwargs), use_reentrant=False
+        )
 
     def forward(self, *args, **kwargs):
         tqdm.tqdm.write(f"n_shards: {len(self.shards)}")
@@ -149,5 +145,7 @@ class ShardTransformer(nn.Module):
                 args, kwargs = self.ckpt_shard(i, *args, **kwargs)
             else:
                 args, kwargs = self.shards[i](*args, **kwargs)
-        tqdm.tqdm.write(f"before output layer {self.output_layer_fn(args, kwargs).to(0)}")
+        tqdm.tqdm.write(
+            f"before output layer {self.output_layer_fn(args, kwargs).to(0)}"
+        )
         return self.output_layer(self.output_layer_fn(args, kwargs).to(0))

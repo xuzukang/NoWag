@@ -1,0 +1,38 @@
+defaults:
+  - model: llama-2-13b
+  - eval: default
+
+
+dataset:
+  name: pajama
+  ft_n_train: 224
+  ft_n_val: 32
+
+# model:
+#   base_model: meta-llama/Llama-2-13b-hf
+#   quantized_model_path: /data/lliu/huffman/models/meta-llama/Llama-2-13b-hf/compressed_hf/run_58
+#   save_path: /data/lliu/huffman/models/meta-llama/Llama-2-13b-hf/ft_layer_by_layer/run_58_1
+#   seqlen: 4096
+
+seed: 0
+sequential: True
+seqlen: -1 # -1 means native seqlen
+
+ft_args:
+  batch_size: 2
+  batch_size_val: 16
+  num_epochs: 5
+  grad_accum_steps: 1
+  optimizer_config:
+    _target_: torch.optim.AdamW
+    lr: 1.0e-4
+    betas: [0.9, 0.999]
+  scheduler_config:
+    _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+    mode: min
+    factor: 0.1
+    patience: 1
+    threshold: 1.0e-9
+  early_stop_patience: 3
+  clip_grad: 0.0
+  temp_dir: "/tmp"

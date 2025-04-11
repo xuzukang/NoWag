@@ -29,29 +29,31 @@ try:
 except:
     has_wandb = False
 
+
 class args_load:
-    def __init__(self, yaml_path:str):
+    def __init__(self, yaml_path: str):
         with open(yaml_path, "r") as f:
             self.__dict__.update(yaml.load(f, Loader=yaml.FullLoader))
 
     @staticmethod
-    def load(yaml_path:str):
+    def load(yaml_path: str):
         return args_load(yaml_path)
 
 
 def load_layer_from_checkpoint(
-                                checkpoints:dict[str:str],
-                                layer:nn.Module,
-                                layer_idx:int,
-                                add_bias:bool = False,
-                                base_model:str = "llama",
-                                key_no_exist_handling:Literal["raise","ignore","warn"] = "raise",
-                                quantizer_type:str = "",
-                                clean:bool = True,
-                                device:str = "cpu",
-                                cache_reconstruct:bool = False,
-                                load_checkpoints:bool = True):
-    
+    checkpoints: dict[str:str],
+    layer: nn.Module,
+    layer_idx: int,
+    add_bias: bool = False,
+    base_model: str = "llama",
+    key_no_exist_handling: Literal["raise", "ignore", "warn"] = "raise",
+    quantizer_type: str = "",
+    clean: bool = True,
+    device: str = "cpu",
+    cache_reconstruct: bool = False,
+    load_checkpoints: bool = True,
+):
+
     sublayer_names = [
         "self_attn.q_proj",
         "self_attn.k_proj",
@@ -68,60 +70,92 @@ def load_layer_from_checkpoint(
         module = getattr(parent_module, name.split(".")[1])
         # if device is None:
         original_device = next(module.parameters()).device
-            
+
         original_dtype = next(iter(module.parameters())).dtype
 
         if device is not None:
             # device = original_device
-            module.to(device)   
+            module.to(device)
 
         sublayer_full_name = f"{base_model}/layer_{layer_idx}/{name}"
         if sublayer_full_name not in checkpoints:
-            sublayer_full_name = f"layer_{layer_idx}/{name}" #try an abbreviated version I used before
+            sublayer_full_name = (
+                f"layer_{layer_idx}/{name}"  # try an abbreviated version I used before
+            )
             if sublayer_full_name not in checkpoints:
                 if key_no_exist_handling == "raise":
-                    raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
+                    raise ValueError(
+                        f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}"
+                    )
                 elif key_no_exist_handling == "ignore":
                     continue
                 elif key_no_exist_handling == "warn":
-                    print(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
+                    print(
+                        f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}"
+                    )
                     continue
                 # raise ValueError(f"Checkpoint for {sublayer_full_name} not found in keys: {checkpoints.keys()}")
         checkpoint_path = checkpoints[sublayer_full_name]
-        checkpoint_args = yaml.load(open(checkpoint_path.replace(".pt", "_args.yaml"),"r"), Loader=yaml.FullLoader)
+        checkpoint_args = yaml.load(
+            open(checkpoint_path.replace(".pt", "_args.yaml"), "r"),
+            Loader=yaml.FullLoader,
+        )
         compression_type = checkpoint_args["compression_type"]
-        
+
         if not hasattr(module, "bias"):
             module.bias = None
         if not hasattr(module, "weight"):
             module.weight = module.reconstruct()
-        
-        if "LinearVQ" in compression_type:
-            new_layer = qc.LinearVQ(
-                module.weight, module.bias, add_bias
-            )
+
+        print(compression_type)
+        if "LinearVQ" or "quantize" in compression_type:
+            print("here")
+            new_layer = qc.LinearVQ(module.weight, module.bias, add_bias)
             new_layer.blank_recreate(**checkpoint_args["quantizer_kwargs"])
-        
-            
-            # print(new_layer.tensor_compressor.gates[0]) 
-        # print(new_layer.original_weight) 
-        if clean:          
+
+            # print(new_layer.tensor_compressor.gates[0])
+        # print(new_layer.original_weight)
+        if clean:
             new_layer.clean()
-        
+
         if load_checkpoints:
+
             try:
-                new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False, map_location=torch.device(device) if device is not None else original_device
-                                                ), strict=False)
+                state_dict = torch.load(
+                    checkpoint_path,
+                    weights_only=False,
+                    map_location=(
+                        torch.device(device) if device is not None else original_device
+                    ),
+                )
             except RuntimeError:
-                new_layer.load_state_dict(torch.load(checkpoint_path, weights_only=False
-                                                ), strict=False)
-                
+                state_dict = torch.load(checkpoint_path, weights_only=False)
+
+            if "quantize" in compression_type:
+                state_dict = {
+                    s.replace("quantizer.", ""): v
+                    for s, v in state_dict.items()
+                    if "reference" not in s
+                }
+                # rename "assignments" to "codes"
+                state_dict = {
+                    s.replace("codes", "assignments"): v for s, v in state_dict.items()
+                }
+
+                # state_dict["normalizer.original_shape"] = torch.tensor([new_layer.out_features, new_layer.in_features], dtype=torch.int32)
+                # print(state_dict["normalizer.norms.0"])
+                state_dict["normalizer.norms.0"] = state_dict["normalizer.norms.0"][
+                    : new_layer.in_features
+                ]
+
+            new_layer.load_state_dict(state_dict, strict=True)
+
             if cache_reconstruct:
                 new_layer.cache_reconstruct()
-        
+
         new_layer.to(original_dtype)
         new_layer.to(original_device)
-            # print("new_layer.quantization_compressor.
+        # print("new_layer.quantization_compressor.
         delattr(parent_module, name.split(".")[1])
         setattr(parent_module, name.split(".")[1], new_layer)
         utils.clean()
@@ -131,28 +165,29 @@ def load_layer_from_checkpoint(
     utils.clean()
     return layer, n_bits, n_params
 
-@torch.no_grad()    
+
+@torch.no_grad()
 def load_model_from_checkpoints(
-                                checkpoints:dict[str:str],
-                                base_model:str,
-                                model:Optional[llama.LlamaForCausalLM] = None,
-                                add_bias:Optional[bool] = False,
-                                key_no_exist_handling:Literal["raise","ignore","warn"] = "raise",
-                                disable_tqdm:Optional[bool] = False,
-                                log_wandb:Optional[bool] = False,
-                                quantizer_type:Optional[str] = "",
-                                clean:Optional[bool] = True,
-                                device:Optional[str] = "cpu",
-                                cache_reconstruct:Optional[bool] = False,
-                                load_checkpoints:Optional[bool] = True
-                                ) -> Tuple[llama.LlamaForCausalLM, float, int]:
+    checkpoints: dict[str:str],
+    base_model: str,
+    model: Optional[llama.LlamaForCausalLM] = None,
+    add_bias: Optional[bool] = False,
+    key_no_exist_handling: Literal["raise", "ignore", "warn"] = "raise",
+    disable_tqdm: Optional[bool] = False,
+    log_wandb: Optional[bool] = False,
+    quantizer_type: Optional[str] = "",
+    clean: Optional[bool] = True,
+    device: Optional[str] = "cpu",
+    cache_reconstruct: Optional[bool] = False,
+    load_checkpoints: Optional[bool] = True,
+) -> Tuple[llama.LlamaForCausalLM, float, int]:
     """
     Load a model from a checkpoint of each individual layer.
 
     Args:
         checkpoints (dict[str:str]): A dictionary of the form {layer_name: checkpoint_path}
         model (llama.LlamaForCausalLM): The model to load the checkpoints into.
-        add_bias (bool, optional): Whether to add a bias to the model. Defaults to False. turn to true for 
+        add_bias (bool, optional): Whether to add a bias to the model. Defaults to False. turn to true for
 
     """
     print("disable_tqdm", disable_tqdm)
@@ -161,14 +196,14 @@ def load_model_from_checkpoints(
     # if not hasattr(args,"compression_type"):
     #     #assume that the model is quantized
     #     args.compression_type = "quantized"
-    
+
     n_bits = 0
     n_params = 0
 
     if model is None:
         model = get_llama(base_model)
         model.to("cpu")
-    
+
     layers = model.model.layers
     # original_dtype = next(iter(model.parameters())).dtype
 
@@ -182,20 +217,26 @@ def load_model_from_checkpoints(
         "mlp.down_proj",
     ]
 
-    for i in tqdm.tqdm(range(len(layers)), desc="Loading checkpoints",disable=disable_tqdm):
+    for i in tqdm.tqdm(
+        range(len(layers)), desc="Loading checkpoints", disable=disable_tqdm
+    ):
         layer = layers[i]
         layer, layer_n_bits, layer_n_params = load_layer_from_checkpoint(
-            checkpoints, layer, i, add_bias, base_model, key_no_exist_handling,
-            quantizer_type = quantizer_type,
-            clean = clean,
-            device = device,
-            cache_reconstruct = cache_reconstruct,
-            load_checkpoints = load_checkpoints
+            checkpoints,
+            layer,
+            i,
+            add_bias,
+            base_model,
+            key_no_exist_handling,
+            quantizer_type=quantizer_type,
+            clean=clean,
+            device=device,
+            cache_reconstruct=cache_reconstruct,
+            load_checkpoints=load_checkpoints,
         )
         n_bits += layer_n_bits
         n_params += layer_n_params
         layers[i] = layer
-
 
     # print("bpv", n_bits / n_params)
     # if log_wandb:

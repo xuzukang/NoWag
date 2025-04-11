@@ -10,11 +10,20 @@ import src.utils.compress as compress_utils
 from src.utils.normalizer import Normalizer
 import src.alignment.hessian_general_align as hessian_general_align
 import src.utils.utils as utils
+from typing import Optional, Union
+from dataclasses import dataclass
+
+
+@dataclass
+class PlaceholderOrigWeight:
+    shape: Tuple[int, int]
+    device: Optional[Union[str, torch.device]] = None
+    dtype: Optional[torch.dtype] = None
 
 
 class CompressedLinear(nn.Module):
-    """Parent class of all compression algorithms for linear layers
-    """
+    """Parent class of all compression algorithms for linear layers"""
+
     name = "CompressedLinear"
 
     def __init__(
@@ -54,16 +63,27 @@ class CompressedLinear(nn.Module):
         self.compressed = False
         self.grad_checkpoint = False
         self.verbose = verbose
-        self.denormalization_method: Literal["otf", "reconstruct", "ignore"] = "reconstruct"
+        self.denormalization_method: Literal["otf", "reconstruct", "ignore"] = (
+            "reconstruct"
+        )
         self.forward_method: Literal["reconstruct", "otf"] = "reconstruct"
-    def compress(self, normalizer_kwargs: Optional[dict] = None, normalizer: Optional[Normalizer] = None, **kwargs):
+
+    def compress(
+        self,
+        normalizer_kwargs: Optional[dict] = None,
+        normalizer: Optional[Normalizer] = None,
+        **kwargs,
+    ):
         """compress the weights, this is the main function to be implemented by the child classes"""
         self.compressed = True
         raise NotImplementedError
-    
-    #helper function to initialize the normalizer
-    def initialize_normalizer(self, normalizer_kwargs: Optional[dict] = None,
-                              normalizer: Optional[Normalizer] = None):
+
+    # helper function to initialize the normalizer
+    def initialize_normalizer(
+        self,
+        normalizer_kwargs: Optional[dict] = None,
+        normalizer: Optional[Normalizer] = None,
+    ):
         """Two ways to initialize the normalizer, either pass the normalizer or the normalizer_kwargs
 
         Args:
@@ -78,68 +98,111 @@ class CompressedLinear(nn.Module):
             if normalizer_kwargs is None:
                 print("Warning: normalizer_kwargs is None, using default")
                 normalizer_kwargs = {}
-            self.normalizer, normalized_weight = Normalizer.normalize_init(self.original_weight, **normalizer_kwargs)
+            self.normalizer, normalized_weight = Normalizer.normalize_init(
+                self.original_weight, **normalizer_kwargs
+            )
 
         return normalized_weight
-    
-    def reconstruct_(self, denormalize:bool = True) -> torch.FloatTensor:
+
+    def reconstruct_(self, denormalize: bool = True) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the compressed version"""
         raise NotImplementedError
-    
+
     def _no_checkpoint_forward(self, x: torch.FloatTensor):
-        raise NotImplementedError 
-    
+        raise NotImplementedError
+
     def blank_recreate(self, **kwargs):
         """recreates the compressed layer without any compression"""
         raise NotImplementedError
-    
+
     def get_n_bits(self) -> int:
         """returns the number of bits needed to store the compressed layer"""
         raise NotImplementedError
-    
+
+    # ================ Another Initialization Fns =================
+    @classmethod
+    def blank_init(
+        cls,
+        n_in: int,
+        n_out: int,
+        add_bias: bool = False,
+        dtype: Optional[torch.dtype] = None,
+        device: Optional[Union[str, torch.device]] = None,
+        **kwargs,
+    ):
+        """creates a blank layer with the same shape as the original layer"""
+        # print("device", device,"dtype", dtype)
+        placeholder_weight = PlaceholderOrigWeight(
+            (n_out, n_in), device=device, dtype=dtype
+        )
+        layer = cls(placeholder_weight, add_bias=add_bias)
+        layer.blank_recreate(**kwargs)
+        return layer
+
     # ================= Importance/Logging Fns =================
-    def enable_hessian_logging(self, hessian: Optional[torch.FloatTensor] = None,
-                               logging_type: Literal["mean", 'ema'] = 'mean',
-                               **kwargs):
+    def enable_hessian_logging(
+        self,
+        hessian: Optional[torch.FloatTensor] = None,
+        logging_type: Literal["mean", "ema"] = "mean",
+        **kwargs,
+    ):
         """enable hessian logging"""
         if hessian is not None:
-            self.hessian = hessian
+            self.register_buffer("hessian", hessian)
         else:
-            self.hessian = torch.zeros(
-                self.in_features,
-                self.in_features,
-                device=self.original_weight.device,
-                dtype=torch.float32,
+            self.register_buffer(
+                "hessian",
+                torch.zeros(
+                    self.in_features,
+                    self.in_features,
+                    device=self.original_weight.device,
+                    dtype=torch.float32,
+                ),
             )
         if logging_type == "mean":
-            self.n_samples = kwargs.get("n_samples", 0) #allows us to continue logging
-            self.hessian_handle = self.register_forward_pre_hook(compress_utils.hessian_mean_logging)
+            self.n_samples = kwargs.get("n_samples", 0)  # allows us to continue logging
+            self.hessian_handle = self.register_forward_pre_hook(
+                compress_utils.hessian_mean_logging
+            )
         elif logging_type == "ema":
             self.decay = kwargs.get("decay", 0.99)
-            self.hessian_handle = self.register_forward_pre_hook(compress_utils.hessian_ema_logging)
+            self.hessian_handle = self.register_forward_pre_hook(
+                compress_utils.hessian_ema_logging
+            )
         else:
             raise ValueError(f"logging_type {logging_type} not supported")
 
-    def enable_hessianDiag_logging(self,
-                                  hessianDiag: Optional[torch.FloatTensor] = None,
-                                    logging_type: Literal["mean", 'ema'] = 'mean',
-                                    **kwargs):
+    def enable_hessianDiag_logging(
+        self,
+        hessianDiag: Optional[torch.FloatTensor] = None,
+        logging_type: Literal["mean", "ema"] = "mean",
+        **kwargs,
+    ):
         """enable hessianDiag logging
         hessianDiag are just the diagonal of the hessian
         """
         if hessianDiag is not None:
-            self.hessianDiag = hessianDiag
+            self.register_buffer("hessianDiag", hessianDiag)
         else:
-            self.hessianDiag = torch.zeros(
-                self.in_features, device=self.original_weight.device, dtype=torch.float32
+            self.register_buffer(
+                "hessianDiag",
+                torch.zeros(
+                    self.in_features,
+                    device=self.original_weight.device,
+                    dtype=torch.float32,
+                ),
             )
-        
+
         if logging_type == "mean":
             self.n_samples = kwargs.get("n_samples", 0)
-            self.hessianDiag_handle = self.register_forward_pre_hook(compress_utils.hessianDiag_mean_logging)
+            self.hessianDiag_handle = self.register_forward_pre_hook(
+                compress_utils.hessianDiag_mean_logging
+            )
         elif logging_type == "ema":
             self.decay = kwargs.get("decay", 0.99)
-            self.hessianDiag_handle = self.register_forward_pre_hook(compress_utils.hessianDiag_ema_logging)
+            self.hessianDiag_handle = self.register_forward_pre_hook(
+                compress_utils.hessianDiag_ema_logging
+            )
 
     def dump_hessian(self) -> List[torch.FloatTensor]:
         """gives the hessian calculated and stops logging the inputs for the hessian
@@ -153,16 +216,16 @@ class CompressedLinear(nn.Module):
         del self.hessian
         del self.n_samples
         return [hessian]  # returning a list for consistency with the low rank sparse
-    
+
     def get_hessianDiag(self) -> torch.FloatTensor:
-        if hasattr(self, "hessianDiag"): #new format that saves space
+        if hasattr(self, "hessianDiag"):  # new format that saves space
             hessianDiag = self.hessianDiag
-        elif hasattr(self, "hessian"): #old format
+        elif hasattr(self, "hessian"):  # old format
             hessianDiag = torch.diag(self.hessian)
         else:
             raise Exception("No hessian found")
         return hessianDiag
-    
+
     def dump_hessianDiag(self) -> List[torch.FloatTensor]:
         """gives the importances calculated and stops logging the inputs for the importances
 
@@ -170,10 +233,13 @@ class CompressedLinear(nn.Module):
             torch.FloatTensor: the importances
         """
         hessianDiag = self.hessianDiag.clone()
-        self.log_hessianDiag_flag = False
+        self.hessianDiag_handle.remove()
+        del self.hessianDiag_handle
         del self.hessianDiag
         del self.n_samples
-        return [hessianDiag]  # returning a list for consistency with the low rank sparse
+        return [
+            hessianDiag
+        ]  # returning a list for consistency with the low rank sparse
 
     # ================= Forward Fns =================
     def forward(self, x: torch.FloatTensor):
@@ -184,7 +250,7 @@ class CompressedLinear(nn.Module):
             return self._checkpoint_forward(x)
         else:
             return self._no_checkpoint_forward(x)
-        
+
     def _checkpoint_forward(self, x: torch.FloatTensor):
         return torch.utils.checkpoint.checkpoint(
             self._no_checkpoint_forward, x, use_reentrant=True
@@ -193,13 +259,14 @@ class CompressedLinear(nn.Module):
     # ================= Backwards Fns =================
 
     # ================= Reconstruction Fns =================
-    def reconstruct(self,
-                    **kwargs
-                    ) -> torch.FloatTensor:
+    def reconstruct(self, **kwargs) -> torch.FloatTensor:
         """reconstructs the weigth matrix from the quantized version"""
         if hasattr(self, "cached_reconstruct"):
+            # print("current kwargs", kwargs)
+            # print("reconstruct kwargs", self.reconstruct_kwargs)
+            # raise ValueError("stop here")
             # print("returning cached")
-            #check that the kwargs are the same
+            # check that the kwargs are the same
             if self.reconstruct_kwargs == kwargs:
                 return self.cached_reconstruct
         if kwargs.get("cache", False):
@@ -207,29 +274,44 @@ class CompressedLinear(nn.Module):
             return self.reconstruct(**kwargs)
         return self.reconstruct_(**kwargs)
 
-    def cache_reconstruct(self, **kwargs):
+    def cache_reconstruct(self, offload: bool = False, **kwargs):
         # print("caching")
         self.register_buffer("cached_reconstruct", self.reconstruct_(**kwargs))
         self.reconstruct_kwargs = kwargs
-        
+        # if we offload, then we offload everything besides the cached reconstruct and bias
+        if offload:
+            original_device = self.cached_reconstruct.device
+            self.to("cpu")
+            self.cached_reconstruct = self.cached_reconstruct.to(original_device)
+            if self.bias is not None:
+                self.bias = nn.Parameter(
+                    self.bias.data.detach().clone().to(original_device)
+                )
+
     def delete_cache_reconstruct(self):
         del self.cached_reconstruct
-        
-    def get_reconstruction_error(self,
-                                 error_weight: Optional[torch.FloatTensor] = None,
-                                 ) -> torch.FloatTensor:
+
+    def get_reconstruction_error(
+        self,
+        error_weight: Optional[torch.FloatTensor] = None,
+    ) -> torch.FloatTensor:
         """returns the reconstruction error"""
         with torch.no_grad():
-            #if weight is none, then just return the mean squared error
+            # if weight is none, then just return the mean squared error
             if error_weight is None:
                 return torch.mean((self.reconstruct() - self.original_weight) ** 2)
-            #if its a 1d vector, then we assume its the diagonal of the hessian
+            # if its a 1d vector, then we assume its the diagonal of the hessian
             if len(error_weight.shape) == 1:
-                return torch.mean((self.reconstruct() - self.original_weight) ** 2 * error_weight.unsqueeze(0))
+                return torch.mean(
+                    (self.reconstruct() - self.original_weight) ** 2
+                    * error_weight.unsqueeze(0)
+                )
             else:
-                return hessian_general_align.loss(self.reconstruct(), self.original_weight, error_weight)
-            
-     # ================= Misc Fns =================
+                return hessian_general_align.loss(
+                    self.reconstruct(), self.original_weight, error_weight
+                )
+
+    # ================= Misc Fns =================
     def align(
         self,
         val_hessian: Optional[torch.FloatTensor] = None,
@@ -295,17 +377,17 @@ class CompressedLinear(nn.Module):
         if hasattr(self, "original_weight"):
             del self.original_weight
         if hasattr(self, "hessian"):
-            print("Warning: hessian was not dumped, deleting it")
-            del self.hessian
+            self.dump_hessian()
         if hasattr(self, "hessianDiag"):
-            print("Warning: hessianDiag was not dumped, deleting it")
-            del self.hessianDiag
+            self.dump_hessianDiag()
         utils.recursive_apply(self, "clean")
 
     def get_n_original_parameters(self):
         return self.original_parameters
-    
-    def change_denormalization_method(self, new_method: Literal["otf", "reconstruct", "ignore"]):
+
+    def change_denormalization_method(
+        self, new_method: Literal["otf", "reconstruct", "ignore"]
+    ):
         self.denormalization_method = new_method
 
     def change_forward_method(self, new_method: Literal["reconstruct", "otf"]):
@@ -313,4 +395,3 @@ class CompressedLinear(nn.Module):
 
     def __str__(self):
         return self.name
-

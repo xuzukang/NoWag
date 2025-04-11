@@ -1,470 +1,0 @@
-Generating hessians for meta-llama/Llama-2-7b-hf with 128 samples
-Using Llama-2 so setting seqlen to 4096
-/data/lliu/huffman
-/home/lliu/anaconda3/lib/python3.11/site-packages/torch/jit/annotations.py:389: UserWarning: TorchScript will treat type annotations of Tensor dtype-specific subtypes as if they are normal Tensors. dtype constraints are not enforced in compilation either.
-  warnings.warn(
-2024-12-23 15:29:33.305569: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
-2024-12-23 15:29:33.323131: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-2024-12-23 15:29:33.328690: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-2024-12-23 15:29:33.344265: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-12-23 15:29:34.556307: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  3.43it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.08it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  3.96it/s]
-Model loaded. LlamaForCausalLM(
-  (model): LlamaModel(
-    (embed_tokens): Embedding(32000, 4096)
-    (layers): ModuleList(
-      (0-31): 32 x LlamaDecoderLayer(
-        (self_attn): LlamaSdpaAttention(
-          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (rotary_emb): LlamaRotaryEmbedding()
-        )
-        (mlp): LlamaMLP(
-          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
-          (act_fn): SiLU()
-        )
-        (input_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-        (post_attention_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-      )
-    )
-    (norm): LlamaRMSNorm((4096,), eps=1e-05)
-    (rotary_emb): LlamaRotaryEmbedding()
-  )
-  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
-)
-Starting...
-getting inputs:   0%|          | 0/128 [00:00<?, ?it/s]getting inputs:   1%|          | 1/128 [00:00<01:30,  1.40it/s]getting inputs:   4%|▍         | 5/128 [00:00<00:16,  7.62it/s]getting inputs:   7%|▋         | 9/128 [00:00<00:08, 13.36it/s]getting inputs:  10%|█         | 13/128 [00:01<00:06, 18.29it/s]getting inputs:  13%|█▎        | 17/128 [00:01<00:04, 22.21it/s]getting inputs:  16%|█▋        | 21/128 [00:01<00:04, 25.35it/s]getting inputs:  20%|█▉        | 25/128 [00:01<00:03, 27.72it/s]getting inputs:  23%|██▎       | 29/128 [00:01<00:03, 29.74it/s]getting inputs:  26%|██▌       | 33/128 [00:01<00:03, 30.43it/s]getting inputs:  28%|██▊       | 36/128 [00:01<00:03, 29.92it/s]getting inputs:  31%|███▏      | 40/128 [00:01<00:02, 30.58it/s]getting inputs:  34%|███▍      | 44/128 [00:02<00:02, 31.68it/s]getting inputs:  38%|███▊      | 48/128 [00:02<00:02, 31.22it/s]getting inputs:  41%|████      | 52/128 [00:02<00:02, 31.55it/s]getting inputs:  44%|████▍     | 56/128 [00:02<00:02, 32.01it/s]getting inputs:  46%|████▌     | 59/128 [00:02<00:02, 31.23it/s]getting inputs:  49%|████▉     | 63/128 [00:02<00:02, 31.97it/s]getting inputs:  52%|█████▏    | 67/128 [00:02<00:01, 32.45it/s]getting inputs:  55%|█████▌    | 71/128 [00:02<00:01, 32.84it/s]getting inputs:  59%|█████▊    | 75/128 [00:02<00:01, 32.82it/s]getting inputs:  62%|██████▏   | 79/128 [00:03<00:01, 32.83it/s]getting inputs:  64%|██████▍   | 82/128 [00:03<00:01, 31.66it/s]getting inputs:  66%|██████▋   | 85/128 [00:03<00:01, 31.05it/s]getting inputs:  70%|██████▉   | 89/128 [00:03<00:01, 32.03it/s]getting inputs:  73%|███████▎  | 93/128 [00:03<00:01, 31.82it/s]getting inputs:  76%|███████▌  | 97/128 [00:03<00:00, 31.65it/s]getting inputs:  79%|███████▉  | 101/128 [00:03<00:00, 32.10it/s]getting inputs:  82%|████████▏ | 105/128 [00:03<00:00, 32.38it/s]getting inputs:  85%|████████▌ | 109/128 [00:04<00:00, 32.96it/s]getting inputs:  88%|████████▊ | 113/128 [00:04<00:00, 32.71it/s]getting inputs:  91%|█████████▏| 117/128 [00:04<00:00, 33.30it/s]getting inputs:  95%|█████████▍| 121/128 [00:04<00:00, 33.71it/s]getting inputs:  98%|█████████▊| 125/128 [00:04<00:00, 33.01it/s]getting inputs: 100%|██████████| 128/128 [00:04<00:00, 27.91it/s]
-48323 MiB free out of 48676 MiB total
-Ready.
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:21,  1.48it/s]Inference:   6%|▋         | 2/32 [00:01<00:17,  1.74it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.88it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.91it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.97it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  2.00it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:04<00:11,  2.02it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.00it/s]Inference:  31%|███▏      | 10/32 [00:05<00:10,  2.00it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.99it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.96it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.00it/s]Inference:  44%|████▍     | 14/32 [00:07<00:08,  2.00it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.00it/s]Inference:  50%|█████     | 16/32 [00:08<00:07,  2.03it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:06,  2.02it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.01it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.99it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.00it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.99it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.99it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:03,  2.01it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.04it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:02,  2.01it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  2.00it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.99it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:00,  2.00it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.94it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.96it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.98it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 0
-48317 MiB free out of 48676 MiB total
-Done with layer 0 total_time elapsed: 25 estimated time left: 786
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.90it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.92it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.91it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.91it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.92it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.89it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.89it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.90it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.90it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.89it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.90it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.89it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.85it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.86it/s]Inference:  47%|████▋     | 15/32 [00:07<00:09,  1.87it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.87it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.87it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.87it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.88it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.89it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.85it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.84it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.86it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.87it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.87it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.88it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.86it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.88it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.87it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.88it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.88it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 1
-48317 MiB free out of 48676 MiB total
-Done with layer 1 total_time elapsed: 46 estimated time left: 686
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.94it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.93it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.90it/s]Inference:  12%|█▎        | 4/32 [00:02<00:16,  1.72it/s]Inference:  16%|█▌        | 5/32 [00:02<00:15,  1.79it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.83it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.84it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.87it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.87it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.86it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.86it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.86it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.87it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.88it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.87it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.88it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:07,  1.89it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.88it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.87it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.88it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.89it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.89it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:05,  1.79it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.82it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.81it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.84it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.85it/s]Inference:  88%|████████▊ | 28/32 [00:15<00:02,  1.86it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.87it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.87it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.89it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.86it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 2
-48317 MiB free out of 48676 MiB total
-Done with layer 2 total_time elapsed: 66 estimated time left: 640
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.92it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.92it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.91it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.89it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.88it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.89it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.90it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.89it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.88it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.88it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.89it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.88it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.88it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.87it/s]Inference:  47%|████▋     | 15/32 [00:07<00:09,  1.87it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.88it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.87it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.88it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.86it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.86it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.88it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.88it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.87it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.87it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.89it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.90it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.88it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.87it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.88it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.88it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.88it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.90it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.88it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 3
-48317 MiB free out of 48676 MiB total
-Done with layer 3 total_time elapsed: 87 estimated time left: 606
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.93it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.91it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.90it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.97it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.00it/s]Inference:  19%|█▉        | 6/32 [00:03<00:12,  2.03it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.04it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.07it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.07it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.06it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.04it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.04it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.03it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.05it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.02it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.02it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.03it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.02it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.03it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.00it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.00it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.03it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.00it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.03it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.04it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.05it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.06it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.00it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.00it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.02it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.98it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.01it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.02it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 4
-48317 MiB free out of 48676 MiB total
-Done with layer 4 total_time elapsed: 106 estimated time left: 571
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.09it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.11it/s]Inference:   9%|▉         | 3/32 [00:01<00:13,  2.09it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.06it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.02it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.04it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.04it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.07it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.04it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.01it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.03it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.01it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.03it/s]Inference:  44%|████▍     | 14/32 [00:06<00:09,  2.00it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.01it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.03it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.03it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.03it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.04it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.03it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.04it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.03it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.03it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.04it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.04it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.04it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.03it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.04it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.04it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.05it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.06it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.04it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 5
-48317 MiB free out of 48676 MiB total
-Done with layer 5 total_time elapsed: 125 estimated time left: 541
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.91it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.94it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.89it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.89it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.89it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.90it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.90it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.91it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.91it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.88it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.87it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.89it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.88it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.87it/s]Inference:  47%|████▋     | 15/32 [00:07<00:09,  1.88it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.89it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.90it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.90it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.91it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.87it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.88it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.89it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.89it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.89it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.88it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.88it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.89it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.89it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.90it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.87it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.89it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.89it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.89it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 6
-48317 MiB free out of 48676 MiB total
-Done with layer 6 total_time elapsed: 145 estimated time left: 518
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.07it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.08it/s]Inference:   9%|▉         | 3/32 [00:01<00:13,  2.09it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.06it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.06it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.05it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.04it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.04it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.04it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.05it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.03it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.02it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.04it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.02it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.04it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.01it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.02it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.00it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.02it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  1.98it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.01it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.00it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.02it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.03it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:03,  1.99it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.99it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.02it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.00it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.02it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.01it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 7
-48317 MiB free out of 48676 MiB total
-Done with layer 7 total_time elapsed: 164 estimated time left: 493
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.05it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.05it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.01it/s]Inference:  12%|█▎        | 4/32 [00:01<00:14,  1.99it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.00it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.01it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  1.99it/s]Inference:  25%|██▌       | 8/32 [00:03<00:12,  1.99it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  1.99it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.96it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.95it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.94it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  1.96it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.98it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.96it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.94it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.97it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.96it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.97it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.98it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  1.99it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:04,  2.01it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.00it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:03,  2.01it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.99it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.96it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.96it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.98it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.98it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:00,  2.00it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.99it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.99it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 8
-48317 MiB free out of 48676 MiB total
-Done with layer 8 total_time elapsed: 184 estimated time left: 470
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  1.97it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.04it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.02it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.02it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.01it/s]Inference:  19%|█▉        | 6/32 [00:02<00:13,  1.99it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.00it/s]Inference:  25%|██▌       | 8/32 [00:03<00:12,  1.99it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  1.98it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  2.00it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.98it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.01it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.02it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.02it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.02it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.00it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.01it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.99it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.01it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.00it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.02it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.00it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.01it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.02it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.00it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:02,  1.99it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.01it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.02it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.01it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 9
-48317 MiB free out of 48676 MiB total
-Done with layer 9 total_time elapsed: 203 estimated time left: 447
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.07it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.09it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.06it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.01it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.97it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.00it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.06it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.04it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.05it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.07it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.07it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.05it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.04it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.04it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.04it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.04it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.06it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.03it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.03it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.05it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.05it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.06it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.02it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.02it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.02it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.98it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:02,  2.00it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.99it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.01it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.00it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 10
-48317 MiB free out of 48676 MiB total
-Done with layer 10 total_time elapsed: 222 estimated time left: 424
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.08it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.09it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.04it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.06it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.06it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.05it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.06it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.05it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.06it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.05it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.03it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.04it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.05it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.03it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.05it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.05it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.03it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.04it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.03it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.01it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.02it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.01it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.03it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.03it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.03it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.05it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.04it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.04it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.05it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.05it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.06it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.04it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 11
-48317 MiB free out of 48676 MiB total
-Done with layer 11 total_time elapsed: 241 estimated time left: 402
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:17,  1.79it/s]Inference:   6%|▋         | 2/32 [00:01<00:16,  1.87it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.83it/s]Inference:  12%|█▎        | 4/32 [00:02<00:15,  1.86it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.82it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.79it/s]Inference:  22%|██▏       | 7/32 [00:03<00:14,  1.78it/s]Inference:  25%|██▌       | 8/32 [00:04<00:13,  1.79it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.79it/s]Inference:  31%|███▏      | 10/32 [00:05<00:12,  1.79it/s]Inference:  34%|███▍      | 11/32 [00:06<00:11,  1.78it/s]Inference:  38%|███▊      | 12/32 [00:06<00:11,  1.81it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.82it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.83it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.82it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.80it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.79it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.81it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:07,  1.84it/s]Inference:  62%|██████▎   | 20/32 [00:11<00:06,  1.84it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.85it/s]Inference:  69%|██████▉   | 22/32 [00:12<00:05,  1.86it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.84it/s]Inference:  75%|███████▌  | 24/32 [00:13<00:04,  1.85it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.81it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.81it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.82it/s]Inference:  88%|████████▊ | 28/32 [00:15<00:02,  1.83it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.84it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.84it/s]Inference:  97%|█████████▋| 31/32 [00:17<00:00,  1.83it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.86it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.82it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 12
-48317 MiB free out of 48676 MiB total
-Done with layer 12 total_time elapsed: 262 estimated time left: 383
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.06it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.08it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.03it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.02it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.01it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.01it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.01it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.04it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.06it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.04it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.04it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.04it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.04it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.06it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.06it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.04it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.04it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.05it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.05it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.05it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.01it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.01it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.02it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.01it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.00it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.01it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.03it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.04it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.03it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.05it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 13
-48317 MiB free out of 48676 MiB total
-Done with layer 13 total_time elapsed: 281 estimated time left: 362
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.08it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.10it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.01it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.03it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.03it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.01it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.02it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.03it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.04it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.00it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.02it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.04it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.02it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.03it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.04it/s]Inference:  50%|█████     | 16/32 [00:07<00:08,  2.00it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.98it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:07,  1.99it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.99it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.00it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.02it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:05,  1.99it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.01it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.02it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.98it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.01it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:02,  1.97it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.93it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:01,  1.95it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.92it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.90it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.99it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 14
-48317 MiB free out of 48676 MiB total
-Done with layer 14 total_time elapsed: 301 estimated time left: 341
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.06it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.07it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.06it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.04it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.02it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.02it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.05it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.05it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.04it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.02it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.02it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.02it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.03it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.02it/s]Inference:  50%|█████     | 16/32 [00:07<00:08,  1.99it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.02it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.02it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.03it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.03it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.02it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.03it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.02it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.02it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.02it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.03it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.02it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.03it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.03it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.04it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 15
-48317 MiB free out of 48676 MiB total
-Done with layer 15 total_time elapsed: 320 estimated time left: 320
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.09it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.11it/s]Inference:   9%|▉         | 3/32 [00:01<00:13,  2.08it/s]Inference:  12%|█▎        | 4/32 [00:01<00:14,  1.99it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.97it/s]Inference:  19%|█▉        | 6/32 [00:02<00:13,  1.98it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.01it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.01it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.02it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.02it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.03it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.02it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  1.99it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.00it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.99it/s]Inference:  50%|█████     | 16/32 [00:07<00:08,  1.99it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.02it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.01it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.00it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.00it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.02it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.98it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:04,  1.99it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.00it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.01it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.03it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.98it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:01,  1.99it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.00it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  1.99it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.01it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 16
-48317 MiB free out of 48676 MiB total
-Done with layer 16 total_time elapsed: 339 estimated time left: 299
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.05it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.99it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.01it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.02it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.97it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.01it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:03<00:12,  2.00it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.01it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.02it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.00it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.00it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.00it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.00it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.99it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.94it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.97it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.95it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.96it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.99it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  1.96it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.99it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.97it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.99it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.01it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  2.00it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.97it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.98it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  1.98it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.96it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.99it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.01it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.99it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 17
-48317 MiB free out of 48676 MiB total
-Done with layer 17 total_time elapsed: 359 estimated time left: 279
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.07it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.07it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.02it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.04it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.06it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.07it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.08it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.09it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.08it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.06it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.98it/s]Inference:  38%|███▊      | 12/32 [00:05<00:10,  1.98it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.88it/s]Inference:  44%|████▍     | 14/32 [00:06<00:09,  1.92it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.97it/s]Inference:  50%|█████     | 16/32 [00:07<00:08,  1.98it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.03it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.03it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.03it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.03it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.04it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.03it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.02it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.04it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.04it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.02it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.02it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.04it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.01it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.05it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.02it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 18
-48317 MiB free out of 48676 MiB total
-Done with layer 18 total_time elapsed: 378 estimated time left: 259
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:17,  1.77it/s]Inference:   6%|▋         | 2/32 [00:01<00:17,  1.76it/s]Inference:   9%|▉         | 3/32 [00:01<00:16,  1.79it/s]Inference:  12%|█▎        | 4/32 [00:02<00:15,  1.81it/s]Inference:  16%|█▌        | 5/32 [00:02<00:15,  1.76it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.76it/s]Inference:  22%|██▏       | 7/32 [00:03<00:14,  1.75it/s]Inference:  25%|██▌       | 8/32 [00:04<00:13,  1.77it/s]Inference:  28%|██▊       | 9/32 [00:05<00:13,  1.77it/s]Inference:  31%|███▏      | 10/32 [00:05<00:12,  1.75it/s]Inference:  34%|███▍      | 11/32 [00:06<00:11,  1.76it/s]Inference:  38%|███▊      | 12/32 [00:06<00:11,  1.75it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.75it/s]Inference:  44%|████▍     | 14/32 [00:07<00:10,  1.80it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.78it/s]Inference:  50%|█████     | 16/32 [00:09<00:08,  1.78it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.77it/s]Inference:  56%|█████▋    | 18/32 [00:10<00:07,  1.77it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:07,  1.77it/s]Inference:  62%|██████▎   | 20/32 [00:11<00:06,  1.76it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:06,  1.76it/s]Inference:  69%|██████▉   | 22/32 [00:12<00:05,  1.77it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:05,  1.79it/s]Inference:  75%|███████▌  | 24/32 [00:13<00:04,  1.81it/s]Inference:  78%|███████▊  | 25/32 [00:14<00:03,  1.79it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.81it/s]Inference:  84%|████████▍ | 27/32 [00:15<00:02,  1.80it/s]Inference:  88%|████████▊ | 28/32 [00:15<00:02,  1.78it/s]Inference:  91%|█████████ | 29/32 [00:16<00:01,  1.81it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.84it/s]Inference:  97%|█████████▋| 31/32 [00:17<00:00,  1.83it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.85it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.79it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 19
-48317 MiB free out of 48676 MiB total
-Done with layer 19 total_time elapsed: 399 estimated time left: 240
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.90it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.88it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.86it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.88it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.88it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.89it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.88it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.89it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.90it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.90it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.87it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.88it/s]Inference:  41%|████      | 13/32 [00:06<00:10,  1.86it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.87it/s]Inference:  47%|████▋     | 15/32 [00:07<00:09,  1.87it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.83it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.84it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.85it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.86it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.87it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.86it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.87it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.87it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.88it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.87it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.87it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.87it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.87it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.84it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.86it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.85it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.87it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 20
-48317 MiB free out of 48676 MiB total
-Done with layer 20 total_time elapsed: 420 estimated time left: 220
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.10it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.11it/s]Inference:   9%|▉         | 3/32 [00:01<00:13,  2.08it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.07it/s]Inference:  16%|█▌        | 5/32 [00:02<00:12,  2.08it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.07it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.07it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.09it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.08it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.07it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.07it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.07it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.06it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.05it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.05it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.05it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.06it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.05it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.06it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.03it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.03it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.05it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.02it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.03it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.05it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.06it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.05it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.06it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.03it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.03it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.01it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.05it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 21
-48317 MiB free out of 48676 MiB total
-Done with layer 21 total_time elapsed: 439 estimated time left: 200
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.06it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.01it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.05it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.01it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.03it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.05it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.01it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.04it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.04it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.05it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.06it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.06it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.06it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.03it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.05it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.05it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.05it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.05it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.05it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.06it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.05it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.00it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.02it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.03it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.05it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.06it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.03it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.00it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.02it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:01,  1.99it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.00it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.04it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 22
-48317 MiB free out of 48676 MiB total
-Done with layer 22 total_time elapsed: 458 estimated time left: 179
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.07it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.04it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.06it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.07it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.01it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.03it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.01it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.03it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.04it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.03it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.04it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.05it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.01it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.03it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.02it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.03it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:07,  2.00it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.01it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.02it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.03it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.04it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.04it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.01it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.96it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:03,  1.99it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.99it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:02,  1.97it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.00it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:01,  1.98it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.00it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.02it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 23
-48317 MiB free out of 48676 MiB total
-Done with layer 23 total_time elapsed: 478 estimated time left: 159
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.84it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.97it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.00it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  2.00it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.01it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.04it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.01it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.04it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.05it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.02it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.03it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.05it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.06it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.06it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.06it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.05it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.03it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.05it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.05it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.04it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.06it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.06it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.05it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.06it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.04it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.05it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.05it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.01it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.03it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.02it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.04it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.06it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.04it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 24
-48317 MiB free out of 48676 MiB total
-Done with layer 24 total_time elapsed: 497 estimated time left: 139
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:18,  1.69it/s]Inference:   6%|▋         | 2/32 [00:01<00:16,  1.84it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.86it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.87it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.84it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.79it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.83it/s]Inference:  25%|██▌       | 8/32 [00:04<00:13,  1.83it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.85it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.85it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.87it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.85it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.84it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.85it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.86it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.87it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:07,  1.88it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.86it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:06,  1.87it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.87it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:05,  1.84it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.86it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.85it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.86it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.86it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.86it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.87it/s]Inference:  88%|████████▊ | 28/32 [00:15<00:02,  1.88it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.89it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.87it/s]Inference:  97%|█████████▋| 31/32 [00:16<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.86it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 25
-48317 MiB free out of 48676 MiB total
-Done with layer 25 total_time elapsed: 518 estimated time left: 119
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.04it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.05it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.00it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.01it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.02it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.01it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.05it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.03it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.02it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.98it/s]Inference:  38%|███▊      | 12/32 [00:05<00:10,  1.99it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  1.98it/s]Inference:  44%|████▍     | 14/32 [00:06<00:09,  1.98it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.97it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.93it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  1.96it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.97it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.99it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:05,  2.01it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  1.95it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:05,  1.84it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.85it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.91it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.91it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.95it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.96it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.98it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.01it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.97it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  1.97it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.01it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.98it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 26
-48317 MiB free out of 48676 MiB total
-Done with layer 26 total_time elapsed: 538 estimated time left: 100
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.02it/s]Inference:   6%|▋         | 2/32 [00:01<00:15,  1.93it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  1.94it/s]Inference:  12%|█▎        | 4/32 [00:02<00:14,  1.91it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.96it/s]Inference:  19%|█▉        | 6/32 [00:03<00:13,  1.99it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  1.99it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.97it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  1.97it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  2.00it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.98it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  1.99it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  1.99it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.98it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.01it/s]Inference:  50%|█████     | 16/32 [00:08<00:07,  2.01it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.01it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:06,  2.02it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.02it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:05,  2.02it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.00it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:04,  2.01it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.00it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:03,  2.02it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.02it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:02,  2.03it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.01it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:01,  2.01it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.02it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:01,  1.98it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.00it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.00it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 27
-48317 MiB free out of 48676 MiB total
-Done with layer 27 total_time elapsed: 557 estimated time left: 80
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.04it/s]Inference:   6%|▋         | 2/32 [00:00<00:15,  2.00it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.00it/s]Inference:  12%|█▎        | 4/32 [00:01<00:13,  2.02it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  2.04it/s]Inference:  19%|█▉        | 6/32 [00:02<00:12,  2.02it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  2.03it/s]Inference:  25%|██▌       | 8/32 [00:03<00:11,  2.05it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.05it/s]Inference:  31%|███▏      | 10/32 [00:04<00:10,  2.05it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  2.04it/s]Inference:  38%|███▊      | 12/32 [00:05<00:09,  2.05it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  2.02it/s]Inference:  44%|████▍     | 14/32 [00:06<00:08,  2.03it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  2.04it/s]Inference:  50%|█████     | 16/32 [00:07<00:07,  2.06it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.04it/s]Inference:  56%|█████▋    | 18/32 [00:08<00:06,  2.05it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  2.04it/s]Inference:  62%|██████▎   | 20/32 [00:09<00:05,  2.03it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.05it/s]Inference:  69%|██████▉   | 22/32 [00:10<00:04,  2.03it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  2.05it/s]Inference:  75%|███████▌  | 24/32 [00:11<00:03,  2.05it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  2.04it/s]Inference:  81%|████████▏ | 26/32 [00:12<00:02,  2.04it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  2.03it/s]Inference:  88%|████████▊ | 28/32 [00:13<00:01,  2.04it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.03it/s]Inference:  94%|█████████▍| 30/32 [00:14<00:00,  2.04it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.05it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.05it/s]Inference: 100%|██████████| 32/32 [00:15<00:00,  2.04it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 28
-48317 MiB free out of 48676 MiB total
-Done with layer 28 total_time elapsed: 576 estimated time left: 60
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:15,  2.02it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.01it/s]Inference:   9%|▉         | 3/32 [00:01<00:16,  1.78it/s]Inference:  12%|█▎        | 4/32 [00:02<00:15,  1.79it/s]Inference:  16%|█▌        | 5/32 [00:02<00:14,  1.85it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.82it/s]Inference:  22%|██▏       | 7/32 [00:03<00:13,  1.85it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.86it/s]Inference:  28%|██▊       | 9/32 [00:04<00:12,  1.83it/s]Inference:  31%|███▏      | 10/32 [00:05<00:12,  1.82it/s]Inference:  34%|███▍      | 11/32 [00:05<00:11,  1.84it/s]Inference:  38%|███▊      | 12/32 [00:06<00:11,  1.82it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.84it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.81it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.79it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.79it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.78it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.80it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:07,  1.81it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:06,  1.83it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:06,  1.80it/s]Inference:  69%|██████▉   | 22/32 [00:12<00:05,  1.83it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:05,  1.80it/s]Inference:  75%|███████▌  | 24/32 [00:13<00:04,  1.78it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.77it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.78it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.78it/s]Inference:  88%|████████▊ | 28/32 [00:15<00:02,  1.76it/s]Inference:  91%|█████████ | 29/32 [00:16<00:01,  1.80it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.82it/s]Inference:  97%|█████████▋| 31/32 [00:17<00:00,  1.82it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.83it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.81it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 29
-48317 MiB free out of 48676 MiB total
-Done with layer 29 total_time elapsed: 598 estimated time left: 40
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:16,  1.85it/s]Inference:   6%|▋         | 2/32 [00:01<00:16,  1.79it/s]Inference:   9%|▉         | 3/32 [00:01<00:15,  1.82it/s]Inference:  12%|█▎        | 4/32 [00:02<00:15,  1.75it/s]Inference:  16%|█▌        | 5/32 [00:02<00:15,  1.78it/s]Inference:  19%|█▉        | 6/32 [00:03<00:14,  1.81it/s]Inference:  22%|██▏       | 7/32 [00:03<00:14,  1.79it/s]Inference:  25%|██▌       | 8/32 [00:04<00:13,  1.82it/s]Inference:  28%|██▊       | 9/32 [00:05<00:12,  1.81it/s]Inference:  31%|███▏      | 10/32 [00:05<00:12,  1.82it/s]Inference:  34%|███▍      | 11/32 [00:06<00:11,  1.83it/s]Inference:  38%|███▊      | 12/32 [00:06<00:11,  1.78it/s]Inference:  41%|████      | 13/32 [00:07<00:10,  1.76it/s]Inference:  44%|████▍     | 14/32 [00:07<00:10,  1.78it/s]Inference:  47%|████▋     | 15/32 [00:08<00:09,  1.81it/s]Inference:  50%|█████     | 16/32 [00:08<00:08,  1.82it/s]Inference:  53%|█████▎    | 17/32 [00:09<00:08,  1.84it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.80it/s]Inference:  59%|█████▉    | 19/32 [00:10<00:07,  1.82it/s]Inference:  62%|██████▎   | 20/32 [00:11<00:06,  1.83it/s]Inference:  66%|██████▌   | 21/32 [00:11<00:06,  1.83it/s]Inference:  69%|██████▉   | 22/32 [00:12<00:05,  1.82it/s]Inference:  72%|███████▏  | 23/32 [00:12<00:04,  1.84it/s]Inference:  75%|███████▌  | 24/32 [00:13<00:04,  1.86it/s]Inference:  78%|███████▊  | 25/32 [00:13<00:03,  1.82it/s]Inference:  81%|████████▏ | 26/32 [00:14<00:03,  1.79it/s]Inference:  84%|████████▍ | 27/32 [00:14<00:02,  1.82it/s]Inference:  88%|████████▊ | 28/32 [00:15<00:02,  1.85it/s]Inference:  91%|█████████ | 29/32 [00:15<00:01,  1.85it/s]Inference:  94%|█████████▍| 30/32 [00:16<00:01,  1.85it/s]Inference:  97%|█████████▋| 31/32 [00:17<00:00,  1.86it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.87it/s]Inference: 100%|██████████| 32/32 [00:17<00:00,  1.82it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 30
-48317 MiB free out of 48676 MiB total
-Done with layer 30 total_time elapsed: 619 estimated time left: 20
-layer original dtype torch.float16
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:14,  2.07it/s]Inference:   6%|▋         | 2/32 [00:00<00:14,  2.05it/s]Inference:   9%|▉         | 3/32 [00:01<00:14,  2.00it/s]Inference:  12%|█▎        | 4/32 [00:01<00:14,  2.00it/s]Inference:  16%|█▌        | 5/32 [00:02<00:13,  1.99it/s]Inference:  19%|█▉        | 6/32 [00:02<00:13,  2.00it/s]Inference:  22%|██▏       | 7/32 [00:03<00:12,  1.97it/s]Inference:  25%|██▌       | 8/32 [00:04<00:12,  1.99it/s]Inference:  28%|██▊       | 9/32 [00:04<00:11,  2.00it/s]Inference:  31%|███▏      | 10/32 [00:05<00:11,  1.98it/s]Inference:  34%|███▍      | 11/32 [00:05<00:10,  1.98it/s]Inference:  38%|███▊      | 12/32 [00:06<00:10,  2.00it/s]Inference:  41%|████      | 13/32 [00:06<00:09,  1.96it/s]Inference:  44%|████▍     | 14/32 [00:07<00:09,  1.96it/s]Inference:  47%|████▋     | 15/32 [00:07<00:08,  1.99it/s]Inference:  50%|█████     | 16/32 [00:08<00:07,  2.01it/s]Inference:  53%|█████▎    | 17/32 [00:08<00:07,  2.00it/s]Inference:  56%|█████▋    | 18/32 [00:09<00:07,  1.95it/s]Inference:  59%|█████▉    | 19/32 [00:09<00:06,  1.98it/s]Inference:  62%|██████▎   | 20/32 [00:10<00:05,  2.00it/s]Inference:  66%|██████▌   | 21/32 [00:10<00:05,  2.02it/s]Inference:  69%|██████▉   | 22/32 [00:11<00:04,  2.00it/s]Inference:  72%|███████▏  | 23/32 [00:11<00:04,  1.96it/s]Inference:  75%|███████▌  | 24/32 [00:12<00:04,  1.97it/s]Inference:  78%|███████▊  | 25/32 [00:12<00:03,  1.96it/s]Inference:  81%|████████▏ | 26/32 [00:13<00:03,  1.99it/s]Inference:  84%|████████▍ | 27/32 [00:13<00:02,  1.97it/s]Inference:  88%|████████▊ | 28/32 [00:14<00:02,  1.99it/s]Inference:  91%|█████████ | 29/32 [00:14<00:01,  2.00it/s]Inference:  94%|█████████▍| 30/32 [00:15<00:00,  2.02it/s]Inference:  97%|█████████▋| 31/32 [00:15<00:00,  2.02it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  2.03it/s]Inference: 100%|██████████| 32/32 [00:16<00:00,  1.99it/s]
-47931 MiB free out of 48676 MiB total
-after cleaning up 31
-48317 MiB free out of 48676 MiB total
-Done with layer 31 total_time elapsed: 639 estimated time left: 0
-Total bits: 0 Total params: 0
-Traceback (most recent call last):
-  File "/data/lliu/huffman/scripts/generate_hessians.py", line 407, in <module>
-    generate_hessians(model, train_loader, val_loader, args.device)
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/scripts/generate_hessians.py", line 315, in generate_hessians
-    print("average bits per value:", total_bits / total_params)
-                                     ~~~~~~~~~~~^~~~~~~~~~~~~~
-ZeroDivisionError: division by zero

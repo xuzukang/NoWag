@@ -81,9 +81,13 @@ def get_ptb(nsamples, seed, seqlen, model, train_test: str = "train"):
     from datasets import load_dataset
 
     if train_test == "train":
-        data = load_dataset("ptb_text_only", "penn_treebank", split="train",trust_remote_code=True)
+        data = load_dataset(
+            "ptb_text_only", "penn_treebank", split="train", trust_remote_code=True
+        )
     else:
-        data = load_dataset("ptb_text_only", "penn_treebank", split="validation",trust_remote_code=True)
+        data = load_dataset(
+            "ptb_text_only", "penn_treebank", split="validation", trust_remote_code=True
+        )
 
     from transformers import AutoTokenizer
 
@@ -164,8 +168,8 @@ def get_c4(nsamples, seed, seqlen, model, train_test: str = "train"):
             while True:
                 i = random.randint(0, len(data) - 1)
                 tmp = tokenizer(data[i]["text"], return_tensors="pt")
-                #print("--------LEN---------")
-                #print(tmp.input_ids.shape[1] - seqlen - 1)
+                # print("--------LEN---------")
+                # print(tmp.input_ids.shape[1] - seqlen - 1)
                 if tmp.input_ids.shape[1] >= seqlen:
                     break
             i = random.randint(0, tmp.input_ids.shape[1] - seqlen - 1)
