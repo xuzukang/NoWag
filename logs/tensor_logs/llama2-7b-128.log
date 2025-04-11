@@ -1,2495 +1,0 @@
-2024-12-06 02:13:12.040905: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
-2024-12-06 02:13:12.057810: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-2024-12-06 02:13:12.063365: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-2024-12-06 02:13:12.077591: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-12-06 02:13:13.100835: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  4.27it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.84it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.74it/s]
-Model loaded. LlamaForCausalLM(
-  (model): LlamaModel(
-    (embed_tokens): Embedding(32000, 4096)
-    (layers): ModuleList(
-      (0-31): 32 x LlamaDecoderLayer(
-        (self_attn): LlamaSdpaAttention(
-          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (rotary_emb): LlamaRotaryEmbedding()
-        )
-        (mlp): LlamaMLP(
-          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
-          (act_fn): SiLU()
-        )
-        (input_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-        (post_attention_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-      )
-    )
-    (norm): LlamaRMSNorm((4096,), eps=1e-05)
-    (rotary_emb): LlamaRotaryEmbedding()
-  )
-  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
-)
-Starting...
-getting inputs:   0%|          | 0/128 [00:00<?, ?it/s]getting inputs:   1%|          | 1/128 [00:00<01:28,  1.44it/s]getting inputs:   4%|▍         | 5/128 [00:00<00:16,  7.64it/s]getting inputs:   7%|▋         | 9/128 [00:00<00:09, 13.06it/s]getting inputs:  10%|█         | 13/128 [00:01<00:06, 17.98it/s]getting inputs:  13%|█▎        | 17/128 [00:01<00:05, 21.33it/s]getting inputs:  16%|█▌        | 20/128 [00:01<00:04, 23.24it/s]getting inputs:  18%|█▊        | 23/128 [00:01<00:04, 24.51it/s]getting inputs:  21%|██        | 27/128 [00:01<00:03, 27.52it/s]getting inputs:  23%|██▎       | 30/128 [00:01<00:03, 28.14it/s]getting inputs:  26%|██▌       | 33/128 [00:01<00:03, 28.28it/s]getting inputs:  28%|██▊       | 36/128 [00:01<00:03, 28.34it/s]getting inputs:  31%|███▏      | 40/128 [00:01<00:02, 29.42it/s]getting inputs:  34%|███▎      | 43/128 [00:02<00:02, 29.56it/s]getting inputs:  36%|███▌      | 46/128 [00:02<00:02, 29.27it/s]getting inputs:  38%|███▊      | 49/128 [00:02<00:02, 29.20it/s]getting inputs:  41%|████      | 52/128 [00:02<00:02, 28.92it/s]getting inputs:  44%|████▍     | 56/128 [00:02<00:02, 30.20it/s]getting inputs:  46%|████▌     | 59/128 [00:02<00:02, 29.47it/s]getting inputs:  48%|████▊     | 62/128 [00:02<00:02, 28.52it/s]getting inputs:  51%|█████     | 65/128 [00:02<00:02, 28.05it/s]getting inputs:  54%|█████▍    | 69/128 [00:02<00:02, 29.26it/s]getting inputs:  57%|█████▋    | 73/128 [00:03<00:01, 30.02it/s]getting inputs:  59%|█████▉    | 76/128 [00:03<00:01, 29.18it/s]getting inputs:  62%|██████▏   | 79/128 [00:03<00:01, 28.69it/s]getting inputs:  64%|██████▍   | 82/128 [00:03<00:01, 28.70it/s]getting inputs:  67%|██████▋   | 86/128 [00:03<00:01, 30.30it/s]getting inputs:  70%|██████▉   | 89/128 [00:03<00:01, 29.21it/s]getting inputs:  72%|███████▏  | 92/128 [00:03<00:01, 28.09it/s]getting inputs:  74%|███████▍  | 95/128 [00:03<00:01, 27.42it/s]getting inputs:  77%|███████▋  | 99/128 [00:03<00:00, 29.02it/s]getting inputs:  80%|███████▉  | 102/128 [00:04<00:00, 28.55it/s]getting inputs:  82%|████████▏ | 105/128 [00:04<00:00, 27.67it/s]getting inputs:  84%|████████▍ | 108/128 [00:04<00:00, 27.05it/s]getting inputs:  88%|████████▊ | 112/128 [00:04<00:00, 28.76it/s]getting inputs:  91%|█████████ | 116/128 [00:04<00:00, 28.91it/s]getting inputs:  94%|█████████▍| 120/128 [00:04<00:00, 28.93it/s]getting inputs:  97%|█████████▋| 124/128 [00:04<00:00, 29.32it/s]getting inputs: 100%|██████████| 128/128 [00:04<00:00, 30.63it/s]getting inputs: 100%|██████████| 128/128 [00:04<00:00, 25.69it/s]
-42156 MiB free out of 48676 MiB total
-Ready.
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:33,  1.09s/it]Inference:   6%|▋         | 2/32 [00:01<00:29,  1.02it/s]Inference:   9%|▉         | 3/32 [00:02<00:27,  1.07it/s]Inference:  12%|█▎        | 4/32 [00:03<00:25,  1.10it/s]Inference:  16%|█▌        | 5/32 [00:04<00:23,  1.15it/s]Inference:  19%|█▉        | 6/32 [00:05<00:21,  1.18it/s]Inference:  22%|██▏       | 7/32 [00:06<00:20,  1.22it/s]Inference:  25%|██▌       | 8/32 [00:06<00:17,  1.35it/s]Inference:  28%|██▊       | 9/32 [00:07<00:17,  1.35it/s]Inference:  31%|███▏      | 10/32 [00:08<00:16,  1.34it/s]Inference:  34%|███▍      | 11/32 [00:09<00:16,  1.28it/s]Inference:  38%|███▊      | 12/32 [00:09<00:15,  1.25it/s]Inference:  41%|████      | 13/32 [00:10<00:15,  1.22it/s]Inference:  44%|████▍     | 14/32 [00:11<00:14,  1.20it/s]Inference:  47%|████▋     | 15/32 [00:12<00:14,  1.20it/s]Inference:  50%|█████     | 16/32 [00:13<00:13,  1.18it/s]Inference:  53%|█████▎    | 17/32 [00:14<00:12,  1.17it/s]Inference:  56%|█████▋    | 18/32 [00:15<00:12,  1.16it/s]Inference:  59%|█████▉    | 19/32 [00:15<00:11,  1.15it/s]Inference:  62%|██████▎   | 20/32 [00:16<00:10,  1.16it/s]Inference:  66%|██████▌   | 21/32 [00:17<00:09,  1.16it/s]Inference:  69%|██████▉   | 22/32 [00:18<00:08,  1.16it/s]Inference:  72%|███████▏  | 23/32 [00:19<00:07,  1.15it/s]Inference:  75%|███████▌  | 24/32 [00:20<00:06,  1.15it/s]Inference:  78%|███████▊  | 25/32 [00:21<00:06,  1.15it/s]Inference:  81%|████████▏ | 26/32 [00:22<00:05,  1.14it/s]Inference:  84%|████████▍ | 27/32 [00:22<00:04,  1.15it/s]Inference:  88%|████████▊ | 28/32 [00:23<00:03,  1.15it/s]Inference:  91%|█████████ | 29/32 [00:24<00:02,  1.15it/s]Inference:  94%|█████████▍| 30/32 [00:25<00:01,  1.16it/s]Inference:  97%|█████████▋| 31/32 [00:26<00:00,  1.16it/s]Inference: 100%|██████████| 32/32 [00:27<00:00,  1.16it/s]Inference: 100%|██████████| 32/32 [00:27<00:00,  1.18it/s]
-layer0: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 21644.63671875, val loss None, lr 0.01
-iter 250, train loss 23.28968048095703, val loss None, lr 0.01
-iter 500, train loss 8.75788688659668, val loss None, lr 0.003333
-iter 750, train loss 5.256690979003906, val loss None, lr 0.001111
-iter 1000, train loss 4.367020606994629, val loss None, lr 0.00037
-iter 1250, train loss 4.000092506408691, val loss None, lr 0.00037
-iter 1500, train loss 3.733966827392578, val loss None, lr 0.00037
-iter 1750, train loss 3.5304791927337646, val loss None, lr 0.00037
-iter 2000, train loss 3.4260165691375732, val loss None, lr 0.00037
-iter 2250, train loss 3.3062119483947754, val loss None, lr 0.00037
-best loss 3.1736645698547363
-running bpv: 1.2626953125
-layer0: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 13555.7890625, val loss None, lr 0.01
-iter 250, train loss 16.744077682495117, val loss None, lr 0.01
-iter 500, train loss 8.975530624389648, val loss None, lr 0.003333
-iter 750, train loss 11.231342315673828, val loss None, lr 0.003333
-iter 1000, train loss 5.832762241363525, val loss None, lr 0.001111
-iter 1250, train loss 5.427870750427246, val loss None, lr 0.00037
-iter 1500, train loss 5.226491928100586, val loss None, lr 0.00037
-iter 1750, train loss 5.060421943664551, val loss None, lr 0.00037
-iter 2000, train loss 4.958603382110596, val loss None, lr 0.00037
-iter 2250, train loss 4.851116180419922, val loss None, lr 0.00037
-best loss 4.769170761108398
-running bpv: 1.2626953125
-layer0: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 33.007537841796875, val loss None, lr 0.01
-iter 250, train loss 1.2953068017959595, val loss None, lr 0.01
-iter 500, train loss 1.2300388813018799, val loss None, lr 0.01
-iter 750, train loss 1.2141480445861816, val loss None, lr 0.01
-iter 1000, train loss 1.151923656463623, val loss None, lr 0.003333
-iter 1250, train loss 1.1360548734664917, val loss None, lr 0.001111
-iter 1500, train loss 1.1283109188079834, val loss None, lr 0.001111
-iter 1750, train loss 1.123454213142395, val loss None, lr 0.00037
-iter 2000, train loss 1.117426872253418, val loss None, lr 0.00037
-iter 2250, train loss 1.1133971214294434, val loss None, lr 0.00037
-best loss 1.109913945198059
-running bpv: 1.2626953125
-layer0: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 7.724582195281982, val loss None, lr 0.01
-iter 250, train loss 0.11468546092510223, val loss None, lr 0.01
-iter 500, train loss 0.09374624490737915, val loss None, lr 0.003333
-iter 750, train loss 0.086353600025177, val loss None, lr 0.003333
-iter 1000, train loss 0.08206840604543686, val loss None, lr 0.003333
-iter 1250, train loss 0.08041653782129288, val loss None, lr 0.003333
-iter 1500, train loss 0.07784296572208405, val loss None, lr 0.001111
-iter 1750, train loss 0.07657230645418167, val loss None, lr 0.001111
-iter 2000, train loss 0.07575562596321106, val loss None, lr 0.001111
-iter 2250, train loss 0.08367881178855896, val loss None, lr 0.001111
-best loss 0.0749892145395279
-running bpv: 1.2626953125
-layer0: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 502.843994140625, val loss None, lr 0.01
-iter 250, train loss 196.06353759765625, val loss None, lr 0.01
-iter 500, train loss 192.19044494628906, val loss None, lr 0.01
-iter 750, train loss 190.2691650390625, val loss None, lr 0.003333
-iter 1000, train loss 189.43014526367188, val loss None, lr 0.001111
-iter 1250, train loss 188.4017791748047, val loss None, lr 0.001111
-iter 1500, train loss 188.0664520263672, val loss None, lr 0.001111
-iter 1750, train loss 187.7826690673828, val loss None, lr 0.001111
-iter 2000, train loss 187.5517120361328, val loss None, lr 0.00037
-iter 2250, train loss 187.40548706054688, val loss None, lr 0.00037
-best loss 187.26084899902344
-running bpv: 0.9462981892523364
-layer0: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 341.34783935546875, val loss None, lr 0.01
-iter 250, train loss 173.65234375, val loss None, lr 0.01
-iter 500, train loss 170.46240234375, val loss None, lr 0.01
-iter 750, train loss 169.3183135986328, val loss None, lr 0.01
-iter 1000, train loss 169.48985290527344, val loss None, lr 0.01
-iter 1250, train loss 168.6162109375, val loss None, lr 0.01
-iter 1500, train loss 167.76858520507812, val loss None, lr 0.003333
-iter 1750, train loss 167.56988525390625, val loss None, lr 0.003333
-iter 2000, train loss 167.20741271972656, val loss None, lr 0.001111
-iter 2250, train loss 166.9812774658203, val loss None, lr 0.001111
-best loss 166.87025451660156
-running bpv: 0.8113020833333333
-layer0: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 1.918604850769043, val loss None, lr 0.01
-iter 250, train loss 0.49076977372169495, val loss None, lr 0.01
-iter 500, train loss 0.48480838537216187, val loss None, lr 0.01
-iter 750, train loss 0.478445827960968, val loss None, lr 0.01
-iter 1000, train loss 0.48599374294281006, val loss None, lr 0.01
-iter 1250, train loss 0.47186583280563354, val loss None, lr 0.003333
-iter 1500, train loss 0.47071558237075806, val loss None, lr 0.003333
-iter 1750, train loss 0.47073549032211304, val loss None, lr 0.003333
-iter 2000, train loss 0.46960604190826416, val loss None, lr 0.003333
-iter 2250, train loss 0.47190335392951965, val loss None, lr 0.003333
-best loss 0.46880707144737244
-running bpv: 0.7720409650259067
-42156 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:11,  2.81it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.70it/s]Inference:   9%|▉         | 3/32 [00:01<00:10,  2.67it/s]Inference:  12%|█▎        | 4/32 [00:01<00:10,  2.71it/s]Inference:  16%|█▌        | 5/32 [00:01<00:10,  2.66it/s]Inference:  19%|█▉        | 6/32 [00:02<00:09,  2.64it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.63it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.61it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.61it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.61it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.60it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.59it/s]Inference:  41%|████      | 13/32 [00:04<00:07,  2.61it/s]Inference:  44%|████▍     | 14/32 [00:05<00:06,  2.67it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.65it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.64it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.63it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:05,  2.62it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:04,  2.61it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.60it/s]Inference:  66%|██████▌   | 21/32 [00:07<00:04,  2.66it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.70it/s]Inference:  72%|███████▏  | 23/32 [00:08<00:03,  2.66it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.62it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.61it/s]Inference:  81%|████████▏ | 26/32 [00:09<00:02,  2.67it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.67it/s]Inference:  88%|████████▊ | 28/32 [00:10<00:01,  2.64it/s]Inference:  91%|█████████ | 29/32 [00:10<00:01,  2.70it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.67it/s]Inference:  97%|█████████▋| 31/32 [00:11<00:00,  2.64it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.62it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.64it/s]
-36266 MiB free out of 48676 MiB total
-Saved layer 0 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_0.pt
-after cast to cpu
-40258 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 0 total_time elapsed: 1809 estimated time left: 56072
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:32,  1.05s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.03s/it]Inference:   9%|▉         | 3/32 [00:03<00:30,  1.04s/it]Inference:  12%|█▎        | 4/32 [00:04<00:29,  1.04s/it]Inference:  16%|█▌        | 5/32 [00:05<00:28,  1.04s/it]Inference:  19%|█▉        | 6/32 [00:06<00:27,  1.04s/it]Inference:  22%|██▏       | 7/32 [00:07<00:25,  1.04s/it]Inference:  25%|██▌       | 8/32 [00:08<00:25,  1.04s/it]Inference:  28%|██▊       | 9/32 [00:09<00:23,  1.04s/it]Inference:  31%|███▏      | 10/32 [00:10<00:22,  1.04s/it]Inference:  34%|███▍      | 11/32 [00:11<00:21,  1.04s/it]Inference:  38%|███▊      | 12/32 [00:12<00:20,  1.04s/it]Inference:  41%|████      | 13/32 [00:13<00:19,  1.04s/it]Inference:  44%|████▍     | 14/32 [00:14<00:18,  1.04s/it]Inference:  47%|████▋     | 15/32 [00:15<00:17,  1.04s/it]Inference:  50%|█████     | 16/32 [00:16<00:16,  1.04s/it]Inference:  53%|█████▎    | 17/32 [00:17<00:15,  1.04s/it]Inference:  56%|█████▋    | 18/32 [00:18<00:14,  1.04s/it]Inference:  59%|█████▉    | 19/32 [00:19<00:13,  1.04s/it]Inference:  62%|██████▎   | 20/32 [00:20<00:12,  1.04s/it]Inference:  66%|██████▌   | 21/32 [00:21<00:11,  1.04s/it]Inference:  69%|██████▉   | 22/32 [00:22<00:10,  1.03s/it]Inference:  72%|███████▏  | 23/32 [00:23<00:09,  1.03s/it]Inference:  75%|███████▌  | 24/32 [00:24<00:08,  1.03s/it]Inference:  78%|███████▊  | 25/32 [00:25<00:07,  1.03s/it]Inference:  81%|████████▏ | 26/32 [00:26<00:06,  1.03s/it]Inference:  84%|████████▍ | 27/32 [00:28<00:05,  1.04s/it]Inference:  88%|████████▊ | 28/32 [00:29<00:04,  1.04s/it]Inference:  91%|█████████ | 29/32 [00:30<00:03,  1.03s/it]Inference:  94%|█████████▍| 30/32 [00:31<00:02,  1.03s/it]Inference:  97%|█████████▋| 31/32 [00:32<00:01,  1.03s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.03s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.04s/it]
-layer1: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 45558.4140625, val loss None, lr 0.01
-iter 250, train loss 319.5941467285156, val loss None, lr 0.01
-iter 500, train loss 256.1830749511719, val loss None, lr 0.01
-iter 750, train loss 212.28749084472656, val loss None, lr 0.003333
-iter 1000, train loss 184.31297302246094, val loss None, lr 0.003333
-iter 1250, train loss 172.7549591064453, val loss None, lr 0.001111
-iter 1500, train loss 167.77352905273438, val loss None, lr 0.001111
-iter 1750, train loss 162.68133544921875, val loss None, lr 0.001111
-iter 2000, train loss 158.1715087890625, val loss None, lr 0.00037
-iter 2250, train loss 155.94204711914062, val loss None, lr 0.00037
-best loss 154.10577392578125
-running bpv: 0.8096030203349283
-layer1: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 47418.11328125, val loss None, lr 0.01
-iter 250, train loss 298.1470947265625, val loss None, lr 0.01
-iter 500, train loss 256.579345703125, val loss None, lr 0.01
-iter 750, train loss 232.99424743652344, val loss None, lr 0.003333
-iter 1000, train loss 201.84738159179688, val loss None, lr 0.003333
-iter 1250, train loss 200.10494995117188, val loss None, lr 0.003333
-iter 1500, train loss 180.44314575195312, val loss None, lr 0.001111
-iter 1750, train loss 176.9278564453125, val loss None, lr 0.001111
-iter 2000, train loss 168.11817932128906, val loss None, lr 0.00037
-iter 2250, train loss 165.53204345703125, val loss None, lr 0.00037
-best loss 163.55526733398438
-running bpv: 0.8418229166666666
-layer1: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 119.01324462890625, val loss None, lr 0.01
-iter 250, train loss 14.789239883422852, val loss None, lr 0.01
-iter 500, train loss 14.135908126831055, val loss None, lr 0.01
-iter 750, train loss 14.024626731872559, val loss None, lr 0.01
-iter 1000, train loss 14.396710395812988, val loss None, lr 0.01
-iter 1250, train loss 13.532525062561035, val loss None, lr 0.003333
-iter 1500, train loss 13.470291137695312, val loss None, lr 0.001111
-iter 1750, train loss 13.433818817138672, val loss None, lr 0.001111
-iter 2000, train loss 13.399091720581055, val loss None, lr 0.001111
-iter 2250, train loss 13.380891799926758, val loss None, lr 0.001111
-best loss 13.358390808105469
-running bpv: 0.8697646524896265
-layer1: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 11.24783706665039, val loss None, lr 0.01
-iter 250, train loss 1.4948458671569824, val loss None, lr 0.01
-iter 500, train loss 1.4745433330535889, val loss None, lr 0.01
-iter 750, train loss 1.440392017364502, val loss None, lr 0.01
-iter 1000, train loss 1.4229739904403687, val loss None, lr 0.003333
-iter 1250, train loss 1.4218546152114868, val loss None, lr 0.001111
-iter 1500, train loss 1.4109712839126587, val loss None, lr 0.001111
-iter 1750, train loss 1.4105889797210693, val loss None, lr 0.001111
-iter 2000, train loss 1.4069496393203735, val loss None, lr 0.001111
-iter 2250, train loss 1.406319260597229, val loss None, lr 0.001111
-best loss 1.4033327102661133
-running bpv: 0.8942272616731517
-layer1: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 1869.10498046875, val loss None, lr 0.01
-iter 250, train loss 817.6253662109375, val loss None, lr 0.01
-iter 500, train loss 784.080322265625, val loss None, lr 0.01
-iter 750, train loss 775.4281005859375, val loss None, lr 0.01
-iter 1000, train loss 767.418212890625, val loss None, lr 0.003333
-iter 1250, train loss 762.96044921875, val loss None, lr 0.003333
-iter 1500, train loss 761.1097412109375, val loss None, lr 0.001111
-iter 1750, train loss 760.207275390625, val loss None, lr 0.001111
-iter 2000, train loss 759.62109375, val loss None, lr 0.001111
-iter 2250, train loss 759.2720336914062, val loss None, lr 0.001111
-best loss 758.1290283203125
-running bpv: 0.8341927083333334
-layer1: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 840.0960693359375, val loss None, lr 0.01
-iter 250, train loss 547.7926025390625, val loss None, lr 0.01
-iter 500, train loss 540.6514892578125, val loss None, lr 0.01
-iter 750, train loss 538.110595703125, val loss None, lr 0.01
-iter 1000, train loss 540.0811767578125, val loss None, lr 0.01
-iter 1250, train loss 534.8593139648438, val loss None, lr 0.003333
-iter 1500, train loss 534.3268432617188, val loss None, lr 0.003333
-iter 1750, train loss 534.0208129882812, val loss None, lr 0.003333
-iter 2000, train loss 533.5133056640625, val loss None, lr 0.001111
-iter 2250, train loss 533.180419921875, val loss None, lr 0.001111
-best loss 532.954345703125
-running bpv: 0.7892105502915452
-layer1: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 651.8992919921875, val loss None, lr 0.01
-iter 250, train loss 2.7118024826049805, val loss None, lr 0.01
-iter 500, train loss 2.338944911956787, val loss None, lr 0.001111
-iter 750, train loss 2.2620186805725098, val loss None, lr 0.001111
-iter 1000, train loss 2.226661443710327, val loss None, lr 0.001111
-iter 1250, train loss 2.2057535648345947, val loss None, lr 0.001111
-iter 1500, train loss 2.1918392181396484, val loss None, lr 0.001111
-iter 1750, train loss 2.1856632232666016, val loss None, lr 0.001111
-iter 2000, train loss 2.175978422164917, val loss None, lr 0.001111
-iter 2250, train loss 2.171579122543335, val loss None, lr 0.001111
-best loss 2.1651763916015625
-running bpv: 0.7720409650259067
-40258 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:11,  2.79it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.66it/s]Inference:   9%|▉         | 3/32 [00:01<00:10,  2.65it/s]Inference:  12%|█▎        | 4/32 [00:01<00:10,  2.61it/s]Inference:  16%|█▌        | 5/32 [00:01<00:10,  2.60it/s]Inference:  19%|█▉        | 6/32 [00:02<00:09,  2.60it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.61it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.59it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.61it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.60it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.59it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.60it/s]Inference:  41%|████      | 13/32 [00:04<00:07,  2.61it/s]Inference:  44%|████▍     | 14/32 [00:05<00:06,  2.59it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.60it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.61it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.59it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:05,  2.59it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.58it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.58it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.58it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.58it/s]Inference:  72%|███████▏  | 23/32 [00:08<00:03,  2.57it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.49it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.56it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.56it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.57it/s]Inference:  88%|████████▊ | 28/32 [00:10<00:01,  2.56it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.54it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.56it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.53it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.51it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.58it/s]
-33624 MiB free out of 48676 MiB total
-Saved layer 1 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_1.pt
-after cast to cpu
-37638 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 1 total_time elapsed: 3594 estimated time left: 53915
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:29,  1.04it/s]Inference:   6%|▋         | 2/32 [00:01<00:29,  1.02it/s]Inference:   9%|▉         | 3/32 [00:02<00:28,  1.02it/s]Inference:  12%|█▎        | 4/32 [00:04<00:28,  1.01s/it]Inference:  16%|█▌        | 5/32 [00:05<00:27,  1.04s/it]Inference:  19%|█▉        | 6/32 [00:06<00:27,  1.04s/it]Inference:  22%|██▏       | 7/32 [00:07<00:26,  1.05s/it]Inference:  25%|██▌       | 8/32 [00:08<00:25,  1.05s/it]Inference:  28%|██▊       | 9/32 [00:09<00:24,  1.05s/it]Inference:  31%|███▏      | 10/32 [00:10<00:23,  1.05s/it]Inference:  34%|███▍      | 11/32 [00:11<00:22,  1.05s/it]Inference:  38%|███▊      | 12/32 [00:12<00:21,  1.06s/it]Inference:  41%|████      | 13/32 [00:13<00:20,  1.06s/it]Inference:  44%|████▍     | 14/32 [00:14<00:18,  1.05s/it]Inference:  47%|████▋     | 15/32 [00:15<00:17,  1.05s/it]Inference:  50%|█████     | 16/32 [00:16<00:16,  1.05s/it]Inference:  53%|█████▎    | 17/32 [00:17<00:15,  1.06s/it]Inference:  56%|█████▋    | 18/32 [00:18<00:14,  1.06s/it]Inference:  59%|█████▉    | 19/32 [00:19<00:13,  1.06s/it]Inference:  62%|██████▎   | 20/32 [00:20<00:12,  1.06s/it]Inference:  66%|██████▌   | 21/32 [00:21<00:11,  1.06s/it]Inference:  69%|██████▉   | 22/32 [00:23<00:10,  1.06s/it]Inference:  72%|███████▏  | 23/32 [00:24<00:09,  1.06s/it]Inference:  75%|███████▌  | 24/32 [00:25<00:08,  1.06s/it]Inference:  78%|███████▊  | 25/32 [00:26<00:07,  1.06s/it]Inference:  81%|████████▏ | 26/32 [00:27<00:06,  1.06s/it]Inference:  84%|████████▍ | 27/32 [00:28<00:05,  1.06s/it]Inference:  88%|████████▊ | 28/32 [00:29<00:04,  1.06s/it]Inference:  91%|█████████ | 29/32 [00:30<00:03,  1.06s/it]Inference:  94%|█████████▍| 30/32 [00:31<00:02,  1.06s/it]Inference:  97%|█████████▋| 31/32 [00:32<00:01,  1.06s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.06s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.05s/it]
-layer2: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 100310.421875, val loss None, lr 0.01
-iter 250, train loss 1066.57763671875, val loss None, lr 0.01
-iter 500, train loss 933.56201171875, val loss None, lr 0.01
-iter 750, train loss 916.0088500976562, val loss None, lr 0.01
-iter 1000, train loss 792.990478515625, val loss None, lr 0.003333
-iter 1250, train loss 766.180419921875, val loss None, lr 0.001111
-iter 1500, train loss 758.39208984375, val loss None, lr 0.001111
-iter 1750, train loss 750.9915771484375, val loss None, lr 0.001111
-iter 2000, train loss 747.3905029296875, val loss None, lr 0.00037
-iter 2250, train loss 740.4176635742188, val loss None, lr 0.00037
-best loss 735.7297973632812
-running bpv: 0.7915694962686567
-layer2: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 132148.625, val loss None, lr 0.01
-iter 250, train loss 1200.768798828125, val loss None, lr 0.01
-iter 500, train loss 960.858642578125, val loss None, lr 0.003333
-iter 750, train loss 896.4681396484375, val loss None, lr 0.003333
-iter 1000, train loss 854.599365234375, val loss None, lr 0.001111
-iter 1250, train loss 840.3408203125, val loss None, lr 0.001111
-iter 1500, train loss 824.5921630859375, val loss None, lr 0.001111
-iter 1750, train loss 835.919921875, val loss None, lr 0.001111
-iter 2000, train loss 806.75732421875, val loss None, lr 0.00037
-iter 2250, train loss 801.7296752929688, val loss None, lr 0.00037
-best loss 797.004638671875
-running bpv: 0.8096030203349283
-layer2: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 770.806396484375, val loss None, lr 0.01
-iter 250, train loss 186.25975036621094, val loss None, lr 0.01
-iter 500, train loss 182.68307495117188, val loss None, lr 0.01
-iter 750, train loss 180.73944091796875, val loss None, lr 0.01
-iter 1000, train loss 180.27870178222656, val loss None, lr 0.01
-iter 1250, train loss 178.6903076171875, val loss None, lr 0.003333
-iter 1500, train loss 178.34597778320312, val loss None, lr 0.003333
-iter 1750, train loss 177.93624877929688, val loss None, lr 0.001111
-iter 2000, train loss 177.73745727539062, val loss None, lr 0.001111
-iter 2250, train loss 177.56260681152344, val loss None, lr 0.00037
-best loss 177.4537353515625
-running bpv: 0.826306883640553
-layer2: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3.5379817485809326, val loss None, lr 0.01
-iter 250, train loss 0.6681103706359863, val loss None, lr 0.01
-iter 500, train loss 0.6542515158653259, val loss None, lr 0.01
-iter 750, train loss 0.6418697237968445, val loss None, lr 0.01
-iter 1000, train loss 0.6308702230453491, val loss None, lr 0.003333
-iter 1250, train loss 0.6288570165634155, val loss None, lr 0.001111
-iter 1500, train loss 0.6276891827583313, val loss None, lr 0.001111
-iter 1750, train loss 0.6268901228904724, val loss None, lr 0.001111
-iter 2000, train loss 0.6262713670730591, val loss None, lr 0.001111
-iter 2250, train loss 0.625663161277771, val loss None, lr 0.001111
-best loss 0.6249238848686218
-running bpv: 0.8418229166666666
-layer2: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 1445.840576171875, val loss None, lr 0.01
-iter 250, train loss 875.3082275390625, val loss None, lr 0.01
-iter 500, train loss 862.7889404296875, val loss None, lr 0.01
-iter 750, train loss 857.8529052734375, val loss None, lr 0.01
-iter 1000, train loss 854.7677612304688, val loss None, lr 0.01
-iter 1250, train loss 852.9271240234375, val loss None, lr 0.01
-iter 1500, train loss 848.0328369140625, val loss None, lr 0.003333
-iter 1750, train loss 846.9754028320312, val loss None, lr 0.003333
-iter 2000, train loss 847.1168212890625, val loss None, lr 0.003333
-iter 2250, train loss 845.806396484375, val loss None, lr 0.001111
-best loss 845.3079833984375
-running bpv: 0.8098614984787018
-layer2: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 1021.4909057617188, val loss None, lr 0.01
-iter 250, train loss 685.7550048828125, val loss None, lr 0.01
-iter 500, train loss 678.7786865234375, val loss None, lr 0.01
-iter 750, train loss 676.4329223632812, val loss None, lr 0.01
-iter 1000, train loss 674.253173828125, val loss None, lr 0.01
-iter 1250, train loss 672.5657958984375, val loss None, lr 0.01
-iter 1500, train loss 671.3587646484375, val loss None, lr 0.01
-iter 1750, train loss 670.3182983398438, val loss None, lr 0.003333
-iter 2000, train loss 669.28857421875, val loss None, lr 0.001111
-iter 2250, train loss 668.9864501953125, val loss None, lr 0.001111
-best loss 668.7296142578125
-running bpv: 0.783028218283582
-layer2: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3.35430908203125, val loss None, lr 0.01
-iter 250, train loss 1.573790431022644, val loss None, lr 0.01
-iter 500, train loss 1.5583252906799316, val loss None, lr 0.01
-iter 750, train loss 1.5537126064300537, val loss None, lr 0.01
-iter 1000, train loss 1.5445795059204102, val loss None, lr 0.003333
-iter 1250, train loss 1.5426244735717773, val loss None, lr 0.003333
-iter 1500, train loss 1.5417416095733643, val loss None, lr 0.003333
-iter 1750, train loss 1.54015052318573, val loss None, lr 0.003333
-iter 2000, train loss 1.539138674736023, val loss None, lr 0.001111
-iter 2250, train loss 1.5386874675750732, val loss None, lr 0.001111
-best loss 1.5382325649261475
-running bpv: 0.7720409650259067
-37638 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:12,  2.47it/s]Inference:   6%|▋         | 2/32 [00:00<00:12,  2.46it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.44it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.49it/s]Inference:  16%|█▌        | 5/32 [00:01<00:10,  2.53it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.54it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.53it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.57it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.57it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.57it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.55it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.56it/s]Inference:  41%|████      | 13/32 [00:05<00:07,  2.61it/s]Inference:  44%|████▍     | 14/32 [00:05<00:06,  2.60it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.56it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.56it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.57it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.55it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.52it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.53it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.53it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.54it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.54it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.54it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.55it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.52it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.53it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.52it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.53it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.51it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.48it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.46it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.53it/s]
-31048 MiB free out of 48676 MiB total
-Saved layer 2 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_2.pt
-after cast to cpu
-35062 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 2 total_time elapsed: 5387 estimated time left: 52070
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:32,  1.06s/it]Inference:   6%|▋         | 2/32 [00:02<00:31,  1.06s/it]Inference:   9%|▉         | 3/32 [00:03<00:30,  1.06s/it]Inference:  12%|█▎        | 4/32 [00:04<00:29,  1.06s/it]Inference:  16%|█▌        | 5/32 [00:05<00:28,  1.06s/it]Inference:  19%|█▉        | 6/32 [00:06<00:27,  1.06s/it]Inference:  22%|██▏       | 7/32 [00:07<00:26,  1.06s/it]Inference:  25%|██▌       | 8/32 [00:08<00:25,  1.06s/it]Inference:  28%|██▊       | 9/32 [00:09<00:24,  1.06s/it]Inference:  31%|███▏      | 10/32 [00:10<00:23,  1.06s/it]Inference:  34%|███▍      | 11/32 [00:11<00:22,  1.06s/it]Inference:  38%|███▊      | 12/32 [00:12<00:21,  1.06s/it]Inference:  41%|████      | 13/32 [00:13<00:20,  1.06s/it]Inference:  44%|████▍     | 14/32 [00:14<00:19,  1.06s/it]Inference:  47%|████▋     | 15/32 [00:15<00:17,  1.06s/it]Inference:  50%|█████     | 16/32 [00:16<00:16,  1.06s/it]Inference:  53%|█████▎    | 17/32 [00:17<00:15,  1.05s/it]Inference:  56%|█████▋    | 18/32 [00:19<00:14,  1.05s/it]Inference:  59%|█████▉    | 19/32 [00:20<00:13,  1.06s/it]Inference:  62%|██████▎   | 20/32 [00:21<00:12,  1.06s/it]Inference:  66%|██████▌   | 21/32 [00:22<00:11,  1.06s/it]Inference:  69%|██████▉   | 22/32 [00:23<00:10,  1.06s/it]Inference:  72%|███████▏  | 23/32 [00:24<00:09,  1.06s/it]Inference:  75%|███████▌  | 24/32 [00:25<00:08,  1.06s/it]Inference:  78%|███████▊  | 25/32 [00:26<00:07,  1.07s/it]Inference:  81%|████████▏ | 26/32 [00:27<00:06,  1.06s/it]Inference:  84%|████████▍ | 27/32 [00:28<00:05,  1.06s/it]Inference:  88%|████████▊ | 28/32 [00:29<00:04,  1.07s/it]Inference:  91%|█████████ | 29/32 [00:30<00:03,  1.07s/it]Inference:  94%|█████████▍| 30/32 [00:31<00:02,  1.07s/it]Inference:  97%|█████████▋| 31/32 [00:32<00:01,  1.07s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.06s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.06s/it]
-layer3: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 90848.046875, val loss None, lr 0.01
-iter 250, train loss 1990.591064453125, val loss None, lr 0.01
-iter 500, train loss 1821.6356201171875, val loss None, lr 0.01
-iter 750, train loss 1910.146728515625, val loss None, lr 0.01
-iter 1000, train loss 1637.210693359375, val loss None, lr 0.003333
-iter 1250, train loss 1598.510498046875, val loss None, lr 0.003333
-iter 1500, train loss 1576.078857421875, val loss None, lr 0.001111
-iter 1750, train loss 1568.3472900390625, val loss None, lr 0.001111
-iter 2000, train loss 1559.817138671875, val loss None, lr 0.001111
-iter 2250, train loss 1552.511474609375, val loss None, lr 0.00037
-best loss 1548.4991455078125
-running bpv: 0.7852350315126051
-layer3: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 120603.8359375, val loss None, lr 0.01
-iter 250, train loss 2246.2392578125, val loss None, lr 0.01
-iter 500, train loss 2042.15234375, val loss None, lr 0.01
-iter 750, train loss 1903.1357421875, val loss None, lr 0.01
-iter 1000, train loss 1757.1513671875, val loss None, lr 0.003333
-iter 1250, train loss 1713.43505859375, val loss None, lr 0.001111
-iter 1500, train loss 1699.632568359375, val loss None, lr 0.001111
-iter 1750, train loss 1687.950439453125, val loss None, lr 0.001111
-iter 2000, train loss 1680.6514892578125, val loss None, lr 0.001111
-iter 2250, train loss 1670.3587646484375, val loss None, lr 0.00037
-best loss 1663.7022705078125
-running bpv: 0.7977380830605565
-layer3: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 1712.653564453125, val loss None, lr 0.01
-iter 250, train loss 414.38641357421875, val loss None, lr 0.01
-iter 500, train loss 402.83953857421875, val loss None, lr 0.01
-iter 750, train loss 400.8003845214844, val loss None, lr 0.01
-iter 1000, train loss 398.0814208984375, val loss None, lr 0.01
-iter 1250, train loss 396.86346435546875, val loss None, lr 0.01
-iter 1500, train loss 396.49072265625, val loss None, lr 0.01
-iter 1750, train loss 393.68218994140625, val loss None, lr 0.003333
-iter 2000, train loss 393.1053466796875, val loss None, lr 0.001111
-iter 2250, train loss 392.72930908203125, val loss None, lr 0.001111
-best loss 392.4525146484375
-running bpv: 0.8096030203349283
-layer3: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 8.446934700012207, val loss None, lr 0.01
-iter 250, train loss 1.2910903692245483, val loss None, lr 0.01
-iter 500, train loss 1.3126226663589478, val loss None, lr 0.01
-iter 750, train loss 1.2231618165969849, val loss None, lr 0.01
-iter 1000, train loss 1.1882951259613037, val loss None, lr 0.003333
-iter 1250, train loss 1.1862475872039795, val loss None, lr 0.003333
-iter 1500, train loss 1.1793925762176514, val loss None, lr 0.003333
-iter 1750, train loss 1.1733965873718262, val loss None, lr 0.001111
-iter 2000, train loss 1.1731946468353271, val loss None, lr 0.001111
-iter 2250, train loss 1.1705107688903809, val loss None, lr 0.001111
-best loss 1.1691945791244507
-running bpv: 0.8208774786158631
-layer3: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 2254.01025390625, val loss None, lr 0.01
-iter 250, train loss 1187.545654296875, val loss None, lr 0.01
-iter 500, train loss 1159.13330078125, val loss None, lr 0.01
-iter 750, train loss 1148.675537109375, val loss None, lr 0.01
-iter 1000, train loss 1136.884765625, val loss None, lr 0.01
-iter 1250, train loss 1136.768798828125, val loss None, lr 0.01
-iter 1500, train loss 1132.546875, val loss None, lr 0.01
-iter 1750, train loss 1133.6270751953125, val loss None, lr 0.01
-iter 2000, train loss 1130.0882568359375, val loss None, lr 0.01
-iter 2250, train loss 1120.71728515625, val loss None, lr 0.003333
-best loss 1119.265869140625
-running bpv: 0.799221027696793
-layer3: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 1602.775634765625, val loss None, lr 0.01
-iter 250, train loss 937.06298828125, val loss None, lr 0.01
-iter 500, train loss 927.5079345703125, val loss None, lr 0.01
-iter 750, train loss 920.10791015625, val loss None, lr 0.01
-iter 1000, train loss 916.8865966796875, val loss None, lr 0.01
-iter 1250, train loss 910.509033203125, val loss None, lr 0.001111
-iter 1500, train loss 907.5684204101562, val loss None, lr 0.001111
-iter 1750, train loss 906.642333984375, val loss None, lr 0.001111
-iter 2000, train loss 905.99169921875, val loss None, lr 0.001111
-iter 2250, train loss 905.4273071289062, val loss None, lr 0.001111
-best loss 904.8595581054688
-running bpv: 0.780119384430727
-layer3: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 9.965893745422363, val loss None, lr 0.01
-iter 250, train loss 3.5366525650024414, val loss None, lr 0.01
-iter 500, train loss 3.4556756019592285, val loss None, lr 0.01
-iter 750, train loss 3.459873676300049, val loss None, lr 0.01
-iter 1000, train loss 3.427870750427246, val loss None, lr 0.01
-iter 1250, train loss 3.441531181335449, val loss None, lr 0.01
-iter 1500, train loss 3.396273374557495, val loss None, lr 0.003333
-iter 1750, train loss 3.389970302581787, val loss None, lr 0.001111
-iter 2000, train loss 3.385845899581909, val loss None, lr 0.001111
-iter 2250, train loss 3.3830761909484863, val loss None, lr 0.001111
-best loss 3.380929708480835
-running bpv: 0.7720409650259067
-35062 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:11,  2.78it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.62it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.58it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.49it/s]Inference:  16%|█▌        | 5/32 [00:01<00:10,  2.52it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.52it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.62it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.59it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.59it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.56it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.56it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.57it/s]Inference:  41%|████      | 13/32 [00:05<00:07,  2.57it/s]Inference:  44%|████▍     | 14/32 [00:05<00:06,  2.63it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.67it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.65it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.60it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:05,  2.56it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.55it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.60it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.58it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.64it/s]Inference:  72%|███████▏  | 23/32 [00:08<00:03,  2.60it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.55it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.54it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.54it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.55it/s]Inference:  88%|████████▊ | 28/32 [00:10<00:01,  2.53it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.55it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.55it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.55it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.56it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.57it/s]
-28536 MiB free out of 48676 MiB total
-Saved layer 3 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_3.pt
-after cast to cpu
-32550 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 3 total_time elapsed: 7178 estimated time left: 50244
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:32,  1.04s/it]Inference:   6%|▋         | 2/32 [00:02<00:31,  1.04s/it]Inference:   9%|▉         | 3/32 [00:03<00:30,  1.05s/it]Inference:  12%|█▎        | 4/32 [00:04<00:29,  1.05s/it]Inference:  16%|█▌        | 5/32 [00:05<00:28,  1.05s/it]Inference:  19%|█▉        | 6/32 [00:06<00:27,  1.04s/it]Inference:  22%|██▏       | 7/32 [00:07<00:25,  1.04s/it]Inference:  25%|██▌       | 8/32 [00:08<00:24,  1.03s/it]Inference:  28%|██▊       | 9/32 [00:09<00:23,  1.03s/it]Inference:  31%|███▏      | 10/32 [00:10<00:22,  1.03s/it]Inference:  34%|███▍      | 11/32 [00:11<00:21,  1.04s/it]Inference:  38%|███▊      | 12/32 [00:12<00:20,  1.04s/it]Inference:  41%|████      | 13/32 [00:13<00:19,  1.04s/it]Inference:  44%|████▍     | 14/32 [00:14<00:18,  1.04s/it]Inference:  47%|████▋     | 15/32 [00:15<00:17,  1.03s/it]Inference:  50%|█████     | 16/32 [00:16<00:16,  1.04s/it]Inference:  53%|█████▎    | 17/32 [00:17<00:15,  1.04s/it]Inference:  56%|█████▋    | 18/32 [00:18<00:14,  1.04s/it]Inference:  59%|█████▉    | 19/32 [00:19<00:13,  1.05s/it]Inference:  62%|██████▎   | 20/32 [00:20<00:12,  1.05s/it]Inference:  66%|██████▌   | 21/32 [00:21<00:11,  1.05s/it]Inference:  69%|██████▉   | 22/32 [00:22<00:10,  1.05s/it]Inference:  72%|███████▏  | 23/32 [00:23<00:09,  1.05s/it]Inference:  75%|███████▌  | 24/32 [00:25<00:08,  1.05s/it]Inference:  78%|███████▊  | 25/32 [00:26<00:07,  1.05s/it]Inference:  81%|████████▏ | 26/32 [00:27<00:06,  1.04s/it]Inference:  84%|████████▍ | 27/32 [00:28<00:05,  1.04s/it]Inference:  88%|████████▊ | 28/32 [00:29<00:04,  1.03s/it]Inference:  91%|█████████ | 29/32 [00:30<00:03,  1.03s/it]Inference:  94%|█████████▍| 30/32 [00:31<00:02,  1.03s/it]Inference:  97%|█████████▋| 31/32 [00:32<00:01,  1.03s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.04s/it]Inference: 100%|██████████| 32/32 [00:33<00:00,  1.04s/it]
-layer4: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 94240.6953125, val loss None, lr 0.01
-iter 250, train loss 1840.05859375, val loss None, lr 0.01
-iter 500, train loss 1585.5118408203125, val loss None, lr 0.01
-iter 750, train loss 1487.946044921875, val loss None, lr 0.003333
-iter 1000, train loss 1438.5081787109375, val loss None, lr 0.003333
-iter 1250, train loss 1427.5010986328125, val loss None, lr 0.003333
-iter 1500, train loss 1392.795654296875, val loss None, lr 0.001111
-iter 1750, train loss 1381.574462890625, val loss None, lr 0.001111
-iter 2000, train loss 1378.827392578125, val loss None, lr 0.001111
-iter 2250, train loss 1363.6639404296875, val loss None, lr 0.00037
-best loss 1358.7720947265625
-running bpv: 0.7820034898477157
-layer4: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 133582.765625, val loss None, lr 0.01
-iter 250, train loss 1968.3206787109375, val loss None, lr 0.01
-iter 500, train loss 1770.3333740234375, val loss None, lr 0.01
-iter 750, train loss 1587.767333984375, val loss None, lr 0.01
-iter 1000, train loss 1554.3267822265625, val loss None, lr 0.01
-iter 1250, train loss 1448.76708984375, val loss None, lr 0.003333
-iter 1500, train loss 1484.186767578125, val loss None, lr 0.001111
-iter 1750, train loss 1401.2392578125, val loss None, lr 0.001111
-iter 2000, train loss 1389.4541015625, val loss None, lr 0.001111
-iter 2250, train loss 1381.22265625, val loss None, lr 0.001111
-best loss 1376.4752197265625
-running bpv: 0.7915694962686567
-layer4: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 2264.221435546875, val loss None, lr 0.01
-iter 250, train loss 367.22125244140625, val loss None, lr 0.01
-iter 500, train loss 353.5456237792969, val loss None, lr 0.01
-iter 750, train loss 344.7660827636719, val loss None, lr 0.01
-iter 1000, train loss 343.4705810546875, val loss None, lr 0.01
-iter 1250, train loss 348.455322265625, val loss None, lr 0.01
-iter 1500, train loss 338.0599060058594, val loss None, lr 0.003333
-iter 1750, train loss 336.8191833496094, val loss None, lr 0.001111
-iter 2000, train loss 335.9773864746094, val loss None, lr 0.001111
-iter 2250, train loss 335.5547790527344, val loss None, lr 0.001111
-best loss 335.11578369140625
-running bpv: 0.8007621951219512
-layer4: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 37.023231506347656, val loss None, lr 0.01
-iter 250, train loss 4.870427131652832, val loss None, lr 0.01
-iter 500, train loss 4.540361404418945, val loss None, lr 0.01
-iter 750, train loss 4.533168792724609, val loss None, lr 0.01
-iter 1000, train loss 4.46497917175293, val loss None, lr 0.01
-iter 1250, train loss 4.421562194824219, val loss None, lr 0.003333
-iter 1500, train loss 4.40570068359375, val loss None, lr 0.003333
-iter 1750, train loss 4.397391319274902, val loss None, lr 0.003333
-iter 2000, train loss 4.391191482543945, val loss None, lr 0.003333
-iter 2250, train loss 4.418880462646484, val loss None, lr 0.003333
-best loss 4.371763229370117
-running bpv: 0.8096030203349283
-layer4: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 5380.14111328125, val loss None, lr 0.01
-iter 250, train loss 1977.686767578125, val loss None, lr 0.01
-iter 500, train loss 1922.1922607421875, val loss None, lr 0.01
-iter 750, train loss 1916.956298828125, val loss None, lr 0.01
-iter 1000, train loss 1892.0213623046875, val loss None, lr 0.01
-iter 1250, train loss 1858.678466796875, val loss None, lr 0.003333
-iter 1500, train loss 1859.8585205078125, val loss None, lr 0.003333
-iter 1750, train loss 1849.082275390625, val loss None, lr 0.001111
-iter 2000, train loss 1846.509033203125, val loss None, lr 0.001111
-iter 2250, train loss 1842.657470703125, val loss None, lr 0.00037
-best loss 1840.77685546875
-running bpv: 0.7932531641069397
-layer4: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 3205.987548828125, val loss None, lr 0.01
-iter 250, train loss 1415.182861328125, val loss None, lr 0.01
-iter 500, train loss 1385.37255859375, val loss None, lr 0.01
-iter 750, train loss 1373.343994140625, val loss None, lr 0.01
-iter 1000, train loss 1366.6796875, val loss None, lr 0.01
-iter 1250, train loss 1361.916015625, val loss None, lr 0.01
-iter 1500, train loss 1348.2984619140625, val loss None, lr 0.003333
-iter 1750, train loss 1341.265625, val loss None, lr 0.001111
-iter 2000, train loss 1339.406982421875, val loss None, lr 0.001111
-iter 2250, train loss 1337.7197265625, val loss None, lr 0.001111
-best loss 1336.3388671875
-running bpv: 0.7784283486984815
-layer4: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 71.07367706298828, val loss None, lr 0.01
-iter 250, train loss 10.848614692687988, val loss None, lr 0.01
-iter 500, train loss 10.389392852783203, val loss None, lr 0.01
-iter 750, train loss 10.261096000671387, val loss None, lr 0.01
-iter 1000, train loss 10.048943519592285, val loss None, lr 0.003333
-iter 1250, train loss 10.084407806396484, val loss None, lr 0.003333
-iter 1500, train loss 9.966179847717285, val loss None, lr 0.001111
-iter 1750, train loss 9.947526931762695, val loss None, lr 0.001111
-iter 2000, train loss 9.927959442138672, val loss None, lr 0.00037
-iter 2250, train loss 9.91538143157959, val loss None, lr 0.00037
-best loss 9.907552719116211
-running bpv: 0.7720409650259067
-32550 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:12,  2.47it/s]Inference:   6%|▋         | 2/32 [00:00<00:12,  2.42it/s]Inference:   9%|▉         | 3/32 [00:01<00:12,  2.41it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.44it/s]Inference:  16%|█▌        | 5/32 [00:02<00:10,  2.46it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.45it/s]Inference:  22%|██▏       | 7/32 [00:02<00:10,  2.48it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.49it/s]Inference:  28%|██▊       | 9/32 [00:03<00:09,  2.49it/s]Inference:  31%|███▏      | 10/32 [00:04<00:08,  2.51it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.51it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.51it/s]Inference:  41%|████      | 13/32 [00:05<00:07,  2.53it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.53it/s]Inference:  47%|████▋     | 15/32 [00:06<00:06,  2.54it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.50it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.52it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.49it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.47it/s]Inference:  62%|██████▎   | 20/32 [00:08<00:04,  2.44it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.44it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:04,  2.43it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.42it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.42it/s]Inference:  78%|███████▊  | 25/32 [00:10<00:02,  2.41it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.41it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:02,  2.38it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.37it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.37it/s]Inference:  94%|█████████▍| 30/32 [00:12<00:00,  2.38it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.40it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.39it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.45it/s]
-26024 MiB free out of 48676 MiB total
-Saved layer 4 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_4.pt
-after cast to cpu
-30038 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 4 total_time elapsed: 8956 estimated time left: 48364
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:31,  1.02s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.02s/it]Inference:   9%|▉         | 3/32 [00:03<00:29,  1.02s/it]Inference:  12%|█▎        | 4/32 [00:04<00:28,  1.03s/it]Inference:  16%|█▌        | 5/32 [00:05<00:27,  1.03s/it]Inference:  19%|█▉        | 6/32 [00:06<00:26,  1.03s/it]Inference:  22%|██▏       | 7/32 [00:07<00:25,  1.03s/it]Inference:  25%|██▌       | 8/32 [00:08<00:24,  1.02s/it]Inference:  28%|██▊       | 9/32 [00:09<00:23,  1.02s/it]Inference:  31%|███▏      | 10/32 [00:10<00:22,  1.02s/it]Inference:  34%|███▍      | 11/32 [00:11<00:21,  1.02s/it]Inference:  38%|███▊      | 12/32 [00:12<00:20,  1.02s/it]Inference:  41%|████      | 13/32 [00:13<00:19,  1.02s/it]Inference:  44%|████▍     | 14/32 [00:14<00:18,  1.02s/it]Inference:  47%|████▋     | 15/32 [00:15<00:17,  1.03s/it]Inference:  50%|█████     | 16/32 [00:16<00:16,  1.02s/it]Inference:  53%|█████▎    | 17/32 [00:17<00:15,  1.02s/it]Inference:  56%|█████▋    | 18/32 [00:18<00:14,  1.02s/it]Inference:  59%|█████▉    | 19/32 [00:19<00:13,  1.02s/it]Inference:  62%|██████▎   | 20/32 [00:20<00:12,  1.01s/it]Inference:  66%|██████▌   | 21/32 [00:21<00:11,  1.01s/it]Inference:  69%|██████▉   | 22/32 [00:22<00:10,  1.02s/it]Inference:  72%|███████▏  | 23/32 [00:23<00:09,  1.02s/it]Inference:  75%|███████▌  | 24/32 [00:24<00:08,  1.02s/it]Inference:  78%|███████▊  | 25/32 [00:25<00:07,  1.02s/it]Inference:  81%|████████▏ | 26/32 [00:26<00:06,  1.01s/it]Inference:  84%|████████▍ | 27/32 [00:27<00:05,  1.02s/it]Inference:  88%|████████▊ | 28/32 [00:28<00:04,  1.02s/it]Inference:  91%|█████████ | 29/32 [00:29<00:03,  1.02s/it]Inference:  94%|█████████▍| 30/32 [00:30<00:02,  1.02s/it]Inference:  97%|█████████▋| 31/32 [00:31<00:01,  1.01s/it]Inference: 100%|██████████| 32/32 [00:32<00:00,  1.00s/it]Inference: 100%|██████████| 32/32 [00:32<00:00,  1.02s/it]
-layer5: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 78234.46875, val loss None, lr 0.01
-iter 250, train loss 1402.9425048828125, val loss None, lr 0.01
-iter 500, train loss 1116.4755859375, val loss None, lr 0.01
-iter 750, train loss 1072.7388916015625, val loss None, lr 0.01
-iter 1000, train loss 889.115478515625, val loss None, lr 0.003333
-iter 1250, train loss 855.4436645507812, val loss None, lr 0.001111
-iter 1500, train loss 841.314697265625, val loss None, lr 0.001111
-iter 1750, train loss 834.0331420898438, val loss None, lr 0.001111
-iter 2000, train loss 825.7591552734375, val loss None, lr 0.001111
-iter 2250, train loss 818.7481689453125, val loss None, lr 0.00037
-best loss 814.6182250976562
-running bpv: 0.7800434824159022
-layer5: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 118197.7734375, val loss None, lr 0.01
-iter 250, train loss 1549.052978515625, val loss None, lr 0.01
-iter 500, train loss 1306.671630859375, val loss None, lr 0.01
-iter 750, train loss 1028.1983642578125, val loss None, lr 0.01
-iter 1000, train loss 948.58154296875, val loss None, lr 0.003333
-iter 1250, train loss 906.204833984375, val loss None, lr 0.001111
-iter 1500, train loss 889.6659545898438, val loss None, lr 0.001111
-iter 1750, train loss 877.8226928710938, val loss None, lr 0.001111
-iter 2000, train loss 868.4775390625, val loss None, lr 0.001111
-iter 2250, train loss 860.25537109375, val loss None, lr 0.00037
-best loss 854.0501708984375
-running bpv: 0.7877891486960883
-layer5: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 2799.9052734375, val loss None, lr 0.01
-iter 250, train loss 242.9204559326172, val loss None, lr 0.01
-iter 500, train loss 214.5460205078125, val loss None, lr 0.01
-iter 750, train loss 208.29592895507812, val loss None, lr 0.01
-iter 1000, train loss 206.94729614257812, val loss None, lr 0.01
-iter 1250, train loss 204.99241638183594, val loss None, lr 0.01
-iter 1500, train loss 200.6259765625, val loss None, lr 0.003333
-iter 1750, train loss 199.86492919921875, val loss None, lr 0.001111
-iter 2000, train loss 198.44061279296875, val loss None, lr 0.001111
-iter 2250, train loss 198.49220275878906, val loss None, lr 0.001111
-best loss 197.45127868652344
-running bpv: 0.7952901345014808
-layer5: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 388.4625244140625, val loss None, lr 0.01
-iter 250, train loss 12.103777885437012, val loss None, lr 0.01
-iter 500, train loss 10.512222290039062, val loss None, lr 0.01
-iter 750, train loss 8.071508407592773, val loss None, lr 0.01
-iter 1000, train loss 7.158381938934326, val loss None, lr 0.003333
-iter 1250, train loss 6.937718391418457, val loss None, lr 0.003333
-iter 1500, train loss 6.981196403503418, val loss None, lr 0.003333
-iter 1750, train loss 6.704475402832031, val loss None, lr 0.001111
-iter 2000, train loss 6.648496150970459, val loss None, lr 0.001111
-iter 2250, train loss 6.603645324707031, val loss None, lr 0.001111
-best loss 6.577581882476807
-running bpv: 0.8025578534985423
-layer5: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 6743.44384765625, val loss None, lr 0.01
-iter 250, train loss 1681.608642578125, val loss None, lr 0.01
-iter 500, train loss 1607.09814453125, val loss None, lr 0.01
-iter 750, train loss 1566.0184326171875, val loss None, lr 0.01
-iter 1000, train loss 1527.027099609375, val loss None, lr 0.003333
-iter 1250, train loss 1500.6064453125, val loss None, lr 0.003333
-iter 1500, train loss 1491.548095703125, val loss None, lr 0.003333
-iter 1750, train loss 1488.3106689453125, val loss None, lr 0.003333
-iter 2000, train loss 1484.03857421875, val loss None, lr 0.003333
-iter 2250, train loss 1478.502197265625, val loss None, lr 0.001111
-best loss 1473.6085205078125
-running bpv: 0.789434176772388
-layer5: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 3869.517333984375, val loss None, lr 0.01
-iter 250, train loss 1141.1695556640625, val loss None, lr 0.01
-iter 500, train loss 1109.97216796875, val loss None, lr 0.01
-iter 750, train loss 1068.99560546875, val loss None, lr 0.003333
-iter 1000, train loss 1062.187744140625, val loss None, lr 0.003333
-iter 1250, train loss 1055.760986328125, val loss None, lr 0.003333
-iter 1500, train loss 1050.89697265625, val loss None, lr 0.003333
-iter 1750, train loss 1046.6583251953125, val loss None, lr 0.001111
-iter 2000, train loss 1044.325927734375, val loss None, lr 0.001111
-iter 2250, train loss 1043.0150146484375, val loss None, lr 0.001111
-best loss 1040.547607421875
-running bpv: 0.7773227298206278
-layer5: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 271.129150390625, val loss None, lr 0.01
-iter 250, train loss 7.825603485107422, val loss None, lr 0.01
-iter 500, train loss 7.187520503997803, val loss None, lr 0.01
-iter 750, train loss 7.105737686157227, val loss None, lr 0.01
-iter 1000, train loss 6.32963752746582, val loss None, lr 0.003333
-iter 1250, train loss 6.256389617919922, val loss None, lr 0.003333
-iter 1500, train loss 6.3129377365112305, val loss None, lr 0.003333
-iter 1750, train loss 6.1332292556762695, val loss None, lr 0.001111
-iter 2000, train loss 6.1140217781066895, val loss None, lr 0.001111
-iter 2250, train loss 6.101277828216553, val loss None, lr 0.001111
-best loss 6.067213535308838
-running bpv: 0.7720409650259067
-30038 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:09,  3.12it/s]Inference:   6%|▋         | 2/32 [00:00<00:10,  2.97it/s]Inference:   9%|▉         | 3/32 [00:01<00:09,  2.92it/s]Inference:  12%|█▎        | 4/32 [00:01<00:09,  2.89it/s]Inference:  16%|█▌        | 5/32 [00:01<00:09,  2.89it/s]Inference:  19%|█▉        | 6/32 [00:02<00:08,  2.90it/s]Inference:  22%|██▏       | 7/32 [00:02<00:08,  2.89it/s]Inference:  25%|██▌       | 8/32 [00:02<00:08,  2.89it/s]Inference:  28%|██▊       | 9/32 [00:03<00:07,  2.89it/s]Inference:  31%|███▏      | 10/32 [00:03<00:07,  2.89it/s]Inference:  34%|███▍      | 11/32 [00:03<00:07,  2.89it/s]Inference:  38%|███▊      | 12/32 [00:04<00:06,  2.90it/s]Inference:  41%|████      | 13/32 [00:04<00:06,  2.88it/s]Inference:  44%|████▍     | 14/32 [00:04<00:06,  2.86it/s]Inference:  47%|████▋     | 15/32 [00:05<00:05,  2.86it/s]Inference:  50%|█████     | 16/32 [00:05<00:05,  2.85it/s]Inference:  53%|█████▎    | 17/32 [00:05<00:05,  2.88it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:04,  2.88it/s]Inference:  59%|█████▉    | 19/32 [00:06<00:04,  2.85it/s]Inference:  62%|██████▎   | 20/32 [00:06<00:04,  2.86it/s]Inference:  66%|██████▌   | 21/32 [00:07<00:03,  2.86it/s]Inference:  69%|██████▉   | 22/32 [00:07<00:03,  2.89it/s]Inference:  72%|███████▏  | 23/32 [00:08<00:03,  2.78it/s]Inference:  75%|███████▌  | 24/32 [00:08<00:02,  2.76it/s]Inference:  78%|███████▊  | 25/32 [00:08<00:02,  2.67it/s]Inference:  81%|████████▏ | 26/32 [00:09<00:02,  2.61it/s]Inference:  84%|████████▍ | 27/32 [00:09<00:01,  2.59it/s]Inference:  88%|████████▊ | 28/32 [00:09<00:01,  2.59it/s]Inference:  91%|█████████ | 29/32 [00:10<00:01,  2.55it/s]Inference:  94%|█████████▍| 30/32 [00:10<00:00,  2.52it/s]Inference:  97%|█████████▋| 31/32 [00:11<00:00,  2.29it/s]Inference: 100%|██████████| 32/32 [00:11<00:00,  2.19it/s]Inference: 100%|██████████| 32/32 [00:11<00:00,  2.71it/s]
-23448 MiB free out of 48676 MiB total
-Saved layer 5 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_5.pt
-after cast to cpu
-27462 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 5 total_time elapsed: 10744 estimated time left: 46556
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:35,  1.15s/it]Inference:   6%|▋         | 2/32 [00:02<00:34,  1.14s/it]Inference:   9%|▉         | 3/32 [00:03<00:32,  1.13s/it]Inference:  12%|█▎        | 4/32 [00:04<00:30,  1.10s/it]Inference:  16%|█▌        | 5/32 [00:05<00:29,  1.09s/it]Inference:  19%|█▉        | 6/32 [00:06<00:28,  1.08s/it]Inference:  22%|██▏       | 7/32 [00:07<00:26,  1.07s/it]Inference:  25%|██▌       | 8/32 [00:08<00:25,  1.07s/it]Inference:  28%|██▊       | 9/32 [00:09<00:24,  1.07s/it]Inference:  31%|███▏      | 10/32 [00:10<00:23,  1.07s/it]Inference:  34%|███▍      | 11/32 [00:11<00:22,  1.07s/it]Inference:  38%|███▊      | 12/32 [00:13<00:21,  1.07s/it]Inference:  41%|████      | 13/32 [00:14<00:20,  1.07s/it]Inference:  44%|████▍     | 14/32 [00:15<00:19,  1.07s/it]Inference:  47%|████▋     | 15/32 [00:16<00:18,  1.08s/it]Inference:  50%|█████     | 16/32 [00:17<00:17,  1.08s/it]Inference:  53%|█████▎    | 17/32 [00:18<00:16,  1.08s/it]Inference:  56%|█████▋    | 18/32 [00:19<00:15,  1.07s/it]Inference:  59%|█████▉    | 19/32 [00:20<00:13,  1.07s/it]Inference:  62%|██████▎   | 20/32 [00:21<00:12,  1.08s/it]Inference:  66%|██████▌   | 21/32 [00:22<00:11,  1.08s/it]Inference:  69%|██████▉   | 22/32 [00:23<00:10,  1.08s/it]Inference:  72%|███████▏  | 23/32 [00:24<00:09,  1.08s/it]Inference:  75%|███████▌  | 24/32 [00:25<00:08,  1.08s/it]Inference:  78%|███████▊  | 25/32 [00:27<00:07,  1.08s/it]Inference:  81%|████████▏ | 26/32 [00:28<00:06,  1.08s/it]Inference:  84%|████████▍ | 27/32 [00:29<00:05,  1.08s/it]Inference:  88%|████████▊ | 28/32 [00:30<00:04,  1.08s/it]Inference:  91%|█████████ | 29/32 [00:31<00:03,  1.08s/it]Inference:  94%|█████████▍| 30/32 [00:32<00:02,  1.08s/it]Inference:  97%|█████████▋| 31/32 [00:33<00:01,  1.08s/it]Inference: 100%|██████████| 32/32 [00:34<00:00,  1.08s/it]Inference: 100%|██████████| 32/32 [00:34<00:00,  1.08s/it]
-layer6: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 71500.84375, val loss None, lr 0.01
-iter 250, train loss 1379.369873046875, val loss None, lr 0.01
-iter 500, train loss 1199.338623046875, val loss None, lr 0.01
-iter 750, train loss 896.5408325195312, val loss None, lr 0.01
-iter 1000, train loss 812.1444091796875, val loss None, lr 0.003333
-iter 1250, train loss 776.675537109375, val loss None, lr 0.001111
-iter 1500, train loss 761.8067626953125, val loss None, lr 0.001111
-iter 1750, train loss 754.533203125, val loss None, lr 0.001111
-iter 2000, train loss 745.355224609375, val loss None, lr 0.001111
-iter 2250, train loss 739.468994140625, val loss None, lr 0.001111
-best loss 732.093017578125
-running bpv: 0.7787279067291312
-layer6: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 96031.3125, val loss None, lr 0.01
-iter 250, train loss 1353.3447265625, val loss None, lr 0.01
-iter 500, train loss 1051.470947265625, val loss None, lr 0.01
-iter 750, train loss 855.94140625, val loss None, lr 0.003333
-iter 1000, train loss 791.84716796875, val loss None, lr 0.003333
-iter 1250, train loss 762.6588134765625, val loss None, lr 0.001111
-iter 1500, train loss 747.5028686523438, val loss None, lr 0.001111
-iter 1750, train loss 738.1024169921875, val loss None, lr 0.001111
-iter 2000, train loss 729.1254272460938, val loss None, lr 0.001111
-iter 2250, train loss 723.3291015625, val loss None, lr 0.001111
-best loss 713.1190795898438
-running bpv: 0.7852350315126051
-layer6: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3556.57470703125, val loss None, lr 0.01
-iter 250, train loss 222.22030639648438, val loss None, lr 0.01
-iter 500, train loss 202.08416748046875, val loss None, lr 0.01
-iter 750, train loss 194.3832244873047, val loss None, lr 0.01
-iter 1000, train loss 178.23519897460938, val loss None, lr 0.003333
-iter 1250, train loss 177.43414306640625, val loss None, lr 0.003333
-iter 1500, train loss 175.45071411132812, val loss None, lr 0.003333
-iter 1750, train loss 172.674072265625, val loss None, lr 0.001111
-iter 2000, train loss 171.88421630859375, val loss None, lr 0.001111
-iter 2250, train loss 171.0629119873047, val loss None, lr 0.001111
-best loss 170.60394287109375
-running bpv: 0.7915694962686567
-layer6: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 656.70849609375, val loss None, lr 0.01
-iter 250, train loss 17.07054328918457, val loss None, lr 0.01
-iter 500, train loss 12.145259857177734, val loss None, lr 0.01
-iter 750, train loss 9.185867309570312, val loss None, lr 0.01
-iter 1000, train loss 8.297884941101074, val loss None, lr 0.003333
-iter 1250, train loss 8.244329452514648, val loss None, lr 0.003333
-iter 1500, train loss 7.6810760498046875, val loss None, lr 0.001111
-iter 1750, train loss 7.507994651794434, val loss None, lr 0.001111
-iter 2000, train loss 7.444938659667969, val loss None, lr 0.00037
-iter 2250, train loss 7.350697040557861, val loss None, lr 0.00037
-best loss 7.288631439208984
-running bpv: 0.7977380830605565
-layer6: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 8608.3134765625, val loss None, lr 0.01
-iter 250, train loss 1877.63671875, val loss None, lr 0.01
-iter 500, train loss 1790.260986328125, val loss None, lr 0.01
-iter 750, train loss 1699.9609375, val loss None, lr 0.01
-iter 1000, train loss 1717.3966064453125, val loss None, lr 0.01
-iter 1250, train loss 1626.1683349609375, val loss None, lr 0.003333
-iter 1500, train loss 1615.1578369140625, val loss None, lr 0.001111
-iter 1750, train loss 1610.3409423828125, val loss None, lr 0.001111
-iter 2000, train loss 1604.113037109375, val loss None, lr 0.00037
-iter 2250, train loss 1601.5166015625, val loss None, lr 0.00037
-best loss 1598.734619140625
-running bpv: 0.7867805088932807
-layer6: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 4253.173828125, val loss None, lr 0.01
-iter 250, train loss 1193.639404296875, val loss None, lr 0.01
-iter 500, train loss 1158.99609375, val loss None, lr 0.01
-iter 750, train loss 1132.033203125, val loss None, lr 0.01
-iter 1000, train loss 1136.1884765625, val loss None, lr 0.01
-iter 1250, train loss 1102.7418212890625, val loss None, lr 0.003333
-iter 1500, train loss 1096.69921875, val loss None, lr 0.003333
-iter 1750, train loss 1098.633544921875, val loss None, lr 0.003333
-iter 2000, train loss 1087.162109375, val loss None, lr 0.001111
-iter 2250, train loss 1086.01611328125, val loss None, lr 0.001111
-best loss 1083.7584228515625
-running bpv: 0.7765433868501529
-layer6: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 72.60491943359375, val loss None, lr 0.01
-iter 250, train loss 7.400982856750488, val loss None, lr 0.01
-iter 500, train loss 6.807528972625732, val loss None, lr 0.01
-iter 750, train loss 6.290595531463623, val loss None, lr 0.003333
-iter 1000, train loss 6.189568519592285, val loss None, lr 0.003333
-iter 1250, train loss 6.204722881317139, val loss None, lr 0.003333
-iter 1500, train loss 6.0905351638793945, val loss None, lr 0.001111
-iter 1750, train loss 6.060194969177246, val loss None, lr 0.001111
-iter 2000, train loss 6.0417280197143555, val loss None, lr 0.001111
-iter 2250, train loss 6.021910667419434, val loss None, lr 0.00037
-best loss 6.005374908447266
-running bpv: 0.7720409650259067
-27462 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:13,  2.22it/s]Inference:   6%|▋         | 2/32 [00:00<00:13,  2.26it/s]Inference:   9%|▉         | 3/32 [00:01<00:12,  2.30it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.35it/s]Inference:  16%|█▌        | 5/32 [00:02<00:11,  2.37it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.38it/s]Inference:  22%|██▏       | 7/32 [00:02<00:10,  2.40it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.41it/s]Inference:  28%|██▊       | 9/32 [00:03<00:09,  2.41it/s]Inference:  31%|███▏      | 10/32 [00:04<00:09,  2.42it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.42it/s]Inference:  38%|███▊      | 12/32 [00:05<00:08,  2.42it/s]Inference:  41%|████      | 13/32 [00:05<00:07,  2.40it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.41it/s]Inference:  47%|████▋     | 15/32 [00:06<00:07,  2.39it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.38it/s]Inference:  53%|█████▎    | 17/32 [00:07<00:06,  2.40it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.39it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.40it/s]Inference:  62%|██████▎   | 20/32 [00:08<00:05,  2.39it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.40it/s]Inference:  69%|██████▉   | 22/32 [00:09<00:04,  2.41it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.40it/s]Inference:  75%|███████▌  | 24/32 [00:10<00:03,  2.40it/s]Inference:  78%|███████▊  | 25/32 [00:10<00:02,  2.40it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.38it/s]Inference:  84%|████████▍ | 27/32 [00:11<00:02,  2.36it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.38it/s]Inference:  91%|█████████ | 29/32 [00:12<00:01,  2.36it/s]Inference:  94%|█████████▍| 30/32 [00:12<00:00,  2.36it/s]Inference:  97%|█████████▋| 31/32 [00:13<00:00,  2.35it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.41it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.39it/s]
-20936 MiB free out of 48676 MiB total
-Saved layer 6 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_6.pt
-after cast to cpu
-24950 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 6 total_time elapsed: 12541 estimated time left: 44791
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:31,  1.03s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.03s/it]Inference:   9%|▉         | 3/32 [00:03<00:29,  1.03s/it]Inference:  12%|█▎        | 4/32 [00:04<00:29,  1.04s/it]Inference:  16%|█▌        | 5/32 [00:05<00:26,  1.00it/s]Inference:  19%|█▉        | 6/32 [00:06<00:25,  1.01it/s]Inference:  22%|██▏       | 7/32 [00:06<00:24,  1.02it/s]Inference:  25%|██▌       | 8/32 [00:07<00:23,  1.03it/s]Inference:  28%|██▊       | 9/32 [00:08<00:22,  1.03it/s]Inference:  31%|███▏      | 10/32 [00:09<00:21,  1.03it/s]Inference:  34%|███▍      | 11/32 [00:10<00:20,  1.03it/s]Inference:  38%|███▊      | 12/32 [00:11<00:19,  1.03it/s]Inference:  41%|████      | 13/32 [00:12<00:18,  1.03it/s]Inference:  44%|████▍     | 14/32 [00:13<00:17,  1.03it/s]Inference:  47%|████▋     | 15/32 [00:14<00:16,  1.03it/s]Inference:  50%|█████     | 16/32 [00:15<00:15,  1.03it/s]Inference:  53%|█████▎    | 17/32 [00:16<00:14,  1.03it/s]Inference:  56%|█████▋    | 18/32 [00:17<00:13,  1.03it/s]Inference:  59%|█████▉    | 19/32 [00:18<00:12,  1.03it/s]Inference:  62%|██████▎   | 20/32 [00:19<00:11,  1.03it/s]Inference:  66%|██████▌   | 21/32 [00:20<00:10,  1.03it/s]Inference:  69%|██████▉   | 22/32 [00:21<00:09,  1.03it/s]Inference:  72%|███████▏  | 23/32 [00:22<00:08,  1.03it/s]Inference:  75%|███████▌  | 24/32 [00:23<00:07,  1.04it/s]Inference:  78%|███████▊  | 25/32 [00:24<00:06,  1.04it/s]Inference:  81%|████████▏ | 26/32 [00:25<00:05,  1.04it/s]Inference:  84%|████████▍ | 27/32 [00:26<00:04,  1.05it/s]Inference:  88%|████████▊ | 28/32 [00:27<00:03,  1.05it/s]Inference:  91%|█████████ | 29/32 [00:28<00:02,  1.05it/s]Inference:  94%|█████████▍| 30/32 [00:29<00:01,  1.04it/s]Inference:  97%|█████████▋| 31/32 [00:30<00:00,  1.04it/s]Inference: 100%|██████████| 32/32 [00:31<00:00,  1.04it/s]Inference: 100%|██████████| 32/32 [00:31<00:00,  1.03it/s]
-layer7: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 77547.8046875, val loss None, lr 0.01
-iter 250, train loss 1565.8543701171875, val loss None, lr 0.01
-iter 500, train loss 1308.39990234375, val loss None, lr 0.01
-iter 750, train loss 1178.1368408203125, val loss None, lr 0.01
-iter 1000, train loss 1026.9010009765625, val loss None, lr 0.003333
-iter 1250, train loss 986.4434814453125, val loss None, lr 0.001111
-iter 1500, train loss 972.12060546875, val loss None, lr 0.001111
-iter 1750, train loss 962.7821044921875, val loss None, lr 0.001111
-iter 2000, train loss 954.0720825195312, val loss None, lr 0.001111
-iter 2250, train loss 944.3463745117188, val loss None, lr 0.00037
-best loss 938.3236083984375
-running bpv: 0.7777838103511339
-layer7: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 92832.0390625, val loss None, lr 0.01
-iter 250, train loss 1500.907958984375, val loss None, lr 0.01
-iter 500, train loss 1320.2257080078125, val loss None, lr 0.01
-iter 750, train loss 1185.5450439453125, val loss None, lr 0.01
-iter 1000, train loss 1084.29443359375, val loss None, lr 0.01
-iter 1250, train loss 1064.63720703125, val loss None, lr 0.01
-iter 1500, train loss 926.6647338867188, val loss None, lr 0.003333
-iter 1750, train loss 900.1494750976562, val loss None, lr 0.001111
-iter 2000, train loss 890.3333740234375, val loss None, lr 0.001111
-iter 2250, train loss 881.86865234375, val loss None, lr 0.00037
-best loss 876.0723876953125
-running bpv: 0.7833937771149675
-layer7: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3514.61767578125, val loss None, lr 0.01
-iter 250, train loss 284.6446228027344, val loss None, lr 0.01
-iter 500, train loss 267.9341125488281, val loss None, lr 0.01
-iter 750, train loss 244.99879455566406, val loss None, lr 0.01
-iter 1000, train loss 246.80747985839844, val loss None, lr 0.01
-iter 1250, train loss 238.2874298095703, val loss None, lr 0.01
-iter 1500, train loss 233.57034301757812, val loss None, lr 0.003333
-iter 1750, train loss 232.74703979492188, val loss None, lr 0.003333
-iter 2000, train loss 230.43936157226562, val loss None, lr 0.001111
-iter 2250, train loss 229.7574005126953, val loss None, lr 0.001111
-best loss 229.2078399658203
-running bpv: 0.788875424410293
-layer7: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 352.776611328125, val loss None, lr 0.01
-iter 250, train loss 16.79537010192871, val loss None, lr 0.01
-iter 500, train loss 13.261154174804688, val loss None, lr 0.01
-iter 750, train loss 12.661453247070312, val loss None, lr 0.01
-iter 1000, train loss 11.685422897338867, val loss None, lr 0.01
-iter 1250, train loss 10.79671859741211, val loss None, lr 0.003333
-iter 1500, train loss 10.667021751403809, val loss None, lr 0.003333
-iter 1750, train loss 10.574575424194336, val loss None, lr 0.001111
-iter 2000, train loss 10.379423141479492, val loss None, lr 0.001111
-iter 2250, train loss 10.341554641723633, val loss None, lr 0.001111
-best loss 10.292086601257324
-running bpv: 0.794233105123675
-layer7: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 10909.44140625, val loss None, lr 0.01
-iter 250, train loss 2420.274658203125, val loss None, lr 0.01
-iter 500, train loss 2328.295654296875, val loss None, lr 0.01
-iter 750, train loss 2210.228759765625, val loss None, lr 0.003333
-iter 1000, train loss 2172.4443359375, val loss None, lr 0.003333
-iter 1250, train loss 2152.55810546875, val loss None, lr 0.001111
-iter 1500, train loss 2144.3974609375, val loss None, lr 0.001111
-iter 1750, train loss 2137.904296875, val loss None, lr 0.001111
-iter 2000, train loss 2133.988037109375, val loss None, lr 0.00037
-iter 2250, train loss 2125.821044921875, val loss None, lr 0.00037
-best loss 2122.662109375
-running bpv: 0.7848293895747599
-layer7: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 5209.912109375, val loss None, lr 0.01
-iter 250, train loss 1658.34912109375, val loss None, lr 0.01
-iter 500, train loss 1591.122314453125, val loss None, lr 0.01
-iter 750, train loss 1546.8262939453125, val loss None, lr 0.003333
-iter 1000, train loss 1532.286376953125, val loss None, lr 0.003333
-iter 1250, train loss 1517.97607421875, val loss None, lr 0.001111
-iter 1500, train loss 1513.50634765625, val loss None, lr 0.001111
-iter 1750, train loss 1509.826416015625, val loss None, lr 0.00037
-iter 2000, train loss 1507.6168212890625, val loss None, lr 0.00037
-iter 2250, train loss 1505.4266357421875, val loss None, lr 0.00037
-best loss 1503.122314453125
-running bpv: 0.7759644611925383
-layer7: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 91.17571258544922, val loss None, lr 0.01
-iter 250, train loss 12.37283992767334, val loss None, lr 0.01
-iter 500, train loss 11.592048645019531, val loss None, lr 0.01
-iter 750, train loss 11.496623992919922, val loss None, lr 0.01
-iter 1000, train loss 10.813421249389648, val loss None, lr 0.003333
-iter 1250, train loss 10.741304397583008, val loss None, lr 0.003333
-iter 1500, train loss 10.644280433654785, val loss None, lr 0.001111
-iter 1750, train loss 10.61661434173584, val loss None, lr 0.001111
-iter 2000, train loss 10.57720947265625, val loss None, lr 0.00037
-iter 2250, train loss 10.555269241333008, val loss None, lr 0.00037
-best loss 10.540325164794922
-running bpv: 0.7720409650259067
-24950 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:09,  3.18it/s]Inference:   6%|▋         | 2/32 [00:00<00:09,  3.03it/s]Inference:   9%|▉         | 3/32 [00:01<00:09,  2.93it/s]Inference:  12%|█▎        | 4/32 [00:01<00:09,  3.06it/s]Inference:  16%|█▌        | 5/32 [00:01<00:09,  2.81it/s]Inference:  19%|█▉        | 6/32 [00:02<00:09,  2.69it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.62it/s]Inference:  25%|██▌       | 8/32 [00:02<00:09,  2.54it/s]Inference:  28%|██▊       | 9/32 [00:03<00:09,  2.52it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.49it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.47it/s]Inference:  38%|███▊      | 12/32 [00:04<00:08,  2.45it/s]Inference:  41%|████      | 13/32 [00:04<00:07,  2.46it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.44it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.44it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.43it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:06,  2.42it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.47it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.46it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.44it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.43it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:04,  2.41it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.45it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.43it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.43it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.44it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:02,  2.44it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.44it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.43it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.42it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.42it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.42it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.50it/s]
-18424 MiB free out of 48676 MiB total
-Saved layer 7 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_7.pt
-after cast to cpu
-22438 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 7 total_time elapsed: 14334 estimated time left: 43003
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:29,  1.07it/s]Inference:   6%|▋         | 2/32 [00:01<00:28,  1.05it/s]Inference:   9%|▉         | 3/32 [00:02<00:27,  1.04it/s]Inference:  12%|█▎        | 4/32 [00:03<00:26,  1.04it/s]Inference:  16%|█▌        | 5/32 [00:04<00:25,  1.04it/s]Inference:  19%|█▉        | 6/32 [00:05<00:24,  1.04it/s]Inference:  22%|██▏       | 7/32 [00:06<00:24,  1.04it/s]Inference:  25%|██▌       | 8/32 [00:07<00:22,  1.05it/s]Inference:  28%|██▊       | 9/32 [00:08<00:21,  1.06it/s]Inference:  31%|███▏      | 10/32 [00:09<00:20,  1.05it/s]Inference:  34%|███▍      | 11/32 [00:10<00:20,  1.04it/s]Inference:  38%|███▊      | 12/32 [00:11<00:19,  1.04it/s]Inference:  41%|████      | 13/32 [00:12<00:18,  1.04it/s]Inference:  44%|████▍     | 14/32 [00:13<00:17,  1.04it/s]Inference:  47%|████▋     | 15/32 [00:14<00:16,  1.03it/s]Inference:  50%|█████     | 16/32 [00:15<00:15,  1.03it/s]Inference:  53%|█████▎    | 17/32 [00:16<00:14,  1.03it/s]Inference:  56%|█████▋    | 18/32 [00:17<00:13,  1.03it/s]Inference:  59%|█████▉    | 19/32 [00:18<00:12,  1.03it/s]Inference:  62%|██████▎   | 20/32 [00:19<00:11,  1.03it/s]Inference:  66%|██████▌   | 21/32 [00:20<00:10,  1.03it/s]Inference:  69%|██████▉   | 22/32 [00:21<00:09,  1.03it/s]Inference:  72%|███████▏  | 23/32 [00:22<00:08,  1.03it/s]Inference:  75%|███████▌  | 24/32 [00:23<00:07,  1.02it/s]Inference:  78%|███████▊  | 25/32 [00:24<00:06,  1.02it/s]Inference:  81%|████████▏ | 26/32 [00:25<00:05,  1.02it/s]Inference:  84%|████████▍ | 27/32 [00:26<00:04,  1.03it/s]Inference:  88%|████████▊ | 28/32 [00:27<00:03,  1.03it/s]Inference:  91%|█████████ | 29/32 [00:28<00:02,  1.02it/s]Inference:  94%|█████████▍| 30/32 [00:29<00:01,  1.02it/s]Inference:  97%|█████████▋| 31/32 [00:30<00:00,  1.02it/s]Inference: 100%|██████████| 32/32 [00:30<00:00,  1.04it/s]Inference: 100%|██████████| 32/32 [00:30<00:00,  1.03it/s]
-layer8: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 72833.0390625, val loss None, lr 0.01
-iter 250, train loss 1758.53955078125, val loss None, lr 0.01
-iter 500, train loss 1315.72412109375, val loss None, lr 0.01
-iter 750, train loss 1451.7037353515625, val loss None, lr 0.01
-iter 1000, train loss 1129.776611328125, val loss None, lr 0.003333
-iter 1250, train loss 1116.9879150390625, val loss None, lr 0.003333
-iter 1500, train loss 1076.0185546875, val loss None, lr 0.001111
-iter 1750, train loss 1071.078369140625, val loss None, lr 0.001111
-iter 2000, train loss 1057.338623046875, val loss None, lr 0.001111
-iter 2250, train loss 1051.23583984375, val loss None, lr 0.001111
-best loss 1045.5223388671875
-running bpv: 0.7770733173076924
-layer8: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 96147.453125, val loss None, lr 0.01
-iter 250, train loss 1616.7952880859375, val loss None, lr 0.01
-iter 500, train loss 1392.200927734375, val loss None, lr 0.01
-iter 750, train loss 1231.9627685546875, val loss None, lr 0.003333
-iter 1000, train loss 1075.002197265625, val loss None, lr 0.003333
-iter 1250, train loss 1048.946044921875, val loss None, lr 0.003333
-iter 1500, train loss 1018.07861328125, val loss None, lr 0.001111
-iter 1750, train loss 1007.8924560546875, val loss None, lr 0.001111
-iter 2000, train loss 998.9317626953125, val loss None, lr 0.001111
-iter 2250, train loss 998.5206298828125, val loss None, lr 0.001111
-best loss 984.0186767578125
-running bpv: 0.7820034898477157
-layer8: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3956.04443359375, val loss None, lr 0.01
-iter 250, train loss 347.2353210449219, val loss None, lr 0.01
-iter 500, train loss 313.4103088378906, val loss None, lr 0.01
-iter 750, train loss 304.2130126953125, val loss None, lr 0.01
-iter 1000, train loss 303.2679443359375, val loss None, lr 0.01
-iter 1250, train loss 294.8186950683594, val loss None, lr 0.01
-iter 1500, train loss 291.536376953125, val loss None, lr 0.01
-iter 1750, train loss 287.32867431640625, val loss None, lr 0.003333
-iter 2000, train loss 285.6535339355469, val loss None, lr 0.001111
-iter 2250, train loss 284.4649353027344, val loss None, lr 0.001111
-best loss 283.74188232421875
-running bpv: 0.786834563442211
-layer8: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 394.41497802734375, val loss None, lr 0.01
-iter 250, train loss 22.96570587158203, val loss None, lr 0.01
-iter 500, train loss 20.28836441040039, val loss None, lr 0.01
-iter 750, train loss 18.221086502075195, val loss None, lr 0.01
-iter 1000, train loss 17.32805633544922, val loss None, lr 0.003333
-iter 1250, train loss 17.64318084716797, val loss None, lr 0.003333
-iter 1500, train loss 16.84978675842285, val loss None, lr 0.003333
-iter 1750, train loss 16.788211822509766, val loss None, lr 0.003333
-iter 2000, train loss 17.23390769958496, val loss None, lr 0.001111
-iter 2250, train loss 16.554550170898438, val loss None, lr 0.001111
-best loss 16.4764404296875
-running bpv: 0.7915694962686567
-layer8: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 12119.716796875, val loss None, lr 0.01
-iter 250, train loss 2652.072021484375, val loss None, lr 0.01
-iter 500, train loss 2557.1337890625, val loss None, lr 0.01
-iter 750, train loss 2449.731201171875, val loss None, lr 0.01
-iter 1000, train loss 2450.97607421875, val loss None, lr 0.01
-iter 1250, train loss 2383.10595703125, val loss None, lr 0.01
-iter 1500, train loss 2363.0556640625, val loss None, lr 0.01
-iter 1750, train loss 2330.015625, val loss None, lr 0.003333
-iter 2000, train loss 2308.58984375, val loss None, lr 0.001111
-iter 2250, train loss 2304.3115234375, val loss None, lr 0.001111
-best loss 2298.458984375
-running bpv: 0.7833344374621442
-layer8: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 6281.16357421875, val loss None, lr 0.01
-iter 250, train loss 1917.31982421875, val loss None, lr 0.01
-iter 500, train loss 1828.27197265625, val loss None, lr 0.01
-iter 750, train loss 1785.80517578125, val loss None, lr 0.003333
-iter 1000, train loss 1776.254638671875, val loss None, lr 0.003333
-iter 1250, train loss 1759.272705078125, val loss None, lr 0.001111
-iter 1500, train loss 1757.002197265625, val loss None, lr 0.001111
-iter 1750, train loss 1750.733154296875, val loss None, lr 0.00037
-iter 2000, train loss 1748.0926513671875, val loss None, lr 0.00037
-iter 2250, train loss 1745.837158203125, val loss None, lr 0.00037
-best loss 1743.8719482421875
-running bpv: 0.7755174512987013
-layer8: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 121.19751739501953, val loss None, lr 0.01
-iter 250, train loss 16.497257232666016, val loss None, lr 0.01
-iter 500, train loss 15.096874237060547, val loss None, lr 0.01
-iter 750, train loss 14.314693450927734, val loss None, lr 0.003333
-iter 1000, train loss 14.147026062011719, val loss None, lr 0.003333
-iter 1250, train loss 14.161575317382812, val loss None, lr 0.003333
-iter 1500, train loss 13.964629173278809, val loss None, lr 0.003333
-iter 1750, train loss 13.90737533569336, val loss None, lr 0.003333
-iter 2000, train loss 14.007944107055664, val loss None, lr 0.003333
-iter 2250, train loss 13.82694149017334, val loss None, lr 0.003333
-best loss 13.771942138671875
-running bpv: 0.7720409650259067
-22438 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:11,  2.64it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.56it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.54it/s]Inference:  12%|█▎        | 4/32 [00:01<00:10,  2.55it/s]Inference:  16%|█▌        | 5/32 [00:01<00:10,  2.55it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.55it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.57it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.56it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.56it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.55it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.54it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.53it/s]Inference:  41%|████      | 13/32 [00:05<00:07,  2.52it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.52it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.51it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.51it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.52it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.51it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.51it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.52it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.52it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.53it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.52it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.55it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.55it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.56it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.56it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.56it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.51it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.47it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.26it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.13it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.48it/s]
-15848 MiB free out of 48676 MiB total
-Saved layer 8 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_8.pt
-after cast to cpu
-19862 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 8 total_time elapsed: 16124 estimated time left: 41207
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:31,  1.00s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.00s/it]Inference:   9%|▉         | 3/32 [00:03<00:29,  1.00s/it]Inference:  12%|█▎        | 4/32 [00:04<00:28,  1.01s/it]Inference:  16%|█▌        | 5/32 [00:05<00:27,  1.01s/it]Inference:  19%|█▉        | 6/32 [00:06<00:26,  1.03s/it]Inference:  22%|██▏       | 7/32 [00:07<00:26,  1.06s/it]Inference:  25%|██▌       | 8/32 [00:08<00:26,  1.09s/it]Inference:  28%|██▊       | 9/32 [00:09<00:25,  1.10s/it]Inference:  31%|███▏      | 10/32 [00:10<00:24,  1.12s/it]Inference:  34%|███▍      | 11/32 [00:11<00:23,  1.13s/it]Inference:  38%|███▊      | 12/32 [00:12<00:22,  1.13s/it]Inference:  41%|████      | 13/32 [00:14<00:21,  1.12s/it]Inference:  44%|████▍     | 14/32 [00:15<00:20,  1.13s/it]Inference:  47%|████▋     | 15/32 [00:16<00:19,  1.13s/it]Inference:  50%|█████     | 16/32 [00:17<00:18,  1.13s/it]Inference:  53%|█████▎    | 17/32 [00:18<00:17,  1.14s/it]Inference:  56%|█████▋    | 18/32 [00:19<00:15,  1.14s/it]Inference:  59%|█████▉    | 19/32 [00:20<00:14,  1.14s/it]Inference:  62%|██████▎   | 20/32 [00:22<00:13,  1.15s/it]Inference:  66%|██████▌   | 21/32 [00:23<00:12,  1.15s/it]Inference:  69%|██████▉   | 22/32 [00:24<00:11,  1.15s/it]Inference:  72%|███████▏  | 23/32 [00:25<00:10,  1.15s/it]Inference:  75%|███████▌  | 24/32 [00:26<00:09,  1.15s/it]Inference:  78%|███████▊  | 25/32 [00:27<00:08,  1.15s/it]Inference:  81%|████████▏ | 26/32 [00:28<00:06,  1.15s/it]Inference:  84%|████████▍ | 27/32 [00:30<00:05,  1.15s/it]Inference:  88%|████████▊ | 28/32 [00:31<00:04,  1.15s/it]Inference:  91%|█████████ | 29/32 [00:32<00:03,  1.14s/it]Inference:  94%|█████████▍| 30/32 [00:33<00:02,  1.14s/it]Inference:  97%|█████████▋| 31/32 [00:34<00:01,  1.14s/it]Inference: 100%|██████████| 32/32 [00:35<00:00,  1.14s/it]Inference: 100%|██████████| 32/32 [00:35<00:00,  1.12s/it]
-layer9: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 69209.953125, val loss None, lr 0.01
-iter 250, train loss 1926.284423828125, val loss None, lr 0.01
-iter 500, train loss 1477.5391845703125, val loss None, lr 0.01
-iter 750, train loss 1424.02392578125, val loss None, lr 0.01
-iter 1000, train loss 1345.3798828125, val loss None, lr 0.01
-iter 1250, train loss 1258.4671630859375, val loss None, lr 0.003333
-iter 1500, train loss 1219.73095703125, val loss None, lr 0.001111
-iter 1750, train loss 1207.5687255859375, val loss None, lr 0.001111
-iter 2000, train loss 1198.652587890625, val loss None, lr 0.001111
-iter 2250, train loss 1191.2376708984375, val loss None, lr 0.00037
-best loss 1184.267822265625
-running bpv: 0.7765192705362236
-layer9: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 100299.1484375, val loss None, lr 0.01
-iter 250, train loss 1785.2154541015625, val loss None, lr 0.01
-iter 500, train loss 1505.6839599609375, val loss None, lr 0.01
-iter 750, train loss 1456.082763671875, val loss None, lr 0.01
-iter 1000, train loss 1228.259033203125, val loss None, lr 0.003333
-iter 1250, train loss 1183.1707763671875, val loss None, lr 0.001111
-iter 1500, train loss 1168.0162353515625, val loss None, lr 0.001111
-iter 1750, train loss 1156.3133544921875, val loss None, lr 0.001111
-iter 2000, train loss 1144.907958984375, val loss None, lr 0.00037
-iter 2250, train loss 1137.11376953125, val loss None, lr 0.00037
-best loss 1131.30712890625
-running bpv: 0.78091656656303
-layer9: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3769.888427734375, val loss None, lr 0.01
-iter 250, train loss 382.98211669921875, val loss None, lr 0.01
-iter 500, train loss 358.4727783203125, val loss None, lr 0.01
-iter 750, train loss 353.92041015625, val loss None, lr 0.01
-iter 1000, train loss 343.423583984375, val loss None, lr 0.01
-iter 1250, train loss 333.4312744140625, val loss None, lr 0.003333
-iter 1500, train loss 332.26251220703125, val loss None, lr 0.003333
-iter 1750, train loss 329.29742431640625, val loss None, lr 0.001111
-iter 2000, train loss 328.37646484375, val loss None, lr 0.001111
-iter 2250, train loss 327.4994201660156, val loss None, lr 0.001111
-best loss 326.816162109375
-running bpv: 0.7852350315126051
-layer9: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 250.31784057617188, val loss None, lr 0.01
-iter 250, train loss 24.328521728515625, val loss None, lr 0.01
-iter 500, train loss 19.82341957092285, val loss None, lr 0.01
-iter 750, train loss 16.28820037841797, val loss None, lr 0.01
-iter 1000, train loss 15.802576065063477, val loss None, lr 0.003333
-iter 1250, train loss 15.528120040893555, val loss None, lr 0.003333
-iter 1500, train loss 15.404102325439453, val loss None, lr 0.003333
-iter 1750, train loss 15.294862747192383, val loss None, lr 0.001111
-iter 2000, train loss 15.217435836791992, val loss None, lr 0.001111
-iter 2250, train loss 15.183629989624023, val loss None, lr 0.001111
-best loss 15.110982894897461
-running bpv: 0.789476766379789
-layer9: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 12927.3544921875, val loss None, lr 0.01
-iter 250, train loss 2907.12548828125, val loss None, lr 0.01
-iter 500, train loss 2764.1875, val loss None, lr 0.01
-iter 750, train loss 2745.470703125, val loss None, lr 0.01
-iter 1000, train loss 2601.43505859375, val loss None, lr 0.003333
-iter 1250, train loss 2571.040771484375, val loss None, lr 0.001111
-iter 1500, train loss 2562.960205078125, val loss None, lr 0.001111
-iter 1750, train loss 2551.4951171875, val loss None, lr 0.00037
-iter 2000, train loss 2544.056884765625, val loss None, lr 0.00037
-iter 2250, train loss 2538.8740234375, val loss None, lr 0.00037
-best loss 2534.28076171875
-running bpv: 0.782152420010846
-layer9: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 6693.439453125, val loss None, lr 0.01
-iter 250, train loss 2225.068359375, val loss None, lr 0.01
-iter 500, train loss 2122.43115234375, val loss None, lr 0.01
-iter 750, train loss 2082.48828125, val loss None, lr 0.01
-iter 1000, train loss 2048.50048828125, val loss None, lr 0.003333
-iter 1250, train loss 2042.465087890625, val loss None, lr 0.003333
-iter 1500, train loss 2026.6666259765625, val loss None, lr 0.001111
-iter 1750, train loss 2024.931396484375, val loss None, lr 0.001111
-iter 2000, train loss 2018.388671875, val loss None, lr 0.00037
-iter 2250, train loss 2015.84130859375, val loss None, lr 0.00037
-best loss 2013.761474609375
-running bpv: 0.7751618806306306
-layer9: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 131.23268127441406, val loss None, lr 0.01
-iter 250, train loss 20.827131271362305, val loss None, lr 0.01
-iter 500, train loss 18.944198608398438, val loss None, lr 0.01
-iter 750, train loss 18.90376091003418, val loss None, lr 0.01
-iter 1000, train loss 18.189441680908203, val loss None, lr 0.003333
-iter 1250, train loss 18.027175903320312, val loss None, lr 0.001111
-iter 1500, train loss 17.945606231689453, val loss None, lr 0.001111
-iter 1750, train loss 17.903711318969727, val loss None, lr 0.001111
-iter 2000, train loss 17.875951766967773, val loss None, lr 0.001111
-iter 2250, train loss 17.824569702148438, val loss None, lr 0.001111
-best loss 17.775726318359375
-running bpv: 0.7720409650259067
-19862 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:12,  2.51it/s]Inference:   6%|▋         | 2/32 [00:00<00:12,  2.44it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.43it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.42it/s]Inference:  16%|█▌        | 5/32 [00:02<00:11,  2.44it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.43it/s]Inference:  22%|██▏       | 7/32 [00:02<00:10,  2.35it/s]Inference:  25%|██▌       | 8/32 [00:03<00:10,  2.33it/s]Inference:  28%|██▊       | 9/32 [00:03<00:09,  2.38it/s]Inference:  31%|███▏      | 10/32 [00:04<00:09,  2.42it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.40it/s]Inference:  38%|███▊      | 12/32 [00:04<00:08,  2.41it/s]Inference:  41%|████      | 13/32 [00:05<00:08,  2.35it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.28it/s]Inference:  47%|████▋     | 15/32 [00:06<00:07,  2.26it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.32it/s]Inference:  53%|█████▎    | 17/32 [00:07<00:06,  2.35it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:06,  2.30it/s]Inference:  59%|█████▉    | 19/32 [00:08<00:05,  2.31it/s]Inference:  62%|██████▎   | 20/32 [00:08<00:05,  2.34it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.39it/s]Inference:  69%|██████▉   | 22/32 [00:09<00:04,  2.40it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.34it/s]Inference:  75%|███████▌  | 24/32 [00:10<00:03,  2.30it/s]Inference:  78%|███████▊  | 25/32 [00:10<00:03,  2.26it/s]Inference:  81%|████████▏ | 26/32 [00:11<00:02,  2.31it/s]Inference:  84%|████████▍ | 27/32 [00:11<00:02,  2.28it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.26it/s]Inference:  91%|█████████ | 29/32 [00:12<00:01,  2.24it/s]Inference:  94%|█████████▍| 30/32 [00:12<00:00,  2.28it/s]Inference:  97%|█████████▋| 31/32 [00:13<00:00,  2.27it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.30it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.33it/s]
-13340 MiB free out of 48676 MiB total
-Saved layer 9 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_9.pt
-after cast to cpu
-17354 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 9 total_time elapsed: 17918 estimated time left: 39419
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:31,  1.02s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.01s/it]Inference:   9%|▉         | 3/32 [00:03<00:29,  1.02s/it]Inference:  12%|█▎        | 4/32 [00:04<00:28,  1.02s/it]Inference:  16%|█▌        | 5/32 [00:05<00:27,  1.03s/it]Inference:  19%|█▉        | 6/32 [00:06<00:26,  1.03s/it]Inference:  22%|██▏       | 7/32 [00:07<00:25,  1.03s/it]Inference:  25%|██▌       | 8/32 [00:08<00:24,  1.02s/it]Inference:  28%|██▊       | 9/32 [00:09<00:23,  1.02s/it]Inference:  31%|███▏      | 10/32 [00:10<00:22,  1.02s/it]Inference:  34%|███▍      | 11/32 [00:11<00:21,  1.02s/it]Inference:  38%|███▊      | 12/32 [00:12<00:20,  1.02s/it]Inference:  41%|████      | 13/32 [00:13<00:19,  1.02s/it]Inference:  44%|████▍     | 14/32 [00:14<00:18,  1.02s/it]Inference:  47%|████▋     | 15/32 [00:15<00:17,  1.02s/it]Inference:  50%|█████     | 16/32 [00:16<00:16,  1.02s/it]Inference:  53%|█████▎    | 17/32 [00:17<00:15,  1.02s/it]Inference:  56%|█████▋    | 18/32 [00:18<00:14,  1.02s/it]Inference:  59%|█████▉    | 19/32 [00:19<00:13,  1.02s/it]Inference:  62%|██████▎   | 20/32 [00:20<00:12,  1.02s/it]Inference:  66%|██████▌   | 21/32 [00:21<00:11,  1.02s/it]Inference:  69%|██████▉   | 22/32 [00:22<00:10,  1.02s/it]Inference:  72%|███████▏  | 23/32 [00:23<00:09,  1.02s/it]Inference:  75%|███████▌  | 24/32 [00:24<00:08,  1.02s/it]Inference:  78%|███████▊  | 25/32 [00:25<00:07,  1.02s/it]Inference:  81%|████████▏ | 26/32 [00:26<00:06,  1.02s/it]Inference:  84%|████████▍ | 27/32 [00:27<00:05,  1.02s/it]Inference:  88%|████████▊ | 28/32 [00:28<00:04,  1.02s/it]Inference:  91%|█████████ | 29/32 [00:29<00:03,  1.00s/it]Inference:  94%|█████████▍| 30/32 [00:30<00:01,  1.02it/s]Inference:  97%|█████████▋| 31/32 [00:31<00:00,  1.02it/s]Inference: 100%|██████████| 32/32 [00:32<00:00,  1.03it/s]Inference: 100%|██████████| 32/32 [00:32<00:00,  1.01s/it]
-layer10: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 70300.78125, val loss None, lr 0.01
-iter 250, train loss 1927.697998046875, val loss None, lr 0.01
-iter 500, train loss 2006.423095703125, val loss None, lr 0.01
-iter 750, train loss 1454.8272705078125, val loss None, lr 0.003333
-iter 1000, train loss 1398.9373779296875, val loss None, lr 0.003333
-iter 1250, train loss 1370.482421875, val loss None, lr 0.001111
-iter 1500, train loss 1358.25244140625, val loss None, lr 0.001111
-iter 1750, train loss 1348.1439208984375, val loss None, lr 0.001111
-iter 2000, train loss 1337.7325439453125, val loss None, lr 0.001111
-iter 2250, train loss 1328.759033203125, val loss None, lr 0.00037
-best loss 1321.9151611328125
-running bpv: 0.776075122045221
-layer10: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 98195.3828125, val loss None, lr 0.01
-iter 250, train loss 1868.279541015625, val loss None, lr 0.01
-iter 500, train loss 1617.0050048828125, val loss None, lr 0.01
-iter 750, train loss 1468.64306640625, val loss None, lr 0.01
-iter 1000, train loss 1386.4510498046875, val loss None, lr 0.01
-iter 1250, train loss 1302.910888671875, val loss None, lr 0.003333
-iter 1500, train loss 1279.333984375, val loss None, lr 0.001111
-iter 1750, train loss 1268.448486328125, val loss None, lr 0.001111
-iter 2000, train loss 1259.0703125, val loss None, lr 0.001111
-iter 2250, train loss 1255.1810302734375, val loss None, lr 0.001111
-best loss 1243.05322265625
-running bpv: 0.7800434824159022
-layer10: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 3690.61767578125, val loss None, lr 0.01
-iter 250, train loss 428.5863037109375, val loss None, lr 0.01
-iter 500, train loss 394.3121643066406, val loss None, lr 0.01
-iter 750, train loss 385.8718566894531, val loss None, lr 0.01
-iter 1000, train loss 385.6121826171875, val loss None, lr 0.01
-iter 1250, train loss 374.8855285644531, val loss None, lr 0.003333
-iter 1500, train loss 372.53057861328125, val loss None, lr 0.003333
-iter 1750, train loss 370.372314453125, val loss None, lr 0.001111
-iter 2000, train loss 369.3110046386719, val loss None, lr 0.001111
-iter 2250, train loss 368.7339172363281, val loss None, lr 0.001111
-best loss 367.8781433105469
-running bpv: 0.7839476428210314
-layer10: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 350.85113525390625, val loss None, lr 0.01
-iter 250, train loss 40.69571304321289, val loss None, lr 0.01
-iter 500, train loss 35.6416015625, val loss None, lr 0.003333
-iter 750, train loss 34.836429595947266, val loss None, lr 0.003333
-iter 1000, train loss 34.41252517700195, val loss None, lr 0.003333
-iter 1250, train loss 34.08454895019531, val loss None, lr 0.003333
-iter 1500, train loss 33.80134582519531, val loss None, lr 0.001111
-iter 1750, train loss 33.65052795410156, val loss None, lr 0.001111
-iter 2000, train loss 33.590301513671875, val loss None, lr 0.001111
-iter 2250, train loss 33.45304489135742, val loss None, lr 0.00037
-best loss 33.394874572753906
-running bpv: 0.7877891486960883
-layer10: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 12145.7578125, val loss None, lr 0.01
-iter 250, train loss 3078.636962890625, val loss None, lr 0.01
-iter 500, train loss 2910.388671875, val loss None, lr 0.01
-iter 750, train loss 2890.4775390625, val loss None, lr 0.01
-iter 1000, train loss 2909.255615234375, val loss None, lr 0.01
-iter 1250, train loss 2776.4013671875, val loss None, lr 0.003333
-iter 1500, train loss 2744.56494140625, val loss None, lr 0.003333
-iter 1750, train loss 2732.1279296875, val loss None, lr 0.003333
-iter 2000, train loss 2730.59521484375, val loss None, lr 0.003333
-iter 2250, train loss 2721.9326171875, val loss None, lr 0.003333
-best loss 2709.614990234375
-running bpv: 0.7811943881934217
-layer10: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 7163.513671875, val loss None, lr 0.01
-iter 250, train loss 2507.79248046875, val loss None, lr 0.01
-iter 500, train loss 2431.791259765625, val loss None, lr 0.01
-iter 750, train loss 2359.259521484375, val loss None, lr 0.003333
-iter 1000, train loss 2337.39208984375, val loss None, lr 0.003333
-iter 1250, train loss 2322.2705078125, val loss None, lr 0.001111
-iter 1500, train loss 2317.56201171875, val loss None, lr 0.001111
-iter 1750, train loss 2309.29443359375, val loss None, lr 0.001111
-iter 2000, train loss 2304.86376953125, val loss None, lr 0.00037
-iter 2250, train loss 2301.70166015625, val loss None, lr 0.00037
-best loss 2299.2607421875
-running bpv: 0.7748722956730769
-layer10: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 135.44219970703125, val loss None, lr 0.01
-iter 250, train loss 24.732967376708984, val loss None, lr 0.01
-iter 500, train loss 23.980587005615234, val loss None, lr 0.01
-iter 750, train loss 23.06407356262207, val loss None, lr 0.01
-iter 1000, train loss 22.897098541259766, val loss None, lr 0.01
-iter 1250, train loss 22.7869930267334, val loss None, lr 0.01
-iter 1500, train loss 22.299938201904297, val loss None, lr 0.003333
-iter 1750, train loss 22.255855560302734, val loss None, lr 0.003333
-iter 2000, train loss 22.302722930908203, val loss None, lr 0.003333
-iter 2250, train loss 22.120616912841797, val loss None, lr 0.001111
-best loss 22.081802368164062
-running bpv: 0.7720409650259067
-17354 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:09,  3.18it/s]Inference:   6%|▋         | 2/32 [00:00<00:09,  3.18it/s]Inference:   9%|▉         | 3/32 [00:00<00:09,  3.11it/s]Inference:  12%|█▎        | 4/32 [00:01<00:09,  3.07it/s]Inference:  16%|█▌        | 5/32 [00:01<00:08,  3.07it/s]Inference:  19%|█▉        | 6/32 [00:01<00:08,  3.10it/s]Inference:  22%|██▏       | 7/32 [00:02<00:08,  3.04it/s]Inference:  25%|██▌       | 8/32 [00:02<00:07,  3.01it/s]Inference:  28%|██▊       | 9/32 [00:02<00:07,  2.98it/s]Inference:  31%|███▏      | 10/32 [00:03<00:07,  2.95it/s]Inference:  34%|███▍      | 11/32 [00:03<00:07,  2.93it/s]Inference:  38%|███▊      | 12/32 [00:03<00:06,  2.93it/s]Inference:  41%|████      | 13/32 [00:04<00:06,  2.93it/s]Inference:  44%|████▍     | 14/32 [00:04<00:06,  2.92it/s]Inference:  47%|████▋     | 15/32 [00:05<00:05,  2.91it/s]Inference:  50%|█████     | 16/32 [00:05<00:05,  2.91it/s]Inference:  53%|█████▎    | 17/32 [00:05<00:05,  2.92it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:04,  2.92it/s]Inference:  59%|█████▉    | 19/32 [00:06<00:04,  2.92it/s]Inference:  62%|██████▎   | 20/32 [00:06<00:04,  2.90it/s]Inference:  66%|██████▌   | 21/32 [00:07<00:03,  2.84it/s]Inference:  69%|██████▉   | 22/32 [00:07<00:03,  2.72it/s]Inference:  72%|███████▏  | 23/32 [00:07<00:03,  2.73it/s]Inference:  75%|███████▌  | 24/32 [00:08<00:03,  2.64it/s]Inference:  78%|███████▊  | 25/32 [00:08<00:02,  2.57it/s]Inference:  81%|████████▏ | 26/32 [00:09<00:02,  2.53it/s]Inference:  84%|████████▍ | 27/32 [00:09<00:01,  2.51it/s]Inference:  88%|████████▊ | 28/32 [00:09<00:01,  2.51it/s]Inference:  91%|█████████ | 29/32 [00:10<00:01,  2.23it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.08it/s]Inference:  97%|█████████▋| 31/32 [00:11<00:00,  1.99it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  1.94it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.64it/s]
-10828 MiB free out of 48676 MiB total
-Saved layer 10 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_10.pt
-after cast to cpu
-14842 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 10 total_time elapsed: 19703 estimated time left: 37615
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:31,  1.01s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.01s/it]Inference:   9%|▉         | 3/32 [00:03<00:29,  1.01s/it]Inference:  12%|█▎        | 4/32 [00:04<00:28,  1.01s/it]Inference:  16%|█▌        | 5/32 [00:05<00:27,  1.01s/it]Inference:  19%|█▉        | 6/32 [00:06<00:26,  1.01s/it]Inference:  22%|██▏       | 7/32 [00:07<00:25,  1.01s/it]Inference:  25%|██▌       | 8/32 [00:08<00:23,  1.00it/s]Inference:  28%|██▊       | 9/32 [00:09<00:23,  1.03s/it]Inference:  31%|███▏      | 10/32 [00:10<00:23,  1.07s/it]Inference:  34%|███▍      | 11/32 [00:11<00:22,  1.07s/it]Inference:  38%|███▊      | 12/32 [00:12<00:21,  1.08s/it]Inference:  41%|████      | 13/32 [00:13<00:20,  1.10s/it]Inference:  44%|████▍     | 14/32 [00:14<00:20,  1.12s/it]Inference:  47%|████▋     | 15/32 [00:15<00:19,  1.13s/it]Inference:  50%|█████     | 16/32 [00:17<00:18,  1.13s/it]Inference:  53%|█████▎    | 17/32 [00:18<00:16,  1.13s/it]Inference:  56%|█████▋    | 18/32 [00:19<00:15,  1.14s/it]Inference:  59%|█████▉    | 19/32 [00:20<00:14,  1.14s/it]Inference:  62%|██████▎   | 20/32 [00:21<00:13,  1.14s/it]Inference:  66%|██████▌   | 21/32 [00:22<00:12,  1.14s/it]Inference:  69%|██████▉   | 22/32 [00:23<00:11,  1.14s/it]Inference:  72%|███████▏  | 23/32 [00:25<00:10,  1.14s/it]Inference:  75%|███████▌  | 24/32 [00:26<00:09,  1.14s/it]Inference:  78%|███████▊  | 25/32 [00:27<00:07,  1.13s/it]Inference:  81%|████████▏ | 26/32 [00:28<00:06,  1.13s/it]Inference:  84%|████████▍ | 27/32 [00:29<00:05,  1.13s/it]Inference:  88%|████████▊ | 28/32 [00:30<00:04,  1.13s/it]Inference:  91%|█████████ | 29/32 [00:31<00:03,  1.14s/it]Inference:  94%|█████████▍| 30/32 [00:33<00:02,  1.14s/it]Inference:  97%|█████████▋| 31/32 [00:34<00:01,  1.14s/it]Inference: 100%|██████████| 32/32 [00:35<00:00,  1.15s/it]Inference: 100%|██████████| 32/32 [00:35<00:00,  1.10s/it]
-layer11: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 71659.421875, val loss None, lr 0.01
-iter 250, train loss 2241.535400390625, val loss None, lr 0.01
-iter 500, train loss 1904.453125, val loss None, lr 0.01
-iter 750, train loss 1760.12548828125, val loss None, lr 0.003333
-iter 1000, train loss 1647.5150146484375, val loss None, lr 0.001111
-iter 1250, train loss 1622.500732421875, val loss None, lr 0.001111
-iter 1500, train loss 1606.862548828125, val loss None, lr 0.001111
-iter 1750, train loss 1590.41259765625, val loss None, lr 0.00037
-iter 2000, train loss 1580.3714599609375, val loss None, lr 0.00037
-iter 2250, train loss 1572.557373046875, val loss None, lr 0.00037
-best loss 1564.86083984375
-running bpv: 0.7757111237727911
-layer11: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 94959.890625, val loss None, lr 0.01
-iter 250, train loss 2115.67626953125, val loss None, lr 0.01
-iter 500, train loss 1818.904296875, val loss None, lr 0.01
-iter 750, train loss 1663.19189453125, val loss None, lr 0.01
-iter 1000, train loss 1490.79248046875, val loss None, lr 0.003333
-iter 1250, train loss 1452.20556640625, val loss None, lr 0.001111
-iter 1500, train loss 1433.0496826171875, val loss None, lr 0.001111
-iter 1750, train loss 1421.7587890625, val loss None, lr 0.001111
-iter 2000, train loss 1413.4505615234375, val loss None, lr 0.001111
-iter 2250, train loss 1402.40234375, val loss None, lr 0.00037
-best loss 1396.543701171875
-running bpv: 0.7793267836426914
-layer11: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 4571.2470703125, val loss None, lr 0.01
-iter 250, train loss 599.5889282226562, val loss None, lr 0.01
-iter 500, train loss 563.7592163085938, val loss None, lr 0.01
-iter 750, train loss 550.6936645507812, val loss None, lr 0.01
-iter 1000, train loss 542.52001953125, val loss None, lr 0.01
-iter 1250, train loss 543.5958251953125, val loss None, lr 0.01
-iter 1500, train loss 533.0028686523438, val loss None, lr 0.01
-iter 1750, train loss 528.25244140625, val loss None, lr 0.003333
-iter 2000, train loss 527.826904296875, val loss None, lr 0.003333
-iter 2250, train loss 524.970703125, val loss None, lr 0.001111
-best loss 524.1281127929688
-running bpv: 0.7828891495854445
-layer11: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 426.04522705078125, val loss None, lr 0.01
-iter 250, train loss 46.46624755859375, val loss None, lr 0.01
-iter 500, train loss 41.483821868896484, val loss None, lr 0.01
-iter 750, train loss 41.523624420166016, val loss None, lr 0.01
-iter 1000, train loss 39.520713806152344, val loss None, lr 0.003333
-iter 1250, train loss 39.402587890625, val loss None, lr 0.003333
-iter 1500, train loss 38.987754821777344, val loss None, lr 0.001111
-iter 1750, train loss 38.7638053894043, val loss None, lr 0.001111
-iter 2000, train loss 38.68321990966797, val loss None, lr 0.001111
-iter 2250, train loss 38.632537841796875, val loss None, lr 0.001111
-best loss 38.54731369018555
-running bpv: 0.7863993912894376
-layer11: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 11687.076171875, val loss None, lr 0.01
-iter 250, train loss 3309.898193359375, val loss None, lr 0.01
-iter 500, train loss 3175.26513671875, val loss None, lr 0.01
-iter 750, train loss 3089.583251953125, val loss None, lr 0.01
-iter 1000, train loss 3023.008544921875, val loss None, lr 0.003333
-iter 1250, train loss 3017.46240234375, val loss None, lr 0.003333
-iter 1500, train loss 2988.9072265625, val loss None, lr 0.003333
-iter 1750, train loss 2978.896484375, val loss None, lr 0.001111
-iter 2000, train loss 2975.48095703125, val loss None, lr 0.001111
-iter 2250, train loss 2970.91259765625, val loss None, lr 0.001111
-best loss 2965.32421875
-running bpv: 0.7804021860986547
-layer11: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 7318.3876953125, val loss None, lr 0.01
-iter 250, train loss 2796.66015625, val loss None, lr 0.01
-iter 500, train loss 2682.139404296875, val loss None, lr 0.01
-iter 750, train loss 2693.260009765625, val loss None, lr 0.01
-iter 1000, train loss 2642.6484375, val loss None, lr 0.003333
-iter 1250, train loss 2614.458251953125, val loss None, lr 0.003333
-iter 1500, train loss 2600.478515625, val loss None, lr 0.003333
-iter 1750, train loss 2598.97998046875, val loss None, lr 0.003333
-iter 2000, train loss 2585.2880859375, val loss None, lr 0.001111
-iter 2250, train loss 2581.132568359375, val loss None, lr 0.00037
-best loss 2578.49560546875
-running bpv: 0.7746318879234492
-layer11: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 121.65969848632812, val loss None, lr 0.01
-iter 250, train loss 28.333158493041992, val loss None, lr 0.01
-iter 500, train loss 26.51645278930664, val loss None, lr 0.01
-iter 750, train loss 25.719627380371094, val loss None, lr 0.01
-iter 1000, train loss 25.5219783782959, val loss None, lr 0.01
-iter 1250, train loss 25.18843650817871, val loss None, lr 0.003333
-iter 1500, train loss 25.099971771240234, val loss None, lr 0.003333
-iter 1750, train loss 25.00943946838379, val loss None, lr 0.001111
-iter 2000, train loss 24.96706199645996, val loss None, lr 0.001111
-iter 2250, train loss 24.916501998901367, val loss None, lr 0.00037
-best loss 24.884931564331055
-running bpv: 0.7720409650259067
-14842 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:11,  2.59it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.51it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.47it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.49it/s]Inference:  16%|█▌        | 5/32 [00:02<00:10,  2.49it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.48it/s]Inference:  22%|██▏       | 7/32 [00:02<00:10,  2.46it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.50it/s]Inference:  28%|██▊       | 9/32 [00:03<00:09,  2.46it/s]Inference:  31%|███▏      | 10/32 [00:04<00:09,  2.41it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.39it/s]Inference:  38%|███▊      | 12/32 [00:04<00:08,  2.36it/s]Inference:  41%|████      | 13/32 [00:05<00:08,  2.35it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.36it/s]Inference:  47%|████▋     | 15/32 [00:06<00:07,  2.35it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.34it/s]Inference:  53%|█████▎    | 17/32 [00:07<00:06,  2.33it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.34it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.33it/s]Inference:  62%|██████▎   | 20/32 [00:08<00:05,  2.34it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.33it/s]Inference:  69%|██████▉   | 22/32 [00:09<00:04,  2.33it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.31it/s]Inference:  75%|███████▌  | 24/32 [00:10<00:03,  2.31it/s]Inference:  78%|███████▊  | 25/32 [00:10<00:03,  2.32it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.32it/s]Inference:  84%|████████▍ | 27/32 [00:11<00:02,  2.32it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.32it/s]Inference:  91%|█████████ | 29/32 [00:12<00:01,  2.31it/s]Inference:  94%|█████████▍| 30/32 [00:12<00:00,  2.31it/s]Inference:  97%|█████████▋| 31/32 [00:13<00:00,  2.30it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.29it/s]Inference: 100%|██████████| 32/32 [00:13<00:00,  2.36it/s]
-8252 MiB free out of 48676 MiB total
-Saved layer 11 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_11.pt
-after cast to cpu
-12266 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 11 total_time elapsed: 21491 estimated time left: 35819
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:01<00:31,  1.01s/it]Inference:   6%|▋         | 2/32 [00:02<00:30,  1.02s/it]Inference:   9%|▉         | 3/32 [00:03<00:29,  1.02s/it]Inference:  12%|█▎        | 4/32 [00:04<00:28,  1.03s/it]Inference:  16%|█▌        | 5/32 [00:05<00:27,  1.02s/it]Inference:  19%|█▉        | 6/32 [00:06<00:26,  1.00s/it]Inference:  22%|██▏       | 7/32 [00:07<00:24,  1.01it/s]Inference:  25%|██▌       | 8/32 [00:08<00:23,  1.02it/s]Inference:  28%|██▊       | 9/32 [00:08<00:22,  1.02it/s]Inference:  31%|███▏      | 10/32 [00:09<00:21,  1.02it/s]Inference:  34%|███▍      | 11/32 [00:10<00:20,  1.03it/s]Inference:  38%|███▊      | 12/32 [00:11<00:19,  1.03it/s]Inference:  41%|████      | 13/32 [00:12<00:18,  1.03it/s]Inference:  44%|████▍     | 14/32 [00:13<00:17,  1.03it/s]Inference:  47%|████▋     | 15/32 [00:14<00:16,  1.03it/s]Inference:  50%|█████     | 16/32 [00:15<00:15,  1.03it/s]Inference:  53%|█████▎    | 17/32 [00:16<00:14,  1.04it/s]Inference:  56%|█████▋    | 18/32 [00:17<00:13,  1.04it/s]Inference:  59%|█████▉    | 19/32 [00:18<00:12,  1.04it/s]Inference:  62%|██████▎   | 20/32 [00:19<00:11,  1.03it/s]Inference:  66%|██████▌   | 21/32 [00:20<00:10,  1.03it/s]Inference:  69%|██████▉   | 22/32 [00:21<00:09,  1.03it/s]Inference:  72%|███████▏  | 23/32 [00:22<00:08,  1.04it/s]Inference:  75%|███████▌  | 24/32 [00:23<00:07,  1.03it/s]Inference:  78%|███████▊  | 25/32 [00:24<00:06,  1.03it/s]Inference:  81%|████████▏ | 26/32 [00:25<00:05,  1.04it/s]Inference:  84%|████████▍ | 27/32 [00:26<00:04,  1.03it/s]Inference:  88%|████████▊ | 28/32 [00:27<00:03,  1.03it/s]Inference:  91%|█████████ | 29/32 [00:28<00:02,  1.03it/s]Inference:  94%|█████████▍| 30/32 [00:29<00:01,  1.03it/s]Inference:  97%|█████████▋| 31/32 [00:30<00:00,  1.03it/s]Inference: 100%|██████████| 32/32 [00:31<00:00,  1.03it/s]Inference: 100%|██████████| 32/32 [00:31<00:00,  1.02it/s]
-layer12: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 68654.71875, val loss None, lr 0.01
-iter 250, train loss 2731.1884765625, val loss None, lr 0.01
-iter 500, train loss 2076.357421875, val loss None, lr 0.01
-iter 750, train loss 1948.5821533203125, val loss None, lr 0.01
-iter 1000, train loss 1940.2330322265625, val loss None, lr 0.01
-iter 1250, train loss 1816.3173828125, val loss None, lr 0.003333
-iter 1500, train loss 1805.1834716796875, val loss None, lr 0.003333
-iter 1750, train loss 1766.7359619140625, val loss None, lr 0.001111
-iter 2000, train loss 1758.542724609375, val loss None, lr 0.001111
-iter 2250, train loss 1746.685546875, val loss None, lr 0.00037
-best loss 1740.680419921875
-running bpv: 0.7754073756432247
-layer12: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 92335.3203125, val loss None, lr 0.01
-iter 250, train loss 2341.56494140625, val loss None, lr 0.01
-iter 500, train loss 2098.18896484375, val loss None, lr 0.01
-iter 750, train loss 1928.57275390625, val loss None, lr 0.01
-iter 1000, train loss 1902.811767578125, val loss None, lr 0.01
-iter 1250, train loss 1764.548095703125, val loss None, lr 0.003333
-iter 1500, train loss 1743.916259765625, val loss None, lr 0.001111
-iter 1750, train loss 1713.6639404296875, val loss None, lr 0.001111
-iter 2000, train loss 1708.2335205078125, val loss None, lr 0.001111
-iter 2250, train loss 1693.438720703125, val loss None, lr 0.00037
-best loss 1685.940185546875
-running bpv: 0.7787279067291312
-layer12: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 4348.90478515625, val loss None, lr 0.01
-iter 250, train loss 630.6157836914062, val loss None, lr 0.01
-iter 500, train loss 596.9780883789062, val loss None, lr 0.01
-iter 750, train loss 588.80810546875, val loss None, lr 0.01
-iter 1000, train loss 574.522705078125, val loss None, lr 0.003333
-iter 1250, train loss 572.1292724609375, val loss None, lr 0.003333
-iter 1500, train loss 566.47216796875, val loss None, lr 0.001111
-iter 1750, train loss 565.09375, val loss None, lr 0.001111
-iter 2000, train loss 563.5929565429688, val loss None, lr 0.001111
-iter 2250, train loss 562.347900390625, val loss None, lr 0.00037
-best loss 561.3052368164062
-running bpv: 0.7820034898477157
-layer12: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 461.6279296875, val loss None, lr 0.01
-iter 250, train loss 38.10251235961914, val loss None, lr 0.01
-iter 500, train loss 34.58879852294922, val loss None, lr 0.01
-iter 750, train loss 31.33298110961914, val loss None, lr 0.003333
-iter 1000, train loss 29.10004234313965, val loss None, lr 0.003333
-iter 1250, train loss 28.518415451049805, val loss None, lr 0.003333
-iter 1500, train loss 28.20706558227539, val loss None, lr 0.001111
-iter 1750, train loss 27.979631423950195, val loss None, lr 0.001111
-iter 2000, train loss 27.897809982299805, val loss None, lr 0.001111
-iter 2250, train loss 27.723379135131836, val loss None, lr 0.001111
-best loss 27.593324661254883
-running bpv: 0.7852350315126051
-layer12: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 12088.611328125, val loss None, lr 0.01
-iter 250, train loss 3248.921142578125, val loss None, lr 0.01
-iter 500, train loss 3152.201416015625, val loss None, lr 0.01
-iter 750, train loss 3090.001220703125, val loss None, lr 0.01
-iter 1000, train loss 3052.14794921875, val loss None, lr 0.01
-iter 1250, train loss 2998.310302734375, val loss None, lr 0.003333
-iter 1500, train loss 3001.296630859375, val loss None, lr 0.003333
-iter 1750, train loss 2964.172119140625, val loss None, lr 0.001111
-iter 2000, train loss 2960.19384765625, val loss None, lr 0.001111
-iter 2250, train loss 2952.930908203125, val loss None, lr 0.00037
-best loss 2949.478515625
-running bpv: 0.7797361870614941
-layer12: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 7586.0146484375, val loss None, lr 0.01
-iter 250, train loss 2901.328369140625, val loss None, lr 0.01
-iter 500, train loss 2834.15673828125, val loss None, lr 0.01
-iter 750, train loss 2776.636474609375, val loss None, lr 0.01
-iter 1000, train loss 2768.92578125, val loss None, lr 0.01
-iter 1250, train loss 2747.87353515625, val loss None, lr 0.01
-iter 1500, train loss 2719.549560546875, val loss None, lr 0.01
-iter 1750, train loss 2704.892822265625, val loss None, lr 0.003333
-iter 2000, train loss 2698.379150390625, val loss None, lr 0.001111
-iter 2250, train loss 2693.02294921875, val loss None, lr 0.001111
-best loss 2690.0888671875
-running bpv: 0.7744291109083536
-layer12: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 131.26419067382812, val loss None, lr 0.01
-iter 250, train loss 29.889293670654297, val loss None, lr 0.01
-iter 500, train loss 27.731685638427734, val loss None, lr 0.01
-iter 750, train loss 27.067350387573242, val loss None, lr 0.01
-iter 1000, train loss 27.262836456298828, val loss None, lr 0.01
-iter 1250, train loss 26.457090377807617, val loss None, lr 0.003333
-iter 1500, train loss 26.358566284179688, val loss None, lr 0.003333
-iter 1750, train loss 26.27684211730957, val loss None, lr 0.001111
-iter 2000, train loss 26.25084686279297, val loss None, lr 0.001111
-iter 2250, train loss 26.1865177154541, val loss None, lr 0.001111
-best loss 26.156068801879883
-running bpv: 0.7720409650259067
-12266 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:09,  3.37it/s]Inference:   6%|▋         | 2/32 [00:00<00:08,  3.37it/s]Inference:   9%|▉         | 3/32 [00:00<00:08,  3.23it/s]Inference:  12%|█▎        | 4/32 [00:01<00:08,  3.15it/s]Inference:  16%|█▌        | 5/32 [00:01<00:08,  3.06it/s]Inference:  19%|█▉        | 6/32 [00:01<00:08,  2.89it/s]Inference:  22%|██▏       | 7/32 [00:02<00:08,  2.80it/s]Inference:  25%|██▌       | 8/32 [00:02<00:08,  2.74it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.69it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.65it/s]Inference:  34%|███▍      | 11/32 [00:03<00:07,  2.63it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.61it/s]Inference:  41%|████      | 13/32 [00:04<00:07,  2.60it/s]Inference:  44%|████▍     | 14/32 [00:05<00:06,  2.60it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.60it/s]Inference:  50%|█████     | 16/32 [00:05<00:06,  2.60it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.61it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:05,  2.61it/s]Inference:  59%|█████▉    | 19/32 [00:06<00:04,  2.60it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.61it/s]Inference:  66%|██████▌   | 21/32 [00:07<00:04,  2.60it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.59it/s]Inference:  72%|███████▏  | 23/32 [00:08<00:03,  2.59it/s]Inference:  75%|███████▌  | 24/32 [00:08<00:03,  2.59it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.58it/s]Inference:  81%|████████▏ | 26/32 [00:09<00:02,  2.59it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.60it/s]Inference:  88%|████████▊ | 28/32 [00:10<00:01,  2.61it/s]Inference:  91%|█████████ | 29/32 [00:10<00:01,  2.54it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.51it/s]Inference:  97%|█████████▋| 31/32 [00:11<00:00,  2.50it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.49it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.65it/s]
-5744 MiB free out of 48676 MiB total
-Saved layer 12 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_12.pt
-after cast to cpu
-9758 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 12 total_time elapsed: 23281 estimated time left: 34026
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:27,  1.12it/s]Inference:   6%|▋         | 2/32 [00:01<00:26,  1.11it/s]Inference:   9%|▉         | 3/32 [00:02<00:26,  1.11it/s]Inference:  12%|█▎        | 4/32 [00:03<00:25,  1.10it/s]Inference:  16%|█▌        | 5/32 [00:04<00:24,  1.10it/s]Inference:  19%|█▉        | 6/32 [00:05<00:23,  1.10it/s]Inference:  22%|██▏       | 7/32 [00:06<00:22,  1.10it/s]Inference:  25%|██▌       | 8/32 [00:07<00:21,  1.10it/s]Inference:  28%|██▊       | 9/32 [00:08<00:20,  1.10it/s]Inference:  31%|███▏      | 10/32 [00:09<00:20,  1.10it/s]Inference:  34%|███▍      | 11/32 [00:09<00:19,  1.10it/s]Inference:  38%|███▊      | 12/32 [00:10<00:17,  1.11it/s]Inference:  41%|████      | 13/32 [00:11<00:17,  1.11it/s]Inference:  44%|████▍     | 14/32 [00:12<00:16,  1.11it/s]Inference:  47%|████▋     | 15/32 [00:13<00:15,  1.11it/s]Inference:  50%|█████     | 16/32 [00:14<00:14,  1.11it/s]Inference:  53%|█████▎    | 17/32 [00:15<00:13,  1.10it/s]Inference:  56%|█████▋    | 18/32 [00:16<00:12,  1.10it/s]Inference:  59%|█████▉    | 19/32 [00:17<00:11,  1.10it/s]Inference:  62%|██████▎   | 20/32 [00:18<00:10,  1.10it/s]Inference:  66%|██████▌   | 21/32 [00:19<00:09,  1.10it/s]Inference:  69%|██████▉   | 22/32 [00:19<00:09,  1.10it/s]Inference:  72%|███████▏  | 23/32 [00:20<00:08,  1.11it/s]Inference:  75%|███████▌  | 24/32 [00:21<00:07,  1.11it/s]Inference:  78%|███████▊  | 25/32 [00:22<00:06,  1.10it/s]Inference:  81%|████████▏ | 26/32 [00:23<00:05,  1.10it/s]Inference:  84%|████████▍ | 27/32 [00:24<00:04,  1.10it/s]Inference:  88%|████████▊ | 28/32 [00:25<00:03,  1.10it/s]Inference:  91%|█████████ | 29/32 [00:26<00:02,  1.10it/s]Inference:  94%|█████████▍| 30/32 [00:27<00:01,  1.10it/s]Inference:  97%|█████████▋| 31/32 [00:28<00:00,  1.10it/s]Inference: 100%|██████████| 32/32 [00:28<00:00,  1.10it/s]Inference: 100%|██████████| 32/32 [00:28<00:00,  1.10it/s]
-layer13: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 72546.640625, val loss None, lr 0.01
-iter 250, train loss 2552.058349609375, val loss None, lr 0.01
-iter 500, train loss 2137.91650390625, val loss None, lr 0.01
-iter 750, train loss 2023.2318115234375, val loss None, lr 0.01
-iter 1000, train loss 1908.8656005859375, val loss None, lr 0.003333
-iter 1250, train loss 1864.535400390625, val loss None, lr 0.001111
-iter 1500, train loss 1849.4869384765625, val loss None, lr 0.001111
-iter 1750, train loss 1838.5069580078125, val loss None, lr 0.001111
-iter 2000, train loss 1827.628173828125, val loss None, lr 0.001111
-iter 2250, train loss 1820.402099609375, val loss None, lr 0.001111
-best loss 1813.332275390625
-running bpv: 0.7751500618811881
-layer13: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 100657.8046875, val loss None, lr 0.01
-iter 250, train loss 2429.654052734375, val loss None, lr 0.01
-iter 500, train loss 2035.095458984375, val loss None, lr 0.01
-iter 750, train loss 1949.0238037109375, val loss None, lr 0.01
-iter 1000, train loss 1926.977294921875, val loss None, lr 0.01
-iter 1250, train loss 1769.2137451171875, val loss None, lr 0.003333
-iter 1500, train loss 1743.554931640625, val loss None, lr 0.001111
-iter 1750, train loss 1729.3638916015625, val loss None, lr 0.001111
-iter 2000, train loss 1717.378173828125, val loss None, lr 0.001111
-iter 2250, train loss 1714.3062744140625, val loss None, lr 0.001111
-best loss 1701.1396484375
-running bpv: 0.7782200044273908
-layer13: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 4699.0224609375, val loss None, lr 0.01
-iter 250, train loss 726.2405395507812, val loss None, lr 0.01
-iter 500, train loss 677.3013916015625, val loss None, lr 0.01
-iter 750, train loss 661.1216430664062, val loss None, lr 0.01
-iter 1000, train loss 661.9127807617188, val loss None, lr 0.01
-iter 1250, train loss 647.7617797851562, val loss None, lr 0.01
-iter 1500, train loss 639.7393798828125, val loss None, lr 0.003333
-iter 1750, train loss 636.20068359375, val loss None, lr 0.001111
-iter 2000, train loss 634.9301147460938, val loss None, lr 0.001111
-iter 2250, train loss 633.7357177734375, val loss None, lr 0.001111
-best loss 632.92431640625
-running bpv: 0.7812515276691435
-layer13: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 290.841064453125, val loss None, lr 0.01
-iter 250, train loss 29.179271697998047, val loss None, lr 0.01
-iter 500, train loss 27.441654205322266, val loss None, lr 0.01
-iter 750, train loss 28.21485137939453, val loss None, lr 0.01
-iter 1000, train loss 24.976165771484375, val loss None, lr 0.003333
-iter 1250, train loss 24.752826690673828, val loss None, lr 0.001111
-iter 1500, train loss 24.613685607910156, val loss None, lr 0.001111
-iter 1750, train loss 24.579479217529297, val loss None, lr 0.001111
-iter 2000, train loss 24.439411163330078, val loss None, lr 0.001111
-iter 2250, train loss 24.485794067382812, val loss None, lr 0.001111
-best loss 24.306427001953125
-running bpv: 0.7842453483287991
-layer13: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 12934.6796875, val loss None, lr 0.01
-iter 250, train loss 3401.1943359375, val loss None, lr 0.01
-iter 500, train loss 3214.20849609375, val loss None, lr 0.01
-iter 750, train loss 3402.863525390625, val loss None, lr 0.01
-iter 1000, train loss 3070.36279296875, val loss None, lr 0.003333
-iter 1250, train loss 3051.120849609375, val loss None, lr 0.003333
-iter 1500, train loss 3041.048828125, val loss None, lr 0.003333
-iter 1750, train loss 3022.66015625, val loss None, lr 0.001111
-iter 2000, train loss 3017.111328125, val loss None, lr 0.001111
-iter 2250, train loss 3010.2041015625, val loss None, lr 0.00037
-best loss 3006.726318359375
-running bpv: 0.7791684585244648
-layer13: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 8066.1142578125, val loss None, lr 0.01
-iter 250, train loss 3085.975830078125, val loss None, lr 0.01
-iter 500, train loss 2958.965576171875, val loss None, lr 0.01
-iter 750, train loss 2926.337890625, val loss None, lr 0.01
-iter 1000, train loss 2894.98974609375, val loss None, lr 0.01
-iter 1250, train loss 2863.331787109375, val loss None, lr 0.003333
-iter 1500, train loss 2850.9736328125, val loss None, lr 0.001111
-iter 1750, train loss 2846.84130859375, val loss None, lr 0.001111
-iter 2000, train loss 2845.396484375, val loss None, lr 0.00037
-iter 2250, train loss 2838.79052734375, val loss None, lr 0.00037
-best loss 2836.06787109375
-running bpv: 0.7742557704964272
-layer13: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 165.52859497070312, val loss None, lr 0.01
-iter 250, train loss 34.073246002197266, val loss None, lr 0.01
-iter 500, train loss 32.19927978515625, val loss None, lr 0.01
-iter 750, train loss 31.25368881225586, val loss None, lr 0.01
-iter 1000, train loss 30.411928176879883, val loss None, lr 0.003333
-iter 1250, train loss 30.248268127441406, val loss None, lr 0.003333
-iter 1500, train loss 30.135099411010742, val loss None, lr 0.003333
-iter 1750, train loss 30.050214767456055, val loss None, lr 0.003333
-iter 2000, train loss 29.955005645751953, val loss None, lr 0.001111
-iter 2250, train loss 29.913387298583984, val loss None, lr 0.001111
-best loss 29.854604721069336
-running bpv: 0.7720409650259067
-9758 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:12,  2.53it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.51it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.49it/s]Inference:  12%|█▎        | 4/32 [00:01<00:11,  2.50it/s]Inference:  16%|█▌        | 5/32 [00:02<00:10,  2.48it/s]Inference:  19%|█▉        | 6/32 [00:02<00:10,  2.48it/s]Inference:  22%|██▏       | 7/32 [00:02<00:10,  2.48it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.47it/s]Inference:  28%|██▊       | 9/32 [00:03<00:09,  2.46it/s]Inference:  31%|███▏      | 10/32 [00:04<00:08,  2.46it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.46it/s]Inference:  38%|███▊      | 12/32 [00:04<00:08,  2.46it/s]Inference:  41%|████      | 13/32 [00:05<00:07,  2.47it/s]Inference:  44%|████▍     | 14/32 [00:05<00:07,  2.47it/s]Inference:  47%|████▋     | 15/32 [00:06<00:06,  2.46it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.47it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:06,  2.47it/s]Inference:  56%|█████▋    | 18/32 [00:07<00:05,  2.47it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.47it/s]Inference:  62%|██████▎   | 20/32 [00:08<00:04,  2.46it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.47it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:04,  2.46it/s]Inference:  72%|███████▏  | 23/32 [00:09<00:03,  2.47it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:03,  2.48it/s]Inference:  78%|███████▊  | 25/32 [00:10<00:02,  2.47it/s]Inference:  81%|████████▏ | 26/32 [00:10<00:02,  2.47it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:02,  2.47it/s]Inference:  88%|████████▊ | 28/32 [00:11<00:01,  2.46it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.47it/s]Inference:  94%|█████████▍| 30/32 [00:12<00:00,  2.47it/s]Inference:  97%|█████████▋| 31/32 [00:12<00:00,  2.45it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.45it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.47it/s]
-3236 MiB free out of 48676 MiB total
-Saved layer 13 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_13.pt
-after cast to cpu
-7250 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 13 total_time elapsed: 25078 estimated time left: 32244
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:27,  1.11it/s]Inference:   6%|▋         | 2/32 [00:01<00:27,  1.10it/s]Inference:   9%|▉         | 3/32 [00:02<00:26,  1.09it/s]Inference:  12%|█▎        | 4/32 [00:03<00:25,  1.09it/s]Inference:  16%|█▌        | 5/32 [00:04<00:24,  1.09it/s]Inference:  19%|█▉        | 6/32 [00:05<00:23,  1.09it/s]Inference:  22%|██▏       | 7/32 [00:06<00:23,  1.08it/s]Inference:  25%|██▌       | 8/32 [00:07<00:22,  1.09it/s]Inference:  28%|██▊       | 9/32 [00:08<00:21,  1.09it/s]Inference:  31%|███▏      | 10/32 [00:09<00:20,  1.09it/s]Inference:  34%|███▍      | 11/32 [00:10<00:19,  1.09it/s]Inference:  38%|███▊      | 12/32 [00:10<00:18,  1.09it/s]Inference:  41%|████      | 13/32 [00:11<00:17,  1.10it/s]Inference:  44%|████▍     | 14/32 [00:12<00:16,  1.10it/s]Inference:  47%|████▋     | 15/32 [00:13<00:15,  1.10it/s]Inference:  50%|█████     | 16/32 [00:14<00:14,  1.10it/s]Inference:  53%|█████▎    | 17/32 [00:15<00:13,  1.10it/s]Inference:  56%|█████▋    | 18/32 [00:16<00:12,  1.10it/s]Inference:  59%|█████▉    | 19/32 [00:17<00:11,  1.10it/s]Inference:  62%|██████▎   | 20/32 [00:18<00:10,  1.10it/s]Inference:  66%|██████▌   | 21/32 [00:19<00:09,  1.10it/s]Inference:  69%|██████▉   | 22/32 [00:20<00:09,  1.10it/s]Inference:  72%|███████▏  | 23/32 [00:20<00:08,  1.10it/s]Inference:  75%|███████▌  | 24/32 [00:21<00:07,  1.10it/s]Inference:  78%|███████▊  | 25/32 [00:22<00:06,  1.09it/s]Inference:  81%|████████▏ | 26/32 [00:23<00:05,  1.09it/s]Inference:  84%|████████▍ | 27/32 [00:24<00:04,  1.11it/s]Inference:  88%|████████▊ | 28/32 [00:25<00:03,  1.10it/s]Inference:  91%|█████████ | 29/32 [00:26<00:02,  1.10it/s]Inference:  94%|█████████▍| 30/32 [00:27<00:01,  1.10it/s]Inference:  97%|█████████▋| 31/32 [00:28<00:00,  1.10it/s]Inference: 100%|██████████| 32/32 [00:29<00:00,  1.10it/s]Inference: 100%|██████████| 32/32 [00:29<00:00,  1.10it/s]
-layer14: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 71190.9296875, val loss None, lr 0.01
-iter 250, train loss 2539.2421875, val loss None, lr 0.01
-iter 500, train loss 2186.1572265625, val loss None, lr 0.01
-iter 750, train loss 2059.662841796875, val loss None, lr 0.01
-iter 1000, train loss 1938.6788330078125, val loss None, lr 0.003333
-iter 1250, train loss 1892.4320068359375, val loss None, lr 0.001111
-iter 1500, train loss 1876.70361328125, val loss None, lr 0.001111
-iter 1750, train loss 1868.8023681640625, val loss None, lr 0.001111
-iter 2000, train loss 1857.7171630859375, val loss None, lr 0.001111
-iter 2250, train loss 1846.8553466796875, val loss None, lr 0.001111
-best loss 1839.4169921875
-running bpv: 0.7749292908388521
-layer14: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 104195.9296875, val loss None, lr 0.01
-iter 250, train loss 2506.09619140625, val loss None, lr 0.01
-iter 500, train loss 2118.115234375, val loss None, lr 0.01
-iter 750, train loss 1899.69677734375, val loss None, lr 0.003333
-iter 1000, train loss 1824.9560546875, val loss None, lr 0.001111
-iter 1250, train loss 1787.4415283203125, val loss None, lr 0.001111
-iter 1500, train loss 1769.98876953125, val loss None, lr 0.001111
-iter 1750, train loss 1756.799560546875, val loss None, lr 0.001111
-iter 2000, train loss 1751.048583984375, val loss None, lr 0.00037
-iter 2250, train loss 1729.6781005859375, val loss None, lr 0.00037
-best loss 1722.9007568359375
-running bpv: 0.7777838103511339
-layer14: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 4209.0224609375, val loss None, lr 0.01
-iter 250, train loss 651.7199096679688, val loss None, lr 0.01
-iter 500, train loss 603.97802734375, val loss None, lr 0.01
-iter 750, train loss 591.94775390625, val loss None, lr 0.01
-iter 1000, train loss 590.1787719726562, val loss None, lr 0.01
-iter 1250, train loss 580.7119140625, val loss None, lr 0.01
-iter 1500, train loss 575.9361572265625, val loss None, lr 0.003333
-iter 1750, train loss 572.7632446289062, val loss None, lr 0.001111
-iter 2000, train loss 571.5157470703125, val loss None, lr 0.001111
-iter 2250, train loss 570.7356567382812, val loss None, lr 0.001111
-best loss 569.7761840820312
-running bpv: 0.7806051136363636
-layer14: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 344.63128662109375, val loss None, lr 0.01
-iter 250, train loss 31.707782745361328, val loss None, lr 0.01
-iter 500, train loss 28.135135650634766, val loss None, lr 0.01
-iter 750, train loss 26.396770477294922, val loss None, lr 0.003333
-iter 1000, train loss 25.577836990356445, val loss None, lr 0.003333
-iter 1250, train loss 25.465961456298828, val loss None, lr 0.003333
-iter 1500, train loss 25.053192138671875, val loss None, lr 0.001111
-iter 1750, train loss 24.97421646118164, val loss None, lr 0.001111
-iter 2000, train loss 24.868715286254883, val loss None, lr 0.00037
-iter 2250, train loss 24.797122955322266, val loss None, lr 0.00037
-best loss 24.750627517700195
-running bpv: 0.7833937771149675
-layer14: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 13418.09375, val loss None, lr 0.01
-iter 250, train loss 3685.637939453125, val loss None, lr 0.01
-iter 500, train loss 3555.67724609375, val loss None, lr 0.01
-iter 750, train loss 3448.345703125, val loss None, lr 0.01
-iter 1000, train loss 3395.3515625, val loss None, lr 0.01
-iter 1250, train loss 3389.20361328125, val loss None, lr 0.01
-iter 1500, train loss 3325.844482421875, val loss None, lr 0.003333
-iter 1750, train loss 3315.454345703125, val loss None, lr 0.003333
-iter 2000, train loss 3312.633544921875, val loss None, lr 0.003333
-iter 2250, train loss 3291.742431640625, val loss None, lr 0.001111
-best loss 3287.8515625
-running bpv: 0.7786787446600214
-layer14: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 8742.5, val loss None, lr 0.01
-iter 250, train loss 3385.82666015625, val loss None, lr 0.01
-iter 500, train loss 3280.74951171875, val loss None, lr 0.01
-iter 750, train loss 3226.19677734375, val loss None, lr 0.01
-iter 1000, train loss 3240.88134765625, val loss None, lr 0.01
-iter 1250, train loss 3178.50830078125, val loss None, lr 0.003333
-iter 1500, train loss 3164.439208984375, val loss None, lr 0.001111
-iter 1750, train loss 3159.47265625, val loss None, lr 0.001111
-iter 2000, train loss 3155.00341796875, val loss None, lr 0.001111
-iter 2250, train loss 3150.126953125, val loss None, lr 0.00037
-best loss 3147.642822265625
-running bpv: 0.7741058906030855
-layer14: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 163.7835693359375, val loss None, lr 0.01
-iter 250, train loss 38.539974212646484, val loss None, lr 0.01
-iter 500, train loss 36.172760009765625, val loss None, lr 0.01
-iter 750, train loss 35.56189727783203, val loss None, lr 0.01
-iter 1000, train loss 35.30070495605469, val loss None, lr 0.01
-iter 1250, train loss 34.80174255371094, val loss None, lr 0.003333
-iter 1500, train loss 34.692771911621094, val loss None, lr 0.001111
-iter 1750, train loss 34.59278106689453, val loss None, lr 0.001111
-iter 2000, train loss 34.5220832824707, val loss None, lr 0.001111
-iter 2250, train loss 34.495269775390625, val loss None, lr 0.001111
-best loss 34.43638610839844
-running bpv: 0.7720409650259067
-7250 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:11,  2.71it/s]Inference:   6%|▋         | 2/32 [00:00<00:11,  2.61it/s]Inference:   9%|▉         | 3/32 [00:01<00:11,  2.58it/s]Inference:  12%|█▎        | 4/32 [00:01<00:10,  2.65it/s]Inference:  16%|█▌        | 5/32 [00:01<00:10,  2.66it/s]Inference:  19%|█▉        | 6/32 [00:02<00:09,  2.64it/s]Inference:  22%|██▏       | 7/32 [00:02<00:09,  2.68it/s]Inference:  25%|██▌       | 8/32 [00:03<00:09,  2.63it/s]Inference:  28%|██▊       | 9/32 [00:03<00:08,  2.66it/s]Inference:  31%|███▏      | 10/32 [00:03<00:08,  2.64it/s]Inference:  34%|███▍      | 11/32 [00:04<00:08,  2.61it/s]Inference:  38%|███▊      | 12/32 [00:04<00:07,  2.60it/s]Inference:  41%|████      | 13/32 [00:04<00:07,  2.65it/s]Inference:  44%|████▍     | 14/32 [00:05<00:06,  2.63it/s]Inference:  47%|████▋     | 15/32 [00:05<00:06,  2.61it/s]Inference:  50%|█████     | 16/32 [00:06<00:06,  2.59it/s]Inference:  53%|█████▎    | 17/32 [00:06<00:05,  2.58it/s]Inference:  56%|█████▋    | 18/32 [00:06<00:05,  2.58it/s]Inference:  59%|█████▉    | 19/32 [00:07<00:05,  2.58it/s]Inference:  62%|██████▎   | 20/32 [00:07<00:04,  2.61it/s]Inference:  66%|██████▌   | 21/32 [00:08<00:04,  2.59it/s]Inference:  69%|██████▉   | 22/32 [00:08<00:03,  2.58it/s]Inference:  72%|███████▏  | 23/32 [00:08<00:03,  2.65it/s]Inference:  75%|███████▌  | 24/32 [00:09<00:02,  2.69it/s]Inference:  78%|███████▊  | 25/32 [00:09<00:02,  2.64it/s]Inference:  81%|████████▏ | 26/32 [00:09<00:02,  2.62it/s]Inference:  84%|████████▍ | 27/32 [00:10<00:01,  2.61it/s]Inference:  88%|████████▊ | 28/32 [00:10<00:01,  2.67it/s]Inference:  91%|█████████ | 29/32 [00:11<00:01,  2.67it/s]Inference:  94%|█████████▍| 30/32 [00:11<00:00,  2.67it/s]Inference:  97%|█████████▋| 31/32 [00:11<00:00,  2.75it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.73it/s]Inference: 100%|██████████| 32/32 [00:12<00:00,  2.64it/s]
-664 MiB free out of 48676 MiB total
-Saved layer 14 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_14.pt
-after cast to cpu
-4678 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 14 total_time elapsed: 26875 estimated time left: 30459
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:28,  1.07it/s]Inference:   6%|▋         | 2/32 [00:01<00:27,  1.09it/s]Inference:   9%|▉         | 3/32 [00:02<00:26,  1.09it/s]Inference:  12%|█▎        | 4/32 [00:03<00:25,  1.10it/s]Inference:  16%|█▌        | 5/32 [00:04<00:24,  1.10it/s]Inference:  19%|█▉        | 6/32 [00:05<00:23,  1.11it/s]Inference:  22%|██▏       | 7/32 [00:06<00:22,  1.11it/s]Inference:  25%|██▌       | 8/32 [00:07<00:21,  1.13it/s]Inference:  28%|██▊       | 9/32 [00:08<00:20,  1.12it/s]Inference:  31%|███▏      | 10/32 [00:09<00:19,  1.12it/s]Inference:  34%|███▍      | 11/32 [00:09<00:18,  1.13it/s]Inference:  38%|███▊      | 12/32 [00:10<00:17,  1.12it/s]Inference:  41%|████      | 13/32 [00:11<00:17,  1.11it/s]Inference:  44%|████▍     | 14/32 [00:12<00:16,  1.11it/s]Inference:  47%|████▋     | 15/32 [00:13<00:15,  1.11it/s]Inference:  50%|█████     | 16/32 [00:14<00:14,  1.11it/s]Inference:  53%|█████▎    | 17/32 [00:15<00:13,  1.11it/s]Inference:  56%|█████▋    | 18/32 [00:16<00:12,  1.11it/s]Inference:  59%|█████▉    | 19/32 [00:17<00:11,  1.11it/s]Inference:  62%|██████▎   | 20/32 [00:18<00:10,  1.10it/s]Inference:  66%|██████▌   | 21/32 [00:18<00:09,  1.10it/s]Inference:  69%|██████▉   | 22/32 [00:19<00:09,  1.10it/s]Inference:  72%|███████▏  | 23/32 [00:20<00:08,  1.10it/s]Inference:  75%|███████▌  | 24/32 [00:21<00:07,  1.10it/s]Inference:  78%|███████▊  | 25/32 [00:22<00:06,  1.09it/s]Inference:  81%|████████▏ | 26/32 [00:23<00:05,  1.09it/s]Inference:  84%|████████▍ | 27/32 [00:24<00:04,  1.09it/s]Inference:  88%|████████▊ | 28/32 [00:25<00:03,  1.09it/s]Inference:  91%|█████████ | 29/32 [00:26<00:02,  1.09it/s]Inference:  94%|█████████▍| 30/32 [00:27<00:01,  1.09it/s]Inference:  97%|█████████▋| 31/32 [00:28<00:00,  1.09it/s]Inference: 100%|██████████| 32/32 [00:29<00:00,  1.10it/s]Inference: 100%|██████████| 32/32 [00:29<00:00,  1.10it/s]
-layer15: self_attn.q_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 70720.546875, val loss None, lr 0.01
-iter 250, train loss 2280.5859375, val loss None, lr 0.01
-iter 500, train loss 2007.1639404296875, val loss None, lr 0.01
-iter 750, train loss 1937.6771240234375, val loss None, lr 0.003333
-iter 1000, train loss 1832.279296875, val loss None, lr 0.003333
-iter 1250, train loss 1792.6978759765625, val loss None, lr 0.001111
-iter 1500, train loss 1777.1793212890625, val loss None, lr 0.001111
-iter 1750, train loss 1763.3194580078125, val loss None, lr 0.001111
-iter 2000, train loss 1754.4169921875, val loss None, lr 0.001111
-iter 2250, train loss 1745.3134765625, val loss None, lr 0.001111
-best loss 1737.291259765625
-running bpv: 0.7747377941429062
-layer15: self_attn.k_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 98787.4453125, val loss None, lr 0.01
-iter 250, train loss 2531.67138671875, val loss None, lr 0.01
-iter 500, train loss 2001.641845703125, val loss None, lr 0.01
-iter 750, train loss 1817.109375, val loss None, lr 0.003333
-iter 1000, train loss 1796.1717529296875, val loss None, lr 0.003333
-iter 1250, train loss 1776.630615234375, val loss None, lr 0.003333
-iter 1500, train loss 1719.091796875, val loss None, lr 0.001111
-iter 1750, train loss 1707.205810546875, val loss None, lr 0.001111
-iter 2000, train loss 1695.023193359375, val loss None, lr 0.001111
-iter 2250, train loss 1685.6201171875, val loss None, lr 0.001111
-best loss 1676.8560791015625
-running bpv: 0.7774051396481039
-layer15: self_attn.v_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 4545.17822265625, val loss None, lr 0.01
-iter 250, train loss 696.3763427734375, val loss None, lr 0.01
-iter 500, train loss 661.5279541015625, val loss None, lr 0.01
-iter 750, train loss 653.192138671875, val loss None, lr 0.01
-iter 1000, train loss 637.543701171875, val loss None, lr 0.01
-iter 1250, train loss 634.9638671875, val loss None, lr 0.01
-iter 1500, train loss 639.6309204101562, val loss None, lr 0.01
-iter 1750, train loss 624.0587768554688, val loss None, lr 0.003333
-iter 2000, train loss 621.314208984375, val loss None, lr 0.001111
-iter 2250, train loss 620.5991821289062, val loss None, lr 0.001111
-best loss 619.78271484375
-running bpv: 0.7800434824159022
-layer15: self_attn.o_proj
-weight shape torch.Size([4096, 4096])
-[4, 8, 128]
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 527.7127685546875, val loss None, lr 0.01
-iter 250, train loss 47.786136627197266, val loss None, lr 0.01
-iter 500, train loss 41.670833587646484, val loss None, lr 0.01
-iter 750, train loss 38.33366394042969, val loss None, lr 0.01
-iter 1000, train loss 37.23754119873047, val loss None, lr 0.003333
-iter 1250, train loss 36.74290466308594, val loss None, lr 0.003333
-iter 1500, train loss 36.45474624633789, val loss None, lr 0.001111
-iter 1750, train loss 36.3260383605957, val loss None, lr 0.001111
-iter 2000, train loss 36.16951370239258, val loss None, lr 0.001111
-iter 2250, train loss 36.098388671875, val loss None, lr 0.001111
-best loss 36.038211822509766
-running bpv: 0.7826532929199054
-layer15: mlp.gate_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 14326.654296875, val loss None, lr 0.01
-iter 250, train loss 4090.287109375, val loss None, lr 0.01
-iter 500, train loss 3874.20751953125, val loss None, lr 0.01
-iter 750, train loss 3832.929931640625, val loss None, lr 0.01
-iter 1000, train loss 3763.22021484375, val loss None, lr 0.01
-iter 1250, train loss 3740.07666015625, val loss None, lr 0.01
-iter 1500, train loss 3674.958740234375, val loss None, lr 0.003333
-iter 1750, train loss 3663.72900390625, val loss None, lr 0.001111
-iter 2000, train loss 3641.47802734375, val loss None, lr 0.001111
-iter 2250, train loss 3635.9091796875, val loss None, lr 0.001111
-best loss 3627.77001953125
-running bpv: 0.778251998667555
-layer15: mlp.up_proj
-weight shape torch.Size([11008, 4096])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 4, 128]), -3, -1
-gate 1 torch.Size([11, 8, 4, 8]), -3, -2
-iter 0, train loss 9979.71484375, val loss None, lr 0.01
-iter 250, train loss 3701.3798828125, val loss None, lr 0.01
-iter 500, train loss 3594.60107421875, val loss None, lr 0.01
-iter 750, train loss 3546.814453125, val loss None, lr 0.01
-iter 1000, train loss 3563.712158203125, val loss None, lr 0.01
-iter 1250, train loss 3533.337158203125, val loss None, lr 0.01
-iter 1500, train loss 3479.43359375, val loss None, lr 0.003333
-iter 1750, train loss 3461.56494140625, val loss None, lr 0.001111
-iter 2000, train loss 3454.09033203125, val loss None, lr 0.001111
-iter 2250, train loss 3450.7490234375, val loss None, lr 0.001111
-best loss 3446.09814453125
-running bpv: 0.7739750102627257
-layer15: mlp.down_proj
-weight shape torch.Size([4096, 11008])
-[4, 8, 128]
-paddding 256
-gate 3 torch.Size([8, 128, 8, 128]), -2, -1
-gate 2 torch.Size([4, 128, 11, 128]), -3, -1
-gate 1 torch.Size([4, 8, 4, 8]), -3, -2
-iter 0, train loss 252.18894958496094, val loss None, lr 0.01
-iter 250, train loss 51.064414978027344, val loss None, lr 0.01
-iter 500, train loss 48.13789367675781, val loss None, lr 0.01
-iter 750, train loss 47.18885040283203, val loss None, lr 0.003333
-iter 1000, train loss 46.74150848388672, val loss None, lr 0.003333
-iter 1250, train loss 46.358009338378906, val loss None, lr 0.001111
-iter 1500, train loss 46.219703674316406, val loss None, lr 0.001111
-iter 1750, train loss 46.14444351196289, val loss None, lr 0.001111
-iter 2000, train loss 46.05626678466797, val loss None, lr 0.001111
-iter 2250, train loss 45.98109436035156, val loss None, lr 0.001111
-best loss 45.89826202392578
-running bpv: 0.7720409650259067
-4678 MiB free out of 48676 MiB total
-trying to convert back to original dtype, current dtype: torch.float16
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   3%|▎         | 1/32 [00:00<00:09,  3.34it/s]Inference:   6%|▋         | 2/32 [00:00<00:09,  3.26it/s]Inference:   9%|▉         | 3/32 [00:00<00:09,  3.18it/s]Inference:  12%|█▎        | 4/32 [00:01<00:08,  3.18it/s]Inference:  16%|█▌        | 5/32 [00:01<00:08,  3.16it/s]Inference:  19%|█▉        | 6/32 [00:01<00:08,  3.16it/s]Inference:  22%|██▏       | 7/32 [00:02<00:07,  3.17it/s]Inference:  25%|██▌       | 8/32 [00:02<00:07,  3.13it/s]Inference:  28%|██▊       | 9/32 [00:02<00:07,  3.11it/s]Inference:  31%|███▏      | 10/32 [00:03<00:07,  3.11it/s]Inference:  34%|███▍      | 11/32 [00:03<00:06,  3.09it/s]Inference:  38%|███▊      | 12/32 [00:03<00:06,  3.06it/s]Inference:  41%|████      | 13/32 [00:04<00:06,  3.05it/s]Inference:  44%|████▍     | 14/32 [00:04<00:05,  3.04it/s]Inference:  47%|████▋     | 15/32 [00:04<00:05,  3.04it/s]Inference:  50%|█████     | 16/32 [00:05<00:05,  2.99it/s]Inference:  53%|█████▎    | 17/32 [00:05<00:05,  2.99it/s]Inference:  56%|█████▋    | 18/32 [00:05<00:04,  2.96it/s]Inference:  59%|█████▉    | 19/32 [00:06<00:04,  2.95it/s]Inference:  62%|██████▎   | 20/32 [00:06<00:04,  2.98it/s]Inference:  66%|██████▌   | 21/32 [00:06<00:03,  2.99it/s]Inference:  69%|██████▉   | 22/32 [00:07<00:03,  3.00it/s]Inference:  72%|███████▏  | 23/32 [00:07<00:02,  3.01it/s]Inference:  75%|███████▌  | 24/32 [00:07<00:02,  3.02it/s]Inference:  78%|███████▊  | 25/32 [00:08<00:02,  3.04it/s]Inference:  81%|████████▏ | 26/32 [00:08<00:01,  3.03it/s]Inference:  84%|████████▍ | 27/32 [00:08<00:01,  3.04it/s]Inference:  88%|████████▊ | 28/32 [00:09<00:01,  3.08it/s]Inference:  91%|█████████ | 29/32 [00:09<00:00,  3.13it/s]Inference:  94%|█████████▍| 30/32 [00:09<00:00,  3.13it/s]Inference:  97%|█████████▋| 31/32 [00:10<00:00,  3.11it/s]Inference: 100%|██████████| 32/32 [00:10<00:00,  3.12it/s]Inference: 100%|██████████| 32/32 [00:10<00:00,  3.07it/s]
-124 MiB free out of 48676 MiB total
-Saved layer 15 to ./models/meta-llama/Llama-2-7b-hf/tensorized/128/128/no_finetune/layer_15.pt
-after cast to cpu
-2170 MiB free out of 48676 MiB total
-running bpv: 0.7720409650259067
-Done with layer 15 total_time elapsed: 28671 estimated time left: 28671
-layer original dtype torch.float16
-sequential [['self_attn.q_proj', 'self_attn.k_proj', 'self_attn.v_proj', 'self_attn.o_proj', 'mlp.gate_proj', 'mlp.up_proj', 'mlp.down_proj']]
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=4096, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=4096, out_features=11008, bias=False)
-sublayer Linear(in_features=11008, out_features=4096, bias=False)
-torch.Size([128, 4096, 4096]) batch size 4
-Inference:   0%|          | 0/32 [00:00<?, ?it/s]Inference:   0%|          | 0/32 [00:00<?, ?it/s]
-Traceback (most recent call last):
-  File "/data/lliu/huffman/llama_tensorize.py", line 556, in <module>
-    tensorize(model, train_loader, val_loader, args.device)
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/llama_tensorize.py", line 206, in tensorize
-    inference_layer(layer, inps, outs, 
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/src/utils/model_utils.py", line 68, in inference_layer
-    outs[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/transformers/models/llama/modeling_llama.py", line 676, in forward
-    hidden_states, self_attn_weights, present_key_value = self.self_attn(
-                                                          ^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/transformers/models/llama/modeling_llama.py", line 561, in forward
-    value_states = self.v_proj(hidden_states)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/lliu/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/lliu/huffman/src/tensor_compress.py", line 254, in forward
-    )
-      
-  File "/data/lliu/huffman/src/linear_compress.py", line 94, in log_to_hessian_
-    x_flattened = x_flattened * math.sqrt(2 / (self.n_samples * self.in_features))
-                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 256.00 MiB. GPU 5 has a total capacity of 47.54 GiB of which 252.06 MiB is free. Process 1162081 has 24.62 GiB memory in use. Including non-PyTorch memory, this process has 22.66 GiB memory in use. Of the allocated memory 21.60 GiB is allocated by PyTorch, and 751.37 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
