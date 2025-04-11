@@ -9,12 +9,7 @@ from lm_eval.base import BaseLM
 
 class LMEvalAdaptor(BaseLM):
 
-    def __init__(self,
-                 model_name,
-                 model,
-                 tokenizer,
-                 batch_size=1,
-                 max_length=-1):
+    def __init__(self, model_name, model, tokenizer, batch_size=1, max_length=-1):
         super().__init__()
 
         assert isinstance(batch_size, int)
@@ -48,11 +43,11 @@ class LMEvalAdaptor(BaseLM):
     def max_length(self):
         if self._max_length != -1:
             return self._max_length
-        if hasattr(self.model.config, 'n_ctx'):
+        if hasattr(self.model.config, "n_ctx"):
             return self.model.config.n_ctx
-        elif hasattr(self.model.config, 'max_position_embeddings'):
+        elif hasattr(self.model.config, "max_position_embeddings"):
             return self.model.config.max_position_embeddings
-        elif hasattr(self.model.config, 'n_positions'):
+        elif hasattr(self.model.config, "n_positions"):
             return self.model.config.n_positions
         # Jerry: need to check these defaults
         # elif 'bloom' in self.model_name:
@@ -95,14 +90,16 @@ class LMEvalAdaptor(BaseLM):
         """
         with torch.no_grad():
             if isinstance(
-                    self.model, transformers.models.t5.modeling_t5.
-                    T5ForConditionalGeneration):
+                self.model,
+                transformers.models.t5.modeling_t5.T5ForConditionalGeneration,
+            ):
                 dec_inps = torch.cat(
                     [
                         torch.tensor(
-                            self.model.
-                            generation_config.decoder_start_token_id, ).tile(
-                                len(inps), 1).to(inps),
+                            self.model.generation_config.decoder_start_token_id,
+                        )
+                        .tile(len(inps), 1)
+                        .to(inps),
                         inps,
                     ],
                     dim=1,
@@ -121,7 +118,6 @@ class LMEvalAdaptor(BaseLM):
             #     return out  # [:, :, :self.tokenizer.vocab_size]
 
     def _model_generate(self, context, max_length, eos_token_id):
-        return self.model.generate(context,
-                                   max_length=max_length,
-                                   eos_token_id=eos_token_id,
-                                   do_sample=False)
+        return self.model.generate(
+            context, max_length=max_length, eos_token_id=eos_token_id, do_sample=False
+        )

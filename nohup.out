@@ -1,339 +1,0 @@
-pid 119224
-usage: zero_shot.py [-h] [--base_model BASE_MODEL]
-                    [--quantized_path QUANTIZED_PATH] [--seed SEED]
-                    [--device DEVICE] [--batch_size BATCH_SIZE]
-                    [--tasks TASKS [TASKS ...]] [--output_path OUTPUT_PATH]
-                    [--num_fewshot NUM_FEWSHOT] [--limit LIMIT]
-                    [--apply_chat_template] [--fewshot_as_multiturn]
-                    [--log_wandb] [--save]
-zero_shot.py: error: unrecognized arguments: --quantized_weight_yaml /data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/compressed/run_38/checkpoints.yaml
-pid 119522
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.12s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.30s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.42s/it]
-Model loaded. LlamaForCausalLM(
-  (model): LlamaModel(
-    (embed_tokens): Embedding(32000, 4096)
-    (layers): ModuleList(
-      (0-31): 32 x LlamaDecoderLayer(
-        (self_attn): LlamaAttention(
-          (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
-          (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
-        )
-        (mlp): LlamaMLP(
-          (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
-          (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
-          (act_fn): SiLU()
-        )
-        (input_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-        (post_attention_layernorm): LlamaRMSNorm((4096,), eps=1e-05)
-      )
-    )
-    (norm): LlamaRMSNorm((4096,), eps=1e-05)
-    (rotary_emb): LlamaRotaryEmbedding()
-  )
-  (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
-)
-disable_tqdm False
-load_checkpoints True
-Loading checkpoints:   0%|          | 0/32 [00:00<?, ?it/s]Loading checkpoints:   3%|▎         | 1/32 [00:01<00:55,  1.80s/it]Loading checkpoints:   6%|▋         | 2/32 [00:03<00:50,  1.68s/it]Loading checkpoints:   9%|▉         | 3/32 [00:04<00:45,  1.58s/it]Loading checkpoints:  12%|█▎        | 4/32 [00:06<00:43,  1.54s/it]Loading checkpoints:  16%|█▌        | 5/32 [00:07<00:40,  1.49s/it]Loading checkpoints:  19%|█▉        | 6/32 [00:09<00:37,  1.45s/it]Loading checkpoints:  22%|██▏       | 7/32 [00:10<00:35,  1.43s/it]Loading checkpoints:  25%|██▌       | 8/32 [00:11<00:33,  1.41s/it]Loading checkpoints:  28%|██▊       | 9/32 [00:13<00:32,  1.40s/it]Loading checkpoints:  31%|███▏      | 10/32 [00:14<00:31,  1.41s/it]Loading checkpoints:  34%|███▍      | 11/32 [00:16<00:29,  1.39s/it]Loading checkpoints:  38%|███▊      | 12/32 [00:17<00:27,  1.40s/it]Loading checkpoints:  41%|████      | 13/32 [00:18<00:26,  1.39s/it]Loading checkpoints:  44%|████▍     | 14/32 [00:20<00:24,  1.38s/it]Loading checkpoints:  47%|████▋     | 15/32 [00:21<00:23,  1.37s/it]Loading checkpoints:  50%|█████     | 16/32 [00:22<00:21,  1.37s/it]Loading checkpoints:  53%|█████▎    | 17/32 [00:24<00:20,  1.37s/it]Loading checkpoints:  56%|█████▋    | 18/32 [00:25<00:19,  1.37s/it]Loading checkpoints:  59%|█████▉    | 19/32 [00:26<00:17,  1.37s/it]Loading checkpoints:  62%|██████▎   | 20/32 [00:28<00:16,  1.37s/it]Loading checkpoints:  66%|██████▌   | 21/32 [00:29<00:15,  1.38s/it]Loading checkpoints:  69%|██████▉   | 22/32 [00:31<00:13,  1.38s/it]Loading checkpoints:  72%|███████▏  | 23/32 [00:32<00:12,  1.37s/it]Loading checkpoints:  75%|███████▌  | 24/32 [00:33<00:11,  1.38s/it]Loading checkpoints:  78%|███████▊  | 25/32 [00:35<00:09,  1.39s/it]Loading checkpoints:  81%|████████▏ | 26/32 [00:36<00:08,  1.40s/it]Loading checkpoints:  84%|████████▍ | 27/32 [00:38<00:06,  1.40s/it]Loading checkpoints:  88%|████████▊ | 28/32 [00:39<00:05,  1.40s/it]Loading checkpoints:  91%|█████████ | 29/32 [00:40<00:04,  1.40s/it]Loading checkpoints:  94%|█████████▍| 30/32 [00:42<00:02,  1.40s/it]Loading checkpoints:  97%|█████████▋| 31/32 [00:43<00:01,  1.40s/it]Loading checkpoints: 100%|██████████| 32/32 [00:45<00:00,  1.40s/it]Loading checkpoints: 100%|██████████| 32/32 [00:45<00:00,  1.41s/it]
-Loaded model with 13085507584.0 bits and 6476005376 parameters
-Available tasks:
-{'anagrams1': <class 'lm_eval.tasks.unscramble.Anagrams1'>,
- 'anagrams2': <class 'lm_eval.tasks.unscramble.Anagrams2'>,
- 'anli_r1': <class 'lm_eval.tasks.anli.ANLIRound1'>,
- 'anli_r2': <class 'lm_eval.tasks.anli.ANLIRound2'>,
- 'anli_r3': <class 'lm_eval.tasks.anli.ANLIRound3'>,
- 'arc_challenge': <class 'lm_eval.tasks.arc.ARCChallenge'>,
- 'arc_easy': <class 'lm_eval.tasks.arc.ARCEasy'>,
- 'arithmetic_1dc': <class 'lm_eval.tasks.arithmetic.Arithmetic1DComposite'>,
- 'arithmetic_2da': <class 'lm_eval.tasks.arithmetic.Arithmetic2DPlus'>,
- 'arithmetic_2dm': <class 'lm_eval.tasks.arithmetic.Arithmetic2DMultiplication'>,
- 'arithmetic_2ds': <class 'lm_eval.tasks.arithmetic.Arithmetic2DMinus'>,
- 'arithmetic_3da': <class 'lm_eval.tasks.arithmetic.Arithmetic3DPlus'>,
- 'arithmetic_3ds': <class 'lm_eval.tasks.arithmetic.Arithmetic3DMinus'>,
- 'arithmetic_4da': <class 'lm_eval.tasks.arithmetic.Arithmetic4DPlus'>,
- 'arithmetic_4ds': <class 'lm_eval.tasks.arithmetic.Arithmetic4DMinus'>,
- 'arithmetic_5da': <class 'lm_eval.tasks.arithmetic.Arithmetic5DPlus'>,
- 'arithmetic_5ds': <class 'lm_eval.tasks.arithmetic.Arithmetic5DMinus'>,
- 'blimp_adjunct_island': <class 'lm_eval.tasks.blimp.BlimpAdjunctIsland'>,
- 'blimp_anaphor_gender_agreement': <class 'lm_eval.tasks.blimp.BlimpAnaphorGenderAgreement'>,
- 'blimp_anaphor_number_agreement': <class 'lm_eval.tasks.blimp.BlimpAnaphorNumberAgreement'>,
- 'blimp_animate_subject_passive': <class 'lm_eval.tasks.blimp.BlimpAnimateSubjectPassive'>,
- 'blimp_animate_subject_trans': <class 'lm_eval.tasks.blimp.BlimpAnimateSubjectTrans'>,
- 'blimp_causative': <class 'lm_eval.tasks.blimp.BlimpCausative'>,
- 'blimp_complex_NP_island': <class 'lm_eval.tasks.blimp.BlimpComplex_NPIsland'>,
- 'blimp_coordinate_structure_constraint_complex_left_branch': <class 'lm_eval.tasks.blimp.BlimpCoordinateStructureConstraintComplexLeftBranch'>,
- 'blimp_coordinate_structure_constraint_object_extraction': <class 'lm_eval.tasks.blimp.BlimpCoordinateStructureConstraintObjectExtraction'>,
- 'blimp_determiner_noun_agreement_1': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreement_1'>,
- 'blimp_determiner_noun_agreement_2': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreement_2'>,
- 'blimp_determiner_noun_agreement_irregular_1': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreementIrregular_1'>,
- 'blimp_determiner_noun_agreement_irregular_2': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreementIrregular_2'>,
- 'blimp_determiner_noun_agreement_with_adj_2': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreementWithAdj_2'>,
- 'blimp_determiner_noun_agreement_with_adj_irregular_1': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreementWithAdjIrregular_1'>,
- 'blimp_determiner_noun_agreement_with_adj_irregular_2': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreementWithAdjIrregular_2'>,
- 'blimp_determiner_noun_agreement_with_adjective_1': <class 'lm_eval.tasks.blimp.BlimpDeterminerNounAgreementWithAdjective_1'>,
- 'blimp_distractor_agreement_relational_noun': <class 'lm_eval.tasks.blimp.BlimpDistractorAgreementRelationalNoun'>,
- 'blimp_distractor_agreement_relative_clause': <class 'lm_eval.tasks.blimp.BlimpDistractorAgreementRelativeClause'>,
- 'blimp_drop_argument': <class 'lm_eval.tasks.blimp.BlimpDropArgument'>,
- 'blimp_ellipsis_n_bar_1': <class 'lm_eval.tasks.blimp.BlimpEllipsisNBar_1'>,
- 'blimp_ellipsis_n_bar_2': <class 'lm_eval.tasks.blimp.BlimpEllipsisNBar_2'>,
- 'blimp_existential_there_object_raising': <class 'lm_eval.tasks.blimp.BlimpExistentialThereObjectRaising'>,
- 'blimp_existential_there_quantifiers_1': <class 'lm_eval.tasks.blimp.BlimpExistentialThereQuantifiers_1'>,
- 'blimp_existential_there_quantifiers_2': <class 'lm_eval.tasks.blimp.BlimpExistentialThereQuantifiers_2'>,
- 'blimp_existential_there_subject_raising': <class 'lm_eval.tasks.blimp.BlimpExistentialThereSubjectRaising'>,
- 'blimp_expletive_it_object_raising': <class 'lm_eval.tasks.blimp.BlimpExpletiveItObjectRaising'>,
- 'blimp_inchoative': <class 'lm_eval.tasks.blimp.BlimpInchoative'>,
- 'blimp_intransitive': <class 'lm_eval.tasks.blimp.BlimpIntransitive'>,
- 'blimp_irregular_past_participle_adjectives': <class 'lm_eval.tasks.blimp.BlimpIrregularPastParticipleAdjectives'>,
- 'blimp_irregular_past_participle_verbs': <class 'lm_eval.tasks.blimp.BlimpIrregularPastParticipleVerbs'>,
- 'blimp_irregular_plural_subject_verb_agreement_1': <class 'lm_eval.tasks.blimp.BlimpIrregularPluralSubjectVerbAgreement_1'>,
- 'blimp_irregular_plural_subject_verb_agreement_2': <class 'lm_eval.tasks.blimp.BlimpIrregularPluralSubjectVerbAgreement_2'>,
- 'blimp_left_branch_island_echo_question': <class 'lm_eval.tasks.blimp.BlimpLeftBranchIslandEchoQuestion'>,
- 'blimp_left_branch_island_simple_question': <class 'lm_eval.tasks.blimp.BlimpLeftBranchIslandSimpleQuestion'>,
- 'blimp_matrix_question_npi_licensor_present': <class 'lm_eval.tasks.blimp.BlimpMatrixQuestionNpiLicensorPresent'>,
- 'blimp_npi_present_1': <class 'lm_eval.tasks.blimp.BlimpNpiPresent_1'>,
- 'blimp_npi_present_2': <class 'lm_eval.tasks.blimp.BlimpNpiPresent_2'>,
- 'blimp_only_npi_licensor_present': <class 'lm_eval.tasks.blimp.BlimpOnlyNpiLicensorPresent'>,
- 'blimp_only_npi_scope': <class 'lm_eval.tasks.blimp.BlimpOnlyNpiScope'>,
- 'blimp_passive_1': <class 'lm_eval.tasks.blimp.BlimpPassive_1'>,
- 'blimp_passive_2': <class 'lm_eval.tasks.blimp.BlimpPassive_2'>,
- 'blimp_principle_A_c_command': <class 'lm_eval.tasks.blimp.BlimpPrinciple_ACCommand'>,
- 'blimp_principle_A_case_1': <class 'lm_eval.tasks.blimp.BlimpPrinciple_ACase_1'>,
- 'blimp_principle_A_case_2': <class 'lm_eval.tasks.blimp.BlimpPrinciple_ACase_2'>,
- 'blimp_principle_A_domain_1': <class 'lm_eval.tasks.blimp.BlimpPrinciple_ADomain_1'>,
- 'blimp_principle_A_domain_2': <class 'lm_eval.tasks.blimp.BlimpPrinciple_ADomain_2'>,
- 'blimp_principle_A_domain_3': <class 'lm_eval.tasks.blimp.BlimpPrinciple_ADomain_3'>,
- 'blimp_principle_A_reconstruction': <class 'lm_eval.tasks.blimp.BlimpPrinciple_AReconstruction'>,
- 'blimp_regular_plural_subject_verb_agreement_1': <class 'lm_eval.tasks.blimp.BlimpRegularPluralSubjectVerbAgreement_1'>,
- 'blimp_regular_plural_subject_verb_agreement_2': <class 'lm_eval.tasks.blimp.BlimpRegularPluralSubjectVerbAgreement_2'>,
- 'blimp_sentential_negation_npi_licensor_present': <class 'lm_eval.tasks.blimp.BlimpSententialNegationNpiLicensorPresent'>,
- 'blimp_sentential_negation_npi_scope': <class 'lm_eval.tasks.blimp.BlimpSententialNegationNpiScope'>,
- 'blimp_sentential_subject_island': <class 'lm_eval.tasks.blimp.BlimpSententialSubjectIsland'>,
- 'blimp_superlative_quantifiers_1': <class 'lm_eval.tasks.blimp.BlimpSuperlativeQuantifiers_1'>,
- 'blimp_superlative_quantifiers_2': <class 'lm_eval.tasks.blimp.BlimpSuperlativeQuantifiers_2'>,
- 'blimp_tough_vs_raising_1': <class 'lm_eval.tasks.blimp.BlimpToughVsRaising_1'>,
- 'blimp_tough_vs_raising_2': <class 'lm_eval.tasks.blimp.BlimpToughVsRaising_2'>,
- 'blimp_transitive': <class 'lm_eval.tasks.blimp.BlimpTransitive'>,
- 'blimp_wh_island': <class 'lm_eval.tasks.blimp.BlimpWhIsland'>,
- 'blimp_wh_questions_object_gap': <class 'lm_eval.tasks.blimp.BlimpWhQuestionsObjectGap'>,
- 'blimp_wh_questions_subject_gap': <class 'lm_eval.tasks.blimp.BlimpWhQuestionsSubjectGap'>,
- 'blimp_wh_questions_subject_gap_long_distance': <class 'lm_eval.tasks.blimp.BlimpWhQuestionsSubjectGapLongDistance'>,
- 'blimp_wh_vs_that_no_gap': <class 'lm_eval.tasks.blimp.BlimpWhVsThatNoGap'>,
- 'blimp_wh_vs_that_no_gap_long_distance': <class 'lm_eval.tasks.blimp.BlimpWhVsThatNoGapLongDistance'>,
- 'blimp_wh_vs_that_with_gap': <class 'lm_eval.tasks.blimp.BlimpWhVsThatWithGap'>,
- 'blimp_wh_vs_that_with_gap_long_distance': <class 'lm_eval.tasks.blimp.BlimpWhVsThatWithGapLongDistance'>,
- 'boolq': <class 'lm_eval.tasks.superglue.BoolQ'>,
- 'cb': <class 'lm_eval.tasks.superglue.CommitmentBank'>,
- 'cola': <class 'lm_eval.tasks.glue.CoLA'>,
- 'copa': <class 'lm_eval.tasks.superglue.Copa'>,
- 'coqa': <class 'lm_eval.tasks.coqa.CoQA'>,
- 'cycle_letters': <class 'lm_eval.tasks.unscramble.CycleLetters'>,
- 'drop': <class 'lm_eval.tasks.drop.DROP'>,
- 'ethics_cm': <class 'lm_eval.tasks.hendrycks_ethics.EthicsCM'>,
- 'ethics_deontology': <class 'lm_eval.tasks.hendrycks_ethics.EthicsDeontology'>,
- 'ethics_justice': <class 'lm_eval.tasks.hendrycks_ethics.EthicsJustice'>,
- 'ethics_utilitarianism': <class 'lm_eval.tasks.hendrycks_ethics.EthicsUtilitarianism'>,
- 'ethics_utilitarianism_original': <class 'lm_eval.tasks.hendrycks_ethics.EthicsUtilitarianismOriginal'>,
- 'ethics_virtue': <class 'lm_eval.tasks.hendrycks_ethics.EthicsVirtue'>,
- 'gsm8k': <class 'lm_eval.tasks.gsm8k.GradeSchoolMath8K'>,
- 'headqa': <class 'lm_eval.tasks.headqa.HeadQAEsDeprecated'>,
- 'headqa_en': <class 'lm_eval.tasks.headqa.HeadQAEn'>,
- 'headqa_es': <class 'lm_eval.tasks.headqa.HeadQAEs'>,
- 'hellaswag': <class 'lm_eval.tasks.hellaswag.HellaSwag'>,
- 'hendrycksTest-abstract_algebra': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-anatomy': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-astronomy': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-business_ethics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-clinical_knowledge': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-college_biology': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-college_chemistry': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-college_computer_science': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-college_mathematics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-college_medicine': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-college_physics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-computer_security': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-conceptual_physics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-econometrics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-electrical_engineering': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-elementary_mathematics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-formal_logic': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-global_facts': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_biology': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_chemistry': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_computer_science': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_european_history': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_geography': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_government_and_politics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_macroeconomics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_mathematics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_microeconomics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_physics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_psychology': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_statistics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_us_history': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-high_school_world_history': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-human_aging': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-human_sexuality': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-international_law': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-jurisprudence': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-logical_fallacies': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-machine_learning': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-management': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-marketing': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-medical_genetics': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-miscellaneous': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-moral_disputes': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-moral_scenarios': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-nutrition': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-philosophy': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-prehistory': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-professional_accounting': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-professional_law': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-professional_medicine': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-professional_psychology': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-public_relations': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-security_studies': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-sociology': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-us_foreign_policy': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-virology': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'hendrycksTest-world_religions': <class 'lm_eval.tasks.hendrycks_test.create_task.<locals>.HendrycksTest'>,
- 'iwslt17-ar-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'iwslt17-en-ar': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'lambada_openai': <class 'lm_eval.tasks.lambada.LambadaOpenAI'>,
- 'lambada_openai_cloze': <class 'lm_eval.tasks.lambada_cloze.LambadaOpenAICloze'>,
- 'lambada_openai_mt_de': <class 'lm_eval.tasks.lambada_multilingual.LambadaOpenAIMultilingualGerman'>,
- 'lambada_openai_mt_en': <class 'lm_eval.tasks.lambada_multilingual.LambadaOpenAIMultilingualEnglish'>,
- 'lambada_openai_mt_es': <class 'lm_eval.tasks.lambada_multilingual.LambadaOpenAIMultilingualSpanish'>,
- 'lambada_openai_mt_fr': <class 'lm_eval.tasks.lambada_multilingual.LambadaOpenAIMultilingualFrench'>,
- 'lambada_openai_mt_it': <class 'lm_eval.tasks.lambada_multilingual.LambadaOpenAIMultilingualItalian'>,
- 'lambada_standard': <class 'lm_eval.tasks.lambada.LambadaStandard'>,
- 'lambada_standard_cloze': <class 'lm_eval.tasks.lambada_cloze.LambadaStandardCloze'>,
- 'logiqa': <class 'lm_eval.tasks.logiqa.LogiQA'>,
- 'math_algebra': <class 'lm_eval.tasks.hendrycks_math.MathAlgebra'>,
- 'math_asdiv': <class 'lm_eval.tasks.asdiv.Asdiv'>,
- 'math_counting_and_prob': <class 'lm_eval.tasks.hendrycks_math.MathCountingAndProbability'>,
- 'math_geometry': <class 'lm_eval.tasks.hendrycks_math.MathGeometry'>,
- 'math_intermediate_algebra': <class 'lm_eval.tasks.hendrycks_math.MathIntermediateAlgebra'>,
- 'math_num_theory': <class 'lm_eval.tasks.hendrycks_math.MathNumberTheory'>,
- 'math_prealgebra': <class 'lm_eval.tasks.hendrycks_math.MathPrealgebra'>,
- 'math_precalc': <class 'lm_eval.tasks.hendrycks_math.MathPrecalculus'>,
- 'mathqa': <class 'lm_eval.tasks.mathqa.MathQA'>,
- 'mc_taco': <class 'lm_eval.tasks.mc_taco.MCTACO'>,
- 'mnli': <class 'lm_eval.tasks.glue.MNLI'>,
- 'mnli_mismatched': <class 'lm_eval.tasks.glue.MNLIMismatched'>,
- 'mrpc': <class 'lm_eval.tasks.glue.MRPC'>,
- 'multirc': <class 'lm_eval.tasks.superglue.MultiRC'>,
- 'mutual': <class 'lm_eval.tasks.mutual.MuTual'>,
- 'mutual_plus': <class 'lm_eval.tasks.mutual.MuTualPlus'>,
- 'openbookqa': <class 'lm_eval.tasks.openbookqa.OpenBookQA'>,
- 'pile_arxiv': <class 'lm_eval.tasks.pile.PileArxiv'>,
- 'pile_bookcorpus2': <class 'lm_eval.tasks.pile.PileBookCorpus2'>,
- 'pile_books3': <class 'lm_eval.tasks.pile.PileBooks3'>,
- 'pile_dm-mathematics': <class 'lm_eval.tasks.pile.PileDmMathematics'>,
- 'pile_enron': <class 'lm_eval.tasks.pile.PileEnron'>,
- 'pile_europarl': <class 'lm_eval.tasks.pile.PileEuroparl'>,
- 'pile_freelaw': <class 'lm_eval.tasks.pile.PileFreeLaw'>,
- 'pile_github': <class 'lm_eval.tasks.pile.PileGithub'>,
- 'pile_gutenberg': <class 'lm_eval.tasks.pile.PileGutenberg'>,
- 'pile_hackernews': <class 'lm_eval.tasks.pile.PileHackernews'>,
- 'pile_nih-exporter': <class 'lm_eval.tasks.pile.PileNIHExporter'>,
- 'pile_opensubtitles': <class 'lm_eval.tasks.pile.PileOpenSubtitles'>,
- 'pile_openwebtext2': <class 'lm_eval.tasks.pile.PileOpenWebText2'>,
- 'pile_philpapers': <class 'lm_eval.tasks.pile.PilePhilPapers'>,
- 'pile_pile-cc': <class 'lm_eval.tasks.pile.PilePileCc'>,
- 'pile_pubmed-abstracts': <class 'lm_eval.tasks.pile.PilePubmedAbstracts'>,
- 'pile_pubmed-central': <class 'lm_eval.tasks.pile.PilePubmedCentral'>,
- 'pile_stackexchange': <class 'lm_eval.tasks.pile.PileStackExchange'>,
- 'pile_ubuntu-irc': <class 'lm_eval.tasks.pile.PileUbuntuIrc'>,
- 'pile_uspto': <class 'lm_eval.tasks.pile.PileUspto'>,
- 'pile_wikipedia': <class 'lm_eval.tasks.pile.PileWikipedia'>,
- 'pile_youtubesubtitles': <class 'lm_eval.tasks.pile.PileYoutubeSubtitles'>,
- 'piqa': <class 'lm_eval.tasks.piqa.PiQA'>,
- 'prost': <class 'lm_eval.tasks.prost.PROST'>,
- 'pubmedqa': <class 'lm_eval.tasks.pubmedqa.Pubmed_QA'>,
- 'qa4mre_2011': <class 'lm_eval.tasks.qa4mre.QA4MRE_2011'>,
- 'qa4mre_2012': <class 'lm_eval.tasks.qa4mre.QA4MRE_2012'>,
- 'qa4mre_2013': <class 'lm_eval.tasks.qa4mre.QA4MRE_2013'>,
- 'qasper': <class 'lm_eval.tasks.qasper.QASPER'>,
- 'qnli': <class 'lm_eval.tasks.glue.QNLI'>,
- 'qqp': <class 'lm_eval.tasks.glue.QQP'>,
- 'race': <class 'lm_eval.tasks.race.RACE'>,
- 'random_insertion': <class 'lm_eval.tasks.unscramble.RandomInsertion'>,
- 'record': <class 'lm_eval.tasks.superglue.ReCoRD'>,
- 'reversed_words': <class 'lm_eval.tasks.unscramble.ReversedWords'>,
- 'rte': <class 'lm_eval.tasks.glue.RTE'>,
- 'sciq': <class 'lm_eval.tasks.sciq.SciQ'>,
- 'squad2': <class 'lm_eval.tasks.squad.SQuAD2'>,
- 'sst': <class 'lm_eval.tasks.glue.SST'>,
- 'swag': <class 'lm_eval.tasks.swag.SWAG'>,
- 'triviaqa': <class 'lm_eval.tasks.triviaqa.TriviaQA'>,
- 'truthfulqa_gen': <class 'lm_eval.tasks.truthfulqa.TruthfulQAGeneration'>,
- 'truthfulqa_mc': <class 'lm_eval.tasks.truthfulqa.TruthfulQAMultipleChoice'>,
- 'webqs': <class 'lm_eval.tasks.webqs.WebQs'>,
- 'wic': <class 'lm_eval.tasks.superglue.WordsInContext'>,
- 'wikitext': <class 'lm_eval.tasks.wikitext.WikiText'>,
- 'winogrande': <class 'lm_eval.tasks.winogrande.Winogrande'>,
- 'wmt14-en-fr': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt14-fr-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt16-de-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt16-en-de': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt16-en-ro': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt16-ro-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-cs-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-de-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-de-fr': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-cs': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-de': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-iu': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-ja': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-km': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-pl': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-ps': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-ru': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-ta': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-en-zh': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-fr-de': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-iu-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-ja-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-km-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-pl-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-ps-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-ru-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-ta-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wmt20-zh-en': <class 'lm_eval.tasks.translation.create_translation_task.<locals>.TranslationTask'>,
- 'wnli': <class 'lm_eval.tasks.glue.WNLI'>,
- 'wsc': <class 'lm_eval.tasks.superglue.SGWinogradSchemaChallenge'>,
- 'wsc273': <class 'lm_eval.tasks.wsc273.WinogradSchemaChallenge273'>}
-Traceback (most recent call last):
-  File "/home/lliu/miniconda3/envs/NoWAC-VQ/lib/python3.13/site-packages/lm_eval/tasks/__init__.py", line 296, in get_task
-    return TASK_REGISTRY[task_name]
-           ~~~~~~~~~~~~~^^^^^^^^^^^
-KeyError: 'winograde'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/data/lliu/huffman/zero_shot.py", line 87, in <module>
-    results = zero_shot(args.base_model, model,
-                        device=args.device,
-                        batch_size = args.batch_size,
-                        tasks = args.tasks,
-                        num_fewshot = args.num_fewshot)
-  File "/data/lliu/huffman/zero_shot.py", line 28, in zero_shot
-    results = evaluator.simple_evaluate(
-      model = lm_eval_model,
-    ...<3 lines>...
-      num_fewshot = num_fewshot,
-    )
-  File "/home/lliu/miniconda3/envs/NoWAC-VQ/lib/python3.13/site-packages/lm_eval/utils.py", line 161, in _wrapper
-    return fn(*args, **kwargs)
-  File "/home/lliu/miniconda3/envs/NoWAC-VQ/lib/python3.13/site-packages/lm_eval/evaluator.py", line 81, in simple_evaluate
-    task_dict = lm_eval.tasks.get_task_dict(tasks)
-  File "/home/lliu/miniconda3/envs/NoWAC-VQ/lib/python3.13/site-packages/lm_eval/tasks/__init__.py", line 318, in get_task_dict
-    task_name: get_task(task_name)()
-               ~~~~~~~~^^^^^^^^^^^
-  File "/home/lliu/miniconda3/envs/NoWAC-VQ/lib/python3.13/site-packages/lm_eval/tasks/__init__.py", line 300, in get_task
-    raise KeyError(f"Missing task {task_name}")
-KeyError: 'Missing task winograde'

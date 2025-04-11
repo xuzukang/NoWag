@@ -4,8 +4,9 @@ import numpy as np
 import random
 import wandb
 import gc
-import os 
+import os
 import glob
+
 
 def param_to_buffer(module: nn.Module, param_name: str):
     """converts a parameter to a buffer in a module
@@ -61,72 +62,83 @@ def recursive_apply(module: nn.Module, func_name: str, func_kwargs: dict = {}):
         else:
             recursive_apply(child, func_name, func_kwargs)
 
-def recursive_find(module: nn.Module, name:str) -> nn.Module:
+
+def recursive_find(module: nn.Module, name: str) -> nn.Module:
     # print(name)
     if name == "":
         return module
     if "." not in name:
         return getattr(module, name)
     else:
-        return recursive_find(getattr(module, name[:name.find(".")]), name[name.find(".")+1:])
-    
+        return recursive_find(
+            getattr(module, name[: name.find(".")]), name[name.find(".") + 1 :]
+        )
+
 
 def intialize_wandb(args, config: dict = None):
     if not args.use_wandb:
         return
-    
+
     project_name = None if not hasattr(args, "wandb_project") else args.wandb_project
     run_name = None if not hasattr(args, "wandb_run_name") else args.wandb_run_name
     run_id = None if not hasattr(args, "wandb_run_id") else args.wandb_run_id
 
-    
-    wandb.init(project=project_name, name=run_name, id=run_id,
-               config = config, resume = "allow")
-    
-def seed(seed, seed_all:bool=False):
+    wandb.init(
+        project=project_name, name=run_name, id=run_id, config=config, resume="allow"
+    )
+
+
+def seed(seed, seed_all: bool = False):
     torch.manual_seed(seed)
     if seed_all:
         torch.cuda.manual_seed_all(seed)
     else:
         torch.cuda.manual_seed(seed)
-    np.random.seed(seed)    
+    np.random.seed(seed)
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     # torch.set_deterministic(True)
 
 
-               
 def clean():
     gc.collect()
     torch.cuda.empty_cache()
     torch.cuda.ipc_collect()
 
-def get_gpu_memory(device:torch.device, return_str:bool=False):
+
+def get_gpu_memory(device: torch.device, return_str: bool = False):
     total_memory = torch.cuda.get_device_properties(device).total_memory
     reserved_memory = torch.cuda.memory_reserved(device)
     allocated_memory = torch.cuda.memory_allocated(device)
     free_memory = total_memory - reserved_memory - allocated_memory
 
-    as_gb = lambda x: round(x/1024**3, 2)
+    as_gb = lambda x: round(x / 1024**3, 2)
     if return_str:
         return f"Total Memory: {as_gb(total_memory)}GB, Reserved Memory: {as_gb(reserved_memory)}GB, Allocated Memory: {as_gb(allocated_memory)}GB, Free Memory: {as_gb(free_memory)}GB"
     else:
-        print(f"Total Memory: {as_gb(total_memory)}GB, Reserved Memory: {as_gb(reserved_memory)}GB, Allocated Memory: {as_gb(allocated_memory)}GB, Free Memory: {as_gb(free_memory)}GB")
+        print(
+            f"Total Memory: {as_gb(total_memory)}GB, Reserved Memory: {as_gb(reserved_memory)}GB, Allocated Memory: {as_gb(allocated_memory)}GB, Free Memory: {as_gb(free_memory)}GB"
+        )
 
-def find_run_num(save_path:str)->str:
+
+def find_run_num(save_path: str) -> str:
     """counts the number of runs in a directory and returns 'run_x' where x is the next run number"""
     n_prev_runs = len(glob.glob(os.path.join(save_path, "run_*")))
     return f"run_{n_prev_runs}"
 
-#from https://stackoverflow.com/questions/579310/formatting-long-numbers-as-strings
+
+# from https://stackoverflow.com/questions/579310/formatting-long-numbers-as-strings
 def human_format(num):
-    num = float('{:.3g}'.format(num))
+    num = float("{:.3g}".format(num))
     magnitude = 0
     while abs(num) >= 1000:
         magnitude += 1
         num /= 1000.0
-    return '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
+    return "{}{}".format(
+        "{:f}".format(num).rstrip("0").rstrip("."), ["", "K", "M", "B", "T"][magnitude]
+    )
+
 
 if __name__ == "__main__":
 

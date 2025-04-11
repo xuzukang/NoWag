@@ -1,1 +1,0 @@
-python perplexity_eval.py --base_model luodian/llama-7b-hf --seqlen 2024 --offload_activations --device cuda:0

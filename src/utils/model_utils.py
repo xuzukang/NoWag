@@ -7,10 +7,12 @@ from typing import Any, Dict, Iterable, Optional, Sequence, Tuple
 DEV = torch.device("cuda:0")
 
 
-def get_llama(model: str, model_path: Optional[str] = None,
-              device_map: Optional[str] = None,
-              dtype: Optional[str] = None,
-              ) -> Any:
+def get_llama(
+    model: str,
+    model_path: Optional[str] = None,
+    device_map: Optional[str] = None,
+    dtype: Optional[str] = None,
+) -> Any:
     import torch
 
     def skip(*args, **kwargs):
@@ -24,12 +26,13 @@ def get_llama(model: str, model_path: Optional[str] = None,
 
         # model = LlamaForCausalLM.from_pretrained(model, torch_dtype="auto")
         import transformers
+
         model = transformers.AutoModelForCausalLM.from_pretrained(
             model if model_path is None else model_path,
             torch_dtype="auto" if dtype is None else dtype,
-             low_cpu_mem_usage=True,
-            attn_implementation='sdpa',
-            device_map = device_map,
+            low_cpu_mem_usage=True,
+            attn_implementation="sdpa",
+            device_map=device_map,
         )
     else:
         import transformers
@@ -37,9 +40,9 @@ def get_llama(model: str, model_path: Optional[str] = None,
         model = transformers.AutoModelForCausalLM.from_pretrained(
             model if model_path is None else model_path,
             torch_dtype="auto",
-             low_cpu_mem_usage=True,
-            attn_implementation='sdpa',
-            device_map = device_map
+            low_cpu_mem_usage=True,
+            attn_implementation="sdpa",
+            device_map=device_map,
         )
     # model.seqlen = 8192
     print("Model loaded.", model)
@@ -58,17 +61,19 @@ def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=""):
         )
     return res
 
+
 @torch.no_grad()
-def inference_layer(layer:nn.Module, 
-                    inps:torch.FloatTensor,
-                    outs:torch.FloatTensor,
-                    layer_kwargs:dict={},
-                    dev:str = "cuda:0",
-                    offload_activations:bool=False,
-                    batch_size:int = 8,
-                    disable_tqdm:bool = False,
-                    inplace:bool = True
-                    )->torch.FloatTensor:
+def inference_layer(
+    layer: nn.Module,
+    inps: torch.FloatTensor,
+    outs: torch.FloatTensor,
+    layer_kwargs: dict = {},
+    dev: str = "cuda:0",
+    offload_activations: bool = False,
+    batch_size: int = 8,
+    disable_tqdm: bool = False,
+    inplace: bool = True,
+) -> torch.FloatTensor:
     """Inference a single layer"""
     # layer.to(dev)
     if offload_activations:
@@ -77,25 +82,33 @@ def inference_layer(layer:nn.Module,
     else:
         inps = inps.to(dev)
         outs = outs.to(dev)
-    
+
     # tqdm.tqdm.write("inps device: "+str(inps.device))
-    for j in tqdm.tqdm(range(0, len(inps), batch_size), desc="Inference", miniters=len(inps)//100,
-                          disable=disable_tqdm):
+    for j in tqdm.tqdm(
+        range(0, len(inps), batch_size),
+        desc="Inference",
+        miniters=len(inps) // 100,
+        disable=disable_tqdm,
+    ):
         # print(j, j+batch_size)
         if offload_activations:
             if inplace:
-                inps[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
-                            **layer_kwargs)[0].cpu()
+                inps[j : j + batch_size] = layer(
+                    inps[j : j + batch_size].to(dev), **layer_kwargs
+                )[0].cpu()
             else:
-                outs[j:j+batch_size] = layer(inps[j:j+batch_size].to(dev), 
-                            **layer_kwargs)[0].cpu()
+                outs[j : j + batch_size] = layer(
+                    inps[j : j + batch_size].to(dev), **layer_kwargs
+                )[0].cpu()
         else:
             if inplace:
-                inps[j:j+batch_size] = layer(inps[j:j+batch_size], 
-                            **layer_kwargs)[0]
+                inps[j : j + batch_size] = layer(
+                    inps[j : j + batch_size], **layer_kwargs
+                )[0]
             else:
-                outs[j:j+batch_size] = layer(inps[j:j+batch_size], 
-                            **layer_kwargs)[0]
+                outs[j : j + batch_size] = layer(
+                    inps[j : j + batch_size], **layer_kwargs
+                )[0]
     # layer.cpu()
     if inplace:
         return inps

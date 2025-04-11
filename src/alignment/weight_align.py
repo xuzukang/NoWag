@@ -7,6 +7,7 @@ import src.utils.compress_parent as compress_parent
 import warnings
 import tqdm
 
+
 def loss(reconstructed_weights, original_weights):
     return F.mse_loss(reconstructed_weights, original_weights)
 
@@ -23,7 +24,7 @@ class dummy_lr_scheduler:
 def align(
     compression_module: compress_parent.CompressorParent,
     original_weights: torch.FloatTensor,
-    lr: Union[float, dict[str, float]] = 1e-3,  
+    lr: Union[float, dict[str, float]] = 1e-3,
     lr_multiplier: float = 1,  # decay the lr by this factor every time the val loss increases
     n_iters: int = 100,
     val_every: int = 1,
@@ -64,7 +65,7 @@ def align(
         for name, param in compression_module.named_parameters():
             # print(name)
             if param.requires_grad:
-                #search for the name or substring in the dictionary
+                # search for the name or substring in the dictionary
                 found = False
                 for key in lr.keys():
                     if key in name:
@@ -74,14 +75,14 @@ def align(
                 if not found:
                     params.append({"params": param, "lr": lr["default"]})
         optimizer = torch.optim.Adam(params)
-        
+
     else:
         # print("here")
         for name, param in compression_module.named_parameters():
             # print(name)
             if param.requires_grad:
                 params.append({"params": param})
-                
+
         optimizer = torch.optim.Adam(params, lr=lr)
     # print("lr_multiplier", lr_multiplier)
     if lr_multiplier < 1:
@@ -104,7 +105,7 @@ def align(
         reconstructed_weights = compression_module.reconstruct()
         train_loss = loss(reconstructed_weights, original_weights)
         # print(train_loss)
-        
+
         if train_loss < best_loss:
             best_loss = train_loss.item()
             best_state_dict = copy.deepcopy(compression_module.state_dict())
@@ -114,7 +115,12 @@ def align(
             if patience_counter == patience:
                 break
         if train_loss < low_bound:
-            print("early stopping low bound", low_bound, "train_loss", torch.sqrt(train_loss/avg_weight))
+            print(
+                "early stopping low bound",
+                low_bound,
+                "train_loss",
+                torch.sqrt(train_loss / avg_weight),
+            )
             break
 
         train_loss.backward()
@@ -139,5 +145,10 @@ def align(
             )
 
     compression_module.load_state_dict(best_state_dict)
-    print("best loss relative", torch.sqrt(best_loss/avg_weight).item(), "best loss absolute", best_loss)   
-    return compression_module, torch.sqrt(best_loss/avg_weight).item()
+    print(
+        "best loss relative",
+        torch.sqrt(best_loss / avg_weight).item(),
+        "best loss absolute",
+        best_loss,
+    )
+    return compression_module, torch.sqrt(best_loss / avg_weight).item()

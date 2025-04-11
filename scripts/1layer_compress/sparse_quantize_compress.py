@@ -5,6 +5,7 @@ import transformers
 import math
 import numpy as np
 import os
+
 print("pid", os.getpid())
 import sys
 import copy
@@ -12,7 +13,9 @@ import copy
 import yaml
 from typing import Tuple, Optional, Union, List, Callable
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+)
 
 
 import src.linear_compress as lc
@@ -23,39 +26,56 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--hessian_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_0/self_attn.q_proj.pt")
-parser.add_argument("--weights_path", type=str, default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights")
+parser.add_argument(
+    "--hessian_path",
+    type=str,
+    default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/hessians_new/seed_0/pajama/128/layer_0/self_attn.q_proj.pt",
+)
+parser.add_argument(
+    "--weights_path",
+    type=str,
+    default="/data/lliu/huffman/models/meta-llama/Llama-2-7b-hf/original_weights",
+)
 parser.add_argument("--save_path", type=str, default="IGNORE")
 parser.add_argument("--discrete_update_hessian_path", type=str, default=None)
-parser.add_argument("--device", type = str, default = "cuda:2",
-                    help = "device to use for training")
-parser.add_argument("--yaml_path", type = str, default = "/data/lliu/huffman/scripts/1layer_compress/sparse_args.yaml")
+parser.add_argument(
+    "--device", type=str, default="cuda:2", help="device to use for training"
+)
+parser.add_argument(
+    "--yaml_path",
+    type=str,
+    default="/data/lliu/huffman/scripts/1layer_compress/sparse_args.yaml",
+)
 
 args = parser.parse_args()
 
 if "cpu" in args.device:
     args.device = "cpu"
-    
 
-kwargs = yaml.load(open(args.yaml_path, "r"), Loader = yaml.FullLoader)
+
+kwargs = yaml.load(open(args.yaml_path, "r"), Loader=yaml.FullLoader)
 
 if "quantizer_args" not in kwargs:
-    model_name = args.weights_path.split("/")[-2]   
+    model_name = args.weights_path.split("/")[-2]
 
-    quantizer_paths = yaml.load(open(kwargs["quantizer_overall_path"].replace("{model_name}", model_name), "r"), Loader = yaml.FullLoader)
+    quantizer_paths = yaml.load(
+        open(kwargs["quantizer_overall_path"].replace("{model_name}", model_name), "r"),
+        Loader=yaml.FullLoader,
+    )
 
-    #now we need to get the path to our quantizer
-    layer_name = args.hessian_path.split("/")[-2]+ "/" + args.hessian_path.split("/")[-1][:-3]
+    # now we need to get the path to our quantizer
+    layer_name = (
+        args.hessian_path.split("/")[-2] + "/" + args.hessian_path.split("/")[-1][:-3]
+    )
     print("layer_name", layer_name)
-    quantizer_path = quantizer_paths[
-        f"meta-llama/{model_name}/{layer_name}"]
+    quantizer_path = quantizer_paths[f"meta-llama/{model_name}/{layer_name}"]
 
-    #this is the path to the weights, to get the path to the config yaml, we need to 
-    #replace the .pt with _args.yaml
+    # this is the path to the weights, to get the path to the config yaml, we need to
+    # replace the .pt with _args.yaml
     quantizer_args_path = quantizer_path.replace(".pt", "_args.yaml")
 
-    #load the quantizer args and add them to the kwargs
-    quantizer_args = yaml.load(open(quantizer_args_path, "r"), Loader = yaml.FullLoader)
+    # load the quantizer args and add them to the kwargs
+    quantizer_args = yaml.load(open(quantizer_args_path, "r"), Loader=yaml.FullLoader)
     # print(quantizer_args)
     kwargs["quantizer_args"] = quantizer_args
     load_quantizer = True
@@ -65,18 +85,23 @@ else:
 dtype = torch.float32 if kwargs.get("dtype", "float32") == "float32" else torch.float16
 print("dtype", dtype)
 seed = kwargs["seed"]
-torch.manual_seed(seed)    
+torch.manual_seed(seed)
 np.random.seed(seed)
 torch.cuda.manual_seed(seed)
 
-hessian = torch.load(args.hessian_path,
-                    map_location = torch.device(args.device)
-                     )["hessian"]
+hessian = torch.load(args.hessian_path, map_location=torch.device(args.device))[
+    "hessian"
+]
 # print("hessian", hessian)
 # raise ValueError("stop here")
-weight = torch.load(os.path.join(args.weights_path,args.hessian_path.split("/")[-2], args.hessian_path.split("/")[-1]),
-                    map_location = torch.device(args.device)
-                    )["weight"]
+weight = torch.load(
+    os.path.join(
+        args.weights_path,
+        args.hessian_path.split("/")[-2],
+        args.hessian_path.split("/")[-1],
+    ),
+    map_location=torch.device(args.device),
+)["weight"]
 # print("weight.device", weight.device)
 # print("weight_loaded", weight[0])
 original_dtype = weight.dtype
@@ -92,44 +117,52 @@ compression_module.hessian = hessian.to(args.device).to(dtype)
 
 
 if "allocation_config" in kwargs:
-    #load the allocation file 
-    allocation = yaml.load(open(kwargs["allocation_config"], "r"), Loader = yaml.FullLoader)
-    allocation_config = allocation[args.hessian_path.split("/")[-2] + "/" + args.hessian_path.split("/")[-1]]
-    
+    # load the allocation file
+    allocation = yaml.load(
+        open(kwargs["allocation_config"], "r"), Loader=yaml.FullLoader
+    )
+    allocation_config = allocation[
+        args.hessian_path.split("/")[-2] + "/" + args.hessian_path.split("/")[-1]
+    ]
+
     n_bits = allocation_config["n_bits"]
     sparse_frac = allocation_config["sparse_frac"]
     kwargs["sparsify_kwargs"]["frac_sparse"] = sparse_frac
-    #get the corresponding d that can be used and is less than max_d_prod
+    # get the corresponding d that can be used and is less than max_d_prod
     d = 1
     while d * n_bits <= kwargs.get("max_d_prod", 12) and d <= kwargs.get("max_d", 6):
-        if n_bits*d % 1 == 0:
-            best_d = d 
+        if n_bits * d % 1 == 0:
+            best_d = d
         d += 1
-    
-    #update the quantizer kwargs
+
+    # update the quantizer kwargs
     kwargs["quantizer_args"]["quantizer_kwargs"]["d"] = best_d
     kwargs["quantizer_args"]["quantizer_kwargs"]["n_bits"] = n_bits
-    print("best_d", best_d, "n_bits", n_bits)  
-    
-    
+    print("best_d", best_d, "n_bits", n_bits)
+
 
 if load_quantizer:
-    compression_module.blank_recreate(vq.VectorQuantizer if kwargs["quantizer_args"].get("quantizer_type", "original")  != "1st_order" else vq2.VectorQuantizer_1st_order, 
-                                    quantizer_kwargs=kwargs["quantizer_args"]["quantizer_kwargs"])
+    compression_module.blank_recreate(
+        (
+            vq.VectorQuantizer
+            if kwargs["quantizer_args"].get("quantizer_type", "original") != "1st_order"
+            else vq2.VectorQuantizer_1st_order
+        ),
+        quantizer_kwargs=kwargs["quantizer_args"]["quantizer_kwargs"],
+    )
 
-    #load the quantizer
-    compression_module.load_state_dict(torch.load(quantizer_path, map_location = torch.device(args.device)))
+    # load the quantizer
+    compression_module.load_state_dict(
+        torch.load(quantizer_path, map_location=torch.device(args.device))
+    )
 
     compression_module.hessian = hessian.to(args.device).to(dtype)
 
+    # print the error
+    print("pre sparse loss", compression_module.get_reconstruction_error().item())
 
-    #print the error
-    print("pre sparse loss",compression_module.get_reconstruction_error().item())
-
-    #sparse
-    compression_module.sparsify(
-        **kwargs["sparsify_kwargs"]
-    )
+    # sparse
+    compression_module.sparsify(**kwargs["sparsify_kwargs"])
 
 else:
     sparse_kwargs = kwargs["sparsify_kwargs"]
@@ -137,9 +170,13 @@ else:
     compression_module.sparse_before_quantize(
         sparse_kwargs["sparse_types"],
         sparse_kwargs["frac_sparse"],
-        vq.VectorQuantizer if kwargs["quantizer_args"].get("quantizer_type", "original")  != "1st_order" else vq2.VectorQuantizer_1st_order, 
+        (
+            vq.VectorQuantizer
+            if kwargs["quantizer_args"].get("quantizer_type", "original") != "1st_order"
+            else vq2.VectorQuantizer_1st_order
+        ),
         quantizer_kwargs=quantizer_kwargs,
-        quantize_minus_sparse = sparse_kwargs["quantize_minus_sparse"],
+        quantize_minus_sparse=sparse_kwargs["quantize_minus_sparse"],
         sparse_after_norm=sparse_kwargs["sparse_after_norm"],
     )
 
@@ -156,11 +193,14 @@ else:
 # # assert torch.allclose(y1, y2)
 # print("y1", y1[0,disagree_idxs[1]])
 # print("y2", y2[0,disagree_idxs[1]])
-#save the quantizers
-print("best_loss",compression_module.get_reconstruction_error().item())
+# save the quantizers
+print("best_loss", compression_module.get_reconstruction_error().item())
 print("n_params", compression_module.get_n_original_parameters())
 print("n_bits", compression_module.get_n_bits())
-print("bpv", compression_module.get_n_bits()/compression_module.get_n_original_parameters())
+print(
+    "bpv",
+    compression_module.get_n_bits() / compression_module.get_n_original_parameters(),
+)
 # print(compression_module.state_dict())
 # compression_module.to(original_dtype)
 
@@ -171,7 +211,7 @@ print("bpv", compression_module.get_n_bits()/compression_module.get_n_original_p
 # )
 
 # compression_module_from_scratch.blank_recreate(
-#     vq.VectorQuantizer if kwargs["quantizer_args"].get("quantizer_type", "original")  != "1st_order" else vq2.VectorQuantizer_1st_order, 
+#     vq.VectorQuantizer if kwargs["quantizer_args"].get("quantizer_type", "original")  != "1st_order" else vq2.VectorQuantizer_1st_order,
 #     quantizer_kwargs=kwargs["quantizer_args"]["quantizer_kwargs"],
 #     sparse_kwargs=kwargs["sparsify_kwargs"]
 # )
@@ -184,17 +224,14 @@ print("bpv", compression_module.get_n_bits()/compression_module.get_n_original_p
 if args.save_path != "IGNORE":
     os.makedirs(os.path.dirname(args.save_path), exist_ok=True)
     torch.save(compression_module.state_dict(), args.save_path)
-    #save the args
+    # save the args
 
-    current_filetype = args.save_path[args.save_path.rfind("."):]
-    args_save_path = args.save_path[:args.save_path.rfind(".")] + "_args.yaml"
+    current_filetype = args.save_path[args.save_path.rfind(".") :]
+    args_save_path = args.save_path[: args.save_path.rfind(".")] + "_args.yaml"
     # print("args_save_path", args_save_path)
 
-    #save the args as a yaml file
+    # save the args as a yaml file
     with open(args_save_path, "w") as f:
-        #add a arg that these are quantized weights
+        # add a arg that these are quantized weights
         kwargs["compression_type"] = "sparse"
         yaml.dump(kwargs, f)
-    
-
-
