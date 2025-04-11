@@ -159,162 +159,183 @@ def compression_worker(
 
 @hydra.main(version_base=None, config_path="./config", config_name="compress")
 def main(cfg: DictConfig):
-    # print(cfg)
-    # raise NotImplementedError("This is a test")
-    # seed(cfg.seed)
-    # Get the list of available GPUs
+    #log to wandb if needed
     if cfg.log_wandb:
         wandb.init(
             project="NoWag-1shot",
             config=OmegaConf.to_container(cfg, resolve=True),
             name=cfg.name,
         )
-    devices = torch.cuda.device_count()
-    gpu_ids = list(range(devices))
-    print(f"Available GPUs: {gpu_ids}")
-
-    # Create queues for tasks and results
-    task_queue = mp.Queue()
-    result_queue = mp.Queue()
-    gpu_queue = mp.Queue()
-    lock = mp.Lock()
-    for gpu_id in gpu_ids:
-        gpu_queue.put(gpu_id)
-
-    # create our list of tasks
-    weight_paths = glob.glob(os.path.join(cfg.weight_path, "*/*.pt"))
-    print("n weights found", len(weight_paths))
-
-    # create the task queue
-    for weight_path in weight_paths:
-        layer_name = weight_path.replace(cfg.weight_path, "").replace(".pt", "")[1:]
-        task_queue.put((layer_name, cfg))
-
-    # Create a stop event
-    stop_event = mp.Event()
-
-    # Create a pool of workers
-    num_workers = min(len(gpu_ids), mp.cpu_count())
-    processes = []
-    print(f"Starting {num_workers} workers")
-    for _ in range(num_workers):
-        p = mp.Process(
-            target=compression_worker,
-            args=(task_queue, result_queue, gpu_queue, lock, stop_event),
-        )
-        p.start()
-        processes.append(p)
-
-    # Create a progress bar
-    pbar = tqdm.tqdm(total=len(weight_paths), desc="Quantizing layers")
-
-    checkpoints_dict: Dict[str, str] = {}
-    running_first = 0
-    running_params = 0
-
-    # Process results
-    tasks_done = 0
-    while tasks_done < len(weight_paths):
+        
+    #print the config
+    print(OmegaConf.to_yaml(cfg))
+    if cfg.resume and os.path.exists(cfg.save_path):
+        #try to load the model
         try:
-            layer_name, save_path, (first, n_params) = result_queue.get(timeout=1)
-            # print(f"Layer {layer_name} quantized and saved to {save_path}")
-            checkpoints_dict[layer_name] = save_path
-            running_first += first
-            running_params += n_params
-            tasks_done += 1
-            pbar.update(1)
-        except queue.Empty:
-            pass
+            compressed_model = LlamaForCausalLM.from_pretrained(
+                os.path.join(cfg.save_path, "model"),
+                torch_dtype="auto",
+                device_map="auto",
+                low_cpu_mem_usage=True,
+            )
+            print("Loaded model from", cfg.save_path)
+        except Exception as e:
+            print("Error loading model from", cfg.save_path)
+            print(e)
+            compressed_model = None
+        # raise NotImplementedError("This is a test")
+    else:
+        compressed_model = None
+    if compressed_model is None:
+        print(f"compressing model {cfg.base_model}")
+        devices = torch.cuda.device_count()
+        gpu_ids = list(range(devices))
+        print(f"Available GPUs: {gpu_ids}")
 
-        if stop_event.is_set():
-            print("Stopping all workers due to error")
-            break
-    pbar.close()
+        # Create queues for tasks and results
+        task_queue = mp.Queue()
+        result_queue = mp.Queue()
+        gpu_queue = mp.Queue()
+        lock = mp.Lock()
+        for gpu_id in gpu_ids:
+            gpu_queue.put(gpu_id)
 
-    # Wait for all processes to finish
-    for p in processes:
-        p.join()
+        # create our list of tasks
+        weight_paths = glob.glob(os.path.join(cfg.weight_path, "*/*.pt"))
+        print("n weights found", len(weight_paths))
 
-    # Check if any process raised an exception
-    if stop_event.is_set():
-        print("One or more processes raised an exception. Exiting.")
+        # create the task queue
+        for weight_path in weight_paths:
+            layer_name = weight_path.replace(cfg.weight_path, "").replace(".pt", "")[1:]
+            task_queue.put((layer_name, cfg))
+
+        # Create a stop event
+        stop_event = mp.Event()
+
+        # Create a pool of workers
+        num_workers = min(len(gpu_ids), mp.cpu_count())
+        processes = []
+        print(f"Starting {num_workers} workers")
+        for _ in range(num_workers):
+            p = mp.Process(
+                target=compression_worker,
+                args=(task_queue, result_queue, gpu_queue, lock, stop_event),
+            )
+            p.start()
+            processes.append(p)
+
+        # Create a progress bar
+        pbar = tqdm.tqdm(total=len(weight_paths), desc="Quantizing layers")
+
+        checkpoints_dict: Dict[str, str] = {}
+        running_first = 0
+        running_params = 0
+
+        # Process results
+        tasks_done = 0
+        while tasks_done < len(weight_paths):
+            try:
+                layer_name, save_path, (first, n_params) = result_queue.get(timeout=1)
+                # print(f"Layer {layer_name} quantized and saved to {save_path}")
+                checkpoints_dict[layer_name] = save_path
+                running_first += first
+                running_params += n_params
+                tasks_done += 1
+                pbar.update(1)
+            except queue.Empty:
+                pass
+
+            if stop_event.is_set():
+                print("Stopping all workers due to error")
+                break
+        pbar.close()
+
+        # Wait for all processes to finish
         for p in processes:
-            p.terminate()
-        return
+            p.join()
 
-    # print out the results
-    print("=" * 10, "Compression Level", "=" * 10)
-    print(f"Total number of parameters: {human_format(running_params)}")
-    if cfg.compress.method == "LinearVQ":
-        print(f"Total number of bytes: {human_format(running_first)}")
-        print(f"Average bits per parameter: {round(running_first/running_params, 4)}")
-    elif cfg.compress.method == "Sparse":
-        print(f"Total number of non-zero parameters: {human_format(running_first)}")
-        print(f"Actual Pruning fraction: {round(running_first/running_params, 4)}")
-    print(f"=" * 25)
+        # Check if any process raised an exception
+        if stop_event.is_set():
+            print("One or more processes raised an exception. Exiting.")
+            for p in processes:
+                p.terminate()
+            return
 
-    # Reload and Save in hf format
+        # print out the results
+        print("=" * 10, "Compression Level", "=" * 10)
+        print(f"Total number of parameters: {human_format(running_params)}")
+        if cfg.compress.method == "LinearVQ":
+            print(f"Total number of bytes: {human_format(running_first)}")
+            print(f"Average bits per parameter: {round(running_first/running_params, 4)}")
+        elif cfg.compress.method == "Sparse":
+            print(f"Total number of non-zero parameters: {human_format(running_first)}")
+            print(f"Actual Pruning fraction: {round(running_first/running_params, 4)}")
+        print(f"=" * 25)
 
-    orig_config = AutoConfig.from_pretrained(
-        cfg.base_model, dtype="auto", device_map="cpu", attn_implementation="sdpa"
-    )
-    orig_model = OrigLlama.from_pretrained(
-        cfg.base_model,
-        config=orig_config,
-        torch_dtype="auto",
-        device_map="cpu",
-        low_cpu_mem_usage=True,
-        attn_implementation="sdpa",
-    )
+        # Reload and Save in hf format
 
-    compression_config = {
-        "compression_kwargs": OmegaConf.to_container(cfg.compress.kwargs, resolve=True),
-        "compression_type": cfg.compress.method,
-        "add_bias": cfg.add_bias,
-        "skip_list": None,
-    }
-
-    orig_config.compress_config = compression_config
-
-    compressed_model = LlamaForCausalLM(orig_config)
-    compressed_model.to(orig_config.torch_dtype)
-    compressed_model.load_state_dict(orig_model.state_dict(), strict=False)
-
-    del orig_model
-
-    for layer_name, save_path in tqdm.tqdm(
-        checkpoints_dict.items(), desc="Loading quantized layers"
-    ):
-        # now split by /
-        layer_name = layer_name.split("/")[-2:]
-        # from the first part, we can get which layer it is
-        i_layer = int(layer_name[0].replace("layer_", ""))
-        # from the second part we can get which module (self_attn, mlp, etc) and which layer it is
-        submodule_name, linear_name = layer_name[1].split(".")
-
-        # now we get the right module
-        layer = getattr(
-            getattr(compressed_model.model.layers[i_layer], submodule_name), linear_name
+        orig_config = AutoConfig.from_pretrained(
+            cfg.base_model, dtype="auto", device_map="cpu", attn_implementation="sdpa"
         )
-        # record the original dtype
-        orig_dtype = next(layer.parameters()).dtype
-        orig_device = next(layer.parameters()).device
-        # load the state dict
-        state_dict = torch.load(save_path, map_location=orig_device)
-        layer.load_state_dict(state_dict)
-        layer.to(orig_dtype)
-        # delete the state dict to save memory
-        del state_dict
-        # and delete the save path from disk
-        os.remove(save_path)
+        orig_model = OrigLlama.from_pretrained(
+            cfg.base_model,
+            config=orig_config,
+            torch_dtype="auto",
+            device_map="cpu",
+            low_cpu_mem_usage=True,
+            attn_implementation="sdpa",
+        )
 
-    # save the model
-    compressed_model.save_pretrained(os.path.join(cfg.save_path, "model"))
+        compression_config = {
+            "compression_kwargs": OmegaConf.to_container(cfg.compress.kwargs, resolve=True),
+            "compression_type": cfg.compress.method,
+            "add_bias": cfg.add_bias,
+            "skip_list": None,
+        }
 
-    # Move the model to an auto device map using accelerate
+        orig_config.compress_config = compression_config
 
-    device_map = infer_auto_device_map(compressed_model)
-    compressed_model = dispatch_model(compressed_model, device_map=device_map)
+        compressed_model = LlamaForCausalLM(orig_config)
+        compressed_model.to(orig_config.torch_dtype)
+        compressed_model.load_state_dict(orig_model.state_dict(), strict=False)
+
+        del orig_model
+
+        for layer_name, save_path in tqdm.tqdm(
+            checkpoints_dict.items(), desc="Loading quantized layers"
+        ):
+            # now split by /
+            layer_name = layer_name.split("/")[-2:]
+            # from the first part, we can get which layer it is
+            i_layer = int(layer_name[0].replace("layer_", ""))
+            # from the second part we can get which module (self_attn, mlp, etc) and which layer it is
+            submodule_name, linear_name = layer_name[1].split(".")
+
+            # now we get the right module
+            layer = getattr(
+                getattr(compressed_model.model.layers[i_layer], submodule_name), linear_name
+            )
+            # record the original dtype
+            orig_dtype = next(layer.parameters()).dtype
+            orig_device = next(layer.parameters()).device
+            # load the state dict
+            state_dict = torch.load(save_path, map_location=orig_device)
+            layer.load_state_dict(state_dict)
+            layer.to(orig_dtype)
+            # delete the state dict to save memory
+            del state_dict
+            # and delete the save path from disk
+            os.remove(save_path)
+
+        # save the model
+        compressed_model.save_pretrained(os.path.join(cfg.save_path, "model"))
+
+        # Move the model to an auto device map using accelerate
+
+        device_map = infer_auto_device_map(compressed_model)
+        compressed_model = dispatch_model(compressed_model, device_map=device_map)
+        
+
     # evaluate the models
     # first have them cache the quantized weights
     recursive_apply(compressed_model, "cache_reconstruct", {"denormalize": True})
@@ -322,8 +343,9 @@ def main(cfg: DictConfig):
     # get the name of the model
     compressed_model.to(torch.float16)
     compressed_model.seqlen = (
-        cfg.seqlen if cfg.seqlen > 0 else orig_config.max_position_embeddings
+        cfg.seqlen if cfg.seqlen > 0 else compressed_model.config.max_position_embeddings
     )
+    print("using seqlen", compressed_model.seqlen)
 
     compressed_model.eval()
     if hasattr(cfg, "eval"):

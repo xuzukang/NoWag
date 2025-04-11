@@ -1,8 +1,11 @@
 # cleanup list
-- [ ] move perplexity and zero shot to their own files
+- [x] move perplexity and zero shot to their own files
 - [x] rewrite the parallel compress
-- [ ] add hydra to the sparse compress
+- [x] add hydra to the sparse compress
 - [x] add hydra to the quantize compress
-- [ ] write the 2_4 pruning
-- [ ] write the 4_8 pruning
+- [x] write the example scripts for quantize and pruning
+- [x] write the N:M pruning
+- [ ] Compare the conda enviroments and make one unified one
+- [ ] Make a readme
+
 

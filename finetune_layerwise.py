@@ -272,9 +272,7 @@ def main(cfg: DictConfig):
     # we expect the config to have a sub section called model with the name of the base model and the path to the quantized model
     base_model = cfg.model.base_model
     compressed_model_path = cfg.model.compressed_model_path
-    seqlen = (
-        cfg.model.seqlen
-    )  # this can be -1, in which case we switch to using the model's full sequence length
+    seqlen = cfg.seqlen # this can be -1, in which case we switch to using the model's full sequence length
 
     base_model = OrigLlama.from_pretrained(
         base_model, device_map="cpu", torch_dtype=torch.float32
@@ -416,9 +414,7 @@ def main(cfg: DictConfig):
 
     # get the name of the model
     compressed_model.to(torch.float16)
-    compressed_model.seqlen = (
-        cfg.seqlen if cfg.seqlen > 0 else seqlen
-    )
+    compressed_model.seqlen = seqlen
 
     compressed_model.eval()
     if hasattr(cfg, "eval"):

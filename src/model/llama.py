@@ -219,7 +219,7 @@ def CreateCompressedLayerHelper(n_in, n_out, config):
             dtype=config.torch_dtype,
             **compression_kwargs,
         )
-    if compression_type == "Sparse":
+    elif compression_type == "Sparse":
         layer = SparseLinear.blank_init(
             n_in,
             n_out,

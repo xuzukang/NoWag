@@ -1,5 +1,6 @@
 defaults:
   - model: llama-2-13b
+  - eval: default
 
 
 dataset:
@@ -15,6 +16,7 @@ dataset:
 
 seed: 0
 sequential: True
+seqlen: -1 # -1 means native seqlen
 
 ft_args:
   batch_size: 2
