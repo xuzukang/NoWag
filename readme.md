@@ -31,7 +31,9 @@ calibration data as in the paper. The script can be found in `scripts/generate_h
 
 To perform one-shot compression, run the `NoWag.py` script. We use [Hydra](https://github.com/facebookresearch/hydra) for configuration management, so you can specify the model to compress, compression method, parameters, etc. By default the script will run NoWag-VQ on the Llama 2 7B model.
 Currently NoWag supports two paradigms of shape preserving compression:
+
 2. **Pruning (NoWag-P)**: This method prunes the model weights based on their importance. To run add `compress=prune` to the command line.  This is the default method used in the `NoWag.py` script. We support both unstructured and N:M pruning. The default is unstructured pruning. To run N:M pruning, add `+compress.kwargs.pattern=[$N:$M]` to the command line. We have provided a bash script to run NoWag-P on the Llama 2 7B/13B/70B and the Llama-3 8B/70B models using the same seed and calibration data as in the paper. The script can be found in `scripts/prune.bash`.
+
 1. **Vector Quantization (NoWag-VQ)**: This method quantizes the model weights using vector quantization techniques. We have provided a bash script to run NoWag-VQ on the Llama 2 7B/13B/70B and the Llama-3 8B models using the same seed and calibration data as in the paper. The script can be found in `scripts/quantize.bash`.
 
 ### Layerwise Fine Tuning
@@ -68,7 +70,8 @@ If you use this framework in your research, please cite:
 ```
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the GNU GPL v3 License. See the [LICENSE](LICENSE) file for details. Use of Llama models is governed by the Meta license available [here](https://ai.meta.com/resources/models-and-libraries/llama-downloads/).
 
 ## Contact
 For questions or issues, please contact [lawrencerliu@ucla.edu](mailto:lawrencerliu@ucla.edu).
