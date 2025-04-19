@@ -258,11 +258,13 @@ def process_kwargs(
 )
 def main(cfg: DictConfig):
     # initiate wandb
+    assert cfg.run_name is not "_EMPTY_", "run_name must be set"
+    
     if cfg.log_wandb:
         wandb.init(
             project="llama_layerwise_ft",
             config=OmegaConf.to_container(cfg, resolve=True),
-            name=f"{base_model.config.name_or_path}",
+            name=f"{base_model.config.name_or_path}-{cfg.run_name}",
         )
     print("config:")
     print(OmegaConf.to_yaml(cfg))
@@ -270,8 +272,8 @@ def main(cfg: DictConfig):
 
     utils.seed(cfg.seed)
     # we expect the config to have a sub section called model with the name of the base model and the path to the quantized model
-    base_model = cfg.model.base_model
-    compressed_model_path = cfg.model.compressed_model_path
+    base_model = cfg.base_model
+    compressed_model_path = cfg.compressed_model_path
     seqlen = cfg.seqlen # this can be -1, in which case we switch to using the model's full sequence length
 
     base_model = OrigLlama.from_pretrained(
@@ -400,7 +402,8 @@ def main(cfg: DictConfig):
         inps, outputs = outputs, inps
 
     # save the model
-    compressed_model.save_pretrained(cfg.model.save_path)
+    os.makedirs(cfg.save_path, exist_ok=True)
+    compressed_model.save_pretrained(os.path.join(cfg.save_path, "model"))
     
     #evaluate the model
     
@@ -412,7 +415,6 @@ def main(cfg: DictConfig):
     # first have them cache the quantized weights
     utils.recursive_apply(compressed_model, "cache_reconstruct", {"denormalize": True})
 
-    # get the name of the model
     compressed_model.to(torch.float16)
     compressed_model.seqlen = seqlen
 

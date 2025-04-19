@@ -11,3 +11,4 @@ temp/*
 *.log
 output/*
 outputs/*
+test*

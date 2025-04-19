@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export CUDA_VISIBLE_DEVICES=0,1 #uncomment to specify GPUs
-enviroment="NoWAC-VQ"
+enviroment="NoWag"
 
 models=("meta-llama/Llama-2-7b-hf"
     "meta-llama/Llama-2-13b-hf"
@@ -12,7 +12,7 @@ models=("meta-llama/Llama-2-7b-hf"
 
 for model in "${models[@]}"; do
     echo "===========Pruning $model with $pattern pattern=========="
-    cmd="python -u NoWAG.py run_name=2bit_vq"
+    cmd="python -u NoWag.py run_name=2bit_vq compress=vq"
     echo "running command: $cmd"
     conda run -n $enviroment --live-stream $cmd
 done
