@@ -1,5 +1,5 @@
 # NoWag: A Unified Framework for Shape Preserving Compression of Large Language Models
-[Lawrence Liu](https://lawrencerliu.github.io)<sup>1</sup>, [Inesh Chakrabarti](https://www.linkedin.com/in/inesh-chakrabarti-878602183/)<sup>1</sup>, [Yixiao Li](https://yxli2123.github.io/)<sup>2</sup>, [Mengdi Wang](https://mwang.princeton.edu/)<sup>4</sup>, [Tuo Zhao](https://www2.isye.gatech.edu/~tzhao80/)<sup>2</sup>, [Lin F. Yang](http://drlinyang.net/)<sup>1</sup><br>
+[Lawrence Liu](https://lawrencerliu.github.io)<sup>1</sup>, [Inesh Chakrabarti](https://www.linkedin.com/in/inesh-chakrabarti-878602183/)<sup>1</sup>, [Yixiao Li](https://yxli2123.github.io/)<sup>2</sup>, [Mengdi Wang](https://mwang.princeton.edu/)<sup>3</sup>, [Tuo Zhao](https://www2.isye.gatech.edu/~tzhao80/)<sup>2</sup>, [Lin F. Yang](http://drlinyang.net/)<sup>1</sup><br>
 <sup>1</sup> UCLA, <sup>2</sup> Georgia Tech, <sup>3</sup> Princeton University<br>
 
 ![Nowag Overview](assets/Overview.png)
