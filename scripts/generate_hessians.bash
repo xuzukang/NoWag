@@ -2,11 +2,12 @@
 
 export seed=0
 dataset="pajama"
-MODELS=("meta-llama/Llama-2-7b-hf"
-    "meta-llama/Llama-2-13b-hf"
-    "meta-llama/Llama-2-70b-hf"
+MODELS=(
+    # "meta-llama/Llama-2-7b-hf"
+    # "meta-llama/Llama-2-13b-hf"
+    # "meta-llama/Llama-2-70b-hf"
     "meta-llama/Meta-Llama-3-8B"
-    "meta-llama/Meta-Llama-3-70B"
+    # "meta-llama/Meta-Llama-3-70B"
 )
 N_SAMPLES=(128)
 
@@ -24,7 +25,7 @@ for n_samples in "${N_SAMPLES[@]}"; do
         --weight_save_path "${SAVE_PATH_PARENT}/$MODEL_PATH/original_weights" \
         --seed $seed"
         echo $cmd
-        conda run -n NoWAC-VQ --live-stream $cmd
+        conda run -n NoWag --live-stream $cmd
 
         # conda run -n NoWAC-VQ --live-stream python -u scripts/generate_hessians.py $MODEL_PATH $dataset \
         # --device cuda:1 \

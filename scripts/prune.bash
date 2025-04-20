@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=0,1 #set the GPU devices to use
+export CUDA_VISIBLE_DEVICES=1 #set the GPU devices to use
 enviroment="NoWag"
 
 models=("meta-llama/Llama-2-7b-hf"

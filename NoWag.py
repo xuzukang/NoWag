@@ -1,4 +1,4 @@
-import multiprocessing as mp
+import torch.multiprocessing as mp
 import os
 import glob
 import argparse
@@ -27,6 +27,9 @@ from src.sparse_compress import SparseLinear
 from accelerate import infer_auto_device_map, dispatch_model
 import numpy as np
 
+#set to be deterministic
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 def compression_worker(
     task_queue: mp.Queue,
@@ -67,7 +70,7 @@ def compression_worker(
         try:
             device = torch.device(f"cuda:{gpu_id}")
             torch.cuda.set_device(device)
-            seed(cfg.seed)
+            seed(cfg.seed, seed_all=True)
 
             # load the original weight
             weight = torch.load(
@@ -326,7 +329,7 @@ def main(cfg: DictConfig):
             del state_dict
             # and delete the save path from disk
             os.remove(save_path)
-
+        clean()
         # save the model
         compressed_model.save_pretrained(os.path.join(cfg.save_path, "model"))
 
@@ -338,18 +341,19 @@ def main(cfg: DictConfig):
 
     # evaluate the models
     # first have them cache the quantized weights
-    recursive_apply(compressed_model, "cache_reconstruct", {"denormalize": True})
+    with torch.no_grad():
+        recursive_apply(compressed_model, "cache_reconstruct", {"denormalize": True})
 
-    # get the name of the model
-    compressed_model.to(torch.float16)
-    compressed_model.seqlen = (
-        cfg.seqlen if cfg.seqlen > 0 else compressed_model.config.max_position_embeddings
-    )
-    print("using seqlen", compressed_model.seqlen)
+        # get the name of the model
+        compressed_model.to(torch.float16)
+        compressed_model.seqlen = (
+            cfg.seqlen if cfg.seqlen > 0 else compressed_model.config.max_position_embeddings
+        )
+        print("using seqlen", compressed_model.seqlen)
 
-    compressed_model.eval()
-    if hasattr(cfg, "eval"):
-        eval(compressed_model, cfg)
+        compressed_model.eval()
+        if hasattr(cfg, "eval"):
+            eval(compressed_model, cfg)
 
 
 if __name__ == "__main__":

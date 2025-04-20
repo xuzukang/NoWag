@@ -254,175 +254,209 @@ def process_kwargs(
 
 
 @hydra.main(
-    version_base=None, config_path="../config", config_name="layer_by_layer_ft_config"
+    version_base=None, config_path="config", config_name="layer_by_layer_ft_config"
 )
 def main(cfg: DictConfig):
     # initiate wandb
-    assert cfg.run_name is not "_EMPTY_", "run_name must be set"
-    
-    if cfg.log_wandb:
-        wandb.init(
-            project="llama_layerwise_ft",
-            config=OmegaConf.to_container(cfg, resolve=True),
-            name=f"{base_model.config.name_or_path}-{cfg.run_name}",
+    assert cfg.run_name!="_EMPTY_", "run_name must be set"
+    if cfg.resume and os.path.exists(cfg.save_path):
+        #try to load the model
+        try:
+            compressed_model = llama.LlamaForCausalLM.from_pretrained(
+                os.path.join(cfg.save_path, "model"),
+                torch_dtype="auto",
+                device_map="auto",
+                low_cpu_mem_usage=True,
+            )
+            print("Loaded model from", cfg.save_path)
+            
+            seqlen = cfg.seqlen # this can be -1, in which case we switch to using the model's full sequence length
+
+
+            if seqlen <= 0:
+                seqlen = compressed_model.config.max_position_embeddings
+                print(f"Using sequence length: {seqlen}")
+                
+            
+        except Exception as e:
+            print("Error loading model from", cfg.save_path)
+            print(e)
+            compressed_model = None
+        # raise NotImplementedError("This is a test")
+    else:
+        compressed_model = None
+        
+    # print("Compressed model: ", compressed_model)
+    # raise NotImplementedError("This is a test")
+        
+    if compressed_model is None:
+        if cfg.log_wandb:
+            wandb.init(
+                project="llama_layerwise_ft",
+                config=OmegaConf.to_container(cfg, resolve=True),
+                name=f"{base_model.config.name_or_path}-{cfg.run_name}",
+            )
+        print("config:")
+        print(OmegaConf.to_yaml(cfg))
+        print("N_visible GPUs: ", torch.cuda.device_count())
+
+        utils.seed(cfg.seed)
+        # we expect the config to have a sub section called model with the name of the base model and the path to the quantized model
+        base_model = cfg.base_model
+        compressed_model_path = os.path.join(cfg.compressed_model_path,"model")
+        seqlen = cfg.seqlen # this can be -1, in which case we switch to using the model's full sequence length
+
+        base_model = OrigLlama.from_pretrained(
+            base_model, device_map="cpu", torch_dtype=torch.float32
         )
-    print("config:")
-    print(OmegaConf.to_yaml(cfg))
-    print("N_visible GPUs: ", torch.cuda.device_count())
+        compressed_model = llama.LlamaForCausalLM.from_pretrained(
+            compressed_model_path, device_map="cpu", torch_dtype=torch.float32
+        )
 
-    utils.seed(cfg.seed)
-    # we expect the config to have a sub section called model with the name of the base model and the path to the quantized model
-    base_model = cfg.base_model
-    compressed_model_path = cfg.compressed_model_path
-    seqlen = cfg.seqlen # this can be -1, in which case we switch to using the model's full sequence length
+        if seqlen <= 0:
+            seqlen = base_model.config.max_position_embeddings
+            print(f"Using sequence length: {seqlen}")
 
-    base_model = OrigLlama.from_pretrained(
-        base_model, device_map="cpu", torch_dtype=torch.float32
-    )
-    compressed_model = llama.LlamaForCausalLM.from_pretrained(
-        compressed_model_path, device_map="cpu", torch_dtype=torch.float32
-    )
+        # load the overall data, we expect the config to have a dataset section with the name of the dataset
+        dataset_cfg = cfg.dataset
+        overall_data: list[torch.FloatTensor] = data.get_loaders(
+            dataset_cfg.name,
+            nsamples=dataset_cfg.ft_n_train + dataset_cfg.ft_n_val,
+            model=base_model.config.name_or_path,
+            train_test="train",
+            seqlen=seqlen,
+        )
 
-    if seqlen <= 0:
-        seqlen = base_model.config.max_position_embeddings
-        print(f"Using sequence length: {seqlen}")
+        inps = torch.zeros(
+            (len(overall_data), seqlen, base_model.config.hidden_size),
+            dtype=torch.float32,
+            device="cpu",
+        )
+        cache = {"i": 0, "kwargs": None}
 
-    # load the overall data, we expect the config to have a dataset section with the name of the dataset
-    dataset_cfg = cfg.dataset
-    overall_data: list[torch.FloatTensor] = data.get_loaders(
-        dataset_cfg.name,
-        nsamples=dataset_cfg.ft_n_train + dataset_cfg.ft_n_val,
-        model=base_model.config.name_or_path,
-        train_test="train",
-        seqlen=seqlen,
-    )
+        use_cache = compressed_model.config.use_cache
+        base_model.config.use_cache = False
+        compressed_model.config.use_cache = False
 
-    inps = torch.zeros(
-        (len(overall_data), seqlen, base_model.config.hidden_size),
-        dtype=torch.float32,
-        device="cpu",
-    )
-    cache = {"i": 0, "kwargs": None}
+        base_model.model.embed_tokens = base_model.model.embed_tokens.cuda()
+        base_model.model.norm = base_model.model.norm.cuda()
+        base_model.model.rotary_emb = base_model.model.rotary_emb.cuda()
+        base_model.model.layers[0] = base_model.model.layers[0].cuda()
 
-    use_cache = compressed_model.config.use_cache
-    base_model.config.use_cache = False
-    compressed_model.config.use_cache = False
+        class Catcher(nn.Module):
+            def __init__(self, module):
+                super().__init__()
+                self.module = module
 
-    base_model.model.embed_tokens = base_model.model.embed_tokens.cuda()
-    base_model.model.norm = base_model.model.norm.cuda()
-    base_model.model.rotary_emb = base_model.model.rotary_emb.cuda()
-    base_model.model.layers[0] = base_model.model.layers[0].cuda()
+            def forward(self, inp, **kwargs):
+                # print(kwargs)
+                # raise Exception("stop")
+                inps[cache["i"]] = inp.cpu()
+                cache["i"] += 1
+                cache["kwargs"] = process_kwargs(kwargs, move_to_cuda=False)
+                raise ValueError
 
-    class Catcher(nn.Module):
-        def __init__(self, module):
-            super().__init__()
-            self.module = module
-
-        def forward(self, inp, **kwargs):
-            # print(kwargs)
-            # raise Exception("stop")
-            inps[cache["i"]] = inp.cpu()
-            cache["i"] += 1
-            cache["kwargs"] = process_kwargs(kwargs, move_to_cuda=False)
-            raise ValueError
-
-    base_model.model.layers[0] = Catcher(base_model.model.layers[0])
-    with torch.no_grad():
-        for batch in tqdm.tqdm(
-            overall_data, desc="getting inputs", miniters=len(overall_data) // 100
-        ):
-            try:
-                base_model(batch[0].cuda())
-            except ValueError:
-                pass
-    base_model.model.layers[0] = base_model.model.layers[0].module
-
-    base_model.model.layers[0] = base_model.model.layers[0].cpu()
-    base_model.model.embed_tokens = base_model.model.embed_tokens.cpu()
-    base_model.model.norm = base_model.model.norm.cpu()
-    base_model.model.rotary_emb = base_model.model.rotary_emb.cpu()
-
-    # we just need two things, the inputs and the kwargs
-    del overall_data
-    utils.clean()
-    kwargs = process_kwargs(cache["kwargs"], move_to_cuda=True)
-
-    train_args = instantiate({"_target_": Config}, _recursive_=False, **cfg.ft_args)
-    os.makedirs(train_args.temp_dir, exist_ok=True)
-    outputs = torch.zeros_like(inps)
-    idxs = torch.randperm(len(inps))
-    inps = inps[idxs]
-    outputs = outputs[idxs]
-
-    for i_layer in tqdm.tqdm(range(len(base_model.model.layers))):
-        print(f"Training layer {i_layer}")
-        # get the outputs
+        base_model.model.layers[0] = Catcher(base_model.model.layers[0])
         with torch.no_grad():
-            original_layer = base_model.model.layers[i_layer].cuda()
-            outputs = model_utils.inference_layer(
-                layer=original_layer,
-                inps=inps,
-                outs=outputs,
-                layer_kwargs=kwargs,
-                dev="cuda",
-                batch_size=cfg.ft_args.batch_size_val,
-                inplace=False,
-                offload_activations=True,
-            )
-            original_layer.cpu()
+            for batch in tqdm.tqdm(
+                overall_data, desc="getting inputs", miniters=len(overall_data) // 100
+            ):
+                try:
+                    base_model(batch[0].cuda())
+                except ValueError:
+                    pass
+        base_model.model.layers[0] = base_model.model.layers[0].module
+
+        base_model.model.layers[0] = base_model.model.layers[0].cpu()
+        base_model.model.embed_tokens = base_model.model.embed_tokens.cpu()
+        base_model.model.norm = base_model.model.norm.cpu()
+        base_model.model.rotary_emb = base_model.model.rotary_emb.cpu()
+
+        # we just need two things, the inputs and the kwargs
+        del overall_data
         utils.clean()
-        # train the layer
-        compressed_model.model.layers[i_layer] = train_layer(
-            compressed_model.model.layers[i_layer],
-            inps[: dataset_cfg.ft_n_train],
-            outputs[: dataset_cfg.ft_n_train],
-            inps[dataset_cfg.ft_n_train :],
-            outputs[dataset_cfg.ft_n_train :],
-            train_args,
-            kwargs,
-            prefix=f"layer_{i_layer}",
-            log_wandb=cfg.log_wandb,
-        )
-        if cfg.sequential:
-            quantized_layer = compressed_model.model.layers[i_layer].cuda()
-            outputs = model_utils.inference_layer(
-                layer=quantized_layer,
-                inps=inps,
-                outs=outputs,
-                layer_kwargs=kwargs,
-                dev="cuda",
-                batch_size=cfg.ft_args.batch_size_val,
-                inplace=False,
-                offload_activations=True,
+        kwargs = process_kwargs(cache["kwargs"], move_to_cuda=True)
+
+        train_args = instantiate({"_target_": Config}, _recursive_=False, **cfg.ft_args)
+        os.makedirs(train_args.temp_dir, exist_ok=True)
+        outputs = torch.zeros_like(inps)
+        idxs = torch.randperm(len(inps))
+        inps = inps[idxs]
+        outputs = outputs[idxs]
+
+        for i_layer in tqdm.tqdm(range(len(base_model.model.layers))):
+            print(f"Training layer {i_layer}")
+            # get the outputs
+            with torch.no_grad():
+                original_layer = base_model.model.layers[i_layer].cuda()
+                outputs = model_utils.inference_layer(
+                    layer=original_layer,
+                    inps=inps,
+                    outs=outputs,
+                    layer_kwargs=kwargs,
+                    dev="cuda",
+                    batch_size=cfg.ft_args.batch_size_val,
+                    inplace=False,
+                    offload_activations=True,
+                )
+                original_layer.cpu()
+            utils.clean()
+            # train the layer
+            compressed_model.model.layers[i_layer] = train_layer(
+                compressed_model.model.layers[i_layer],
+                inps[: dataset_cfg.ft_n_train],
+                outputs[: dataset_cfg.ft_n_train],
+                inps[dataset_cfg.ft_n_train :],
+                outputs[dataset_cfg.ft_n_train :],
+                train_args,
+                kwargs,
+                prefix=f"layer_{i_layer}",
+                log_wandb=cfg.log_wandb,
             )
-            quantized_layer.cpu()
+            if cfg.sequential:
+                quantized_layer = compressed_model.model.layers[i_layer].cuda()
+                outputs = model_utils.inference_layer(
+                    layer=quantized_layer,
+                    inps=inps,
+                    outs=outputs,
+                    layer_kwargs=kwargs,
+                    dev="cuda",
+                    batch_size=cfg.ft_args.batch_size_val,
+                    inplace=False,
+                    offload_activations=True,
+                )
+                quantized_layer.cpu()
+            utils.clean()
+
+            # swap the inps and outputs
+            inps, outputs = outputs, inps
+
+        # save the model
+        os.makedirs(cfg.save_path, exist_ok=True)
+        compressed_model.save_pretrained(os.path.join(cfg.save_path, "model"))
+        
         utils.clean()
+        
+        #evaluate the model
+        
+        # Move the model to an auto device map using accelerate
 
-        # swap the inps and outputs
-        inps, outputs = outputs, inps
+        device_map = infer_auto_device_map(compressed_model)
+        compressed_model = dispatch_model(compressed_model, device_map=device_map)
+        # evaluate the models
+        # first have them cache the quantized weights
+    with torch.no_grad():
 
-    # save the model
-    os.makedirs(cfg.save_path, exist_ok=True)
-    compressed_model.save_pretrained(os.path.join(cfg.save_path, "model"))
-    
-    #evaluate the model
-    
-    # Move the model to an auto device map using accelerate
+        utils.recursive_apply(compressed_model, "cache_reconstruct", {"denormalize": True})
 
-    device_map = infer_auto_device_map(compressed_model)
-    compressed_model = dispatch_model(compressed_model, device_map=device_map)
-    # evaluate the models
-    # first have them cache the quantized weights
-    utils.recursive_apply(compressed_model, "cache_reconstruct", {"denormalize": True})
+        compressed_model.to(torch.float16)
+        compressed_model.seqlen = seqlen
 
-    compressed_model.to(torch.float16)
-    compressed_model.seqlen = seqlen
-
-    compressed_model.eval()
-    if hasattr(cfg, "eval"):
-        eval(compressed_model, cfg)
-    
-    wandb.finish()
+        compressed_model.eval()
+        if hasattr(cfg, "eval"):
+            eval(compressed_model, cfg)
+        
+        wandb.finish()
 
 
 if __name__ == "__main__":

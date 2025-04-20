@@ -1,14 +1,47 @@
-__pycache__
-test/*
-wandb/*
-models/*
-debug/*
-quantized_models/*
-*.pt
-logs/parallel_compress/*
-tmp/*
-temp/*
+# Ignore node_modules folder
+node_modules/
+
+# Ignore log files
 *.log
-output/*
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
+
+# Ignore build output
+dist/
+build/
+out/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore dependency directories
+bower_components/
+
+
+# Ignore weights and balance files
+wandb/
+
+# Ignore the models directory
+models/
+
+# Ignore pycache files
+*__pycache__/
+
+# Ignore hydra config files
 outputs/*
-test*
+
+#ignore test scratch ipynbs
+*test.ipynb
