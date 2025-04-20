@@ -1,4 +1,8 @@
 # NoWag: A Unified Framework for Shape Preserving Compression of Large Language Models
+[Lawrence Liu](https://lawrencerliu.github.io)<sup>1</sup>, [Inesh Chakrabarti](https://www.linkedin.com/in/inesh-chakrabarti-878602183/)<sup>1</sup>, [Yixiao Li](https://yxli2123.github.io/)<sup>2</sup>, [Mengdi Wang](https://mwang.princeton.edu/)<sup>4</sup>, [Tuo Zhao](https://www2.isye.gatech.edu/~tzhao80/)<sup>2</sup>, [Lin F. Yang](http://drlinyang.net/)<sup>1</sup><br>
+<sup>1</sup> UCLA, <sup>2</sup> Georgia Tech, <sup>3</sup> Princeton University<br>
+
+![Nowag Overview](assets/Overview.png)
 
 ## Overview
 This is the official implementation of NoWag, a unified framework for shape-preserving compression of large language models. 
@@ -52,7 +56,7 @@ run `finetune_layerwise.py` with `run_name` specified to be the same as the `run
 └── README.md           # Project documentation
 ```
 
-## Future Work
+## ToDOs:
 - [ ] Cuda Kernels for NoWag-VQ (Comming Soon!)
 - [ ] End to End Post Compression Fine Tuning (Comming Soon!)
 - [ ] [Trellis](https://arxiv.org/abs/2406.11235) Quantization (Comming Soon!)
@@ -61,11 +65,13 @@ run `finetune_layerwise.py` with `run_name` specified to be the same as the `run
 ## Citation
 If you use this framework in your research, please cite:
 ```
-@article{NoWag2023,
-    title={NoWag: A Unified Framework for Shape Preserving Compression of Large Language Models},
-    author={Your Name and Collaborators},
-    journal={ArXiv},
-    year={2023}
+@inproceedings{
+liu2025a,
+title={A Unified Framework for Shape Preserving Compression of Large Language Models},
+author={Lawrence Ray Liu and Inesh Chakrabarti and Yixiao Li and Mengdi Wang and Tuo Zhao and Lin Yang},
+booktitle={Sparsity in LLMs (SLLM): Deep Dive into Mixture of Experts, Quantization, Hardware, and Inference},
+year={2025},
+url={https://openreview.net/forum?id=62hJ09Z0NU}
 }
 ```
 
