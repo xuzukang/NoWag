@@ -33,7 +33,7 @@ One shot compression is a method that allows for the compression of large langua
 We use the average l2 norm of the sample activations, also know as the diagonals of the hessians, to provide data awareness during one shot compression. This can be done by running `scripts/generate_hessians.py`, or alternatively, we have provided a bash script to generate the hessians for the Llama 2 7B/13B/70B and the Llama-3 8B/70B models using the same seed and 
 calibration data as in the paper. The script can be found in `scripts/generate_hessians.bash`.
 
-To perform one-shot compression, run the `NoWag.py` script. We use [Hydra](https://github.com/facebookresearch/hydra) for configuration management, so you can specify the model to compress, compression method, parameters, etc. By default the script will run NoWag-VQ on the Llama 2 7B model.
+To perform one-shot compression, run the `NoWag.py` script. We use [Hydra](https://github.com/facebookresearch/hydra) for configuration management, so you can specify the model to compress, compression method, parameters, etc. By default the script will run NoWag-P on the Llama 2 7B model.
 Currently NoWag supports two paradigms of shape preserving compression:
 
 2. **Pruning (NoWag-P)**: This method prunes the model weights based on their importance. To run add `compress=prune` to the command line.  This is the default method used in the `NoWag.py` script. We support both unstructured and N:M pruning. The default is unstructured pruning. To run N:M pruning, add `+compress.kwargs.pattern=[$N:$M]` to the command line. We have provided a bash script to run NoWag-P on the Llama 2 7B/13B/70B and the Llama-3 8B/70B models using the same seed and calibration data as in the paper. The script can be found in `scripts/prune.bash`.
