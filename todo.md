@@ -5,7 +5,7 @@
 - [x] add hydra to the quantize compress
 - [x] write the example scripts for quantize and pruning
 - [x] write the N:M pruning
-- [ ] Compare the conda enviroments and make one unified one
-- [ ] Make a readme
+- [x] Compare the conda enviroments and make one unified one
+- [x] Make a readme
 
 
