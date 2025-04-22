@@ -65,13 +65,14 @@ run `finetune_layerwise.py` with `run_name` specified to be the same as the `run
 ## Citation
 If you use this framework in your research, please cite:
 ```
-@inproceedings{
-liu2025a,
-title={A Unified Framework for Shape Preserving Compression of Large Language Models},
-author={Lawrence Ray Liu and Inesh Chakrabarti and Yixiao Li and Mengdi Wang and Tuo Zhao and Lin Yang},
-booktitle={Sparsity in LLMs (SLLM): Deep Dive into Mixture of Experts, Quantization, Hardware, and Inference},
-year={2025},
-url={https://openreview.net/forum?id=62hJ09Z0NU}
+@misc{liu2025nowagunifiedframeworkshape,
+      title={NoWag: A Unified Framework for Shape Preserving Compression of Large Language Models}, 
+      author={Lawrence Liu and Inesh Chakrabarti and Yixiao Li and Mengdi Wang and Tuo Zhao and Lin F. Yang},
+      year={2025},
+      eprint={2504.14569},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2504.14569}, 
 }
 ```
 
