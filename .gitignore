@@ -42,6 +42,7 @@ models/
 
 # Ignore hydra config files
 outputs/*
+datasets/
 
 #ignore test scratch ipynbs
 *test.ipynb

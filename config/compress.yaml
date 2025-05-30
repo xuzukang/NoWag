@@ -4,7 +4,7 @@ defaults:
   - compress: prune
   - eval: default
 
-base_model: meta-llama/Llama-2-7b-hf
+base_model: datasets/Llama-2-7b-hf
 seqlen: -1 # -1 means native seqlen
 verbose: False
 run_name: test_compress

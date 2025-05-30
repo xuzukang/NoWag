@@ -1,0 +1,208 @@
+===========Quantizing datasets/Llama-2-7b-hf ==========
+running command: python -u NoWag.py run_name=2bit_vq compress=vq resume=True
+pid 750499
+[2025-05-30 21:11:16,931][__main__][INFO] - base_model: datasets/Llama-2-7b-hf
+seqlen: -1
+verbose: false
+run_name: 2bit_vq
+weight_path: ./models/${base_model}/original_weights
+hessianDiag_path: ./models/${base_model}/hessianDiags/seed_0/pajama/128
+save_path: ./models/${base_model}/compressed/${run_name}
+temp_path: ./models/${base_model}/temp/${run_name}
+seed: 0
+add_bias: false
+resume: true
+log_wandb: false
+compress:
+  method: LinearVQ
+  kwargs:
+    d: 6
+    ignore_norms: true
+    n_bits: 2
+    n_inits: 1
+    n_iters: 100
+    initialize_method: kmeans++
+    initialize_kwargs:
+      deterministic: false
+      multiple_each_time: 1.0
+    normalizer_kwargs:
+      norm_order:
+      - 0
+      - 1
+      zero:
+      - false
+      - false
+      p: 2
+eval:
+  ppl_dataset:
+  - wikitext2
+  - c4
+  zero_shot_tasks:
+  - winogrande
+  - piqa
+  - rte
+  - arc_easy
+  - arc_challenge
+
+[2025-05-30 21:11:16,931][__main__][INFO] - compressing model datasets/Llama-2-7b-hf
+[2025-05-30 21:11:17,039][__main__][INFO] - Available GPUs: [0, 1, 2, 3, 4, 5, 6, 7]
+[2025-05-30 21:11:17,042][__main__][INFO] - n weights found 224
+Starting 8 workers
+Compressing layers:   0%|          | 0/224 [00:00<?, ?it/s][2025-05-30 21:11:20,789][__main__][INFO] - Layer layer_0/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:20,794][__main__][INFO] - Layer layer_0/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:20,795][__main__][INFO] - Layer layer_0/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:20,809][__main__][INFO] - Layer layer_1/self_attn.k_proj already quantized, skipping
+Compressing layers:   0%|          | 1/224 [00:03<13:38,  3.67s/it][2025-05-30 21:11:20,888][__main__][INFO] - Layer layer_1/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:20,895][__main__][INFO] - Layer layer_1/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:20,901][__main__][INFO] - Layer layer_1/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:20,982][__main__][INFO] - Layer layer_1/mlp.up_proj already quantized, skipping
+Compressing layers:   2%|▏         | 5/224 [00:03<02:07,  1.71it/s][2025-05-30 21:11:20,989][__main__][INFO] - Layer layer_1/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,023][__main__][INFO] - Layer layer_2/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:21,035][__main__][INFO] - Layer layer_2/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,043][__main__][INFO] - Layer layer_2/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:21,056][__main__][INFO] - Layer layer_2/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,064][__main__][INFO] - Layer layer_2/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:21,074][__main__][INFO] - Layer layer_2/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,103][__main__][INFO] - Layer layer_2/mlp.down_proj already quantized, skipping
+Compressing layers:   6%|▌         | 13/224 [00:03<00:38,  5.53it/s][2025-05-30 21:11:21,105][__main__][INFO] - Layer layer_0/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,112][__main__][INFO] - Layer layer_3/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:21,121][__main__][INFO] - Layer layer_3/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,125][__main__][INFO] - Layer layer_3/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:21,129][__main__][INFO] - Layer layer_3/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,138][__main__][INFO] - Layer layer_3/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:21,141][__main__][INFO] - Layer layer_3/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,142][__main__][INFO] - Layer layer_3/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,180][__main__][INFO] - Layer layer_4/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:21,180][__main__][INFO] - Layer layer_4/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,184][__main__][INFO] - Layer layer_4/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:21,188][__main__][INFO] - Layer layer_4/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,191][__main__][INFO] - Layer layer_4/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:21,198][__main__][INFO] - Layer layer_4/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,203][__main__][INFO] - Layer layer_4/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,229][__main__][INFO] - Layer layer_5/self_attn.q_proj already quantized, skipping
+Compressing layers:  12%|█▎        | 28/224 [00:04<00:13, 14.74it/s][2025-05-30 21:11:21,237][__main__][INFO] - Layer layer_5/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,239][__main__][INFO] - Layer layer_1/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:21,241][__main__][INFO] - Layer layer_5/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:21,243][__main__][INFO] - Layer layer_5/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,246][__main__][INFO] - Layer layer_5/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:21,251][__main__][INFO] - Layer layer_5/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,259][__main__][INFO] - Layer layer_5/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,285][__main__][INFO] - Layer layer_6/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:21,289][__main__][INFO] - Layer layer_6/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,289][__main__][INFO] - Layer layer_6/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:21,295][__main__][INFO] - Layer layer_6/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,298][__main__][INFO] - Layer layer_6/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:21,307][__main__][INFO] - Layer layer_6/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,309][__main__][INFO] - Layer layer_6/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,318][__main__][INFO] - Layer layer_7/self_attn.q_proj already quantized, skipping
+Compressing layers:  19%|█▉        | 43/224 [00:04<00:06, 25.98it/s][2025-05-30 21:11:21,336][__main__][INFO] - Layer layer_7/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:21,342][__main__][INFO] - Layer layer_7/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:21,348][__main__][INFO] - Layer layer_7/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,363][__main__][INFO] - Layer layer_0/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,364][__main__][INFO] - Layer layer_0/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:21,364][__main__][INFO] - Layer layer_0/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,554][__main__][INFO] - Layer layer_7/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:21,581][__main__][INFO] - Layer layer_7/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:21,581][__main__][INFO] - Layer layer_7/mlp.gate_proj already quantized, skipping
+Compressing layers:  24%|██▎       | 53/224 [00:04<00:06, 28.35it/s][2025-05-30 21:11:21,723][__main__][INFO] - Layer layer_8/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:22,234][__main__][INFO] - Layer layer_8/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:22,250][__main__][INFO] - Layer layer_8/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:22,262][__main__][INFO] - Layer layer_8/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:22,270][__main__][INFO] - Layer layer_8/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:22,272][__main__][INFO] - Layer layer_8/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:22,278][__main__][INFO] - Layer layer_8/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:22,284][__main__][INFO] - Layer layer_9/self_attn.k_proj already quantized, skipping
+Compressing layers:  27%|██▋       | 61/224 [00:05<00:07, 20.61it/s][2025-05-30 21:11:22,656][__main__][INFO] - Layer layer_9/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:22,711][__main__][INFO] - Layer layer_9/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:22,716][__main__][INFO] - Layer layer_9/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:22,920][__main__][INFO] - Layer layer_9/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:22,927][__main__][INFO] - Layer layer_9/mlp.gate_proj already quantized, skipping
+Compressing layers:  30%|██▉       | 67/224 [00:05<00:10, 14.67it/s][2025-05-30 21:11:23,127][__main__][INFO] - Layer layer_9/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:23,128][__main__][INFO] - Layer layer_10/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:23,331][__main__][INFO] - Layer layer_10/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:23,344][__main__][INFO] - Layer layer_10/self_attn.k_proj already quantized, skipping
+Compressing layers:  32%|███▏      | 71/224 [00:06<00:10, 15.19it/s][2025-05-30 21:11:23,347][__main__][INFO] - Layer layer_10/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:23,790][__main__][INFO] - Layer layer_10/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:23,791][__main__][INFO] - Layer layer_10/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:23,791][__main__][INFO] - Layer layer_11/self_attn.q_proj already quantized, skipping
+Compressing layers:  33%|███▎      | 75/224 [00:06<00:11, 13.20it/s][2025-05-30 21:11:24,000][__main__][INFO] - Layer layer_10/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:24,001][__main__][INFO] - Layer layer_11/self_attn.v_proj already quantized, skipping
+Compressing layers:  35%|███▍      | 78/224 [00:06<00:11, 12.70it/s][2025-05-30 21:11:24,156][__main__][INFO] - Layer layer_11/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:24,156][__main__][INFO] - Layer layer_11/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:24,172][__main__][INFO] - Layer layer_11/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:24,214][__main__][INFO] - Layer layer_11/mlp.down_proj already quantized, skipping
+Compressing layers:  36%|███▌      | 81/224 [00:07<00:10, 13.98it/s][2025-05-30 21:11:24,220][__main__][INFO] - Layer layer_12/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:24,349][__main__][INFO] - Layer layer_11/mlp.up_proj already quantized, skipping
+Compressing layers:  38%|███▊      | 84/224 [00:07<00:09, 15.22it/s][2025-05-30 21:11:25,609][__main__][INFO] - Layer layer_12/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:25,610][__main__][INFO] - Layer layer_12/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:25,633][__main__][INFO] - Layer layer_12/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:25,715][__main__][INFO] - Layer layer_12/mlp.down_proj already quantized, skipping
+Compressing layers:  39%|███▉      | 87/224 [00:08<00:21,  6.26it/s][2025-05-30 21:11:25,758][__main__][INFO] - Layer layer_12/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:25,801][__main__][INFO] - Layer layer_13/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:25,815][__main__][INFO] - Layer layer_12/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:25,817][__main__][INFO] - Layer layer_13/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:25,834][__main__][INFO] - Layer layer_13/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:25,843][__main__][INFO] - Layer layer_13/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:25,855][__main__][INFO] - Layer layer_13/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:25,874][__main__][INFO] - Layer layer_13/self_attn.q_proj already quantized, skipping
+Compressing layers:  40%|███▉      | 89/224 [00:08<00:19,  6.88it/s][2025-05-30 21:11:25,882][__main__][INFO] - Layer layer_13/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:25,885][__main__][INFO] - Layer layer_14/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:25,896][__main__][INFO] - Layer layer_14/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:25,901][__main__][INFO] - Layer layer_14/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:25,910][__main__][INFO] - Layer layer_14/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:25,911][__main__][INFO] - Layer layer_14/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:25,921][__main__][INFO] - Layer layer_14/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:25,926][__main__][INFO] - Layer layer_14/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:25,963][__main__][INFO] - Layer layer_15/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:25,965][__main__][INFO] - Layer layer_15/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:25,973][__main__][INFO] - Layer layer_15/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:25,982][__main__][INFO] - Layer layer_15/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:26,020][__main__][INFO] - Layer layer_15/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:26,058][__main__][INFO] - Layer layer_16/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:26,069][__main__][INFO] - Layer layer_16/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:26,083][__main__][INFO] - Layer layer_16/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:26,099][__main__][INFO] - Layer layer_16/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:26,108][__main__][INFO] - Layer layer_16/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:26,128][__main__][INFO] - Layer layer_15/self_attn.q_proj already quantized, skipping
+Compressing layers:  48%|████▊     | 108/224 [00:08<00:05, 19.77it/s][2025-05-30 21:11:26,132][__main__][INFO] - Layer layer_15/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:26,152][__main__][INFO] - Layer layer_16/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:26,188][__main__][INFO] - Layer layer_16/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:26,225][__main__][INFO] - Layer layer_17/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:26,235][__main__][INFO] - Layer layer_17/self_attn.k_proj already quantized, skipping
+Compressing layers:  53%|█████▎    | 118/224 [00:09<00:03, 27.41it/s][2025-05-30 21:11:26,251][__main__][INFO] - Layer layer_17/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:26,265][__main__][INFO] - Layer layer_17/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:26,274][__main__][INFO] - Layer layer_17/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:26,312][__main__][INFO] - Layer layer_17/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:26,349][__main__][INFO] - Layer layer_17/mlp.down_proj already quantized, skipping
+[2025-05-30 21:11:26,387][__main__][INFO] - Layer layer_18/self_attn.q_proj already quantized, skipping
+Compressing layers:  55%|█████▌    | 124/224 [00:09<00:03, 29.52it/s][2025-05-30 21:11:26,397][__main__][INFO] - Layer layer_18/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:26,413][__main__][INFO] - Layer layer_18/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:26,426][__main__][INFO] - Layer layer_18/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:26,435][__main__][INFO] - Layer layer_18/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:26,475][__main__][INFO] - Layer layer_18/mlp.up_proj already quantized, skipping
+[2025-05-30 21:11:26,512][__main__][INFO] - Layer layer_18/mlp.down_proj already quantized, skipping
+Compressing layers:  58%|█████▊    | 130/224 [00:09<00:02, 32.62it/s][2025-05-30 21:11:26,549][__main__][INFO] - Layer layer_19/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:26,560][__main__][INFO] - Layer layer_19/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:26,574][__main__][INFO] - Layer layer_19/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:26,588][__main__][INFO] - Layer layer_19/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:26,597][__main__][INFO] - Layer layer_19/mlp.gate_proj already quantized, skipping
+[2025-05-30 21:11:26,635][__main__][INFO] - Layer layer_19/mlp.up_proj already quantized, skipping
+Compressing layers:  61%|██████    | 136/224 [00:09<00:02, 35.71it/s][2025-05-30 21:11:26,646][__main__][INFO] - Layer layer_19/mlp.down_proj quantizing
+[2025-05-30 21:11:26,673][__main__][INFO] - Layer layer_20/self_attn.q_proj already quantized, skipping
+[2025-05-30 21:11:26,682][__main__][INFO] - Layer layer_20/self_attn.k_proj already quantized, skipping
+[2025-05-30 21:11:26,691][__main__][INFO] - Layer layer_20/self_attn.v_proj already quantized, skipping
+[2025-05-30 21:11:26,700][__main__][INFO] - Layer layer_20/self_attn.o_proj already quantized, skipping
+[2025-05-30 21:11:26,711][__main__][INFO] - Layer layer_20/mlp.gate_proj quantizing
+Compressing layers:  64%|██████▍   | 143/224 [00:09<00:01, 40.67it/s][2025-05-30 21:11:26,756][__main__][INFO] - Layer layer_20/mlp.up_proj quantizing
+Compressing layers:  64%|██████▍   | 143/224 [00:19<00:01, 40.67it/s]Compressing layers:  64%|██████▍   | 144/224 [04:50<21:53, 16.42s/it][2025-05-30 21:16:07,657][__main__][INFO] - Layer layer_20/mlp.down_proj quantizing
+Compressing layers:  65%|██████▍   | 145/224 [05:03<21:15, 16.15s/it][2025-05-30 21:16:20,581][__main__][INFO] - Layer layer_21/self_attn.q_proj quantizing
+Compressing layers:  65%|██████▌   | 146/224 [07:32<38:07, 29.32s/it][2025-05-30 21:18:49,742][__main__][INFO] - Layer layer_21/self_attn.k_proj quantizing
+Compressing layers:  66%|██████▌   | 147/224 [08:06<38:18, 29.85s/it][2025-05-30 21:19:23,306][__main__][INFO] - Layer layer_21/self_attn.v_proj quantizing
+Compressing layers:  66%|██████▌   | 148/224 [09:45<51:07, 40.36s/it][2025-05-30 21:21:03,062][__main__][INFO] - Layer layer_21/self_attn.o_proj quantizing
+Compressing layers:  67%|██████▋   | 149/224 [10:21<49:26, 39.55s/it][2025-05-30 21:21:38,850][__main__][INFO] - Layer layer_21/mlp.gate_proj quantizing
+Compressing layers:  67%|██████▋   | 150/224 [12:03<1:04:11, 52.05s/it][2025-05-30 21:23:20,339][__main__][INFO] - Layer layer_21/mlp.up_proj quantizing
+Compressing layers:  67%|██████▋   | 151/224 [12:17<52:56, 43.51s/it]  [2025-05-30 21:23:34,238][__main__][INFO] - Layer layer_21/mlp.down_proj quantizing
+Compressing layers:  68%|██████▊   | 152/224 [14:08<1:11:53, 59.91s/it][2025-05-30 21:25:25,462][__main__][INFO] - Layer layer_22/self_attn.q_proj quantizing
+Compressing layers:  68%|██████▊   | 153/224 [14:47<1:04:44, 54.71s/it][2025-05-30 21:26:05,131][__main__][INFO] - Layer layer_22/self_attn.k_proj quantizing
+Compressing layers:  69%|██████▉   | 154/224 [14:52<48:07, 41.25s/it]  [2025-05-30 21:26:09,726][__main__][INFO] - Layer layer_22/self_attn.v_proj quantizing
+Compressing layers:  69%|██████▉   | 154/224 [15:10<48:07, 41.25s/it]

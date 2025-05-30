@@ -3,11 +3,11 @@
 export seed=0
 dataset="pajama"
 MODELS=(
-    # "meta-llama/Llama-2-7b-hf"
-    # "meta-llama/Llama-2-13b-hf"
-    # "meta-llama/Llama-2-70b-hf"
-    "meta-llama/Meta-Llama-3-8B"
-    # "meta-llama/Meta-Llama-3-70B"
+    "datasets/Llama-2-7b-hf"
+    # "datasets/Llama-2-13b-hf"
+    # "datasets/Llama-2-70b-hf"
+    # "datasets/Meta-Llama-3-8B"
+    # "datasets/Meta-Llama-3-70B"
 )
 N_SAMPLES=(128)
 
